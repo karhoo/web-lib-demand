@@ -1,0 +1,55 @@
+{
+  "name": "web-lib-demand",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "npm ci && npx lerna bootstrap --hoist",
+    "build": "npx lerna run build --stream",
+    "test": "npx lerna run test --stream",
+    "lint": "npx eslint . --ext js,jsx,ts,tsx",
+    "docs": "rm -rf docs && typedoc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karhoo/web-lib-demand.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karhoo/web-lib-demand/issues"
+  },
+  "homepage": "https://github.com/karhoo/web-lib-demand#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "2.27.0",
+    "@typescript-eslint/parser": "2.27.0",
+    "babel-eslint": "10.0.3",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.1",
+    "eslint-config-react-app": "5.2.0",
+    "eslint-plugin-flowtype": "3.13.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-prettier": "3.1.2",
+    "eslint-plugin-react": "7.18.3",
+    "eslint-plugin-react-hooks": "1.7.0",
+    "husky": "4.2.3",
+    "lerna": "3.20.2",
+    "lint-staged": "10.0.7",
+    "prettier": "1.19.1",
+    "typedoc": "0.16.7",
+    "typedoc-plugin-lerna-packages": "0.3.0",
+    "typedoc-plugin-markdown": "2.2.17",
+    "typescript": "3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run bootstrap && npm run build && npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npx eslint --fix"
+    ]
+  }
+}

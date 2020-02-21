@@ -1,0 +1,14 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "publish": {
+      "registry": "https://registry.npmjs.org"
+    },
+    "version": {
+      "conventionalCommits": true
+    }
+  },
+  "version": "0.8.2"
+}
