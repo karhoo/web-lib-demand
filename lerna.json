@@ -2,5 +2,15 @@
   "packages": [
     "packages/*"
   ],
+  "command": {
+    "publish": {
+      "registry": "https://npm.pkg.github.com"
+    },
+    "bootstrap": {
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
+    }
+  },
   "version": "0.0.0"
 }
