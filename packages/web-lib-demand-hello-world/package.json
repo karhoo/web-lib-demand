@@ -1,0 +1,33 @@
+{
+  "name": "@karhoo/web-lib-demand-hello-world",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/web-lib-demand-hello-world#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/*.js",
+    "dist/*.js.map",
+    "dist/*.d.ts",
+    "src"
+  ],
+  "module": "dist/web-lib-demand-hello-world.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karhoo/web-lib-demand.git"
+  },
+  "scripts": {
+    "start": "npx tsdx watch",
+    "build": "npx tsdx build",
+    "test": "npx tsdx test"
+  },
+  "bugs": {
+    "url": "https://github.com/karhoo/web-lib-demand/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.3",
+    "tsdx": "^0.12.3",
+    "typescript": "^3.8.2"
+  }
+}
