@@ -1,11 +1,23 @@
 # `web-lib-demand-hello-world`
 
-> TODO: description
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the library in development mode.
+
+### `npm test`
+
+Launches the test runner.
+
+### `npm run build`
+
+Builds library.
 
 ## Usage
 
 ```
-const webLibDemandHelloWorld = require('web-lib-demand-hello-world');
-
-// TODO: DEMONSTRATE API
+const webLibDemandHelloWorld = require('@karhoo/web-lib-demand-hello-world');
 ```

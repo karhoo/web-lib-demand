@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "npm ci && npx lerna bootstrap --hoist",
-    "build": "npx lerna run build",
-    "test": "npx lerna run test",
+    "build": "npx lerna run build --stream",
+    "test": "npx lerna run test --stream",
     "lint": "npx eslint . --ext js,jsx,ts,tsx",
     "setup-npm": "echo '//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}\n@karhoo:registry=https://npm.pkg.github.com/' > ~/.npmrc"
   },
@@ -14,7 +14,6 @@
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
   },
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/karhoo/web-lib-demand/issues"
@@ -33,8 +32,22 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.4.0",
+    "husky": "^4.2.3",
     "lerna": "^3.20.2",
+    "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "typescript": "^3.8.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npx eslint --fix",
+      "git add"
+    ]
   }
 }

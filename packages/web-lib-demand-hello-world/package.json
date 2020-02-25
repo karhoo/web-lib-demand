@@ -8,7 +8,10 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/*.js",
+    "dist/*.js.map",
+    "dist/*.d.ts",
+    "src"
   ],
   "module": "dist/web-lib-demand-hello-world.esm.js",
   "repository": {
@@ -16,6 +19,7 @@
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
   },
   "scripts": {
+    "start": "npx tsdx watch",
     "build": "npx tsdx build",
     "test": "npx tsdx test"
   },
