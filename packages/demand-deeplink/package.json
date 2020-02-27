@@ -1,0 +1,29 @@
+{
+  "name": "@karhoo/demand-deeplink",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "author": "Dzmitry Miadzvedski <dzmitry.miadzvedski@karhoo.com>",
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
+  "license": "ISC",
+  "main": "lib/demand-deeplink.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karhoo/web-lib-demand.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/karhoo/web-lib-demand/issues"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.2"
+  }
+}
