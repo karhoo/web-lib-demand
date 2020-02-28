@@ -1,8 +1,30 @@
 import { getJourneyLegs, parse } from './parse'
 import toPairs from 'lodash/toPairs'
-import kebabCase from 'lodash/kebabCase'
+import fromPairs from 'lodash/fromPairs'
+import camelCase from 'lodash/camelCase'
 
 describe('parse', () => {
+  const getQueryString = (data: object) =>
+    toPairs(data)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&')
+
+  const travellerLocale = 'en-GB'
+
+  const passengerInfo = {
+    email: 'email@of.user',
+    'first-name': 'first name',
+    'last-name': 'last name',
+    luggage: '2',
+    passengers: '3',
+    'phone-number': '+441234567890',
+  }
+
+  const meta = {
+    'meta.first': 'first meta',
+    'meta.second': 'second-meta',
+  }
+
   const firstJourneyLeg = {
     'leg-1-pickup': '20 Rue Jean Rey, 75015 Paris, France',
     'leg-1-pickup-kpoi': 'MPH',
@@ -38,57 +60,117 @@ describe('parse', () => {
     'leg-2-pickup-time': '2020-08-10T18:31:42-03:30',
   }
 
-  const passengerInfo = {
-    email: 'email@of.user',
-    firstName: 'first name',
-    lastName: 'last name',
-    luggage: '2',
-    passengers: '3',
-    phoneNumber: '+441234567890',
+  const expectedPassengerInfo = {
+    ...fromPairs(toPairs(passengerInfo).map(([key, value]) => [camelCase(key), value])),
+    luggage: parseInt(passengerInfo.luggage, 10),
+    passengers: parseInt(passengerInfo.passengers, 10),
+  }
+
+  const expectedMeta = {
+    first: meta['meta.first'],
+    second: meta['meta.second'],
+  }
+
+  const expectedEmptyPassengerInfo = {
+    email: undefined,
+    firstName: undefined,
+    lastName: undefined,
+    luggage: NaN,
+    passengers: NaN,
+    phoneNumber: undefined,
+  }
+
+  const expectedFirstJourneyLeg = {
+    pickup: firstJourneyLeg['leg-1-pickup'],
+    pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
+    pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
+    pickupDate: firstJourneyLeg['leg-1-pickup-time'],
+    pickupMeta: {},
+    dropoff: firstJourneyLeg['leg-1-dropoff'],
+    dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
+    dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
+    dropoffMeta: {},
+    passengerInfo: expectedEmptyPassengerInfo,
+    meta: {},
+  }
+
+  const expectedFirstJourneyLegMeta = {
+    test: firstJourneyLegMeta['leg-1-m-test'],
+    'second-test': firstJourneyLegMeta['leg-1-m-second-test'],
+  }
+
+  const expectedFirstJourneyLegPickupMeta = {
+    test: firstJourneyLegPickupMeta['leg-1-m-pickup-test'],
+    'second-test': firstJourneyLegPickupMeta['leg-1-m-pickup-second-test'],
+  }
+
+  const expectedFirstJourneyLegDropoffMeta = {
+    test: firstJourneyLegDropoffMeta['leg-1-m-dropoff-test'],
+    'second-test': firstJourneyLegDropoffMeta['leg-1-m-dropoff-second-test'],
+  }
+
+  const expectedSecondJourneyLeg = {
+    pickup: secondJourneyLeg['leg-2-pickup'],
+    pickupKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
+    pickupPlaceId: secondJourneyLeg['leg-2-pickup-place_id'],
+    pickupDate: secondJourneyLeg['leg-2-pickup-time'],
+    pickupMeta: {},
+    dropoff: secondJourneyLeg['leg-2-dropoff'],
+    dropoffKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
+    dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
+    dropoffMeta: {},
+    passengerInfo: expectedEmptyPassengerInfo,
+    meta: {},
   }
 
   it('should return empty info', () => {
     expect(parse('')).toEqual({
       legs: [],
-      email: undefined,
-      firstName: undefined,
-      lastName: undefined,
-      luggage: NaN,
-      passengers: NaN,
-      phoneNumber: undefined,
+      passengerInfo: expectedEmptyPassengerInfo,
       travellerLocale: undefined,
       meta: {},
     })
   })
 
-  it('should return passenger info', () => {
-    expect(parse('')).toEqual({
+  it('should have passenger info', () => {
+    expect(parse(getQueryString(passengerInfo))).toEqual({
       legs: [],
-      email: undefined,
-      firstName: undefined,
-      lastName: undefined,
-      luggage: NaN,
-      passengers: NaN,
-      phoneNumber: undefined,
       travellerLocale: undefined,
       meta: {},
+      passengerInfo: expectedPassengerInfo,
     })
   })
 
-  it('should return passenger info', () => {
-    expect(
-      parse(
-        toPairs(passengerInfo)
-          .map(([key, value]) => `${kebabCase(key)}=${value}`)
-          .join('&')
-      )
-    ).toEqual({
+  it('should have travellerLocale', () => {
+    expect(parse(`traveller-locale=${travellerLocale}`)).toEqual({
+      legs: [],
+      travellerLocale,
+      meta: {},
+      passengerInfo: expectedEmptyPassengerInfo,
+    })
+  })
+
+  it('should have meta', () => {
+    expect(parse(getQueryString(meta))).toEqual({
+      legs: [],
+      travellerLocale: undefined,
+      meta: expectedMeta,
+      passengerInfo: expectedEmptyPassengerInfo,
+    })
+  })
+
+  it('should have meta customFields', () => {
+    const customFields = {
+      'custom-field': 'custom field',
+      test: 'test',
+    }
+
+    expect(parse(getQueryString(customFields))).toEqual({
       legs: [],
       travellerLocale: undefined,
       meta: {},
-      ...passengerInfo,
-      luggage: parseInt(passengerInfo.luggage, 10),
-      passengers: parseInt(passengerInfo.passengers, 10),
+      passengerInfo: expectedEmptyPassengerInfo,
+      customFields,
     })
   })
 
@@ -98,107 +180,53 @@ describe('parse', () => {
     })
 
     it('should return JourneyLeg', () => {
-      expect(getJourneyLegs(toPairs(firstJourneyLeg))).toEqual([
-        {
-          pickup: firstJourneyLeg['leg-1-pickup'],
-          pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
-          pickupDate: firstJourneyLeg['leg-1-pickup-time'],
-          pickupMeta: {},
-          dropoff: firstJourneyLeg['leg-1-dropoff'],
-          dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
-          dropOffMeta: {},
-          meta: {},
-        },
-      ])
+      expect(getJourneyLegs(toPairs(firstJourneyLeg))).toEqual([expectedFirstJourneyLeg])
     })
 
     it('should return JourneyLegs when multiple legs are available', () => {
       expect(getJourneyLegs([...toPairs(firstJourneyLeg), ...toPairs(secondJourneyLeg)])).toEqual([
-        {
-          pickup: firstJourneyLeg['leg-1-pickup'],
-          pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
-          pickupDate: firstJourneyLeg['leg-1-pickup-time'],
-          pickupMeta: {},
-          dropoff: firstJourneyLeg['leg-1-dropoff'],
-          dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
-          dropOffMeta: {},
-          meta: {},
-        },
-        {
-          pickup: secondJourneyLeg['leg-2-pickup'],
-          pickupKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
-          pickupPlaceId: secondJourneyLeg['leg-2-pickup-place_id'],
-          pickupDate: secondJourneyLeg['leg-2-pickup-time'],
-          pickupMeta: {},
-          dropoff: secondJourneyLeg['leg-2-dropoff'],
-          dropoffKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
-          dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
-          dropOffMeta: {},
-          meta: {},
-        },
+        expectedFirstJourneyLeg,
+        expectedSecondJourneyLeg,
       ])
     })
 
     it('should have meta', () => {
       expect(getJourneyLegs([...toPairs(firstJourneyLeg), ...toPairs(firstJourneyLegMeta)])).toEqual([
         {
-          pickup: firstJourneyLeg['leg-1-pickup'],
-          pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
-          pickupDate: firstJourneyLeg['leg-1-pickup-time'],
-          pickupMeta: {},
-          dropoff: firstJourneyLeg['leg-1-dropoff'],
-          dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
-          dropOffMeta: {},
-          meta: {
-            test: firstJourneyLegMeta['leg-1-m-test'],
-            'second-test': firstJourneyLegMeta['leg-1-m-second-test'],
-          },
+          ...expectedFirstJourneyLeg,
+          meta: expectedFirstJourneyLegMeta,
         },
       ])
     })
 
-    it('should have pickup meta', () => {
+    it('should have pickupMeta', () => {
       expect(getJourneyLegs([...toPairs(firstJourneyLeg), ...toPairs(firstJourneyLegPickupMeta)])).toEqual([
         {
-          pickup: firstJourneyLeg['leg-1-pickup'],
-          pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
-          pickupDate: firstJourneyLeg['leg-1-pickup-time'],
-          pickupMeta: {
-            test: firstJourneyLegPickupMeta['leg-1-m-pickup-test'],
-            'second-test': firstJourneyLegPickupMeta['leg-1-m-pickup-second-test'],
-          },
-          dropoff: firstJourneyLeg['leg-1-dropoff'],
-          dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
-          dropOffMeta: {},
-          meta: {},
+          ...expectedFirstJourneyLeg,
+          pickupMeta: expectedFirstJourneyLegPickupMeta,
         },
       ])
     })
 
-    it('should have dropoff meta', () => {
+    it('should have dropoffMeta', () => {
       expect(getJourneyLegs([...toPairs(firstJourneyLeg), ...toPairs(firstJourneyLegDropoffMeta)])).toEqual([
         {
-          pickup: firstJourneyLeg['leg-1-pickup'],
-          pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
-          pickupDate: firstJourneyLeg['leg-1-pickup-time'],
-          pickupMeta: {},
-          dropoff: firstJourneyLeg['leg-1-dropoff'],
-          dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
-          dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
-          dropOffMeta: {
-            test: firstJourneyLegDropoffMeta['leg-1-m-dropoff-test'],
-            'second-test': firstJourneyLegDropoffMeta['leg-1-m-dropoff-second-test'],
-          },
-          meta: {},
+          ...expectedFirstJourneyLeg,
+          dropoffMeta: expectedFirstJourneyLegDropoffMeta,
+        },
+      ])
+    })
+
+    it('should have passengerInfo', () => {
+      expect(
+        getJourneyLegs([
+          ...toPairs(firstJourneyLeg),
+          ...toPairs(passengerInfo).map<[string, string]>(([key, value]) => [`leg-1-${key}`, value]),
+        ])
+      ).toEqual([
+        {
+          ...expectedFirstJourneyLeg,
+          passengerInfo: expectedPassengerInfo,
         },
       ])
     })
