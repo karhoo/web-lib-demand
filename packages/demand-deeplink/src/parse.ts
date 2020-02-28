@@ -1,5 +1,16 @@
 import fromPairs from 'lodash/fromPairs'
 
+import {
+  deepLinkMetaPrefix,
+  journeyLegFieldsRegexp,
+  journeyLegCommonFields,
+  journeyLegMetaPrefix,
+  journeyLegDropoffMetaPrefix,
+  journeyLegPickupMetaPrefix,
+  travellerLocaleField,
+  passengerInfoFields,
+} from './constants'
+
 export type Dictionary<T> = {
   [index: string]: T
 }
@@ -37,44 +48,29 @@ export type DeeplinkData = {
   customFields?: Dictionary<string>
 }
 
-const passengerInfoFields = ['passengers', 'first-name', 'last-name', 'email', 'phone-number', 'luggage']
-
-const travellerLocaleField = 'traveller-locale'
-
-const legMainFields = [
-  'pickup',
-  'pickup-kpoi',
-  'pickup-place_id',
-  'pickup-time',
-  'dropoff',
-  'dropoff-kpoi',
-  'dropoff-place_id',
-]
-
-const legCommonFields = [...legMainFields, ...passengerInfoFields]
-
-const legFieldsRegexp = /^leg-(\d+)-(.+)/i
-
-const matchLegQueryParameter = (key: string) => key.match(legFieldsRegexp)
+const matchLegQueryParameter = (key: string) => key.match(journeyLegFieldsRegexp)
 
 const isLegCommonQueryParameter = (key: string) => {
   const name = matchLegQueryParameter(key)?.[2]
 
-  return !!name && legCommonFields.some(field => field === name)
+  return !!name && journeyLegCommonFields.some(field => field === name)
 }
 
-const isLegMetaQueryParameter = (key: string) => matchLegQueryParameter(key)?.[2]?.indexOf('m-') === 0
+const isLegMetaQueryParameter = (key: string) =>
+  matchLegQueryParameter(key)?.[2]?.indexOf(journeyLegMetaPrefix) === 0
 
 const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || isLegMetaQueryParameter(key)
 
 function filterMap(data: Dictionary<string>, prefix: string, filter: (key: string) => boolean) {
-  return Object.keys(data).reduce((result, key) => {
+  const result: Dictionary<string> = {}
+
+  for (let key of Object.keys(data)) {
     if (filter(key)) {
       result[key.replace(prefix, '')] = data[key]
     }
+  }
 
-    return result
-  }, {} as Dictionary<string>)
+  return result
 }
 
 function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
@@ -89,29 +85,32 @@ function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
 }
 
 function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
-  // TODO: fix keys
-  const metaPrefix = 'm-'
-  const pickupMetaPrefix = 'm-pickup-'
-  const dropoffMetaPrefix = 'm-dropoff-'
-
   return {
     pickup: data.pickup,
     pickupKpoi: data['pickup-kpoi'],
     pickupPlaceId: data['pickup-place_id'],
     pickupDate: data['pickup-time'],
-    pickupMeta: filterMap(data, pickupMetaPrefix, key => key.indexOf(pickupMetaPrefix) === 0),
+    pickupMeta: filterMap(
+      data,
+      journeyLegPickupMetaPrefix,
+      key => key.indexOf(journeyLegPickupMetaPrefix) === 0
+    ),
     dropoff: data.dropoff,
     dropoffKpoi: data['pickup-kpoi'],
     dropoffPlaceId: data['dropoff-place_id'],
-    dropoffMeta: filterMap(data, dropoffMetaPrefix, key => key.indexOf(dropoffMetaPrefix) === 0),
+    dropoffMeta: filterMap(
+      data,
+      journeyLegDropoffMetaPrefix,
+      key => key.indexOf(journeyLegDropoffMetaPrefix) === 0
+    ),
     passengerInfo: getPassengerInfo(data),
     meta: filterMap(
       data,
-      metaPrefix,
+      journeyLegMetaPrefix,
       key =>
-        key.indexOf(metaPrefix) === 0 &&
-        key.indexOf(pickupMetaPrefix) !== 0 &&
-        key.indexOf(dropoffMetaPrefix) !== 0
+        key.indexOf(journeyLegMetaPrefix) === 0 &&
+        key.indexOf(journeyLegPickupMetaPrefix) !== 0 &&
+        key.indexOf(journeyLegDropoffMetaPrefix) !== 0
     ),
   }
 }
@@ -149,19 +148,19 @@ export function parse(query: string): DeeplinkData {
 
   const legFields = data.filter(([key]) => isLegQueryParameter(key))
   const passengerFields = data.filter(([key]) => passengerInfoFields.indexOf(key) >= 0)
-  const metaFields = data.filter(([key]) => key.indexOf('meta.') === 0)
+  const metaFields = data.filter(([key]) => key.indexOf(deepLinkMetaPrefix) === 0)
 
   const expectedKeys = [[travellerLocaleField], ...metaFields, ...passengerFields, ...legFields].map(
     ([key]) => key
   )
 
-  const customFields = data.filter(([key]) => expectedKeys.indexOf(key) < 0)
+  const customFields = data.filter(([key]) => expectedKeys.indexOf(key) === -1)
 
   return {
     legs: getJourneyLegs(legFields),
     passengerInfo: getPassengerInfo(fromPairs(passengerFields)),
     travellerLocale: fromPairs(data)[travellerLocaleField],
-    meta: fromPairs(metaFields.map(([key, value]) => [key.replace('meta.', ''), value])),
+    meta: fromPairs(metaFields.map(([key, value]) => [key.replace(deepLinkMetaPrefix, ''), value])),
     ...(customFields.length ? { customFields: fromPairs(customFields) } : {}),
   }
 }
