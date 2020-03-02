@@ -19,6 +19,6 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
+    "sourceMap": true
   }
 }

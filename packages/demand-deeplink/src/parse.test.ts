@@ -6,7 +6,7 @@ import camelCase from 'lodash/camelCase'
 describe('parse', () => {
   const getQueryString = (data: object) =>
     toPairs(data)
-      .map(([key, value]) => `${key}=${value}`)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
       .join('&')
 
   const travellerLocale = 'en-GB'
@@ -75,8 +75,8 @@ describe('parse', () => {
     email: undefined,
     firstName: undefined,
     lastName: undefined,
-    luggage: NaN,
-    passengers: NaN,
+    luggage: undefined,
+    passengers: undefined,
     phoneNumber: undefined,
   }
 
