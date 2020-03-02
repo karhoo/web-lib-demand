@@ -5,6 +5,7 @@ import camelCase from 'lodash/camelCase'
 
 describe('parse', () => {
   const getQueryString = (data: object) =>
+    '?' +
     toPairs(data)
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
       .join('&')
@@ -71,15 +72,6 @@ describe('parse', () => {
     second: meta['meta.second'],
   }
 
-  const expectedEmptyPassengerInfo = {
-    email: undefined,
-    firstName: undefined,
-    lastName: undefined,
-    luggage: undefined,
-    passengers: undefined,
-    phoneNumber: undefined,
-  }
-
   const expectedFirstJourneyLeg = {
     pickup: firstJourneyLeg['leg-1-pickup'],
     pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
@@ -90,7 +82,7 @@ describe('parse', () => {
     dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
     dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
     dropoffMeta: {},
-    passengerInfo: expectedEmptyPassengerInfo,
+    passengerInfo: {},
     meta: {},
   }
 
@@ -119,14 +111,14 @@ describe('parse', () => {
     dropoffKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
     dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
     dropoffMeta: {},
-    passengerInfo: expectedEmptyPassengerInfo,
+    passengerInfo: {},
     meta: {},
   }
 
   it('should return empty info', () => {
     expect(parse('')).toEqual({
       legs: [],
-      passengerInfo: expectedEmptyPassengerInfo,
+      passengerInfo: {},
       travellerLocale: undefined,
       meta: {},
     })
@@ -146,7 +138,7 @@ describe('parse', () => {
       legs: [],
       travellerLocale,
       meta: {},
-      passengerInfo: expectedEmptyPassengerInfo,
+      passengerInfo: {},
     })
   })
 
@@ -155,7 +147,7 @@ describe('parse', () => {
       legs: [],
       travellerLocale: undefined,
       meta: expectedMeta,
-      passengerInfo: expectedEmptyPassengerInfo,
+      passengerInfo: {},
     })
   })
 
@@ -169,7 +161,7 @@ describe('parse', () => {
       legs: [],
       travellerLocale: undefined,
       meta: {},
-      passengerInfo: expectedEmptyPassengerInfo,
+      passengerInfo: {},
       customFields,
     })
   })

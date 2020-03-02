@@ -68,7 +68,7 @@ function transformMapByKey(
 ) {
   const result: Dictionary<string> = {}
 
-  for (let key of Object.keys(data)) {
+  for (const key of Object.keys(data)) {
     if (filter(key)) {
       result[key.replace(keyPrefix, '')] = data[key]
     }
@@ -129,7 +129,7 @@ export function getJourneyLegs(legsInfo: KeyValueList) {
       continue
     }
 
-    const [_, index, name] = itemInfo
+    const [, index, name] = itemInfo
 
     if (!data[index]) {
       data[index] = {}

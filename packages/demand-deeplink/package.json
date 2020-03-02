@@ -2,17 +2,20 @@
   "name": "@karhoo/demand-deeplink",
   "version": "0.1.0",
   "description": "> TODO: description",
-  "author": "Dzmitry Miadzvedski <dzmitry.miadzvedski@karhoo.com>",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "directories": {
-    "lib": "lib",
-    "test": "__tests__"
+    "src": "src"
   },
   "files": [
-    "lib"
+    "dist/*.js",
+    "dist/*.js.map",
+    "dist/*.d.ts",
+    "src"
   ],
+  "module": "dist/demand-deeplink.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
@@ -30,6 +33,7 @@
     "typescript": "^3.8.2"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "lodash-es": "^4.17.15"
   }
 }
