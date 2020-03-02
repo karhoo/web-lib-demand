@@ -1,18 +1,18 @@
 {
   "name": "@karhoo/demand-deeplink",
   "version": "0.1.0",
-  "description": "> TODO: description",
+  "description": "Library to work with deeplink",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types.d.ts",
   "directories": {
     "src": "src"
   },
   "files": [
     "dist/*.js",
     "dist/*.js.map",
-    "dist/*.d.ts",
+    "dist/types.d.ts",
     "src"
   ],
   "module": "dist/demand-deeplink.esm.js",
@@ -21,6 +21,7 @@
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
   },
   "scripts": {
+    "start": "npx tsdx watch --tsconfig ./tsconfig.json",
     "build": "npx tsdx build --tsconfig ./tsconfig.json",
     "test": "npx tsdx test"
   },
@@ -28,9 +29,10 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.149",
-    "tsdx": "^0.12.3",
-    "typescript": "^3.8.2"
+    "@types/jest": "25.1.3",
+    "@types/lodash": "4.14.149",
+    "tsdx": "0.12.3",
+    "typescript": "3.8.2"
   },
   "dependencies": {
     "lodash": "^4.17.15",

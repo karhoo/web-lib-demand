@@ -166,6 +166,31 @@ describe('parse', () => {
     })
   })
 
+  it('should move unexpected leg parameters to customFields', () => {
+    const fields = {
+      'leg-1-dropoff': 'dropoff',
+      'leg-1-dropoff-some-data': 'some-data',
+    }
+
+    expect(parse(getQueryString(fields))).toEqual({
+      legs: [
+        {
+          dropoff: fields['leg-1-dropoff'],
+          dropoffMeta: {},
+          pickupMeta: {},
+          meta: {},
+          passengerInfo: {},
+        },
+      ],
+      travellerLocale: undefined,
+      meta: {},
+      passengerInfo: {},
+      customFields: {
+        'leg-1-dropoff-some-data': fields['leg-1-dropoff-some-data'],
+      },
+    })
+  })
+
   describe('getJourneyLegs', () => {
     it('should return empty array', () => {
       expect(getJourneyLegs([])).toEqual([])
