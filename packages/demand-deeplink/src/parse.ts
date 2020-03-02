@@ -1,4 +1,5 @@
 import fromPairs from 'lodash/fromPairs'
+import isNil from 'lodash/isNil'
 
 import { DeeplinkData, JourneyLeg, PassengerInfo, KeyValueList, Dictionary } from './types'
 
@@ -12,19 +13,6 @@ import {
   travellerLocaleField,
   passengerInfoFields,
 } from './constants'
-
-const matchLegQueryParameter = (key: string) => key.match(journeyLegFieldsRegexp)
-
-const isLegCommonQueryParameter = (key: string) => {
-  const name = matchLegQueryParameter(key)?.[2]
-
-  return !!name && journeyLegCommonFields.some(field => field === name)
-}
-
-const isLegMetaQueryParameter = (key: string) =>
-  matchLegQueryParameter(key)?.[2]?.indexOf(journeyLegMetaPrefix) === 0
-
-const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || isLegMetaQueryParameter(key)
 
 function transformMapByKey(
   data: Dictionary<string>,
@@ -42,6 +30,23 @@ function transformMapByKey(
   return result
 }
 
+function hasData(data: Dictionary<string>) {
+  return Object.keys(data).some(key => !isNil(data[key]))
+}
+
+const matchLegQueryParameter = (key: string) => key.match(journeyLegFieldsRegexp)
+
+const isLegCommonQueryParameter = (key: string) => {
+  const name = matchLegQueryParameter(key)?.[2]
+
+  return !!name && journeyLegCommonFields.some(field => field === name)
+}
+
+const isLegMetaQueryParameter = (key: string) =>
+  matchLegQueryParameter(key)?.[2]?.indexOf(journeyLegMetaPrefix) === 0
+
+const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || isLegMetaQueryParameter(key)
+
 function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
   return {
     passengers: data.passengers ? parseInt(data.passengers, 10) : undefined,
@@ -54,33 +59,41 @@ function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
 }
 
 function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
+  const pickupMeta = transformMapByKey(
+    data,
+    journeyLegPickupMetaPrefix,
+    key => key.indexOf(journeyLegPickupMetaPrefix) === 0
+  )
+
+  const dropoffMeta = transformMapByKey(
+    data,
+    journeyLegDropoffMetaPrefix,
+    key => key.indexOf(journeyLegDropoffMetaPrefix) === 0
+  )
+
+  const meta = transformMapByKey(
+    data,
+    journeyLegMetaPrefix,
+    key =>
+      key.indexOf(journeyLegMetaPrefix) === 0 &&
+      key.indexOf(journeyLegPickupMetaPrefix) !== 0 &&
+      key.indexOf(journeyLegDropoffMetaPrefix) !== 0
+  )
+
+  const hasPassengerInfo = Object.keys(data).some(key => passengerInfoFields.indexOf(key) >= 0)
+
   return {
     pickup: data.pickup,
     pickupKpoi: data['pickup-kpoi'],
     pickupPlaceId: data['pickup-place_id'],
     pickupDate: data['pickup-time'],
-    pickupMeta: transformMapByKey(
-      data,
-      journeyLegPickupMetaPrefix,
-      key => key.indexOf(journeyLegPickupMetaPrefix) === 0
-    ),
     dropoff: data.dropoff,
     dropoffKpoi: data['pickup-kpoi'],
     dropoffPlaceId: data['dropoff-place_id'],
-    dropoffMeta: transformMapByKey(
-      data,
-      journeyLegDropoffMetaPrefix,
-      key => key.indexOf(journeyLegDropoffMetaPrefix) === 0
-    ),
-    passengerInfo: getPassengerInfo(data),
-    meta: transformMapByKey(
-      data,
-      journeyLegMetaPrefix,
-      key =>
-        key.indexOf(journeyLegMetaPrefix) === 0 &&
-        key.indexOf(journeyLegPickupMetaPrefix) !== 0 &&
-        key.indexOf(journeyLegDropoffMetaPrefix) !== 0
-    ),
+    ...(hasData(pickupMeta) ? { pickupMeta } : {}),
+    ...(hasData(dropoffMeta) ? { dropoffMeta } : {}),
+    ...(hasData(meta) ? { meta } : {}),
+    ...(hasPassengerInfo ? { passengerInfo: getPassengerInfo(data) } : {}),
   }
 }
 

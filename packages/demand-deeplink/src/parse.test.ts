@@ -77,13 +77,9 @@ describe('parse', () => {
     pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
     pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
     pickupDate: firstJourneyLeg['leg-1-pickup-time'],
-    pickupMeta: {},
     dropoff: firstJourneyLeg['leg-1-dropoff'],
     dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
     dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
-    dropoffMeta: {},
-    passengerInfo: {},
-    meta: {},
   }
 
   const expectedFirstJourneyLegMeta = {
@@ -106,13 +102,9 @@ describe('parse', () => {
     pickupKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
     pickupPlaceId: secondJourneyLeg['leg-2-pickup-place_id'],
     pickupDate: secondJourneyLeg['leg-2-pickup-time'],
-    pickupMeta: {},
     dropoff: secondJourneyLeg['leg-2-dropoff'],
     dropoffKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
     dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
-    dropoffMeta: {},
-    passengerInfo: {},
-    meta: {},
   }
 
   it('should return empty info', () => {
@@ -176,10 +168,6 @@ describe('parse', () => {
       legs: [
         {
           dropoff: fields['leg-1-dropoff'],
-          dropoffMeta: {},
-          pickupMeta: {},
-          meta: {},
-          passengerInfo: {},
         },
       ],
       travellerLocale: undefined,
