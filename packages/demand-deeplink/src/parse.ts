@@ -6,7 +6,7 @@ import { DeeplinkData, JourneyLeg, PassengerInfo, KeyValueList, Dictionary } fro
 import {
   deepLinkMetaPrefix,
   journeyLegFieldsRegexp,
-  journeyLegCommonFields,
+  journeyLegMainFields,
   journeyLegMetaPrefix,
   journeyLegDropoffMetaPrefix,
   journeyLegPickupMetaPrefix,
@@ -39,11 +39,20 @@ const matchLegQueryParameter = (key: string) => key.match(journeyLegFieldsRegexp
 const isLegCommonQueryParameter = (key: string) => {
   const name = matchLegQueryParameter(key)?.[2]
 
-  return !!name && journeyLegCommonFields.some(field => field === name)
+  return !!name && journeyLegMainFields.some(field => field === name)
 }
 
 const isLegMetaQueryParameter = (key: string) =>
   matchLegQueryParameter(key)?.[2]?.indexOf(journeyLegMetaPrefix) === 0
+
+const isLegMeta = (key: string) => key.indexOf(journeyLegMetaPrefix) === 0
+
+const isLegPickupMeta = (key: string) => key.indexOf(journeyLegPickupMetaPrefix) === 0
+
+const isLegDropoffMeta = (key: string) => key.indexOf(journeyLegDropoffMetaPrefix) === 0
+
+const isLegPassengerInfoMeta = (key: string) =>
+  passengerInfoFields.some(field => `${journeyLegMetaPrefix}${field}` === key)
 
 const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || isLegMetaQueryParameter(key)
 
@@ -59,28 +68,15 @@ function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
 }
 
 function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
-  const pickupMeta = transformMapByKey(
-    data,
-    journeyLegPickupMetaPrefix,
-    key => key.indexOf(journeyLegPickupMetaPrefix) === 0
-  )
-
-  const dropoffMeta = transformMapByKey(
-    data,
-    journeyLegDropoffMetaPrefix,
-    key => key.indexOf(journeyLegDropoffMetaPrefix) === 0
-  )
+  const pickupMeta = transformMapByKey(data, journeyLegPickupMetaPrefix, isLegPickupMeta)
+  const dropoffMeta = transformMapByKey(data, journeyLegDropoffMetaPrefix, isLegDropoffMeta)
+  const passengerInfo = transformMapByKey(data, journeyLegMetaPrefix, isLegPassengerInfoMeta)
 
   const meta = transformMapByKey(
     data,
     journeyLegMetaPrefix,
-    key =>
-      key.indexOf(journeyLegMetaPrefix) === 0 &&
-      key.indexOf(journeyLegPickupMetaPrefix) !== 0 &&
-      key.indexOf(journeyLegDropoffMetaPrefix) !== 0
+    key => isLegMeta(key) && !isLegPickupMeta(key) && !isLegDropoffMeta(key) && !isLegPassengerInfoMeta(key)
   )
-
-  const hasPassengerInfo = Object.keys(data).some(key => passengerInfoFields.indexOf(key) >= 0)
 
   return {
     pickup: data.pickup,
@@ -93,7 +89,7 @@ function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
     ...(hasData(pickupMeta) ? { pickupMeta } : {}),
     ...(hasData(dropoffMeta) ? { dropoffMeta } : {}),
     ...(hasData(meta) ? { meta } : {}),
-    ...(hasPassengerInfo ? { passengerInfo: getPassengerInfo(data) } : {}),
+    ...(hasData(passengerInfo) ? { passengerInfo: getPassengerInfo(passengerInfo) } : {}),
   }
 }
 
@@ -126,7 +122,7 @@ function parseSearchString(query: string) {
   const data = new URLSearchParams(query)
 
   data.forEach((value, key) => {
-    key && value && result.push([key, value])
+    key && value && result.push([key.toLowerCase(), value])
   })
 
   return result

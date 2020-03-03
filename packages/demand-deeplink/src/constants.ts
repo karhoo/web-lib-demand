@@ -21,8 +21,6 @@ export const journeyLegMainFields = [
   'dropoff-place_id',
 ]
 
-export const journeyLegCommonFields = [...journeyLegMainFields, ...passengerInfoFields]
-
 export const deepLinkMetaPrefix = 'meta.'
 
 export const journeyLegMetaPrefix = 'm-'

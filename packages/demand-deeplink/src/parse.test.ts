@@ -225,7 +225,7 @@ describe('parse', () => {
       expect(
         getJourneyLegs([
           ...toPairs(firstJourneyLeg),
-          ...toPairs(passengerInfo).map<[string, string]>(([key, value]) => [`leg-1-${key}`, value]),
+          ...toPairs(passengerInfo).map<[string, string]>(([key, value]) => [`leg-1-m-${key}`, value]),
         ])
       ).toEqual([
         {
