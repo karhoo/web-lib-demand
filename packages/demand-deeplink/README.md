@@ -1,8 +1,8 @@
 # `Demand Deeplink`
 
-The **Demand Deeplink** is intended to be the standard way of working with deeplink
+The **Demand Deeplink** is intended to be the standard way of working with deeplink ([https://developer.karhoo.com/docs/deeplink-integration](https://developer.karhoo.com/docs/deeplink-integration))
 
-## Warinings
+## Warnings
 
 This library use `URLSearchParams`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use either `js-core@3` or [`url-search-params-polyfill`](https://www.npmjs.com/package/url-search-params-polyfill)
 
@@ -26,11 +26,11 @@ npm install --save @karhoo/demand-deeplink
 ## Usage
 
 ```
-const demandDeeplink = require('demand-deeplink');
+import { parse } from 'demand-deeplink';
 ```
 
 Parse deeplink:
 
 ```
-const deeplinkData = demandDeeplink.parse(window.location.search)
+const deeplinkData = parse(window.location.search)
 ```
