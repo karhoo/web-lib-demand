@@ -14,20 +14,23 @@ import {
   passengerInfoFields,
 } from './constants'
 
+const legNameIndex = 2
+
 function transformMapByKey(
   data: Dictionary<string>,
   keyPrefix: string,
   filter: (key: string) => boolean = () => true
 ) {
-  const result: Dictionary<string> = {}
-
-  for (const key of Object.keys(data)) {
-    if (filter(key)) {
-      result[key.replace(keyPrefix, '')] = data[key]
-    }
-  }
-
-  return result
+  return Object.keys(data).reduce(
+    (result, key) =>
+      filter(key)
+        ? {
+            ...result,
+            [key.replace(keyPrefix, '')]: data[key],
+          }
+        : result,
+    {} as Dictionary<string>
+  )
 }
 
 function hasData(data: Dictionary<string>) {
@@ -37,13 +40,13 @@ function hasData(data: Dictionary<string>) {
 const matchLegQueryParameter = (key: string) => key.match(journeyLegFieldsRegexp)
 
 const isLegCommonQueryParameter = (key: string) => {
-  const name = matchLegQueryParameter(key)?.[2]
+  const name = matchLegQueryParameter(key)?.[legNameIndex]
 
   return !!name && journeyLegMainFields.some(field => field === name)
 }
 
 const isLegMetaQueryParameter = (key: string) =>
-  matchLegQueryParameter(key)?.[2]?.indexOf(journeyLegMetaPrefix) === 0
+  matchLegQueryParameter(key)?.[legNameIndex]?.indexOf(journeyLegMetaPrefix) === 0
 
 const isLegMeta = (key: string) => key.indexOf(journeyLegMetaPrefix) === 0
 
