@@ -1,7 +1,6 @@
+import { camelCase, toPairs, fromPairs } from 'lodash'
+
 import { getJourneyLegs, parse } from './parse'
-import toPairs from 'lodash/toPairs'
-import fromPairs from 'lodash/fromPairs'
-import camelCase from 'lodash/camelCase'
 
 describe('parse', () => {
   const getQueryString = (data: object) =>
