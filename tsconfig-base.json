@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "module": "esnext",
-    "target": "es2015",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -19,6 +19,6 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
+    "sourceMap": true
   }
 }

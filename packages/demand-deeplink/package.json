@@ -1,15 +1,21 @@
 {
-  "name": "@karhoo/web-lib-demand-hello-world",
+  "name": "@karhoo/demand-deeplink",
   "version": "0.2.1",
-  "description": "> TODO: description",
-  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/web-lib-demand-hello-world#readme",
+  "description": "Library to work with deeplink",
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",
   "main": "dist/index.js",
+  "typings": "dist/types.d.ts",
+  "directories": {
+    "src": "src"
+  },
   "files": [
     "dist/*.js",
-    "dist/*.js.map"
+    "dist/*.js.map",
+    "dist/types.d.ts",
+    "src"
   ],
-  "module": "dist/web-lib-demand-hello-world.esm.js",
+  "module": "dist/demand-deeplink.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
@@ -24,7 +30,12 @@
   },
   "devDependencies": {
     "@types/jest": "25.1.3",
+    "@types/lodash": "4.14.149",
     "tsdx": "0.12.3",
     "typescript": "3.8.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "lodash-es": "^4.17.15"
   }
 }

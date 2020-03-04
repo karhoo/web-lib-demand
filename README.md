@@ -7,6 +7,12 @@ git clone git@github.com:karhoo/web-lib-demand.git
 npm run bootstrap
 ```
 
+## Create new package
+
+```sh
+npx lerna create [name]
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
