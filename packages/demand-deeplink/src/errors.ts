@@ -14,10 +14,10 @@ export const errorMessageByCode = {
   [codes.DP005]: 'Incorrect type',
 }
 
-export function getError(code: string, field: string) {
+export function getError(code: string, path: string) {
   return {
     code,
-    field,
+    path,
     error: errorMessageByCode[code] || '',
   }
 }

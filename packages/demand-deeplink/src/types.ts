@@ -37,7 +37,7 @@ export type DeeplinkData = {
 
 export type ValidationError = {
   code: string
-  field: string
+  path: string
   error: string
 }
 
