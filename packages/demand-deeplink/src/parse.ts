@@ -61,12 +61,12 @@ const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || i
 
 function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
   return {
-    passengers: data.passengers ? parseInt(data.passengers, 10) : undefined,
+    passengers: data.passengers ? parseFloat(data.passengers) : undefined,
     firstName: data['first-name'],
     lastName: data['last-name'],
     email: data.email,
     phoneNumber: data['phone-number'],
-    luggage: data.luggage ? parseInt(data.luggage, 10) : undefined,
+    luggage: data.luggage ? parseFloat(data.luggage) : undefined,
   }
 }
 
@@ -124,8 +124,11 @@ function parseSearchString(query: string) {
   const result: KeyValueList = []
   const data = new URLSearchParams(query)
 
-  data.forEach((value, key) => {
-    key && value && result.push([key.toLowerCase(), value])
+  data.forEach((v, k) => {
+    const value = v && v.trim()
+    const key = k && k.trim().toLowerCase()
+
+    key && value && result.push([key, value])
   })
 
   return result

@@ -34,3 +34,14 @@ export type DeeplinkData = {
   meta: Dictionary<string>
   customFields?: Dictionary<string>
 }
+
+export type ValidationError = {
+  code: string
+  field: string
+  error: string
+}
+
+export type ValidationResponse = {
+  ok: boolean
+  errors?: ValidationError[]
+}
