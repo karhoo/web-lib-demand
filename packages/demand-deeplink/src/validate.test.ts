@@ -34,7 +34,7 @@ describe('parse', () => {
     meta: expectedMeta,
   }
 
-  const getData = (data: any) => ({ // eslint-disable-line
+  const getData = (data: any) => ({
     ...baseDeeplinkData,
     ...data,
   })
@@ -126,7 +126,7 @@ describe('parse', () => {
   })
 
   describe('validateLeg', () => {
-    const getData = (data: any) => ({ // eslint-disable-line
+    const getData = (data: any) => ({
       ...baseDeeplinkData.legs[0],
       ...data,
     })
