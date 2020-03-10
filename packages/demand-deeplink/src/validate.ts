@@ -1,5 +1,7 @@
 import isUndefined from 'lodash/isUndefined'
 import negate from 'lodash/negate'
+import { expectedDateFormatRegexp, timezoneRegexp, travellerLocaleRegexp } from './constants'
+import { isNotEmptyString, isObject, isPositiveInteger } from './utils'
 import { codes, getError } from './errors'
 import {
   DeeplinkData,
@@ -9,10 +11,6 @@ import {
   ValidationError,
   Dictionary,
 } from './types'
-
-const isNotEmptyString = (value: any) => typeof value === 'string' && !!value.trim() // eslint-disable-line
-const isPositiveInteger = (value: any) => typeof value === 'number' && !isNaN(value) && value % 1 === 0 && value > 0 // eslint-disable-line
-const isObject = (value: any) => Object.prototype.toString.call(value) === '[object Object]' // eslint-disable-line
 
 function validateMeta(data: Dictionary<string>, fieldName = 'meta') {
   if (!isObject(data)) {
@@ -45,7 +43,7 @@ function validatePassengerInfo(data: PassengerInfo) {
 }
 
 function validateTravellerLocale(locale?: string) {
-  return isUndefined(locale) || /^[a-z]{2}-[a-z]{2}$/i.test(locale)
+  return isUndefined(locale) || travellerLocaleRegexp.test(locale)
     ? []
     : [getError(codes.DP003, 'travellerLocale')]
 }
@@ -71,12 +69,9 @@ function validatePickupDate(date?: string) {
     return [getError(codes.DP001, fieldName)]
   }
 
-  const expectedFormatRegexp = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
-  const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
+  const errors = expectedDateFormatRegexp.test(date) ? [] : [getError(codes.DP003, fieldName)]
 
-  const errors = expectedFormatRegexp.test(date) ? [] : [getError(codes.DP003, 'pickupDate')]
-
-  return timezoneRegexp.test(date) ? errors : errors.concat([getError(codes.DP004, 'pickupDate')])
+  return timezoneRegexp.test(date) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
 
 export function validateLeg(leg: JourneyLeg, path: string) {
@@ -110,10 +105,10 @@ export function validateLeg(leg: JourneyLeg, path: string) {
   }
 
   dropoffFields.length && collectErrors(validateRoute(dropoffFields, 'dropoff'))
-  leg.passengerInfo && collectErrors(validatePassengerInfo(leg.passengerInfo))
-  leg.meta && collectErrors(validateMeta(leg.meta))
-  leg.pickupMeta && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
-  leg.dropoffMeta && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
+  !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
+  !isUndefined(leg.meta) && collectErrors(validateMeta(leg.meta))
+  !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
+  !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
 
   return errors
 }
@@ -128,10 +123,13 @@ export function validate(deeplinkData: DeeplinkData): ValidationResponse {
     legs.forEach((leg, index) => errors.push(...validateLeg(leg, `legs.${index}`)))
   }
 
-  errors.push(...validatePassengerInfo(passengerInfo))
-  errors.push(...validateTravellerLocale(travellerLocale))
-  errors.push(...validateMeta(meta))
-  customFields && errors.push(...validateMeta(customFields, 'customFields'))
+  errors.push(
+    ...validatePassengerInfo(passengerInfo),
+    ...validateTravellerLocale(travellerLocale),
+    ...validateMeta(meta)
+  )
+
+  !isUndefined(customFields) && errors.push(...validateMeta(customFields, 'customFields'))
 
   return errors.length ? { ok: false, errors } : { ok: true }
 }
