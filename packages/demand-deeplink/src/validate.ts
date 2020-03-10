@@ -45,7 +45,9 @@ function validatePassengerInfo(data: PassengerInfo) {
 }
 
 function validateTravellerLocale(locale?: string) {
-  return !locale || /^[a-z]{2}-[a-z]{2}$/i.test(locale) ? [] : [getError(codes.DP003, 'travellerLocale')]
+  return isUndefined(locale) || /^[a-z]{2}-[a-z]{2}$/i.test(locale)
+    ? []
+    : [getError(codes.DP003, 'travellerLocale')]
 }
 
 function validateRoute(fields: string[], fieldName: string) {
@@ -63,9 +65,18 @@ function validateRoute(fields: string[], fieldName: string) {
 }
 
 function validatePickupDate(date?: string) {
-  const regexp = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/
+  const fieldName = 'pickupDate'
 
-  return date && regexp.test(date) ? [] : [getError(codes.DP001, 'pickupDate')]
+  if (!date) {
+    return [getError(codes.DP001, fieldName)]
+  }
+
+  const expectedFormatRegexp = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
+  const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
+
+  const errors = expectedFormatRegexp.test(date) ? [] : [getError(codes.DP003, 'pickupDate')]
+
+  return timezoneRegexp.test(date) ? errors : errors.concat([getError(codes.DP004, 'pickupDate')])
 }
 
 export function validateLeg(leg: JourneyLeg, path: string) {
@@ -111,11 +122,12 @@ export function validate(deeplinkData: DeeplinkData): ValidationResponse {
   const errors = []
   const { legs, passengerInfo, travellerLocale, meta, customFields } = deeplinkData
 
-  if (!Array.isArray(legs) || !legs.length) {
+  if (!(Array.isArray(legs) && legs.length)) {
     errors.push(getError(codes.DP001, 'legs'))
+  } else {
+    legs.forEach((leg, index) => errors.push(...validateLeg(leg, `legs.${index}`)))
   }
 
-  Array.isArray(legs) && legs.forEach((leg, index) => errors.push(...validateLeg(leg, `legs.${index}`)))
   errors.push(...validatePassengerInfo(passengerInfo))
   errors.push(...validateTravellerLocale(travellerLocale))
   errors.push(...validateMeta(meta))
