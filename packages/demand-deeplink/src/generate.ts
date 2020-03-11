@@ -1,10 +1,5 @@
-import fromPairs from 'lodash/fromPairs'
-import toPairs from 'lodash/toPairs'
-import isNil from 'lodash/isNil'
-import isEmpty from 'lodash/isEmpty'
 import kebabCase from 'lodash/kebabCase'
 import isObject from 'lodash/isObject'
-import assign from 'lodash/assign'
 
 import { DeeplinkData, JourneyLeg, KeyValueList } from './types'
 
@@ -15,40 +10,27 @@ import {
   journeyLegPickupMetaPrefix,
 } from './constants'
 
-function getAvailableFields(data: object): object {
-  if (isEmpty(data)) {
-    return data
-  }
-
+function getAvailableParams(data: object, prefix = ''): KeyValueList {
   const result: KeyValueList = []
 
-  toPairs(data).forEach((value, key: string) => {
-    key && !isNil(value) && result.push([key, value])
-  })
-
-  return fromPairs(result)
-}
-
-function formatJorneyLegMeta(data: object, metaPrefix: string): object {
-  const availableMetaFields: object = getAvailableFields(data)
-  const formattedMeta = {}
-  for (const key in availableMetaFields) {
-    formattedMeta[`${metaPrefix}${key}`] = availableMetaFields[key]
+  for (const key in data) {
+    data[key] && result.push([`${prefix}${kebabCase(key)}`, data[key]])
   }
 
-  return formattedMeta
+  return result
 }
 
-function formatJorneyLegs(data: Array<JourneyLeg>): Array<object> {
-  const result: Array<object> = []
+function getJorneyLegsParams(data: Array<JourneyLeg>): KeyValueList {
+  let result: KeyValueList = []
 
-  data.forEach((leg: JourneyLeg) => {
-    const formattedLeg = {}
+  data.forEach((leg: JourneyLeg, index) => {
+    const legPrefix = `leg-${index}-`
+    let formattedLeg: KeyValueList = []
 
     for (const key in leg) {
       if (leg[key]) {
         if (!isObject(leg[key])) {
-          formattedLeg[key] = leg[key]
+          formattedLeg.push([`${legPrefix}${kebabCase(key)}`, leg[key]])
         } else {
           let metaPrefix: string
 
@@ -68,65 +50,37 @@ function formatJorneyLegs(data: Array<JourneyLeg>): Array<object> {
               break
           }
 
-          const formattedMeta = formatJorneyLegMeta(leg[key], metaPrefix)
-          assign(formattedLeg, formattedMeta)
+          const formattedMeta = getAvailableParams(leg[key], legPrefix + metaPrefix)
+          formattedLeg = [...formattedLeg, ...formattedMeta]
         }
       }
     }
 
-    result.push(formattedLeg)
+    result = [...result, ...formattedLeg]
   })
 
   return result
 }
 
-function getQueryString(data: object, prefix = ''): string {
-  return toPairs(data)
-    .map(([key, value]) => `${prefix}${kebabCase(key)}=${encodeURIComponent(value)}`)
-    .join('&')
-}
-
-function getLegsQueryString(legs: Array<object>): string {
-  const legsQueryString = legs.reduce((value, leg, index) => {
-    const legPrefix = `leg-${index}-`
-    return value + getQueryString(leg, legPrefix) + '&'
-  }, '')
-
-  return legsQueryString
-}
-
 export function generate(deeplink: DeeplinkData): string {
-  const passengerInfo = getAvailableFields(deeplink.passengerInfo)
-  const legs = formatJorneyLegs(deeplink.legs)
-  const travellerLocale = deeplink.travellerLocale ? deeplink.travellerLocale : ''
+  const passengerInfoParams = getAvailableParams(deeplink.passengerInfo)
+  const legsParams = getJorneyLegsParams(deeplink.legs)
+  const travellerLocaleParam = deeplink.travellerLocale ? ['traveller-locale', deeplink.travellerLocale] : []
+  const metaParams = getAvailableParams(deeplink.meta, deepLinkMetaPrefix)
+  const customFieldsParams = deeplink.customFields ? getAvailableParams(deeplink.customFields) : []
 
-  const meta = getAvailableFields(deeplink.meta)
+  const queryParams = [
+    ...passengerInfoParams,
+    ...legsParams,
+    ...travellerLocaleParam,
+    ...metaParams,
+    ...customFieldsParams,
+  ]
+  const queryString = new URLSearchParams()
 
-  const customFields = deeplink.customFields ? getAvailableFields(deeplink.customFields) : {}
+  queryParams.forEach(param => {
+    queryString.append(param[0], param[1])
+  })
 
-  const legsQueryString = getLegsQueryString(legs)
-
-  let queryString = '?' + legsQueryString
-
-  if (!isEmpty(passengerInfo)) {
-    queryString = queryString + getQueryString(passengerInfo) + '&'
-  }
-
-  if (travellerLocale) {
-    queryString = queryString + 'traveller-locale=' + travellerLocale + '&'
-  }
-
-  if (!isEmpty(meta)) {
-    queryString = queryString + getQueryString(meta, deepLinkMetaPrefix) + '&'
-  }
-
-  if (!isEmpty(customFields)) {
-    queryString = queryString + getQueryString(customFields)
-  }
-
-  if (queryString.endsWith('&')) {
-    queryString = queryString.slice(0, queryString.length - 1)
-  }
-
-  return queryString
+  return queryString.toString()
 }
