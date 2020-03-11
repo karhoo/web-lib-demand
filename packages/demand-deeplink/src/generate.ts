@@ -21,9 +21,7 @@ function getAvailableParams(data: object, prefix = ''): KeyValueList {
 }
 
 function getJorneyLegsParams(data: Array<JourneyLeg>): KeyValueList {
-  let result: KeyValueList = []
-
-  data.forEach((leg: JourneyLeg, index) => {
+  const result = data.reduce((value, leg: JourneyLeg, index) => {
     const legPrefix = `leg-${index}-`
     let formattedLeg: KeyValueList = []
 
@@ -56,8 +54,8 @@ function getJorneyLegsParams(data: Array<JourneyLeg>): KeyValueList {
       }
     }
 
-    result = [...result, ...formattedLeg]
-  })
+    return [...value, ...formattedLeg]
+  }, [])
 
   return result
 }
