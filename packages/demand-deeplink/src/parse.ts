@@ -10,8 +10,21 @@ import {
   journeyLegMetaPrefix,
   journeyLegDropoffMetaPrefix,
   journeyLegPickupMetaPrefix,
-  travellerLocaleField,
   passengerInfoFields,
+  travellerLocaleParameter,
+  passengerParameter,
+  luggageParameter,
+  emailParameter,
+  phoneNumberParameter,
+  pickupParameter,
+  pickupKpoiParameter,
+  pickupPlaceIdParameter,
+  pickupTimeParameter,
+  firstNameParameter,
+  lastNameParameter,
+  dropoffParameter,
+  dropoffKpoiParameter,
+  dropoffPlaceIdParameter,
 } from './constants'
 
 const legNameIndex = 2
@@ -61,12 +74,12 @@ const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || i
 
 function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
   return {
-    passengers: data.passengers ? parseFloat(data.passengers) : undefined,
-    firstName: data['first-name'],
-    lastName: data['last-name'],
-    email: data.email,
-    phoneNumber: data['phone-number'],
-    luggage: data.luggage ? parseFloat(data.luggage) : undefined,
+    passengers: data[passengerParameter] ? parseFloat(data[passengerParameter]) : undefined,
+    firstName: data[firstNameParameter],
+    lastName: data[lastNameParameter],
+    email: data[emailParameter],
+    phoneNumber: data[phoneNumberParameter],
+    luggage: data[luggageParameter] ? parseFloat(data[luggageParameter]) : undefined,
   }
 }
 
@@ -82,13 +95,13 @@ function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
   )
 
   return {
-    pickup: data.pickup,
-    pickupKpoi: data['pickup-kpoi'],
-    pickupPlaceId: data['pickup-place_id'],
-    pickupDate: data['pickup-time'],
-    dropoff: data.dropoff,
-    dropoffKpoi: data['pickup-kpoi'],
-    dropoffPlaceId: data['dropoff-place_id'],
+    pickup: data[pickupParameter],
+    pickupKpoi: data[pickupKpoiParameter],
+    pickupPlaceId: data[pickupPlaceIdParameter],
+    pickupDate: data[pickupTimeParameter],
+    dropoff: data[dropoffParameter],
+    dropoffKpoi: data[dropoffKpoiParameter],
+    dropoffPlaceId: data[dropoffPlaceIdParameter],
     ...(hasData(pickupMeta) ? { pickupMeta } : {}),
     ...(hasData(dropoffMeta) ? { dropoffMeta } : {}),
     ...(hasData(meta) ? { meta } : {}),
@@ -140,7 +153,7 @@ export function parse(query: string): DeeplinkData {
   const passengerFields = data.filter(([key]) => passengerInfoFields.indexOf(key) >= 0)
   const metaFields = data.filter(([key]) => key.indexOf(deepLinkMetaPrefix) === 0)
 
-  const expectedKeys = [[travellerLocaleField], ...metaFields, ...passengerFields, ...legFields].map(
+  const expectedKeys = [[travellerLocaleParameter], ...metaFields, ...passengerFields, ...legFields].map(
     ([key]) => key
   )
 
@@ -149,7 +162,7 @@ export function parse(query: string): DeeplinkData {
   return {
     legs: getJourneyLegs(legFields),
     passengerInfo: getPassengerInfo(fromPairs(passengerFields)),
-    travellerLocale: fromPairs(data)[travellerLocaleField],
+    travellerLocale: fromPairs(data)[travellerLocaleParameter],
     meta: transformMapByKey(fromPairs(metaFields), deepLinkMetaPrefix),
     ...(customFields.length ? { customFields: fromPairs(customFields) } : {}),
   }

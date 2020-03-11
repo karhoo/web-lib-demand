@@ -23,7 +23,7 @@ export const firstJourneyLeg = {
   'leg-1-pickup-kpoi': 'MPH',
   'leg-1-pickup-place_id': 'pickup-place_id',
   'leg-1-dropoff': 'Mercure, Paris, Hotel',
-  'leg-1-dropoff-kpoi': 'MPH',
+  'leg-1-dropoff-kpoi': 'MPH007',
   'leg-1-dropoff-place_id': 'dropoff-place_id',
   'leg-1-pickup-time': '2020-08-09T18:31:42-03:30',
 }
@@ -70,7 +70,7 @@ export const expectedFirstJourneyLeg = {
   pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
   pickupDate: firstJourneyLeg['leg-1-pickup-time'],
   dropoff: firstJourneyLeg['leg-1-dropoff'],
-  dropoffKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
+  dropoffKpoi: firstJourneyLeg['leg-1-dropoff-kpoi'],
   dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
 }
 
@@ -95,6 +95,6 @@ export const expectedSecondJourneyLeg = {
   pickupPlaceId: secondJourneyLeg['leg-2-pickup-place_id'],
   pickupDate: secondJourneyLeg['leg-2-pickup-time'],
   dropoff: secondJourneyLeg['leg-2-dropoff'],
-  dropoffKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
+  dropoffKpoi: secondJourneyLeg['leg-2-dropoff-kpoi'],
   dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
 }

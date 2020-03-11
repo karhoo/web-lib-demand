@@ -1,5 +1,11 @@
 import isUndefined from 'lodash/isUndefined'
-import { expectedDateFormatRegexp, timezoneRegexp, travellerLocaleRegexp } from './constants'
+import {
+  expectedDateFormatRegexp,
+  timezoneRegexp,
+  travellerLocaleRegexp,
+  passengerParameter,
+  luggageParameter,
+} from './constants'
 import { isNotEmptyString, isObject, isPositiveInteger, excludeUndefined } from './utils'
 import { codes, getError } from './errors'
 import {
@@ -37,7 +43,8 @@ function validatePassengerInfo(data: PassengerInfo) {
   }
 
   return (Object.keys(data) as Array<keyof PassengerInfo>).reduce((errors, key) => {
-    const validator = key === 'passengers' || key === 'luggage' ? isPositiveInteger : isNotEmptyString
+    const validator =
+      key === passengerParameter || key === luggageParameter ? isPositiveInteger : isNotEmptyString
 
     !isUndefined(data[key]) &&
       !validator(data[key]) &&
