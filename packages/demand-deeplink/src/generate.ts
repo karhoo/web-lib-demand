@@ -79,7 +79,7 @@ export function generate(deeplink: DeeplinkData): string {
   const queryString = new URLSearchParams()
 
   queryParams.forEach(param => {
-    queryString.append(param[0], param[1])
+    queryString.append(param[0], encodeURIComponent(param[1]))
   })
 
   return queryString.toString()
