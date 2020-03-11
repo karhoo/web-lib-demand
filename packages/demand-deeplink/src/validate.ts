@@ -11,9 +11,15 @@ import {
   Dictionary,
 } from './types'
 
-function validateMeta(data: Dictionary<string>, fieldName = 'meta') {
+const devIsObjectCheck = (data: object, fieldName: string) => {
   if (!isObject(data)) {
-    return [getError(codes.DP005, fieldName)]
+    throw new Error(`${fieldName} must be plain object`)
+  }
+}
+
+function validateMeta(data: Dictionary<string>, fieldName = 'meta') {
+  if (process.env.NODE_ENV !== 'production') {
+    devIsObjectCheck(data, fieldName)
   }
 
   return Object.keys(data).reduce(
@@ -26,8 +32,8 @@ function validateMeta(data: Dictionary<string>, fieldName = 'meta') {
 function validatePassengerInfo(data: PassengerInfo) {
   const fieldName = 'passengerInfo'
 
-  if (!isObject(data)) {
-    return [getError(codes.DP005, fieldName)]
+  if (process.env.NODE_ENV !== 'production') {
+    devIsObjectCheck(data, fieldName)
   }
 
   return (Object.keys(data) as Array<keyof PassengerInfo>).reduce((errors, key) => {
@@ -74,10 +80,6 @@ function validatePickupDate(date?: string) {
 }
 
 export function validateLeg(leg: JourneyLeg, path: string) {
-  if (!isObject(leg)) {
-    return [getError(codes.DP005, path)]
-  }
-
   const errors = []
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
