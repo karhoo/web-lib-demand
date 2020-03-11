@@ -1,7 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
-import negate from 'lodash/negate'
 import { expectedDateFormatRegexp, timezoneRegexp, travellerLocaleRegexp } from './constants'
-import { isNotEmptyString, isObject, isPositiveInteger } from './utils'
+import { isNotEmptyString, isObject, isPositiveInteger, excludeUndefined } from './utils'
 import { codes, getError } from './errors'
 import {
   DeeplinkData,
@@ -80,12 +79,8 @@ export function validateLeg(leg: JourneyLeg, path: string) {
   }
 
   const errors = []
-
-  const pickUpFields = [leg.pickup, leg.pickupPlaceId, leg.pickupKpoi].filter(negate(isUndefined)) as string[]
-
-  const dropoffFields = [leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi].filter(
-    negate(isUndefined)
-  ) as string[]
+  const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
+  const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
 
   if (!pickUpFields.length && !dropoffFields.length) {
     errors.push(getError(codes.DP001, path))
@@ -117,10 +112,10 @@ export function validate(deeplinkData: DeeplinkData): ValidationResponse {
   const errors = []
   const { legs, passengerInfo, travellerLocale, meta, customFields } = deeplinkData
 
-  if (!(Array.isArray(legs) && legs.length)) {
-    errors.push(getError(codes.DP001, 'legs'))
-  } else {
+  if (legs.length) {
     legs.forEach((leg, index) => errors.push(...validateLeg(leg, `legs.${index}`)))
+  } else {
+    errors.push(getError(codes.DP001, 'legs'))
   }
 
   errors.push(

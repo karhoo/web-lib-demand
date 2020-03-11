@@ -1,13 +1,15 @@
-import { camelCase, toPairs, fromPairs } from 'lodash'
+import camelCase from 'lodash/camelCase'
+import toPairs from 'lodash/toPairs'
+import fromPairs from 'lodash/fromPairs'
 
 export const travellerLocale = 'en-GB'
 
 export const passengerInfo = {
   email: 'email@of.user',
-  'first-name': 'first name',
-  'last-name': 'last name',
   luggage: '2',
   passengers: '3',
+  'first-name': 'first name',
+  'last-name': 'last name',
   'phone-number': '+441234567890',
 }
 

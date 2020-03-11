@@ -1,4 +1,4 @@
-import { isObject, isNotEmptyString, isPositiveInteger } from './utils'
+import { isObject, isNotEmptyString, isPositiveInteger, excludeUndefined } from './utils'
 
 describe('utils', () => {
   describe('isObject', () => {
@@ -48,6 +48,12 @@ describe('utils', () => {
 
     it('should return false if negative number', () => {
       expect(isPositiveInteger(-2)).toEqual(false)
+    })
+  })
+
+  describe('excludeUndefined', () => {
+    it('should exclude undefined', () => {
+      expect(excludeUndefined(['test', undefined, 2])).toEqual(['test', 2])
     })
   })
 })
