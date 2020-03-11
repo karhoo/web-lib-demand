@@ -7,7 +7,7 @@ export const codes = {
 }
 
 export const errorMessageByCode = {
-  [codes.DP001]: 'Missing required parameter',
+  [codes.DP001]: 'Missing a required parameter',
   [codes.DP002]: 'Multiple journey leg parameters',
   [codes.DP003]: 'Incorrect format',
   [codes.DP004]: 'Timezone is missing',
