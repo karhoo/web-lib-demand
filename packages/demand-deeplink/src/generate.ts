@@ -1,5 +1,5 @@
 import kebabCase from 'lodash/kebabCase'
-import isObject from 'lodash/isObject'
+import { isObject } from './utils'
 
 import { DeeplinkData, JourneyLeg, KeyValueList } from './types'
 
@@ -63,7 +63,9 @@ function getJorneyLegsParams(data: Array<JourneyLeg>): KeyValueList {
 export function generate(deeplink: DeeplinkData): string {
   const passengerInfoParams = getAvailableParams(deeplink.passengerInfo)
   const legsParams = getJorneyLegsParams(deeplink.legs)
-  const travellerLocaleParam = deeplink.travellerLocale ? ['traveller-locale', deeplink.travellerLocale] : []
+  const travellerLocaleParam = deeplink.travellerLocale
+    ? [['traveller-locale', deeplink.travellerLocale]]
+    : []
   const metaParams = getAvailableParams(deeplink.meta, deepLinkMetaPrefix)
   const customFieldsParams = deeplink.customFields ? getAvailableParams(deeplink.customFields) : []
 
@@ -74,11 +76,7 @@ export function generate(deeplink: DeeplinkData): string {
     ...metaParams,
     ...customFieldsParams,
   ]
-  const queryString = new URLSearchParams()
+  const queryString = new URLSearchParams(queryParams).toString()
 
-  queryParams.forEach(param => {
-    queryString.append(param[0], encodeURIComponent(param[1]))
-  })
-
-  return queryString.toString()
+  return '?' + queryString
 }
