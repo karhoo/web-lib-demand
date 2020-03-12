@@ -111,15 +111,15 @@ describe('parse', () => {
     })
   })
 
-  it('should return when one of the meta fileds is string that contains only spaces', () => {
+  it('should return error when one of the meta fileds is string that contains only spaces', () => {
     expect(validate(getData({ meta: { 'test-field': '   ' } }))).toEqual({
       ok: false,
       errors: [getError(codes.DP005, 'meta.test-field')],
     })
   })
 
-  it('should return when one of the meta fileds is string that contains only spaces', () => {
-    expect(validate(getData({ customFields: { 'test-field': '   ' } }))).toEqual({
+  it('should return error when one of the customFields fileds is empty string', () => {
+    expect(validate(getData({ customFields: { 'test-field': '' } }))).toEqual({
       ok: false,
       errors: [getError(codes.DP005, 'customFields.test-field')],
     })
