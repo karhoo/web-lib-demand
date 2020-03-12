@@ -1,6 +1,6 @@
 import isUndefined from 'lodash/isUndefined'
 import {
-  expectedDateFormatRegexp,
+  expectedTimeFormatRegexp,
   timezoneRegexp,
   travellerLocaleRegexp,
   passengerParameter,
@@ -74,16 +74,16 @@ function validateRoute(fields: string[], fieldName: string) {
   return errors
 }
 
-function validatePickupDate(date?: string) {
-  const fieldName = 'pickupDate'
+function validatePickupTime(time?: string) {
+  const fieldName = 'pickupTime'
 
-  if (!date) {
+  if (!time) {
     return [getError(codes.DP001, fieldName)]
   }
 
-  const errors = expectedDateFormatRegexp.test(date) ? [] : [getError(codes.DP003, fieldName)]
+  const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
 
-  return timezoneRegexp.test(date) ? errors : errors.concat([getError(codes.DP004, fieldName)])
+  return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
 
 export function validateLeg(leg: JourneyLeg, path: string) {
@@ -105,7 +105,7 @@ export function validateLeg(leg: JourneyLeg, path: string) {
 
   if (pickUpFields.length) {
     collectErrors(validateRoute(pickUpFields, 'pickup'))
-    collectErrors(validatePickupDate(leg.pickupDate))
+    collectErrors(validatePickupTime(leg.pickupTime))
   }
 
   dropoffFields.length && collectErrors(validateRoute(dropoffFields, 'dropoff'))

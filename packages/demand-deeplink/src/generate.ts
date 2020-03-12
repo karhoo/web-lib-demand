@@ -8,13 +8,18 @@ import {
   journeyLegMetaPrefix,
   journeyLegDropoffMetaPrefix,
   journeyLegPickupMetaPrefix,
+  travellerLocaleParameter,
 } from './constants'
 
-function getAvailableParams(data: Dictionary<string> | PassengerInfo, prefix = ''): KeyValueList {
+function getAvailableParams(
+  data: Dictionary<string> | PassengerInfo,
+  prefix = '',
+  transform = (a: string) => a
+): KeyValueList {
   const result: KeyValueList = []
   ;(Object.keys(data) as Array<keyof typeof data>).forEach(key => {
     const value = data[key]
-    value && result.push([`${prefix}${kebabCase(key)}`, value.toString()])
+    value && result.push([`${prefix}${transform(key)}`, value.toString()])
   })
 
   return result
@@ -31,7 +36,10 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
       }
 
       if (isString(value)) {
-        const formattedKey = key.endsWith('Id') ? kebabCase(key.slice(0, -2)) + '_id' : kebabCase(key)
+        const formattedKey =
+          key === 'pickupPlaceId' || key === 'dropoffPlaceId'
+            ? kebabCase(key.slice(0, -2)) + '_id'
+            : kebabCase(key)
         formattedLeg.push([`${legPrefix}${formattedKey}`, value])
       } else {
         let metaPrefix: string
@@ -62,9 +70,9 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
 
 export function generate(deeplink: DeeplinkData): string {
   const legsParams = getJorneyLegsParams(deeplink.legs)
-  const passengerInfoParams = getAvailableParams(deeplink.passengerInfo)
+  const passengerInfoParams = getAvailableParams(deeplink.passengerInfo, '', kebabCase)
   const travellerLocaleParam = deeplink.travellerLocale
-    ? [['traveller-locale', deeplink.travellerLocale]]
+    ? [[travellerLocaleParameter, deeplink.travellerLocale]]
     : []
   const metaParams = getAvailableParams(deeplink.meta, deepLinkMetaPrefix)
   const customFieldsParams = deeplink.customFields ? getAvailableParams(deeplink.customFields) : []
