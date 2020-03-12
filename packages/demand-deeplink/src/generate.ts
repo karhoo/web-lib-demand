@@ -1,7 +1,7 @@
 import kebabCase from 'lodash/kebabCase'
-import { isObject } from './utils'
+import isString from 'lodash/isString'
 
-import { DeeplinkData, JourneyLeg, KeyValueList } from './types'
+import { DeeplinkData, JourneyLeg, KeyValueList, Dictionary, PassengerInfo } from './types'
 
 import {
   deepLinkMetaPrefix,
@@ -10,52 +10,49 @@ import {
   journeyLegPickupMetaPrefix,
 } from './constants'
 
-function getAvailableParams(data: object, prefix = ''): KeyValueList {
+function getAvailableParams(data: Dictionary<string> | PassengerInfo, prefix = ''): KeyValueList {
   const result: KeyValueList = []
-
-  for (const key in data) {
-    data[key] && result.push([`${prefix}${kebabCase(key)}`, data[key]])
-  }
+  ;(Object.keys(data) as Array<keyof typeof data>).forEach(key => {
+    const value = data[key]
+    value && result.push([`${prefix}${kebabCase(key)}`, value.toString()])
+  })
 
   return result
 }
 
-function getJorneyLegsParams(data: Array<JourneyLeg>): KeyValueList {
+function getJorneyLegsParams(data: Array<JourneyLeg>) {
   const result = data.reduce((value, leg: JourneyLeg, index) => {
-    const legPrefix = `leg-${index}-`
+    const legPrefix = `leg-${index + 1}-`
     let formattedLeg: KeyValueList = []
-
-    for (const key in leg) {
-      if (leg[key]) {
-        if (!isObject(leg[key])) {
-          formattedLeg.push([`${legPrefix}${kebabCase(key)}`, leg[key]])
-        } else {
-          let metaPrefix: string
-
-          switch (key) {
-            case 'pickupMeta':
-              metaPrefix = journeyLegPickupMetaPrefix
-              break
-
-            case 'dropoffMeta':
-              metaPrefix = journeyLegDropoffMetaPrefix
-              break
-
-            case 'meta':
-            case 'passengerInfo':
-            default:
-              metaPrefix = journeyLegMetaPrefix
-              break
-          }
-
-          const formattedMeta = getAvailableParams(leg[key], legPrefix + metaPrefix)
-          formattedLeg = [...formattedLeg, ...formattedMeta]
-        }
+    ;(Object.keys(leg) as Array<keyof JourneyLeg>).forEach(key => {
+      const value = leg[key]
+      if (!value) {
+        return
       }
-    }
+      if (isString(value)) {
+        formattedLeg.push([`${legPrefix}${kebabCase(key)}`, value])
+      } else {
+        let metaPrefix: string
+        switch (key) {
+          case 'pickupMeta':
+            metaPrefix = journeyLegPickupMetaPrefix
+            break
+          case 'dropoffMeta':
+            metaPrefix = journeyLegDropoffMetaPrefix
+            break
+          case 'meta':
+          case 'passengerInfo':
+          default:
+            metaPrefix = journeyLegMetaPrefix
+            break
+        }
+        const formattedMeta = getAvailableParams(value, legPrefix + metaPrefix)
+        formattedLeg = [...formattedLeg, ...formattedMeta]
+      }
+    })
 
     return [...value, ...formattedLeg]
-  }, [])
+  }, [] as KeyValueList)
 
   return result
 }
