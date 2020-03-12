@@ -26,11 +26,17 @@ npm install --save @karhoo/demand-deeplink
 ## Usage
 
 ```
-import { parse } from 'demand-deeplink';
+import { parse, validate } from 'demand-deeplink';
 ```
 
 Parse deeplink:
 
 ```
 const deeplinkData = parse(window.location.search)
+```
+
+Validate deeplink:
+
+```
+const { ok, errors } = validate(deeplinkData)
 ```
