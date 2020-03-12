@@ -29,8 +29,10 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
       if (!value) {
         return
       }
+
       if (isString(value)) {
-        formattedLeg.push([`${legPrefix}${kebabCase(key)}`, value])
+        const formattedKey = key.endsWith('Id') ? kebabCase(key.slice(0, -2)) + '_id' : kebabCase(key)
+        formattedLeg.push([`${legPrefix}${formattedKey}`, value])
       } else {
         let metaPrefix: string
         switch (key) {
@@ -46,6 +48,7 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
             metaPrefix = journeyLegMetaPrefix
             break
         }
+
         const formattedMeta = getAvailableParams(value, legPrefix + metaPrefix)
         formattedLeg = [...formattedLeg, ...formattedMeta]
       }
@@ -58,8 +61,8 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
 }
 
 export function generate(deeplink: DeeplinkData): string {
-  const passengerInfoParams = getAvailableParams(deeplink.passengerInfo)
   const legsParams = getJorneyLegsParams(deeplink.legs)
+  const passengerInfoParams = getAvailableParams(deeplink.passengerInfo)
   const travellerLocaleParam = deeplink.travellerLocale
     ? [['traveller-locale', deeplink.travellerLocale]]
     : []
@@ -67,8 +70,8 @@ export function generate(deeplink: DeeplinkData): string {
   const customFieldsParams = deeplink.customFields ? getAvailableParams(deeplink.customFields) : []
 
   const queryParams = [
-    ...passengerInfoParams,
     ...legsParams,
+    ...passengerInfoParams,
     ...travellerLocaleParam,
     ...metaParams,
     ...customFieldsParams,

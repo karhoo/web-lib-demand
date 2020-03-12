@@ -89,6 +89,13 @@ export const expectedFirstJourneyLegDropoffMeta = {
   'second-test': firstJourneyLegDropoffMeta['leg-1-m-dropoff-second-test'],
 }
 
+export const expectedFirstJourneyLegWithMeta = {
+  ...expectedFirstJourneyLeg,
+  pickupMeta: expectedFirstJourneyLegPickupMeta,
+  dropoffMeta: expectedFirstJourneyLegDropoffMeta,
+  meta: expectedFirstJourneyLegMeta,
+}
+
 export const expectedSecondJourneyLeg = {
   pickup: secondJourneyLeg['leg-2-pickup'],
   pickupKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
