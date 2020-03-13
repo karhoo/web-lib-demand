@@ -3,7 +3,12 @@ import isString from 'lodash/isString'
 
 import { DeeplinkData, JourneyLeg, KeyValueList, Dictionary, PassengerInfo } from './types'
 
-import { deepLinkMetaPrefix, travellerLocaleParameter, journeyLegMetaPrefixes } from './constants'
+import {
+  journeyLegPrefix,
+  deepLinkMetaPrefix,
+  travellerLocaleParameter,
+  journeyLegMetaPrefixes,
+} from './constants'
 
 function getAvailableParams(
   data: Dictionary<string> | PassengerInfo,
@@ -21,7 +26,7 @@ function getAvailableParams(
 
 function getJorneyLegsParams(data: Array<JourneyLeg>) {
   const result = data.reduce((value, leg: JourneyLeg, index) => {
-    const legPrefix = `leg-${index + 1}-`
+    const legPrefix = `${journeyLegPrefix}${index + 1}-`
     let formattedLeg: KeyValueList = []
     ;(Object.keys(leg) as Array<keyof JourneyLeg>).forEach(key => {
       const value = leg[key]

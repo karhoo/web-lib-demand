@@ -41,6 +41,8 @@ export const journeyLegMainFields = [
 
 export const deepLinkMetaPrefix = 'meta.'
 
+export const journeyLegPrefix = 'leg-'
+
 export const journeyLegMetaPrefix = 'm-'
 export const journeyLegPickupMetaPrefix = 'm-pickup-'
 export const journeyLegDropoffMetaPrefix = 'm-dropoff-'

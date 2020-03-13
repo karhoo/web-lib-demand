@@ -105,3 +105,8 @@ export const expectedSecondJourneyLeg = {
   dropoffKpoi: secondJourneyLeg['leg-2-dropoff-kpoi'],
   dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
 }
+
+export const expectedCustomFields = {
+  customFieldTest: 'test 123',
+  'custom-field-test': 'Test test',
+}
