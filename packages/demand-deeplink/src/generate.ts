@@ -3,13 +3,7 @@ import isString from 'lodash/isString'
 
 import { DeeplinkData, JourneyLeg, KeyValueList, Dictionary, PassengerInfo } from './types'
 
-import {
-  deepLinkMetaPrefix,
-  journeyLegMetaPrefix,
-  journeyLegDropoffMetaPrefix,
-  journeyLegPickupMetaPrefix,
-  travellerLocaleParameter,
-} from './constants'
+import { deepLinkMetaPrefix, travellerLocaleParameter, journeyLegMetaPrefixes } from './constants'
 
 function getAvailableParams(
   data: Dictionary<string> | PassengerInfo,
@@ -31,6 +25,7 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
     let formattedLeg: KeyValueList = []
     ;(Object.keys(leg) as Array<keyof JourneyLeg>).forEach(key => {
       const value = leg[key]
+
       if (!value) {
         return
       }
@@ -41,25 +36,13 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
             ? kebabCase(key.slice(0, -2)) + '_id'
             : kebabCase(key)
         formattedLeg.push([`${legPrefix}${formattedKey}`, value])
-      } else {
-        let metaPrefix: string
-        switch (key) {
-          case 'pickupMeta':
-            metaPrefix = journeyLegPickupMetaPrefix
-            break
-          case 'dropoffMeta':
-            metaPrefix = journeyLegDropoffMetaPrefix
-            break
-          case 'meta':
-          case 'passengerInfo':
-          default:
-            metaPrefix = journeyLegMetaPrefix
-            break
-        }
 
-        const formattedMeta = getAvailableParams(value, legPrefix + metaPrefix)
-        formattedLeg = [...formattedLeg, ...formattedMeta]
+        return
       }
+
+      const prefix = legPrefix + (journeyLegMetaPrefixes[key] || '')
+      const formattedMeta = getAvailableParams(value, prefix)
+      formattedLeg = [...formattedLeg, ...formattedMeta]
     })
 
     return [...value, ...formattedLeg]
