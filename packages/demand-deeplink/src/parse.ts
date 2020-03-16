@@ -98,7 +98,7 @@ function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
     pickup: data[pickupParameter],
     pickupKpoi: data[pickupKpoiParameter],
     pickupPlaceId: data[pickupPlaceIdParameter],
-    pickupDate: data[pickupTimeParameter],
+    pickupTime: data[pickupTimeParameter],
     dropoff: data[dropoffParameter],
     dropoffKpoi: data[dropoffKpoiParameter],
     dropoffPlaceId: data[dropoffPlaceIdParameter],

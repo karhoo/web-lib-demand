@@ -26,7 +26,7 @@ npm install --save @karhoo/demand-deeplink
 ## Usage
 
 ```
-import { parse, validate } from 'demand-deeplink';
+import { parse, validate, generate } from 'demand-deeplink';
 ```
 
 Parse deeplink:
@@ -39,4 +39,10 @@ Validate deeplink:
 
 ```
 const { ok, errors } = validate(deeplinkData)
+```
+
+Generate deeplink:
+
+```
+const queryString = generate(deeplinkData)
 ```

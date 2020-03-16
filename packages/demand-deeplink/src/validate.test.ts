@@ -171,39 +171,39 @@ describe('parse', () => {
       ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
     })
 
-    it('should return errors if pickup is provided and pickupDate not', () => {
-      expect(validateLeg(getData({ pickup: 'pickup', pickupDate: undefined }), 'legs.0')).toEqual([
-        expectedError(codes.DP001, 'legs.0.pickupDate'),
+    it('should return errors if pickup is provided and pickupTime not', () => {
+      expect(validateLeg(getData({ pickup: 'pickup', pickupTime: undefined }), 'legs.0')).toEqual([
+        expectedError(codes.DP001, 'legs.0.pickupTime'),
       ])
     })
 
     it('should return multiple errors if multiple pickup is provided and pickupTime not', () => {
       expect(
         validateLeg(
-          getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId', pickupDate: undefined }),
+          getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId', pickupTime: undefined }),
           'legs.0'
         )
       ).toEqual([
         expectedError(codes.DP002, 'legs.0.pickup'),
-        expectedError(codes.DP001, 'legs.0.pickupDate'),
+        expectedError(codes.DP001, 'legs.0.pickupTime'),
       ])
     })
 
-    it('should return errors if pickupDate has no timezone', () => {
-      expect(validateLeg(getData({ pickupDate: '2020-08-09T18:31:42' }), 'legs.0')).toEqual([
-        expectedError(codes.DP003, 'legs.0.pickupDate'),
-        expectedError(codes.DP004, 'legs.0.pickupDate'),
+    it('should return errors if pickupTime has no timezone', () => {
+      expect(validateLeg(getData({ pickupTime: '2020-08-09T18:31:42' }), 'legs.0')).toEqual([
+        expectedError(codes.DP003, 'legs.0.pickupTime'),
+        expectedError(codes.DP004, 'legs.0.pickupTime'),
       ])
     })
 
-    it('should return errors if pickupDate has wrong format', () => {
-      expect(validateLeg(getData({ pickupDate: '2020-08-09T18+01:00' }), 'legs.0')).toEqual([
-        expectedError(codes.DP003, 'legs.0.pickupDate'),
+    it('should return errors if pickupTime has wrong format', () => {
+      expect(validateLeg(getData({ pickupTime: '2020-08-09T18+01:00' }), 'legs.0')).toEqual([
+        expectedError(codes.DP003, 'legs.0.pickupTime'),
       ])
     })
 
-    it('should return empty array if pickupDate has default timezone', () => {
-      expect(validateLeg(getData({ pickupDate: '2020-08-09T18:31:42Z' }), 'legs.0')).toEqual([])
+    it('should return empty array if pickupTime has default timezone', () => {
+      expect(validateLeg(getData({ pickupTime: '2020-08-09T18:31:42Z' }), 'legs.0')).toEqual([])
     })
 
     it('should return empty array when legs contain valid meta', () => {

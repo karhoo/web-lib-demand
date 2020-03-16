@@ -1,5 +1,7 @@
+import { Dictionary } from './types'
+
 export const journeyLegFieldsRegexp = /^leg-(\d+)-(.+)/i
-export const expectedDateFormatRegexp = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
+export const expectedTimeFormatRegexp = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
 export const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
 export const travellerLocaleRegexp = /^[a-z]{2}-[a-z]{2}$/i
 
@@ -39,6 +41,15 @@ export const journeyLegMainFields = [
 
 export const deepLinkMetaPrefix = 'meta.'
 
+export const journeyLegPrefix = 'leg-'
+
 export const journeyLegMetaPrefix = 'm-'
 export const journeyLegPickupMetaPrefix = 'm-pickup-'
 export const journeyLegDropoffMetaPrefix = 'm-dropoff-'
+
+export const journeyLegMetaPrefixes: Dictionary<string> = {
+  pickupMeta: journeyLegPickupMetaPrefix,
+  dropoffMeta: journeyLegDropoffMetaPrefix,
+  meta: journeyLegMetaPrefix,
+  passengerInfo: journeyLegMetaPrefix,
+}

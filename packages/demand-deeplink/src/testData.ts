@@ -68,7 +68,7 @@ export const expectedFirstJourneyLeg = {
   pickup: firstJourneyLeg['leg-1-pickup'],
   pickupKpoi: firstJourneyLeg['leg-1-pickup-kpoi'],
   pickupPlaceId: firstJourneyLeg['leg-1-pickup-place_id'],
-  pickupDate: firstJourneyLeg['leg-1-pickup-time'],
+  pickupTime: firstJourneyLeg['leg-1-pickup-time'],
   dropoff: firstJourneyLeg['leg-1-dropoff'],
   dropoffKpoi: firstJourneyLeg['leg-1-dropoff-kpoi'],
   dropoffPlaceId: firstJourneyLeg['leg-1-dropoff-place_id'],
@@ -89,12 +89,24 @@ export const expectedFirstJourneyLegDropoffMeta = {
   'second-test': firstJourneyLegDropoffMeta['leg-1-m-dropoff-second-test'],
 }
 
+export const expectedFirstJourneyLegWithMeta = {
+  ...expectedFirstJourneyLeg,
+  pickupMeta: expectedFirstJourneyLegPickupMeta,
+  dropoffMeta: expectedFirstJourneyLegDropoffMeta,
+  meta: expectedFirstJourneyLegMeta,
+}
+
 export const expectedSecondJourneyLeg = {
   pickup: secondJourneyLeg['leg-2-pickup'],
   pickupKpoi: secondJourneyLeg['leg-2-pickup-kpoi'],
   pickupPlaceId: secondJourneyLeg['leg-2-pickup-place_id'],
-  pickupDate: secondJourneyLeg['leg-2-pickup-time'],
+  pickupTime: secondJourneyLeg['leg-2-pickup-time'],
   dropoff: secondJourneyLeg['leg-2-dropoff'],
   dropoffKpoi: secondJourneyLeg['leg-2-dropoff-kpoi'],
   dropoffPlaceId: secondJourneyLeg['leg-2-dropoff-place_id'],
+}
+
+export const expectedCustomFields = {
+  customFieldTest: 'test 123',
+  'custom-field-test': 'Test test',
 }

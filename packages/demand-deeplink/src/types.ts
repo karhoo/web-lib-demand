@@ -17,7 +17,7 @@ export type JourneyLeg = Partial<{
   pickup: string
   pickupKpoi: string
   pickupPlaceId: string
-  pickupDate: string
+  pickupTime: string
   pickupMeta: Dictionary<string>
   dropoff: string
   dropoffKpoi: string
