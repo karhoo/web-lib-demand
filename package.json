@@ -8,6 +8,7 @@
     "build": "npx lerna run build --stream",
     "test": "npx lerna run test --stream",
     "lint": "npx eslint . --ext js,jsx,ts,tsx",
+    "docs": "rm -rf docs && typedoc",
     "setup-npm": "echo '//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}\n@karhoo:registry=https://npm.pkg.github.com/' > ~/.npmrc"
   },
   "repository": {
@@ -36,6 +37,9 @@
     "lerna": "3.20.2",
     "lint-staged": "10.0.7",
     "prettier": "1.19.1",
+    "typedoc": "^0.17.0",
+    "typedoc-plugin-lerna-packages": "^0.3.0",
+    "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "3.8.2"
   },
   "husky": {
@@ -48,5 +52,8 @@
     "*.{js,jsx,ts,tsx}": [
       "npx eslint --fix"
     ]
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.149"
   }
 }
