@@ -1,5 +1,3 @@
-import { Dictionary } from './types'
-
 export const journeyLegFieldsRegexp = /^leg-(\d+)-(.+)/i
 export const expectedTimeFormatRegexp = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
 export const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
@@ -47,7 +45,7 @@ export const journeyLegMetaPrefix = 'm-'
 export const journeyLegPickupMetaPrefix = 'm-pickup-'
 export const journeyLegDropoffMetaPrefix = 'm-dropoff-'
 
-export const journeyLegMetaPrefixes: Dictionary<string> = {
+export const journeyLegMetaPrefixes: Record<string, string> = {
   pickupMeta: journeyLegPickupMetaPrefix,
   dropoffMeta: journeyLegDropoffMetaPrefix,
   meta: journeyLegMetaPrefix,
