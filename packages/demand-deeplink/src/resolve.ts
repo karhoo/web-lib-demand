@@ -135,6 +135,10 @@ export class Deeplink {
   }
 
   public resolve(subscriber: (data: ResolveResponse) => void) {
+    if (!this.isValid().ok) {
+      throw new Error('Deeplink data is not valid')
+    }
+
     const placePromises: PlacePromisesList = []
     const availabilityPromises: AvailabilityPromisesList = []
     let activeSubscriber: typeof subscriber | null = subscriber
