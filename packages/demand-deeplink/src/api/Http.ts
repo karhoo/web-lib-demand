@@ -1,55 +1,12 @@
-export type ApiError = {
-  code?: string
-  message: string
-}
-
-type HttpResponsePayload = {
-  status: number
-}
-
-export type HttpResponseOk<T> = HttpResponsePayload & {
-  ok: true
-  body: T
-}
-
-export type HttpResponseError<T> = HttpResponsePayload & {
-  ok: false
-  error: T
-}
-
-export type HttpResponse<T, TError = ApiError> = HttpResponseOk<T> | HttpResponseError<TError>
-
-export interface ServiceHttp {
-  get<T>(url: string, query?: Query): Promise<HttpResponse<T>>
-  post<T>(url: string, body: object): Promise<HttpResponse<T>>
-  put<T>(url: string, body: object): Promise<HttpResponse<T>>
-  remove<T>(url: string): Promise<HttpResponse<T>>
-}
-
-type Query = Record<string, string | number>
-
-type RequestOptions = Omit<RequestInit, 'window'> & {
-  method: string
-  headers?: Record<string, string>
-}
-
-type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'signal'>
+import { DefaultRequestOptions, RequestOptions } from '../types'
+import { ServiceHttp, HttpResponse, Query } from './types'
 
 async function request<T>(url: string, options: RequestInit): Promise<HttpResponse<T>> {
   try {
     const response = await fetch(url, options)
+    const isJsonResponse = (response?.headers?.get('content-type') ?? '').indexOf('application/json') !== -1
 
-    if (
-      !(
-        response &&
-        response.headers &&
-        (response.headers.get('Content-Type') || '').includes('application/json')
-      )
-    ) {
-      throw new Error(`Unsupported content type: ${response.headers.get('Content-Type')}`)
-    }
-
-    const body = await response.json()
+    const body = isJsonResponse ? await response.json() : {}
     const { ok, status } = response
 
     return ok ? { ok, status, body } : { ok, status, error: body }
@@ -75,17 +32,13 @@ function getJsonBody(body: object, headers: Record<string, string> = {}) {
 class HttpService implements ServiceHttp {
   private url: string
 
-  private requestOptions: DefaultRequestOptions = {
-    credentials: 'include',
-    mode: 'cors',
-    redirect: 'error',
-  }
+  private getDefaultRequestOptions: () => DefaultRequestOptions = () => ({})
 
-  constructor(url: string, requestOptions?: DefaultRequestOptions) {
+  constructor(url: string, getDefaultRequestOptions?: () => DefaultRequestOptions) {
     this.url = url
 
-    if (requestOptions) {
-      this.requestOptions = { ...this.requestOptions, ...requestOptions }
+    if (getDefaultRequestOptions) {
+      this.getDefaultRequestOptions = getDefaultRequestOptions
     }
   }
 
@@ -114,9 +67,15 @@ class HttpService implements ServiceHttp {
   }
 
   private request<T>(url: string, options: RequestOptions, query?: Query): Promise<HttpResponse<T>> {
-    const headers = new Headers({ ...(this.requestOptions.headers || {}), ...(options.headers || {}) })
+    const defaultRequestOptions = {
+      credentials: 'include' as const,
+      mode: 'cors' as const,
+      ...this.getDefaultRequestOptions(),
+    }
 
-    return request<T>(this.createFullUrl(url, query), { ...this.requestOptions, ...options, headers })
+    const headers = new Headers({ ...(defaultRequestOptions.headers || {}), ...(options.headers || {}) })
+
+    return request<T>(this.createFullUrl(url, query), { ...defaultRequestOptions, ...options, headers })
   }
 
   private createFullUrl(url: string, params?: Query): string {

@@ -45,3 +45,42 @@ export type ValidationResponse = {
   ok: boolean
   errors?: ValidationError[]
 }
+
+export type RequestOptions = Omit<RequestInit, 'window'> & {
+  method: string
+  headers?: Record<string, string>
+}
+
+export type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'signal'>
+
+export type DeeplinkOptions = {
+  url: string
+  getDefaultRequestOptions: () => DefaultRequestOptions
+}
+
+// ---------------------------------------------------------
+// TODO: This is temporary API responses that are not full
+// They should be moved outside of this package
+
+export type LocationAddressDetailsResponse = {
+  place_id: string
+  address?: {
+    display_address: string
+  }
+}
+
+export type PoiResponse = {
+  id?: string
+  address: {
+    display_address: string
+  }
+}
+
+export type PoiSearchResponse = {
+  pois?: PoiResponse[]
+}
+
+export type QuotesAvailabilityResponse = {
+  availabilities?: [{ availability_id?: string }]
+  categories?: string[]
+}
