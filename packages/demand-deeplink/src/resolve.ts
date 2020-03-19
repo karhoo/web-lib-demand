@@ -2,67 +2,20 @@ import {
   DeeplinkData,
   ValidationResponse,
   JourneyLeg,
-  LocationAddressDetailsResponse,
-  PoiResponse,
   DeeplinkOptions,
+  ResolveResponse,
+  ResolvePlaceResult,
+  ResolveAvailabilityResult,
+  PlaceField,
 } from './types'
-import { HttpService, LocationService, PoiService, QuotesService } from './api'
 import { QuotesAvailabilityParams } from './api/types'
+import { HttpService, LocationService, PoiService, QuotesService } from './api'
 import { parse } from './parse'
 import { validate } from './validate'
 import { codes, errorMessageByCode } from './errors'
 
-type PickupField = 'pickup' | 'pickupKpoi' | 'pickupPlaceId'
-type DropoffField = 'dropoff' | 'dropoffKpoi' | 'dropoffPlaceId'
-type PlaceField = PickupField | DropoffField
-
-type ResolveError = {
-  ok: false
-  error: {
-    code?: string
-    message: string
-  }
-}
-
-type ResolvePlace = {
-  ok: true
-  data: {
-    placeId: string
-    displayAddress: string
-    placeInfo?: LocationAddressDetailsResponse
-    poiInfo?: PoiResponse
-  }
-}
-
-type ResolvePlaceResult = ResolvePlace | ResolveError
-
-type ResolvePlaceValue = {
-  type: PlaceField
-  baseValue: string
-  result: ResolvePlaceResult
-}
-
-type ResolveAvailability = {
-  ok: true
-  data: {
-    placeId: string
-    destinationPlaceId?: string
-    date?: string
-  }
-}
-
-type ResolveAvailabilityResult = ResolveAvailability | ResolveError
-
-export type ResolveResponse = {
-  done: boolean
-  leg: number
-  place?: ResolvePlaceValue
-  availability?: ResolveAvailabilityResult
-  error?: Error
-}
-
 type PlacePromisesList = {
-  key: PlaceField
+  key: string
   value: string
   promise: Promise<ResolvePlaceResult>
 }[]
@@ -86,20 +39,27 @@ function getActivePlace(leg: JourneyLeg, keys: PlaceField[]) {
   return key ? { key, value: leg[key] as string } : undefined
 }
 
-function resolvePromise<T extends object, Y, K extends Array<T & { promise: Promise<Y> }>>(
+function getPlaceCacheKey(key: PlaceField) {
+  return key.replace(/^pickup|dropoff/, '') || 'default'
+}
+
+function resolvePromise<T extends object, Y, K extends Array<Z & { promise: Promise<Y> }>, Z extends object>(
   data: T,
   promises: K,
-  getNewPromise: (data: T) => Promise<Y>
+  getNewPromise: (data: T) => Promise<Y>,
+  cacheParams: Z
 ) {
   for (const item of promises) {
-    if ((Object.getOwnPropertyNames(data) as Array<keyof T>).every(key => data[key] === item[key])) {
+    if (
+      (Object.getOwnPropertyNames(cacheParams) as Array<keyof Z>).every(key => cacheParams[key] === item[key])
+    ) {
       return item.promise
     }
   }
 
   const promise = getNewPromise(data)
 
-  promises.push({ ...data, promise })
+  promises.push({ ...cacheParams, promise })
 
   return promise
 }
@@ -158,8 +118,14 @@ export class Deeplink {
             return Promise.resolve(undefined)
           }
 
-          const result = await resolvePromise(data, placePromises, value => this.resolvePlace(value))
           const { key, value } = data
+          const cacheParams = { key: getPlaceCacheKey(key), value }
+          const result = await resolvePromise(
+            data,
+            placePromises,
+            value => this.resolvePlace(value),
+            cacheParams
+          )
 
           handle({ done: false, leg: index, place: { result, type: key, baseValue: value } })
 
@@ -171,7 +137,7 @@ export class Deeplink {
           getPromise(activeDropoff),
         ])
 
-        if (!(pickupData && dropoffData) || pickupData?.ok === false || dropoffData?.ok === false) {
+        if (!(pickupData || dropoffData) || pickupData?.ok === false || dropoffData?.ok === false) {
           handle({
             done: false,
             leg: index,
@@ -182,24 +148,31 @@ export class Deeplink {
         }
 
         const params: QuotesAvailabilityParams = {
-          originPlaceId: pickupData?.ok ? pickupData.data.placeId : dropoffData.data.placeId,
+          originPlaceId: pickupData?.ok
+            ? pickupData.data.placeId
+            : dropoffData?.ok
+            ? dropoffData.data.placeId
+            : '',
           destinationPlaceId: pickupData?.ok && dropoffData?.ok ? dropoffData.data.placeId : undefined,
           dateRequired: leg.pickupTime,
         }
 
-        const data = await resolvePromise(params, availabilityPromises, value =>
-          this.checkAvailability(value)
+        const data = await resolvePromise(
+          params,
+          availabilityPromises,
+          value => this.checkAvailability(value),
+          params
         )
 
         handle({ done: false, leg: index, availability: data })
       })
     )
       .then(() => {
-        handle({ done: true, leg: -1 })
+        handle({ done: true })
         unsubscribe()
       })
       .catch(error => {
-        handle({ done: true, leg: -1, error })
+        handle({ done: true, error })
         unsubscribe()
       })
 

@@ -43,26 +43,18 @@ class HttpService implements ServiceHttp {
   }
 
   public get<T>(url: string, query?: Query): Promise<HttpResponse<T>> {
-    url = this.createFullUrl(url, query)
-
-    return this.request<T>(url, { method: 'GET' })
+    return this.request<T>(url, { method: 'GET' }, query)
   }
 
   public post<T>(url: string, body: object): Promise<HttpResponse<T>> {
-    url = this.createFullUrl(url)
-
     return this.request<T>(url, { method: 'POST', ...getJsonBody(body) })
   }
 
   public put<T>(url: string, body: object): Promise<HttpResponse<T>> {
-    url = this.createFullUrl(url)
-
     return this.request<T>(url, { method: 'PUT', ...getJsonBody(body) })
   }
 
   public remove<T>(url: string): Promise<HttpResponse<T>> {
-    url = this.createFullUrl(url)
-
     return this.request<T>(url, { method: 'DELETE' })
   }
 

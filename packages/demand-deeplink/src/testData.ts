@@ -28,6 +28,30 @@ export const firstJourneyLeg = {
   'leg-1-pickup-time': '2020-08-09T18:31:42-03:30',
 }
 
+export const firstJourneyLegWithPlaceOnly = {
+  ...firstJourneyLeg,
+  'leg-1-pickup-kpoi': undefined,
+  'leg-1-pickup-place_id': undefined,
+  'leg-1-dropoff-kpoi': undefined,
+  'leg-1-dropoff-place_id': undefined,
+}
+
+export const firstJourneyLegWithKpoiOnly = {
+  ...firstJourneyLeg,
+  'leg-1-pickup': undefined,
+  'leg-1-pickup-place_id': undefined,
+  'leg-1-dropoff': undefined,
+  'leg-1-dropoff-place_id': undefined,
+}
+
+export const firstJourneyLegWithPlaceIdOnly = {
+  ...firstJourneyLeg,
+  'leg-1-pickup-kpoi': undefined,
+  'leg-1-pickup': undefined,
+  'leg-1-dropoff-kpoi': undefined,
+  'leg-1-dropoff': undefined,
+}
+
 export const firstJourneyLegMeta = {
   'leg-1-m-test': 'test',
   'leg-1-m-second-test': 'second test',

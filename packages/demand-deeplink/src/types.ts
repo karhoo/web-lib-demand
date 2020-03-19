@@ -58,6 +58,59 @@ export type DeeplinkOptions = {
   getDefaultRequestOptions: () => DefaultRequestOptions
 }
 
+type PickupField = 'pickup' | 'pickupKpoi' | 'pickupPlaceId'
+type DropoffField = 'dropoff' | 'dropoffKpoi' | 'dropoffPlaceId'
+export type PlaceField = PickupField | DropoffField
+
+type ResolveError = {
+  ok: false
+  error: {
+    code?: string
+    message: string
+  }
+}
+
+type ResolvePlace = {
+  ok: true
+  data: {
+    placeId: string
+    displayAddress: string
+    placeInfo?: LocationAddressDetailsResponse
+    poiInfo?: PoiResponse
+  }
+}
+
+export type ResolvePlaceResult = ResolvePlace | ResolveError
+
+type ResolvePlaceValue = {
+  type: PlaceField
+  baseValue: string
+  result: ResolvePlaceResult
+}
+
+type ResolveAvailability = {
+  ok: true
+  data: {
+    placeId: string
+    destinationPlaceId?: string
+    date?: string
+  }
+}
+
+export type ResolveAvailabilityResult = ResolveAvailability | ResolveError
+
+export type ResolveResponse =
+  | {
+      done: false
+      leg: number
+      place?: ResolvePlaceValue
+      availability?: ResolveAvailabilityResult
+    }
+  | {
+      done: true
+      error?: Error
+    }
+
 // ---------------------------------------------------------
 // TODO: This is temporary API responses that are not full
 // They should be moved outside of this package
