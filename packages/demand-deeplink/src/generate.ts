@@ -57,16 +57,8 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
 }
 
 /**
- * Code blocks are great for examples
+ * Generates a query string from a Deeplink data
  *
- * ```
- * <my-custom-element>Highlight JS will auto detect the language</my-custom-element>
- * ```
- *
- * ```typescript
- * // Or you can specify the language explicitly
- * const instance = new MyClass();
- * ```
  */
 export function generate(deeplink: DeeplinkData): string {
   const legsParams = getJorneyLegsParams(deeplink.legs)

@@ -18,4 +18,4 @@
 
 • **message**: *string*
 
-*Defined in [web-lib-demand-hello-world/src/helloWorld.ts:2](https://github.com/karhoo/web-lib-demand/blob/121b084/packages/web-lib-demand-hello-world/src/helloWorld.ts#L2)*
+*Defined in [web-lib-demand-hello-world/src/helloWorld.ts:2](https://github.com/karhoo/web-lib-demand/blob/f3f072b/packages/web-lib-demand-hello-world/src/helloWorld.ts#L2)*
