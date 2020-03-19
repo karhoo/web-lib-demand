@@ -11,10 +11,10 @@ export class PoiService {
     this.http = http
   }
 
-  search(options: PoiSearchParams) {
+  search(params: PoiSearchParams) {
     return this.http.get<PoiSearchResponse>(
       this.url,
-      toSnakeCase<PoiSearchParams, Record<string, string>>(options)
+      toSnakeCase<PoiSearchParams, Record<string, string>>(params)
     )
   }
 }

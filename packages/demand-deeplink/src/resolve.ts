@@ -53,7 +53,7 @@ type ResolveAvailability = {
 
 type ResolveAvailabilityResult = ResolveAvailability | ResolveError
 
-type ResolveResponse = {
+export type ResolveResponse = {
   done: boolean
   leg: number
   place?: ResolvePlaceValue
