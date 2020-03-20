@@ -1,7 +1,7 @@
 import { DefaultRequestOptions, RequestOptions } from '../types'
 import { ServiceHttp, HttpResponse, Query } from './types'
 
-async function request<T>(url: string, options: RequestInit): Promise<HttpResponse<T>> {
+export async function request<T>(url: string, options: RequestInit): Promise<HttpResponse<T>> {
   try {
     const response = await fetch(url, options)
     const isJsonResponse = (response?.headers?.get('content-type') ?? '').indexOf('application/json') !== -1
@@ -24,12 +24,12 @@ async function request<T>(url: string, options: RequestInit): Promise<HttpRespon
 function getJsonBody(body: object, headers: Record<string, string> = {}) {
   return {
     body: JSON.stringify(body),
-    headers: { ...headers, 'Content-Type': 'application/json' },
+    headers: { ...headers, 'content-type': 'application/json' },
   }
 }
 
-//TODO: refactor it, add ability to provide auth headers
-class HttpService implements ServiceHttp {
+// TODO: refactor and improve logic after it will be extracted to separate package
+export class HttpService implements ServiceHttp {
   private url: string
 
   private getDefaultRequestOptions: () => DefaultRequestOptions = () => ({})
@@ -80,5 +80,3 @@ class HttpService implements ServiceHttp {
           new URLSearchParams(Object.keys(params).map(key => [key, params[key].toString()])).toString()
   }
 }
-
-export { HttpService }

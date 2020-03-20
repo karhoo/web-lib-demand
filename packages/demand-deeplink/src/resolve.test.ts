@@ -18,6 +18,7 @@ import {
   secondJourneyLeg,
   passengerInfo,
 } from './testData'
+import { codes, getError } from './errors'
 
 const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
@@ -530,6 +531,34 @@ describe('Deeplink', () => {
       result.unsubscribe()
 
       expect(subscriber).toHaveBeenCalledTimes(2)
+    })
+
+    it('should throw error if deeplink is not valid', () => {
+      const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-pickup-time': undefined }]
+
+      const deeplink = new Deeplink(getSearchString(legs), {
+        url: 'http://url',
+        getDefaultRequestOptions: () => ({}),
+      })
+
+      try {
+        deeplink.resolve(jest.fn())
+      } catch (error) {
+        expect(error.message).toEqual(expect.any(String))
+      }
+    })
+  })
+
+  describe('isValid', () => {
+    it('should return error when deeplink is not valid', () => {
+      const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-pickup-time': undefined }]
+
+      const deeplink = new Deeplink(getSearchString(legs), {
+        url: 'http://url',
+        getDefaultRequestOptions: () => ({}),
+      })
+
+      expect(deeplink.isValid()).toEqual({ ok: false, errors: [getError(codes.DP001, 'legs.0.pickupTime')] })
     })
   })
 })
