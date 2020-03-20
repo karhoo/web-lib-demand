@@ -80,9 +80,8 @@ export class Deeplink {
     this.validation = validate(this.deeplinkInfo)
 
     //TODO: Refactor this after api logic will be extracted from this package
-    //all required services should be passed from outside
+    //all services should be passed from outside
     const httpService = new HttpService(options.url, options.getDefaultRequestOptions)
-
     this.locationService = new LocationService(httpService)
     this.poiService = new PoiService(httpService)
     this.quotesService = new QuotesService(httpService)

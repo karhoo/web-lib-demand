@@ -1,5 +1,5 @@
 import { DefaultRequestOptions, RequestOptions } from '../types'
-import { ServiceHttp, HttpResponse, Query } from './types'
+import { Http, HttpResponse, Query } from './types'
 
 export async function request<T>(url: string, options: RequestInit): Promise<HttpResponse<T>> {
   try {
@@ -29,7 +29,7 @@ function getJsonBody(body: object, headers: Record<string, string> = {}) {
 }
 
 // TODO: refactor and improve logic after it will be extracted to separate package
-export class HttpService implements ServiceHttp {
+export class HttpService implements Http {
   private url: string
 
   private getDefaultRequestOptions: () => DefaultRequestOptions = () => ({})

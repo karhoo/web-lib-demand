@@ -2,15 +2,8 @@ import { mocked } from 'ts-jest/utils'
 import toPairs from 'lodash/toPairs'
 import isUndefined from 'lodash/isUndefined'
 import flatten from 'lodash/flatten'
-import { Deeplink } from './resolve'
-import {
-  LocationAddressDetailsResponse,
-  PoiSearchResponse,
-  QuotesAvailabilityResponse,
-  ResolveResponse,
-} from './types'
-import { HttpService, LocationService, PoiService, QuotesService } from './api'
-import { HttpResponse } from './api/types'
+
+import { codes, getError } from './errors'
 import {
   firstJourneyLegWithPlaceOnly,
   firstJourneyLegWithKpoiOnly,
@@ -18,88 +11,25 @@ import {
   secondJourneyLeg,
   passengerInfo,
 } from './testData'
-import { codes, getError } from './errors'
+import { LocationAddressDetailsResponse, PoiSearchResponse, ResolveResponse } from './types'
 
-const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    pois: [
-      {
-        id: `poi_placeId:${data.searchKey}`,
-        address: {
-          display_address: `poi_display_address:${data.searchKey}`,
-        },
-      },
-    ],
-  },
-})
+import { LocationService, PoiService, QuotesService } from './api'
+import { HttpResponse } from './api/types'
+import {
+  mockHttpGet,
+  mockHttpPost,
+  mockHttpPut,
+  mockHttpRemove,
+  mockLocationGetAddressDetails,
+  mockPoiSearch,
+  mockQuotesCheckAvailability,
+  getMockedQuotesAvailabilityResponse,
+  getMockedPoiSearchResponse,
+  getMockedLocationAddressDetailsResponse,
+  getMockedErrorPoiSearchResponse,
+} from './api/mocks'
 
-const getMockedErrorPoiSearchResponse = (): HttpResponse<PoiSearchResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K001',
-    message: `Poi: Something went wrong`,
-  },
-})
-
-const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    availabilities: [{ availability_id: 'availability_id' }],
-    categories: ['test'],
-  },
-})
-
-const getMockedErrorQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K001',
-    message: `Availability: Something went wrong`,
-  },
-})
-
-const getMockedLocationAddressDetailsResponse = (
-  data: any
-): HttpResponse<LocationAddressDetailsResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    place_id: `location_placeId:${data.placeId}`,
-    address: {
-      display_address: `location_display_address:${data.placeId}`,
-    },
-  },
-})
-
-const getMockedErrorLocationAddressDetailsResponse = (
-  data: any
-): HttpResponse<LocationAddressDetailsResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K001',
-    message: `Location: Something went wrong`,
-  },
-})
-
-const mockLocationGetAddressDetails = jest.fn((data: any) => {
-  return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
-})
-
-const mockPoiSearch = jest.fn((data: any) => {
-  return Promise.resolve(getMockedPoiSearchResponse(data))
-})
-
-const mockQuotesCheckAvailability = jest.fn(() => Promise.resolve(getMockedQuotesAvailabilityResponse()))
-
-const mockHttpGet = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { get: true } }))
-const mockHttpPost = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { post: true } }))
-const mockHttpPut = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { put: true } }))
-const mockHttpRemove = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { remove: true } }))
+import { Deeplink } from './Deeplink'
 
 jest.mock('./api', () => ({
   HttpService: jest.fn().mockImplementation(() => {

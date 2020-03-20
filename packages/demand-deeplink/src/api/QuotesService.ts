@@ -1,14 +1,14 @@
 import date from 'date-and-time'
-import { ServiceHttp, QuotesAvailabilityParams } from './types'
+import { Http, QuotesAvailabilityParams } from './types'
 import { QuotesAvailabilityResponse } from '../types'
 import { toSnakeCase } from '../utils'
 
 export class QuotesService {
   private url = 'quotes'
 
-  private http: ServiceHttp
+  private http: Http
 
-  constructor(http: ServiceHttp) {
+  constructor(http: Http) {
     this.http = http
   }
 

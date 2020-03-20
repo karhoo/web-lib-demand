@@ -21,7 +21,7 @@ export type HttpResponse<T, TError = ApiError> = HttpResponseOk<T> | HttpRespons
 
 export type Query = Record<string, string | number>
 
-export interface ServiceHttp {
+export interface Http {
   get<T>(url: string, query?: Query): Promise<HttpResponse<T>>
   post<T>(url: string, body: object): Promise<HttpResponse<T>>
   put<T>(url: string, body: object): Promise<HttpResponse<T>>

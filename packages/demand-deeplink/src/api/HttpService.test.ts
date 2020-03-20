@@ -1,5 +1,5 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
-import { HttpService, request } from './Http'
+import { HttpService, request } from './HttpService'
 
 enableFetchMocks()
 

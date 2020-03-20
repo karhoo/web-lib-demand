@@ -1,13 +1,13 @@
-import uuid from 'uuid/v4'
-import { ServiceHttp, LocationAddressDetailsParameters } from './types'
+import { v4 as uuid } from 'uuid'
+import { Http, LocationAddressDetailsParameters } from './types'
 import { LocationAddressDetailsResponse } from '../types'
 
 export class LocationService {
   private url = 'locations'
 
-  private http: ServiceHttp
+  private http: Http
 
-  constructor(http: ServiceHttp) {
+  constructor(http: Http) {
     this.http = http
   }
 
