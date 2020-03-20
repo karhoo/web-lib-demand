@@ -34,6 +34,15 @@ const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> 
   },
 })
 
+const getMockedErrorPoiSearchResponse = (): HttpResponse<PoiSearchResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code: 'K001',
+    message: `Poi: Something went wrong`,
+  },
+})
+
 const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
   ok: true,
   status: 200,
@@ -43,17 +52,41 @@ const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityR
   },
 })
 
-const mockLocationGetAddressDetails = jest.fn((data: any) => {
-  return Promise.resolve({
-    ok: true,
-    status: 200,
-    body: {
-      place_id: `location_placeId:${data.placeId}`,
-      address: {
-        display_address: `location_display_address:${data.placeId}`,
-      },
+const getMockedErrorQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code: 'K001',
+    message: `Availability: Something went wrong`,
+  },
+})
+
+const getMockedLocationAddressDetailsResponse = (
+  data: any
+): HttpResponse<LocationAddressDetailsResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    place_id: `location_placeId:${data.placeId}`,
+    address: {
+      display_address: `location_display_address:${data.placeId}`,
     },
-  }) as Promise<HttpResponse<LocationAddressDetailsResponse>>
+  },
+})
+
+const getMockedErrorLocationAddressDetailsResponse = (
+  data: any
+): HttpResponse<LocationAddressDetailsResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code: 'K001',
+    message: `Location: Something went wrong`,
+  },
+})
+
+const mockLocationGetAddressDetails = jest.fn((data: any) => {
+  return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
 })
 
 const mockPoiSearch = jest.fn((data: any) => {
@@ -139,8 +172,68 @@ describe('Deeplink', () => {
       deeplink.resolve(subscriber)
     }
 
+    const getPoiSubscriberResult = (
+      response: HttpResponse<PoiSearchResponse>,
+      type: string,
+      baseValue: string
+    ) => {
+      const result = response.ok
+        ? {
+            ok: true,
+            data: {
+              placeId: response.body.pois?.[0]?.id,
+              displayAddress: response.body.pois?.[0]?.address.display_address,
+              poiInfo: response.body.pois?.[0],
+            },
+          }
+        : {
+            ok: false,
+            error: response.error,
+          }
+
+      return {
+        done: false,
+        leg: 0,
+        place: {
+          result,
+          type,
+          baseValue,
+        },
+      }
+    }
+
+    const getAddressDetailsSubscriberResult = (
+      response: HttpResponse<LocationAddressDetailsResponse>,
+      type: string,
+      baseValue: string
+    ) => {
+      const result = response.ok
+        ? {
+            ok: true,
+            data: {
+              placeId: response.body.place_id,
+              displayAddress: response.body.address?.display_address,
+              placeInfo: response.body,
+            },
+          }
+        : {
+            ok: false,
+            error: response.error,
+          }
+
+      return {
+        done: false,
+        leg: 0,
+        place: {
+          result,
+          type,
+          baseValue,
+        },
+      }
+    }
+
     it('should not have errors', done => {
-      resolve((result: ResolveResponse) => {
+      resolve(result => {
         if (result.done === true) {
           expect(result.error).toBe(undefined)
         }
@@ -148,7 +241,7 @@ describe('Deeplink', () => {
     })
 
     it('should call search of PoiService twice', done => {
-      resolve((result: ResolveResponse) => {
+      resolve(result => {
         expect(mockPoiSearch).toBeCalledTimes(2)
         expect(mockPoiSearch).toBeCalledWith({
           paginationRowCount: 1,
@@ -164,36 +257,33 @@ describe('Deeplink', () => {
     })
 
     it('should call subscriber with poi data when pickup and dropoff are provided', done => {
-      const getSubscriberResult = (response: any, type: string, baseValue: string) => ({
-        done: false,
-        leg: 0,
-        place: {
-          result: {
-            ok: true,
-            data: {
-              placeId: response.body.pois?.[0]?.id,
-              displayAddress: response.body.pois?.[0]?.address.display_address,
-              poiInfo: response.body.pois?.[0],
-            },
-          },
-          type,
-          baseValue,
-        },
-      })
-
-      resolve((result: ResolveResponse, subscriber) => {
+      resolve((result, subscriber) => {
         expect(subscriber).toBeCalledWith(
-          getSubscriberResult(
+          getPoiSubscriberResult(
             getMockedPoiSearchResponse({ searchKey: firstJourneyLegWithPlaceOnly['leg-1-pickup'] }),
             'pickup',
             firstJourneyLegWithPlaceOnly['leg-1-pickup']
           )
         )
         expect(subscriber).toBeCalledWith(
-          getSubscriberResult(
+          getPoiSubscriberResult(
             getMockedPoiSearchResponse({ searchKey: firstJourneyLegWithPlaceOnly['leg-1-dropoff'] }),
             'dropoff',
             firstJourneyLegWithPlaceOnly['leg-1-dropoff']
+          )
+        )
+      }, done)
+    })
+
+    it('should call subscriber with poi error', done => {
+      mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
+
+      resolve((result, subscriber) => {
+        expect(subscriber).toBeCalledWith(
+          getPoiSubscriberResult(
+            getMockedErrorPoiSearchResponse(),
+            'pickup',
+            firstJourneyLegWithPlaceOnly['leg-1-pickup']
           )
         )
       }, done)
@@ -282,16 +372,7 @@ describe('Deeplink', () => {
     })
 
     it('should not call checkAvailability of QuotesService if call to Poi Service returns error', done => {
-      mockPoiSearch.mockReturnValueOnce(
-        Promise.resolve({
-          ok: false,
-          status: 404,
-          error: {
-            code: 'testCode',
-            message: 'message',
-          },
-        })
-      )
+      mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
 
       resolve((result: ResolveResponse) => {
         expect(mockQuotesCheckAvailability).toBeCalledTimes(0)
@@ -322,6 +403,35 @@ describe('Deeplink', () => {
           expect(mockLocationGetAddressDetails).toBeCalledWith({
             placeId: firstJourneyLegWithPlaceIdOnly['leg-1-dropoff-place_id'],
           })
+        },
+        done,
+        legs
+      )
+    })
+
+    it('should call subscriber with address details response', done => {
+      const legs = [firstJourneyLegWithPlaceIdOnly]
+
+      resolve(
+        (result, subscriber) => {
+          expect(subscriber).toBeCalledWith(
+            getAddressDetailsSubscriberResult(
+              getMockedLocationAddressDetailsResponse({
+                placeId: firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id'],
+              }),
+              'pickupPlaceId',
+              firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id']
+            )
+          )
+          expect(subscriber).toBeCalledWith(
+            getAddressDetailsSubscriberResult(
+              getMockedLocationAddressDetailsResponse({
+                placeId: firstJourneyLegWithPlaceIdOnly['leg-1-dropoff-place_id'],
+              }),
+              'dropoffPlaceId',
+              firstJourneyLegWithPlaceIdOnly['leg-1-dropoff-place_id']
+            )
+          )
         },
         done,
         legs
@@ -384,6 +494,42 @@ describe('Deeplink', () => {
         done,
         legs
       )
+    })
+
+    it('should not call subscriber after unsubscribe was called', async () => {
+      const subscriber = jest.fn()
+      const deeplink = new Deeplink(getSearchString(), {
+        url: 'http://url',
+        getDefaultRequestOptions: () => ({}),
+      })
+
+      const result = deeplink.resolve(subscriber)
+
+      result.unsubscribe()
+
+      await new Promise(resolve => setTimeout(resolve, 10))
+
+      expect(subscriber).toHaveBeenCalledTimes(0)
+    })
+
+    it('should call subscriber 2 times', async () => {
+      mockQuotesCheckAvailability.mockReturnValueOnce(
+        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesAvailabilityResponse()), 20))
+      )
+
+      const subscriber = jest.fn()
+      const deeplink = new Deeplink(getSearchString(), {
+        url: 'http://url',
+        getDefaultRequestOptions: () => ({}),
+      })
+
+      const result = deeplink.resolve(subscriber)
+
+      await new Promise(resolve => setTimeout(resolve, 10))
+
+      result.unsubscribe()
+
+      expect(subscriber).toHaveBeenCalledTimes(2)
     })
   })
 })

@@ -17,6 +17,6 @@ export class LocationService {
       session_token: sessionToken || uuid(),
     }
 
-    return this.http.post<LocationAddressDetailsResponse>(`${this.url}/address-details`, body)
+    return this.http.post<LocationAddressDetailsResponse>(`${this.url}/place-details`, body)
   }
 }
