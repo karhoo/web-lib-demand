@@ -56,6 +56,10 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
   return result
 }
 
+/**
+ * Generates a query string from a Deeplink data
+ *
+ */
 export function generate(deeplink: DeeplinkData): string {
   const legsParams = getJorneyLegsParams(deeplink.legs)
   const passengerInfoParams = getAvailableParams(deeplink.passengerInfo, '', kebabCase)
