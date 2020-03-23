@@ -150,7 +150,7 @@ export class Deeplink {
           handle({
             done: false,
             leg: index,
-            availability: { ok: false, error: { message: errorMessageByCode[codes.DP006] } },
+            availability: { ok: false, error: { message: errorMessageByCode[codes.DP008] } },
           })
 
           return

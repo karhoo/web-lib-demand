@@ -6,6 +6,7 @@ export const codes = {
   DP005: 'DP005',
   DP006: 'DP006',
   DP007: 'DP007',
+  DP008: 'DP008',
 }
 
 export const errorMessageByCode = {
@@ -14,8 +15,9 @@ export const errorMessageByCode = {
   [codes.DP003]: 'Incorrect format',
   [codes.DP004]: 'Timezone is missing',
   [codes.DP005]: 'Incorrect type',
-  [codes.DP006]: 'Unable to check availability',
+  [codes.DP006]: 'Same pickup and dropoff',
   [codes.DP007]: 'No POI in response',
+  [codes.DP008]: 'Unable to check availability',
 }
 
 export function getError(code: string, path: string) {

@@ -93,6 +93,8 @@ export function validateLeg(leg: JourneyLeg, path: string) {
 
   if (!pickUpFields.length && !dropoffFields.length) {
     errors.push(getError(codes.DP001, path))
+  } else if (pickUpFields[0] === dropoffFields[0]) {
+    errors.push(getError(codes.DP006, path))
   }
 
   const collectErrors = (currentErrors: ValidationError[]) =>
