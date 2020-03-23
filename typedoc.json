@@ -1,7 +1,7 @@
 {
   "mode":"modules",
   "out":"docs",
-  "exclude":["**/node_modules/**","**/*.spec.ts","**/*.test.ts"],
+  "exclude":["**/node_modules/**","**/*.spec.ts","**/*.test.ts", "**/*testData*"],
   "name":"web-lib-demand",
   "excludePrivate":true
 }
