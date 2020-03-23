@@ -6,13 +6,18 @@ import {
   ResolveResponse,
   ResolvePlaceResult,
   ResolveAvailabilityResult,
-  PlaceField,
 } from './types'
 import { QuotesAvailabilityParams } from './api/types'
 import { HttpService, LocationService, PoiService, QuotesService } from './api'
 import { parse } from './parse'
 import { validate } from './validate'
 import { codes, errorMessageByCode } from './errors'
+
+const pickupPlaceFields = ['pickup' as const, 'pickupKpoi' as const, 'pickupPlaceId' as const]
+const dropoffPlaceFields = ['dropoff' as const, 'dropoffKpoi' as const, 'dropoffPlaceId' as const]
+
+type PlaceField = typeof pickupPlaceFields[0] | typeof dropoffPlaceFields[0]
+type SearchPlaceData = { key: PlaceField; value: string }
 
 type PlacePromisesList = {
   key: string
@@ -43,21 +48,24 @@ function getPlaceCacheKey(key: PlaceField) {
   return key.replace(/^pickup|dropoff/, '') || 'default'
 }
 
-function resolvePromise<T extends object, Y, K extends Array<Z & { promise: Promise<Y> }>, Z extends object>(
-  data: T,
+function isPickupPlace(key: PlaceField) {
+  return key.indexOf('pickup') !== -1
+}
+
+function resolvePromise<T extends object, Y, K extends Array<T & { promise: Promise<Y> }>>(
+  cacheParams: T,
   promises: K,
-  getNewPromise: (data: T) => Promise<Y>,
-  cacheParams: Z
+  getNewPromise: () => Promise<Y>
 ) {
   for (const item of promises) {
     if (
-      (Object.getOwnPropertyNames(cacheParams) as Array<keyof Z>).every(key => cacheParams[key] === item[key])
+      (Object.getOwnPropertyNames(cacheParams) as Array<keyof T>).every(key => cacheParams[key] === item[key])
     ) {
       return item.promise
     }
   }
 
-  const promise = getNewPromise(data)
+  const promise = getNewPromise()
 
   promises.push({ ...cacheParams, promise })
 
@@ -111,24 +119,24 @@ export class Deeplink {
 
     Promise.all(
       this.deeplinkData.legs.map(async (leg, index) => {
-        const activePickup = getActivePlace(leg, ['pickup', 'pickupKpoi', 'pickupPlaceId'])
-        const activeDropoff = getActivePlace(leg, ['dropoff', 'dropoffKpoi', 'dropoffPlaceId'])
+        const activePickup = getActivePlace(leg, pickupPlaceFields)
+        const activeDropoff = getActivePlace(leg, dropoffPlaceFields)
 
-        const getPromise = async (data?: { key: PlaceField; value: string }) => {
-          if (!data) {
+        const getPromise = async (searchData?: SearchPlaceData) => {
+          if (!searchData) {
             return Promise.resolve(undefined)
           }
 
-          const { key, value } = data
-          const cacheParams = { key: getPlaceCacheKey(key), value }
-          const result = await resolvePromise(
-            data,
-            placePromises,
-            value => this.resolvePlace(value),
-            cacheParams
+          const { key, value } = searchData
+          const result = await resolvePromise({ key: getPlaceCacheKey(key), value }, placePromises, () =>
+            this.resolvePlace(searchData)
           )
 
-          handle({ done: false, leg: index, place: { result, type: key, baseValue: value } })
+          handle({
+            done: false,
+            leg: index,
+            place: { ...result, isPickup: isPickupPlace(key), searchValue: value },
+          })
 
           return result
         }
@@ -148,7 +156,7 @@ export class Deeplink {
           return
         }
 
-        const params: QuotesAvailabilityParams = {
+        const availabilityParams: QuotesAvailabilityParams = {
           originPlaceId: pickupData?.ok
             ? pickupData.data.placeId
             : dropoffData?.ok
@@ -158,14 +166,11 @@ export class Deeplink {
           dateRequired: leg.pickupTime,
         }
 
-        const data = await resolvePromise(
-          params,
-          availabilityPromises,
-          value => this.checkAvailability(value),
-          params
+        const availability = await resolvePromise(availabilityParams, availabilityPromises, () =>
+          this.checkAvailability(availabilityParams)
         )
 
-        handle({ done: false, leg: index, availability: data })
+        handle({ done: false, leg: index, availability })
       })
     )
       .then(() => {
@@ -180,11 +185,11 @@ export class Deeplink {
     return { unsubscribe }
   }
 
-  private resolvePlace(data: { key: PlaceField; value: string }) {
+  private resolvePlace(data: SearchPlaceData) {
     return data.key.indexOf('PlaceId') !== -1 ? this.resolveByPlaceId(data) : this.resolveByPoi(data)
   }
 
-  private async resolveByPlaceId(item: { key: PlaceField; value: string }): Promise<ResolvePlaceResult> {
+  private async resolveByPlaceId(item: SearchPlaceData): Promise<ResolvePlaceResult> {
     const response = await this.locationService.getAddressDetails({ placeId: item.value })
 
     if (!response.ok) {
@@ -203,7 +208,7 @@ export class Deeplink {
     }
   }
 
-  private async resolveByPoi(item: { key: PlaceField; value: string }): Promise<ResolvePlaceResult> {
+  private async resolveByPoi(item: SearchPlaceData): Promise<ResolvePlaceResult> {
     const response = await this.poiService.search({
       paginationRowCount: 1,
       paginationOffset: 0,

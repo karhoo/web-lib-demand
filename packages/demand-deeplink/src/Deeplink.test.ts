@@ -105,8 +105,8 @@ describe('Deeplink', () => {
 
     const getPoiSubscriberResult = (
       response: HttpResponse<PoiSearchResponse>,
-      type: string,
-      baseValue: string
+      isPickup: boolean,
+      searchValue: string
     ) => {
       const result = response.ok
         ? {
@@ -126,17 +126,17 @@ describe('Deeplink', () => {
         done: false,
         leg: 0,
         place: {
-          result,
-          type,
-          baseValue,
+          ...result,
+          isPickup,
+          searchValue,
         },
       }
     }
 
     const getAddressDetailsSubscriberResult = (
       response: HttpResponse<LocationAddressDetailsResponse>,
-      type: string,
-      baseValue: string
+      isPickup: boolean,
+      searchValue: string
     ) => {
       const result = response.ok
         ? {
@@ -156,9 +156,9 @@ describe('Deeplink', () => {
         done: false,
         leg: 0,
         place: {
-          result,
-          type,
-          baseValue,
+          ...result,
+          isPickup,
+          searchValue,
         },
       }
     }
@@ -192,14 +192,14 @@ describe('Deeplink', () => {
         expect(subscriber).toBeCalledWith(
           getPoiSubscriberResult(
             getMockedPoiSearchResponse({ searchKey: firstJourneyLegWithPlaceOnly['leg-1-pickup'] }),
-            'pickup',
+            true,
             firstJourneyLegWithPlaceOnly['leg-1-pickup']
           )
         )
         expect(subscriber).toBeCalledWith(
           getPoiSubscriberResult(
             getMockedPoiSearchResponse({ searchKey: firstJourneyLegWithPlaceOnly['leg-1-dropoff'] }),
-            'dropoff',
+            false,
             firstJourneyLegWithPlaceOnly['leg-1-dropoff']
           )
         )
@@ -213,7 +213,7 @@ describe('Deeplink', () => {
         expect(subscriber).toBeCalledWith(
           getPoiSubscriberResult(
             getMockedErrorPoiSearchResponse(),
-            'pickup',
+            true,
             firstJourneyLegWithPlaceOnly['leg-1-pickup']
           )
         )
@@ -350,7 +350,7 @@ describe('Deeplink', () => {
               getMockedLocationAddressDetailsResponse({
                 placeId: firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id'],
               }),
-              'pickupPlaceId',
+              true,
               firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id']
             )
           )
@@ -359,7 +359,7 @@ describe('Deeplink', () => {
               getMockedLocationAddressDetailsResponse({
                 placeId: firstJourneyLegWithPlaceIdOnly['leg-1-dropoff-place_id'],
               }),
-              'dropoffPlaceId',
+              false,
               firstJourneyLegWithPlaceIdOnly['leg-1-dropoff-place_id']
             )
           )

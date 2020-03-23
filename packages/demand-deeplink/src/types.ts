@@ -58,10 +58,6 @@ export type DeeplinkOptions = {
   getDefaultRequestOptions: () => DefaultRequestOptions
 }
 
-type PickupField = 'pickup' | 'pickupKpoi' | 'pickupPlaceId'
-type DropoffField = 'dropoff' | 'dropoffKpoi' | 'dropoffPlaceId'
-export type PlaceField = PickupField | DropoffField
-
 type ResolveError = {
   ok: false
   error: {
@@ -82,11 +78,7 @@ type ResolvePlace = {
 
 export type ResolvePlaceResult = ResolvePlace | ResolveError
 
-type ResolvePlaceValue = {
-  type: PlaceField
-  baseValue: string
-  result: ResolvePlaceResult
-}
+type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
 
 type ResolveAvailability = {
   ok: true

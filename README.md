@@ -13,6 +13,14 @@ npm run bootstrap
 npx lerna create [name]
 ```
 
+## Update version of the package
+
+Please update version before merging to master
+
+```sh
+npx lerna version [major | minor | patch]
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
