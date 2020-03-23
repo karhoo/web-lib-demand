@@ -109,7 +109,7 @@ describe('HttpService', () => {
 
       const http = new HttpService(url, () => options)
 
-      const response = await http.get(path)
+      await http.get(path)
 
       expect(fetchMock).toBeCalledWith(expectedPath, {
         credentials: 'include',

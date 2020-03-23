@@ -27,7 +27,7 @@ const webLibDemandHelloWorld = require('@karhoo/web-lib-demand-hello-world');
 
 ▸ **helloWorld**(`message`: string): *[HelloWorld](../interfaces/_karhoo_web_lib_demand_hello_world.helloworld.md)*
 
-*Defined in [web-lib-demand-hello-world/src/helloWorld.ts:5](https://github.com/karhoo/web-lib-demand/blob/d9de596/packages/web-lib-demand-hello-world/src/helloWorld.ts#L5)*
+*Defined in [web-lib-demand-hello-world/src/helloWorld.ts:5](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/web-lib-demand-hello-world/src/helloWorld.ts#L5)*
 
 **Parameters:**
 
@@ -43,7 +43,7 @@ ___
 
 ▸ **run**(`message`: string): *void*
 
-*Defined in [web-lib-demand-hello-world/src/index.ts:3](https://github.com/karhoo/web-lib-demand/blob/d9de596/packages/web-lib-demand-hello-world/src/index.ts#L3)*
+*Defined in [web-lib-demand-hello-world/src/index.ts:3](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/web-lib-demand-hello-world/src/index.ts#L3)*
 
 **Parameters:**
 

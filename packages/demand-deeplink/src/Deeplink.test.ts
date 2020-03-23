@@ -172,7 +172,7 @@ describe('Deeplink', () => {
     })
 
     it('should call search of PoiService twice', done => {
-      resolve(result => {
+      resolve(() => {
         expect(mockPoiSearch).toBeCalledTimes(2)
         expect(mockPoiSearch).toBeCalledWith({
           paginationRowCount: 1,
@@ -221,7 +221,7 @@ describe('Deeplink', () => {
     })
 
     it('should call checkAvailability of QuotesService once', done => {
-      resolve(result => {
+      resolve(() => {
         expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
         expect(mockQuotesCheckAvailability).toBeCalledWith({
           originPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
@@ -252,7 +252,7 @@ describe('Deeplink', () => {
       const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-dropoff': undefined }]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
           expect(mockQuotesCheckAvailability).toBeCalledWith({
             originPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
@@ -270,7 +270,7 @@ describe('Deeplink', () => {
       ]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
           expect(mockQuotesCheckAvailability).toBeCalledWith({
             originPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
@@ -294,7 +294,7 @@ describe('Deeplink', () => {
       ]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockQuotesCheckAvailability).toBeCalledTimes(2)
         },
         done,
@@ -305,7 +305,7 @@ describe('Deeplink', () => {
     it('should not call checkAvailability of QuotesService if call to Poi Service returns error', done => {
       mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
 
-      resolve((result: ResolveResponse) => {
+      resolve(() => {
         expect(mockQuotesCheckAvailability).toBeCalledTimes(0)
       }, done)
     })
@@ -314,7 +314,7 @@ describe('Deeplink', () => {
       const legs = [firstJourneyLegWithPlaceOnly, firstJourneyLegWithPlaceOnly]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
         },
         done,
@@ -326,7 +326,7 @@ describe('Deeplink', () => {
       const legs = [firstJourneyLegWithPlaceIdOnly]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockLocationGetAddressDetails).toBeCalledTimes(2)
           expect(mockLocationGetAddressDetails).toBeCalledWith({
             placeId: firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id'],
@@ -373,7 +373,7 @@ describe('Deeplink', () => {
       const legs = [firstJourneyLegWithKpoiOnly]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockPoiSearch).toBeCalledTimes(2)
         },
         done,
@@ -396,7 +396,7 @@ describe('Deeplink', () => {
       ]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockPoiSearch).toBeCalledTimes(3)
         },
         done,
@@ -419,7 +419,7 @@ describe('Deeplink', () => {
       ]
 
       resolve(
-        (result: ResolveResponse) => {
+        () => {
           expect(mockPoiSearch).toBeCalledTimes(2)
         },
         done,
