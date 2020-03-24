@@ -141,6 +141,14 @@ describe('parse', () => {
       ])
     })
 
+    it('should return errors when pickup is the same as dropoff', () => {
+      const pickup = 'place'
+
+      expect(validateLeg(getData({ pickup, dropoff: pickup }), 'legs.0')).toEqual([
+        expectedError(codes.DP006, 'legs.0'),
+      ])
+    })
+
     it('should return errors when there is pickup but it is empty string', () => {
       expect(validateLeg(getData({ pickup: '', dropoff: undefined }), 'legs.0')).toEqual([
         expectedError(codes.DP005, 'legs.0.pickup'),

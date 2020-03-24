@@ -45,3 +45,87 @@ export type ValidationResponse = {
   ok: boolean
   errors?: ValidationError[]
 }
+
+export type RequestOptions = Omit<RequestInit, 'window'> & {
+  method: string
+  headers?: Record<string, string>
+}
+
+export type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'signal'>
+
+export type DeeplinkOptions = {
+  url: string
+  getDefaultRequestOptions: () => DefaultRequestOptions
+}
+
+type ResolveError = {
+  ok: false
+  error: {
+    code?: string
+    message: string
+  }
+}
+
+type ResolvePlace = {
+  ok: true
+  data: {
+    placeId: string
+    displayAddress: string
+    placeInfo?: LocationAddressDetailsResponse
+    poiInfo?: PoiResponse
+  }
+}
+
+export type ResolvePlaceResult = ResolvePlace | ResolveError
+
+type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
+
+type ResolveAvailability = {
+  ok: true
+  data: {
+    placeId: string
+    destinationPlaceId?: string
+    date?: string
+  }
+}
+
+export type ResolveAvailabilityResult = ResolveAvailability | ResolveError
+
+export type ResolveResponse =
+  | {
+      done: false
+      leg: number
+      place?: ResolvePlaceValue
+      availability?: ResolveAvailabilityResult
+    }
+  | {
+      done: true
+      error?: Error
+    }
+
+// ---------------------------------------------------------
+// TODO: This is temporary API responses that are not full
+// They should be moved outside of this package
+
+export type LocationAddressDetailsResponse = {
+  place_id: string
+  address?: {
+    display_address: string
+  }
+}
+
+export type PoiResponse = {
+  id?: string
+  address: {
+    display_address: string
+  }
+}
+
+export type PoiSearchResponse = {
+  pois?: PoiResponse[]
+}
+
+export type QuotesAvailabilityResponse = {
+  availabilities?: [{ availability_id?: string }]
+  categories?: string[]
+}
