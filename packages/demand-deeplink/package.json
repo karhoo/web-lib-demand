@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-deeplink",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Library to work with deeplink",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",
