@@ -80,16 +80,20 @@ export type ResolvePlaceResult = ResolvePlace | ResolveError
 
 type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
 
-type ResolveAvailability = {
-  ok: true
-  data: {
-    placeId: string
-    destinationPlaceId?: string
-    date?: string
-  }
+type ResolveAvailabilityParams = {
+  placeId: string
+  destinationPlaceId?: string
+  date?: string
 }
 
-export type ResolveAvailabilityResult = ResolveAvailability | ResolveError
+type ResolveAvailability = {
+  ok: true
+  data: ResolveAvailabilityParams
+}
+
+type ResolveAvailabilityError = ResolveError & { searchedParams?: ResolveAvailabilityParams }
+
+export type ResolveAvailabilityResult = ResolveAvailability | ResolveAvailabilityError
 
 export type ResolveResponse =
   | {
@@ -112,6 +116,16 @@ export type LocationAddressDetailsResponse = {
   address?: {
     display_address: string
   }
+}
+
+export type LocationAddressAutocompleteResponseItem = {
+  place_id: string
+  display_address: string
+  type: string
+}
+
+export type LocationAddressAutocompleteResponse = {
+  locations: LocationAddressAutocompleteResponseItem[]
 }
 
 export type PoiResponse = {

@@ -11,7 +11,12 @@ import {
   secondJourneyLeg,
   passengerInfo,
 } from './testData'
-import { LocationAddressDetailsResponse, PoiSearchResponse, ResolveResponse } from './types'
+import {
+  LocationAddressDetailsResponse,
+  PoiSearchResponse,
+  ResolveResponse,
+  LocationAddressAutocompleteResponse,
+} from './types'
 
 import { LocationService, PoiService, QuotesService } from './api'
 import { HttpResponse } from './api/types'
@@ -21,11 +26,15 @@ import {
   mockHttpPut,
   mockHttpRemove,
   mockLocationGetAddressDetails,
+  mockLocationGetAddressAutocompleteData,
   mockPoiSearch,
   mockQuotesCheckAvailability,
   getMockedQuotesAvailabilityResponse,
   getMockedPoiSearchResponse,
   getMockedLocationAddressDetailsResponse,
+  getMockedErrorLocationAddressDetailsResponse,
+  getMockedLocationAddressAutocompleteResponse,
+  getMockedErrorLocationAddressAutocompleteResponse,
   getMockedErrorPoiSearchResponse,
 } from './api/mocks'
 
@@ -43,6 +52,7 @@ jest.mock('./api', () => ({
   LocationService: jest.fn().mockImplementation(() => {
     return {
       getAddressDetails: mockLocationGetAddressDetails,
+      getAddressAutocompleteData: mockLocationGetAddressAutocompleteData,
     }
   }),
   PoiService: jest.fn().mockImplementation(() => {
@@ -78,6 +88,7 @@ describe('Deeplink', () => {
     mocked(QuotesService).mockClear()
 
     mockLocationGetAddressDetails.mockClear()
+    mockLocationGetAddressAutocompleteData.mockClear()
     mockPoiSearch.mockClear()
     mockQuotesCheckAvailability.mockClear()
   })
@@ -115,6 +126,35 @@ describe('Deeplink', () => {
               placeId: response.body.pois?.[0]?.id,
               displayAddress: response.body.pois?.[0]?.address.display_address,
               poiInfo: response.body.pois?.[0],
+            },
+          }
+        : {
+            ok: false,
+            error: response.error,
+          }
+
+      return {
+        done: false,
+        leg: 0,
+        place: {
+          ...result,
+          isPickup,
+          searchValue,
+        },
+      }
+    }
+
+    const getLocationGetAddressAutocompleteData = (
+      response: HttpResponse<LocationAddressAutocompleteResponse>,
+      isPickup: boolean,
+      searchValue: string
+    ) => {
+      const result = response.ok
+        ? {
+            ok: true,
+            data: {
+              placeId: response.body.locations[0].place_id,
+              displayAddress: response.body.locations[0].display_address,
             },
           }
         : {
@@ -171,34 +211,34 @@ describe('Deeplink', () => {
       }, done)
     })
 
-    it('should call search of PoiService twice', done => {
+    it('should call getAddressAutocompleteData of LocationService twice', done => {
       resolve(() => {
-        expect(mockPoiSearch).toBeCalledTimes(2)
-        expect(mockPoiSearch).toBeCalledWith({
-          paginationRowCount: 1,
-          paginationOffset: 0,
-          searchKey: firstJourneyLegWithPlaceOnly['leg-1-pickup'],
+        expect(mockLocationGetAddressAutocompleteData).toBeCalledTimes(2)
+        expect(mockLocationGetAddressAutocompleteData).toBeCalledWith({
+          query: firstJourneyLegWithPlaceOnly['leg-1-pickup'],
         })
-        expect(mockPoiSearch).toBeCalledWith({
-          paginationRowCount: 1,
-          paginationOffset: 0,
-          searchKey: firstJourneyLegWithPlaceOnly['leg-1-dropoff'],
+        expect(mockLocationGetAddressAutocompleteData).toBeCalledWith({
+          query: firstJourneyLegWithPlaceOnly['leg-1-dropoff'],
         })
       }, done)
     })
 
-    it('should call subscriber with poi data when pickup and dropoff are provided', done => {
+    it('should call subscriber with address autocomplete data when pickup and dropoff are provided', done => {
       resolve((result, subscriber) => {
         expect(subscriber).toBeCalledWith(
-          getPoiSubscriberResult(
-            getMockedPoiSearchResponse({ searchKey: firstJourneyLegWithPlaceOnly['leg-1-pickup'] }),
+          getLocationGetAddressAutocompleteData(
+            getMockedLocationAddressAutocompleteResponse({
+              query: firstJourneyLegWithPlaceOnly['leg-1-pickup'],
+            }),
             true,
             firstJourneyLegWithPlaceOnly['leg-1-pickup']
           )
         )
         expect(subscriber).toBeCalledWith(
-          getPoiSubscriberResult(
-            getMockedPoiSearchResponse({ searchKey: firstJourneyLegWithPlaceOnly['leg-1-dropoff'] }),
+          getLocationGetAddressAutocompleteData(
+            getMockedLocationAddressAutocompleteResponse({
+              query: firstJourneyLegWithPlaceOnly['leg-1-dropoff'],
+            }),
             false,
             firstJourneyLegWithPlaceOnly['leg-1-dropoff']
           )
@@ -206,13 +246,15 @@ describe('Deeplink', () => {
       }, done)
     })
 
-    it('should call subscriber with poi error', done => {
-      mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
+    it('should call subscriber with address autocomplete error', done => {
+      mockLocationGetAddressAutocompleteData.mockReturnValueOnce(
+        Promise.resolve(getMockedErrorLocationAddressAutocompleteResponse())
+      )
 
       resolve((result, subscriber) => {
         expect(subscriber).toBeCalledWith(
-          getPoiSubscriberResult(
-            getMockedErrorPoiSearchResponse(),
+          getLocationGetAddressAutocompleteData(
+            getMockedErrorLocationAddressAutocompleteResponse(),
             true,
             firstJourneyLegWithPlaceOnly['leg-1-pickup']
           )
@@ -220,12 +262,83 @@ describe('Deeplink', () => {
       }, done)
     })
 
+    it('should call search of PoiService twice', done => {
+      const legs = [firstJourneyLegWithKpoiOnly]
+
+      resolve(
+        () => {
+          expect(mockPoiSearch).toBeCalledTimes(2)
+          expect(mockPoiSearch).toBeCalledWith({
+            paginationOffset: 0,
+            paginationRowCount: 1,
+            searchKey: firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
+          })
+          expect(mockPoiSearch).toBeCalledWith({
+            paginationOffset: 0,
+            paginationRowCount: 1,
+            searchKey: firstJourneyLegWithKpoiOnly['leg-1-dropoff-kpoi'],
+          })
+        },
+        done,
+        legs
+      )
+    })
+
+    it('should call subscriber with poi data when pickupKpoi and dropoffKpoi are provided', done => {
+      const legs = [firstJourneyLegWithKpoiOnly]
+
+      resolve(
+        (result, subscriber) => {
+          expect(subscriber).toBeCalledWith(
+            getPoiSubscriberResult(
+              getMockedPoiSearchResponse({
+                searchKey: firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
+              }),
+              true,
+              firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi']
+            )
+          )
+          expect(subscriber).toBeCalledWith(
+            getPoiSubscriberResult(
+              getMockedPoiSearchResponse({
+                searchKey: firstJourneyLegWithKpoiOnly['leg-1-dropoff-kpoi'],
+              }),
+              false,
+              firstJourneyLegWithKpoiOnly['leg-1-dropoff-kpoi']
+            )
+          )
+        },
+        done,
+        legs
+      )
+    })
+
+    it('should call subscriber with poi error', done => {
+      const legs = [firstJourneyLegWithKpoiOnly]
+
+      mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
+
+      resolve(
+        (result, subscriber) => {
+          expect(subscriber).toBeCalledWith(
+            getPoiSubscriberResult(
+              getMockedErrorPoiSearchResponse(),
+              true,
+              firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi']
+            )
+          )
+        },
+        done,
+        legs
+      )
+    })
+
     it('should call checkAvailability of QuotesService once', done => {
       resolve(() => {
         expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
         expect(mockQuotesCheckAvailability).toBeCalledWith({
-          originPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
-          destinationPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
+          originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
+          destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
           dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
         })
       }, done)
@@ -239,8 +352,8 @@ describe('Deeplink', () => {
           availability: {
             ok: true,
             data: {
-              placeId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
-              destinationPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
+              placeId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
+              destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
               date: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
             },
           },
@@ -255,7 +368,7 @@ describe('Deeplink', () => {
         () => {
           expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
           expect(mockQuotesCheckAvailability).toBeCalledWith({
-            originPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
+            originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
             dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
           })
         },
@@ -273,7 +386,7 @@ describe('Deeplink', () => {
         () => {
           expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
           expect(mockQuotesCheckAvailability).toBeCalledWith({
-            originPlaceId: `poi_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
+            originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
           })
         },
         done,
@@ -303,11 +416,17 @@ describe('Deeplink', () => {
     })
 
     it('should not call checkAvailability of QuotesService if call to Poi Service returns error', done => {
+      const legs = [firstJourneyLegWithKpoiOnly]
+
       mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
 
-      resolve(() => {
-        expect(mockQuotesCheckAvailability).toBeCalledTimes(0)
-      }, done)
+      resolve(
+        () => {
+          expect(mockQuotesCheckAvailability).toBeCalledTimes(0)
+        },
+        done,
+        legs
+      )
     })
 
     it('should call checkAvailability of QuotesService once when both legs has the same search params', done => {
@@ -369,6 +488,28 @@ describe('Deeplink', () => {
       )
     })
 
+    it('should call subscriber with address details error response', done => {
+      const legs = [firstJourneyLegWithPlaceIdOnly]
+
+      mockLocationGetAddressDetails.mockReturnValueOnce(
+        Promise.resolve(getMockedErrorLocationAddressDetailsResponse())
+      )
+
+      resolve(
+        (result, subscriber) => {
+          expect(subscriber).toBeCalledWith(
+            getAddressDetailsSubscriberResult(
+              getMockedErrorLocationAddressDetailsResponse(),
+              true,
+              firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id']
+            )
+          )
+        },
+        done,
+        legs
+      )
+    })
+
     it('should call search of PoiService twice when kpoi is provided', done => {
       const legs = [firstJourneyLegWithKpoiOnly]
 
@@ -383,15 +524,15 @@ describe('Deeplink', () => {
 
     it('should call search of PoiService three times', done => {
       const legs = [
-        firstJourneyLegWithPlaceOnly,
+        firstJourneyLegWithKpoiOnly,
         {
           ...secondJourneyLeg,
-          'leg-2-pickup-kpoi': undefined,
+          'leg-2-pickup': undefined,
           'leg-2-pickup-place_id': undefined,
-          'leg-2-dropoff-kpoi': undefined,
+          'leg-2-dropoff': undefined,
           'leg-2-dropoff-place_id': undefined,
-          'leg-2-pickup': firstJourneyLegWithPlaceOnly['leg-1-pickup'],
-          'leg-2-dropoff': 'Some random place',
+          'leg-2-pickup-kpoi': firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
+          'leg-2-dropoff-kpoi': 'Some random place',
         },
       ]
 
@@ -406,15 +547,15 @@ describe('Deeplink', () => {
 
     it('should call search of PoiService two times if first journey is opposite to second', done => {
       const legs = [
-        firstJourneyLegWithPlaceOnly,
+        firstJourneyLegWithKpoiOnly,
         {
           ...secondJourneyLeg,
-          'leg-2-pickup-kpoi': undefined,
+          'leg-2-pickup': undefined,
           'leg-2-pickup-place_id': undefined,
-          'leg-2-dropoff-kpoi': undefined,
+          'leg-2-dropoff': undefined,
           'leg-2-dropoff-place_id': undefined,
-          'leg-2-pickup': firstJourneyLegWithPlaceOnly['leg-1-dropoff'],
-          'leg-2-dropoff': firstJourneyLegWithPlaceOnly['leg-1-pickup'],
+          'leg-2-pickup-kpoi': firstJourneyLegWithKpoiOnly['leg-1-dropoff-kpoi'],
+          'leg-2-dropoff-kpoi': firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
         },
       ]
 
