@@ -5,9 +5,9 @@ import {
   DeeplinkOptions,
   ResolveResponse,
   ResolvePlaceResult,
+  ResolveAvailabilityParams,
   ResolveAvailabilityResult,
 } from './types'
-import { QuotesAvailabilityParams } from './api/types'
 import { HttpService, LocationService, PoiService, QuotesService } from './api'
 import { parse } from './parse'
 import { validate } from './validate'
@@ -156,7 +156,7 @@ export class Deeplink {
           return
         }
 
-        const availabilityParams: QuotesAvailabilityParams = {
+        const availabilityParams: ResolveAvailabilityParams = {
           originPlaceId: pickupData?.ok
             ? pickupData.data.placeId
             : dropoffData?.ok
@@ -253,14 +253,11 @@ export class Deeplink {
       : { ok: false, error: { message: errorMessageByCode[codes.DP007] } }
   }
 
-  private async checkAvailability(data: QuotesAvailabilityParams): Promise<ResolveAvailabilityResult> {
+  private async checkAvailability(data: ResolveAvailabilityParams): Promise<ResolveAvailabilityResult> {
     const response = await this.quotesService.checkAvailability(data)
-    const { originPlaceId, destinationPlaceId, dateRequired } = data
 
-    const searchedParams = { placeId: originPlaceId, destinationPlaceId, date: dateRequired }
+    if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 
-    if (!response.ok) return { ok: false, error: response.error, searchedParams }
-
-    return { ok: true, data: searchedParams }
+    return { ok: true, searchedParams: data }
   }
 }

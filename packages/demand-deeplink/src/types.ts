@@ -80,15 +80,15 @@ export type ResolvePlaceResult = ResolvePlace | ResolveError
 
 type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
 
-type ResolveAvailabilityParams = {
-  placeId: string
+export type ResolveAvailabilityParams = {
+  originPlaceId: string
   destinationPlaceId?: string
-  date?: string
+  dateRequired?: string
 }
 
 type ResolveAvailability = {
   ok: true
-  data: ResolveAvailabilityParams
+  searchedParams: ResolveAvailabilityParams
 }
 
 type ResolveAvailabilityError = ResolveError & { searchedParams?: ResolveAvailabilityParams }

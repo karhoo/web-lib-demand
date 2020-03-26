@@ -351,10 +351,10 @@ describe('Deeplink', () => {
           leg: 0,
           availability: {
             ok: true,
-            data: {
-              placeId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
+            searchedParams: {
+              originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
               destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
-              date: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
+              dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
             },
           },
         })
