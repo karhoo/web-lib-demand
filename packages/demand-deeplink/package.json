@@ -13,6 +13,7 @@
     "dist/*.js",
     "dist/*.js.map",
     "dist/types.d.ts",
+    "dist/index.d.ts",
     "src"
   ],
   "module": "dist/demand-deeplink.esm.js",
