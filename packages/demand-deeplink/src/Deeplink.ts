@@ -5,9 +5,9 @@ import {
   DeeplinkOptions,
   ResolveResponse,
   ResolvePlaceResult,
+  ResolveAvailabilityParams,
   ResolveAvailabilityResult,
 } from './types'
-import { QuotesAvailabilityParams } from './api/types'
 import { HttpService, LocationService, PoiService, QuotesService } from './api'
 import { parse } from './parse'
 import { validate } from './validate'
@@ -156,7 +156,7 @@ export class Deeplink {
           return
         }
 
-        const availabilityParams: QuotesAvailabilityParams = {
+        const availabilityParams: ResolveAvailabilityParams = {
           originPlaceId: pickupData?.ok
             ? pickupData.data.placeId
             : dropoffData?.ok
@@ -186,7 +186,11 @@ export class Deeplink {
   }
 
   private resolvePlace(data: SearchPlaceData) {
-    return data.key.indexOf('PlaceId') !== -1 ? this.resolveByPlaceId(data) : this.resolveByPoi(data)
+    if (data.key.indexOf('PlaceId') !== -1) {
+      return this.resolveByPlaceId(data)
+    }
+
+    return data.key.indexOf('Kpoi') !== -1 ? this.resolveByPoi(data) : this.resolveByAddressAutocoplete(data)
   }
 
   private async resolveByPlaceId(item: SearchPlaceData): Promise<ResolvePlaceResult> {
@@ -226,20 +230,34 @@ export class Deeplink {
       : {
           ok: true,
           data: {
-            placeId: item.key.indexOf('Kpoi') === -1 ? poi.id : configurePlaceId(poi.id),
+            placeId: configurePlaceId(poi.id),
             displayAddress: poi.address.display_address,
             poiInfo: poi,
           },
         }
   }
 
-  private async checkAvailability(data: QuotesAvailabilityParams): Promise<ResolveAvailabilityResult> {
+  private async resolveByAddressAutocoplete(item: SearchPlaceData): Promise<ResolvePlaceResult> {
+    const response = await this.locationService.getAddressAutocompleteData({
+      query: item.value,
+    })
+
+    if (!response.ok) {
+      return { ok: false, error: response.error }
+    }
+
+    const location = response.body.locations?.[0]
+
+    return location
+      ? { ok: true, data: { placeId: location.place_id, displayAddress: location.display_address } }
+      : { ok: false, error: { message: errorMessageByCode[codes.DP007] } }
+  }
+
+  private async checkAvailability(data: ResolveAvailabilityParams): Promise<ResolveAvailabilityResult> {
     const response = await this.quotesService.checkAvailability(data)
 
-    if (!response.ok) return { ok: false, error: response.error }
+    if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 
-    const { originPlaceId, destinationPlaceId, dateRequired } = data
-
-    return { ok: true, data: { placeId: originPlaceId, destinationPlaceId, date: dateRequired } }
+    return { ok: true, searchedParams: data }
   }
 }

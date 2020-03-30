@@ -25,7 +25,7 @@
 
 ▸ **get**<**T**>(`url`: string, `query?`: [Query](../modules/_karhoo_demand_deeplink.md#query)): *Promise‹[HttpResponse](../modules/_karhoo_demand_deeplink.md#httpresponse)‹T››*
 
-*Defined in [demand-deeplink/src/api/types.ts:25](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/types.ts#L25)*
+*Defined in [demand-deeplink/src/api/types.ts:25](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/types.ts#L25)*
 
 **Type parameters:**
 
@@ -46,7 +46,7 @@ ___
 
 ▸ **post**<**T**>(`url`: string, `body`: object): *Promise‹[HttpResponse](../modules/_karhoo_demand_deeplink.md#httpresponse)‹T››*
 
-*Defined in [demand-deeplink/src/api/types.ts:26](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/types.ts#L26)*
+*Defined in [demand-deeplink/src/api/types.ts:26](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/types.ts#L26)*
 
 **Type parameters:**
 
@@ -67,7 +67,7 @@ ___
 
 ▸ **put**<**T**>(`url`: string, `body`: object): *Promise‹[HttpResponse](../modules/_karhoo_demand_deeplink.md#httpresponse)‹T››*
 
-*Defined in [demand-deeplink/src/api/types.ts:27](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/types.ts#L27)*
+*Defined in [demand-deeplink/src/api/types.ts:27](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/types.ts#L27)*
 
 **Type parameters:**
 
@@ -88,7 +88,7 @@ ___
 
 ▸ **remove**<**T**>(`url`: string): *Promise‹[HttpResponse](../modules/_karhoo_demand_deeplink.md#httpresponse)‹T››*
 
-*Defined in [demand-deeplink/src/api/types.ts:28](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/types.ts#L28)*
+*Defined in [demand-deeplink/src/api/types.ts:28](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/types.ts#L28)*
 
 **Type parameters:**
 

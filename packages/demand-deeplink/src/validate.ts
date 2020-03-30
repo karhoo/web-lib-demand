@@ -108,6 +108,8 @@ export function validateLeg(leg: JourneyLeg, path: string) {
   if (pickUpFields.length) {
     collectErrors(validateRoute(pickUpFields, 'pickup'))
     collectErrors(validatePickupTime(leg.pickupTime))
+  } else if (!isUndefined(leg.pickupTime)) {
+    collectErrors([getError(codes.DP009, 'pickupTime')])
   }
 
   dropoffFields.length && collectErrors(validateRoute(dropoffFields, 'dropoff'))

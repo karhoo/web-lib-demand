@@ -22,7 +22,7 @@
 
 \+ **new PoiService**(`http`: [Http](../interfaces/_karhoo_demand_deeplink.http.md)): *[PoiService](_karhoo_demand_deeplink.poiservice.md)*
 
-*Defined in [demand-deeplink/src/api/PoiService.ts:8](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/PoiService.ts#L8)*
+*Defined in [demand-deeplink/src/api/PoiService.ts:8](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/PoiService.ts#L8)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ Name | Type |
 
 ▸ **search**(`params`: [PoiSearchParams](../modules/_karhoo_demand_deeplink.md#poisearchparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-deeplink/src/api/PoiService.ts:14](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/PoiService.ts#L14)*
+*Defined in [demand-deeplink/src/api/PoiService.ts:14](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/PoiService.ts#L14)*
 
 **Parameters:**
 

@@ -1,5 +1,10 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
-import { LocationAddressDetailsResponse, PoiSearchResponse, QuotesAvailabilityResponse } from '../types'
+import {
+  LocationAddressDetailsResponse,
+  LocationAddressAutocompleteResponse,
+  PoiSearchResponse,
+  QuotesAvailabilityResponse,
+} from '../types'
 import { HttpResponse } from './types'
 
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
@@ -8,9 +13,9 @@ export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchRes
   body: {
     pois: [
       {
-        id: `poi_placeId:${data.searchKey}`,
+        id: `k_poi_placeId:${data.searchKey}`,
         address: {
-          display_address: `poi_display_address:${data.searchKey}`,
+          display_address: `k_poi_display_address:${data.searchKey}`,
         },
       },
     ],
@@ -66,8 +71,37 @@ export const getMockedErrorLocationAddressDetailsResponse = (): HttpResponse<Loc
   },
 })
 
+export const getMockedLocationAddressAutocompleteResponse = (
+  data: any
+): HttpResponse<LocationAddressAutocompleteResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    locations: [
+      {
+        place_id: `autocomplete_placeId:${data.query}`,
+        display_address: `autocomplete_display_address:${data.query}`,
+        type: `autocomplete_type:${data.query}`,
+      },
+    ],
+  },
+})
+
+export const getMockedErrorLocationAddressAutocompleteResponse = (): HttpResponse<LocationAddressAutocompleteResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code: 'K005',
+    message: `Location autocomplete: Something went wrong`,
+  },
+})
+
 export const mockLocationGetAddressDetails = jest.fn((data: any) => {
   return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
+})
+
+export const mockLocationGetAddressAutocompleteData = jest.fn((data: any) => {
+  return Promise.resolve(getMockedLocationAddressAutocompleteResponse(data))
 })
 
 export const mockPoiSearch = jest.fn((data: any) => {

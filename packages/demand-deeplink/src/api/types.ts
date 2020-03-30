@@ -33,6 +33,16 @@ export type LocationAddressDetailsParameters = {
   sessionToken?: string
 }
 
+export type LocationAddressAutocompleteParams = {
+  query: string
+  position?: {
+    latitude: number
+    longitude: number
+  }
+  radius?: number
+  sessionToken?: string
+}
+
 export type PoiSearchParams = {
   paginationRowCount: number
   paginationOffset: number
