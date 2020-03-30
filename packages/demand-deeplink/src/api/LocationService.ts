@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
-import { Http, LocationAddressDetailsParameters } from './types'
-import { LocationAddressDetailsResponse } from '../types'
+import { Http, LocationAddressDetailsParameters, LocationAddressAutocompleteParams } from './types'
+import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from '../types'
+import { toSnakeCase } from '../utils'
 
 export class LocationService {
   private url = 'locations'
@@ -18,5 +19,14 @@ export class LocationService {
     }
 
     return this.http.post<LocationAddressDetailsResponse>(`${this.url}/place-details`, body)
+  }
+
+  getAddressAutocompleteData(data: LocationAddressAutocompleteParams) {
+    const body = data.sessionToken ? data : { ...data, sessionToken: uuid() }
+
+    return this.http.post<LocationAddressAutocompleteResponse>(
+      `${this.url}/address-autocomplete`,
+      toSnakeCase(body)
+    )
   }
 }

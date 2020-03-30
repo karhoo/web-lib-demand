@@ -27,7 +27,7 @@
 
 \+ **new Deeplink**(`query`: string, `options`: [DeeplinkOptions](../modules/_karhoo_demand_deeplink.md#deeplinkoptions)): *[Deeplink](_karhoo_demand_deeplink.deeplink.md)*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:84](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/Deeplink.ts#L84)*
+*Defined in [demand-deeplink/src/Deeplink.ts:84](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L84)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type |
 
 • **get deeplinkData**(): *object*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:98](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/Deeplink.ts#L98)*
+*Defined in [demand-deeplink/src/Deeplink.ts:98](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L98)*
 
 **Returns:** *object*
 
@@ -64,7 +64,7 @@ Name | Type |
 
 ▸ **isValid**(): *object*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:102](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/Deeplink.ts#L102)*
+*Defined in [demand-deeplink/src/Deeplink.ts:102](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L102)*
 
 **Returns:** *object*
 
@@ -78,7 +78,7 @@ ___
 
 ▸ **resolve**(`subscriber`: function): *object*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:106](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/Deeplink.ts#L106)*
+*Defined in [demand-deeplink/src/Deeplink.ts:106](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L106)*
 
 **Parameters:**
 

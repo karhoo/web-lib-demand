@@ -29,7 +29,7 @@
 
 \+ **new HttpService**(`url`: string, `getDefaultRequestOptions?`: undefined | function): *[HttpService](_karhoo_demand_deeplink.httpservice.md)*
 
-*Defined in [demand-deeplink/src/api/HttpService.ts:35](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/HttpService.ts#L35)*
+*Defined in [demand-deeplink/src/api/HttpService.ts:35](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/HttpService.ts#L35)*
 
 **Parameters:**
 
@@ -48,7 +48,7 @@ Name | Type |
 
 *Implementation of [Http](../interfaces/_karhoo_demand_deeplink.http.md)*
 
-*Defined in [demand-deeplink/src/api/HttpService.ts:45](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/HttpService.ts#L45)*
+*Defined in [demand-deeplink/src/api/HttpService.ts:45](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/HttpService.ts#L45)*
 
 **Type parameters:**
 
@@ -71,7 +71,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_deeplink.http.md)*
 
-*Defined in [demand-deeplink/src/api/HttpService.ts:49](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/HttpService.ts#L49)*
+*Defined in [demand-deeplink/src/api/HttpService.ts:49](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/HttpService.ts#L49)*
 
 **Type parameters:**
 
@@ -94,7 +94,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_deeplink.http.md)*
 
-*Defined in [demand-deeplink/src/api/HttpService.ts:53](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/HttpService.ts#L53)*
+*Defined in [demand-deeplink/src/api/HttpService.ts:53](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/HttpService.ts#L53)*
 
 **Type parameters:**
 
@@ -117,7 +117,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_deeplink.http.md)*
 
-*Defined in [demand-deeplink/src/api/HttpService.ts:57](https://github.com/karhoo/web-lib-demand/blob/41d4063/packages/demand-deeplink/src/api/HttpService.ts#L57)*
+*Defined in [demand-deeplink/src/api/HttpService.ts:57](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/HttpService.ts#L57)*
 
 **Type parameters:**
 
