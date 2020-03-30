@@ -136,9 +136,9 @@ describe('parse', () => {
     })
 
     it('should return errors when there is no pickup and dropoff', () => {
-      expect(validateLeg(getData({ pickup: undefined, dropoff: undefined }), 'legs.0')).toEqual([
-        expectedError(codes.DP001, 'legs.0'),
-      ])
+      expect(
+        validateLeg(getData({ pickup: undefined, dropoff: undefined, pickupTime: undefined }), 'legs.0')
+      ).toEqual([expectedError(codes.DP001, 'legs.0')])
     })
 
     it('should return errors when pickup is the same as dropoff', () => {
@@ -156,9 +156,9 @@ describe('parse', () => {
     })
 
     it('should return errors when there is dropoff but it is empty string', () => {
-      expect(validateLeg(getData({ pickup: undefined, dropoff: '' }), 'legs.0')).toEqual([
-        expectedError(codes.DP005, 'legs.0.dropoff'),
-      ])
+      expect(
+        validateLeg(getData({ pickup: undefined, dropoff: '', pickupTime: undefined }), 'legs.0')
+      ).toEqual([expectedError(codes.DP005, 'legs.0.dropoff')])
     })
 
     it('should return errors when multiple pickups are provided', () => {
@@ -177,6 +177,12 @@ describe('parse', () => {
       expect(
         validateLeg(getData({ pickupKpoi: 'pickupKpoi', pickupPlaceId: 'pickupPlaceId' }), 'legs.0')
       ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
+    })
+
+    it('should return errors when pickupTime is provided and pickup not', () => {
+      expect(
+        validateLeg(getData({ pickup: undefined, pickupTime: '2020-08-09T18:31:42' }), 'legs.0')
+      ).toEqual([expectedError(codes.DP009, 'legs.0.pickupTime')])
     })
 
     it('should return errors if pickup is provided and pickupTime not', () => {

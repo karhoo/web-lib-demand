@@ -7,6 +7,7 @@ export const codes = {
   DP006: 'DP006',
   DP007: 'DP007',
   DP008: 'DP008',
+  DP009: 'DP009',
 }
 
 export const errorMessageByCode = {
@@ -16,8 +17,9 @@ export const errorMessageByCode = {
   [codes.DP004]: 'Timezone is missing',
   [codes.DP005]: 'Incorrect type',
   [codes.DP006]: 'Same pickup and dropoff',
-  [codes.DP007]: 'No POI in response',
+  [codes.DP007]: 'No information about place in response',
   [codes.DP008]: 'Unable to check availability',
+  [codes.DP009]: 'Pickup time is specified without pickup place',
 }
 
 export function getError(code: string, path: string) {
