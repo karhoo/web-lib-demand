@@ -205,14 +205,14 @@ describe('parse', () => {
 
     it('should return errors if pickupTime has no timezone', () => {
       expect(validateLeg(getData({ pickupTime: '2020-08-09T18:31:42' }), 'legs.0')).toEqual([
-        expectedError(codes.DP003, 'legs.0.pickupTime'),
+        expectedError(codes.DP010, 'legs.0.pickupTime'),
         expectedError(codes.DP004, 'legs.0.pickupTime'),
       ])
     })
 
     it('should return errors if pickupTime has wrong format', () => {
       expect(validateLeg(getData({ pickupTime: '2020-08-09T18+01:00' }), 'legs.0')).toEqual([
-        expectedError(codes.DP003, 'legs.0.pickupTime'),
+        expectedError(codes.DP010, 'legs.0.pickupTime'),
       ])
     })
 

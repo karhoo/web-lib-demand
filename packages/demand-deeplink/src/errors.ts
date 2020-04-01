@@ -8,6 +8,7 @@ export const codes = {
   DP007: 'DP007',
   DP008: 'DP008',
   DP009: 'DP009',
+  DP010: 'DP010',
 }
 
 export const errorMessageByCode = {
@@ -20,6 +21,7 @@ export const errorMessageByCode = {
   [codes.DP007]: 'No information about place in response',
   [codes.DP008]: 'Unable to check availability',
   [codes.DP009]: 'Pickup time is specified without pickup place',
+  [codes.DP010]: 'Incorrect time format',
 }
 
 export function getError(code: string, path: string) {

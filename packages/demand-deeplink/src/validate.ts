@@ -81,7 +81,7 @@ function validatePickupTime(time?: string) {
     return [getError(codes.DP001, fieldName)]
   }
 
-  const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
+  const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP010, fieldName)]
 
   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
