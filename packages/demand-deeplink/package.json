@@ -1,7 +1,7 @@
 {
   "name": "@karhoo/demand-deeplink",
   "version": "0.6.0",
-  "description": "Library to work with deeplink",
+  "description": "🔗A library to integrate with a Karhoo web app via a deep link",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",
   "main": "dist/index.js",
@@ -12,8 +12,7 @@
   "files": [
     "dist/*.js",
     "dist/*.js.map",
-    "dist/types.d.ts",
-    "dist/index.d.ts",
+    "dist/**/*.d.ts",
     "src"
   ],
   "module": "dist/demand-deeplink.esm.js",
@@ -37,7 +36,7 @@
     "jest-fetch-mock": "3.0.3",
     "ts-jest": "25.2.1",
     "tsdx": "0.12.3",
-    "typescript": "3.8.2"
+    "typescript": "3.8.3"
   },
   "dependencies": {
     "date-and-time": "^0.13.1",

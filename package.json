@@ -27,20 +27,20 @@
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.0",
     "eslint-config-react-app": "5.2.0",
-    "eslint-plugin-flowtype": "4.6.0",
+    "eslint-plugin-flowtype": "3.13.0",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "7.18.3",
-    "eslint-plugin-react-hooks": "2.4.0",
+    "eslint-plugin-react-hooks": "1.7.0",
     "husky": "4.2.3",
     "lerna": "3.20.2",
     "lint-staged": "10.0.7",
     "prettier": "1.19.1",
-    "typedoc": "^0.17.0",
-    "typedoc-plugin-lerna-packages": "^0.3.0",
-    "typedoc-plugin-markdown": "^2.2.17",
-    "typescript": "3.8.2"
+    "typedoc": "0.16.7",
+    "typedoc-plugin-lerna-packages": "0.3.0",
+    "typedoc-plugin-markdown": "2.2.17",
+    "typescript": "3.8.3"
   },
   "husky": {
     "hooks": {
