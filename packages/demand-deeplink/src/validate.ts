@@ -29,18 +29,11 @@ function validateMeta(data: Dictionary<string>, fieldName = 'meta') {
     devIsObjectCheck(data, fieldName)
   }
 
-  const result = Object.keys(data).reduce(
+  return Object.keys(data).reduce(
     (errors, key) =>
       isNotEmptyString(data[key]) ? errors : [...errors, getError(codes.DP005, `${fieldName}.${key}`)],
     [] as ValidationError[]
   )
-  // console.log('result', result)
-  // if (!result.length && ) {
-  //   console.log('I am here')
-  //   return result.concat(validateTime('meta.train-time', data['train-time']))
-  // }
-
-  return result
 }
 
 function validatePassengerInfo(data: PassengerInfo) {
@@ -90,25 +83,11 @@ function validateTime(fieldName: string, time?: string) {
   }
 
   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
-  console.log('error', errors)
 
   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
 
-// function validatePickupTime(time?: string) {
-//   const fieldName = 'pickupTime'
-
-//   if (!time) {
-//     return [getError(codes.DP001, fieldName)]
-//   }
-
-//   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
-
-//   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
-// }
-
 export function validateLeg(leg: JourneyLeg, path: string) {
-  console.log(leg.meta)
   const errors = []
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
@@ -138,13 +117,8 @@ export function validateLeg(leg: JourneyLeg, path: string) {
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
   if (!isUndefined(leg.meta)) {
     const metaErrors = validateMeta(leg.meta)
-    collectErrors(!metaErrors.length ? validateTime('meta.train-time', leg.meta['train-time']) : metaErrors)
+    collectErrors(!metaErrors.length ? validateTime(`meta.${trainTime}`, leg.meta[trainTime]) : metaErrors)
   }
-  // {!isUndefined(leg.meta) && collectErrors(validateMeta(leg.meta))
-  // !isUndefined(leg.meta) && collectErrors(validateTime('meta.train-time', leg.meta['train-time']))}
-
-  // console.log(!isUndefined(leg.meta) && collectErrors(validateMeta(leg.meta)))
-
   !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
   !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
 
