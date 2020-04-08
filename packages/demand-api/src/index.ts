@@ -3,3 +3,8 @@ export { LocationService } from './location/LocationService'
 export { PoiService } from './poi/PoiService'
 export { QuotesService } from './quotes/QuotesService'
 export { errorCodes } from './responseCodes'
+
+export * from './http/types'
+export * from './location/types'
+export * from './poi/types'
+export * from './quotes/types'

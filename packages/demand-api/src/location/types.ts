@@ -1,3 +1,5 @@
+import { LatLng, MeetingPointType, CommonDetailsType, CommonPoiType } from '../sharedTypes'
+
 export type LocationAddressDetailsParameters = {
   placeId: string
   sessionToken?: string
@@ -13,23 +15,8 @@ export type LocationAddressAutocompleteParams = {
   sessionToken?: string
 }
 
-type LatLng = {
-  latitude: number
-  longitude: number
-}
-
-type MeetingPointType = 'DEFAULT' | 'PICK_UP' | 'DROP_OFF' | 'MEET_AND_GREET' | 'CURB_SIDE' | 'STAND_BY'
-
-type LocationPOIType = 'NOT_SET_POI_TYPE' | 'ENRICHED' | 'REGULATED' | 'NEAREST'
-
-type LocationDetailsType =
-  | 'NOT_SET_DETAILS_TYPE'
-  | 'AIRPORT'
-  | 'TRAIN_STATION'
-  | 'METRO_STATION'
-  | 'PORT'
-  | 'HOTEL'
-  | 'OTHER'
+type LocationPoiType = 'NOT_SET_POI_TYPE' | CommonPoiType
+type LocationDetailsType = 'NOT_SET_DETAILS_TYPE' | CommonDetailsType
 
 export type LocationAddressDetailsResponse = {
   place_id: string
@@ -46,7 +33,7 @@ export type LocationAddressDetailsResponse = {
     country_code?: string
   }
   position?: LatLng
-  poi_type?: LocationPOIType
+  poi_type?: LocationPoiType
   time_zone?: string
   current_local_time?: string
   details?: {

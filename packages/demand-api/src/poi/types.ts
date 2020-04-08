@@ -1,3 +1,5 @@
+import { LatLng, MeetingPointType, CommonDetailsType, CommonPoiType } from '../sharedTypes'
+
 export type PoiSearchParams = {
   paginationRowCount: number
   paginationOffset: number
@@ -5,22 +7,8 @@ export type PoiSearchParams = {
   searchKey?: string
 }
 
-type LatLng = {
-  latitude: number
-  longitude: number
-}
-
-type MeetingPointType = 'DEFAULT' | 'PICK_UP' | 'DROP_OFF' | 'MEET_AND_GREET' | 'CURB_SIDE' | 'STAND_BY'
-
-type POIType = 'ENRICHED' | 'UNSET' | 'REGULATED' | 'NEAREST'
-type POIDetailsType =
-  | 'UNSPECIFIED'
-  | 'AIRPORT'
-  | 'TRAIN_STATION'
-  | 'METRO_STATION'
-  | 'PORT'
-  | 'HOTEL'
-  | 'OTHER'
+type POIType = 'UNSET' | CommonPoiType
+type POIDetailsType = 'UNSPECIFIED' | CommonDetailsType
 
 export type PoiResponse = {
   id?: string
