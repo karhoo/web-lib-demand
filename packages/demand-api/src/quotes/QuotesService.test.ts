@@ -2,6 +2,8 @@ import { QuotesService } from './QuotesService'
 
 describe('QuotesService', () => {
   const http = {
+    setDefaultRequestOptionsGetter: jest.fn(),
+    setResponseMiddleware: jest.fn(),
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),

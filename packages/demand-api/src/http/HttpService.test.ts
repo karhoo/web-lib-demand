@@ -1,5 +1,6 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
-import { errorCodes } from './responseCodes'
+import { errorCodes } from '../responseCodes'
+
 import { HttpService, request, toJsonBody } from './HttpService'
 
 enableFetchMocks()
@@ -131,40 +132,41 @@ describe('HttpService', () => {
     const path = 'test'
     const expectedPath = `${url}/${path}`
     const body = { data: '12345' }
+
     const mock = () => {
       fetchMock.mockOnce(JSON.stringify(body), {
         headers: { 'content-type': 'application/json' },
       })
     }
 
-    it('should make get request', async () => {
+    const getExpectedFetchParams = (data: object = {}) => ({
+      credentials: 'include',
+      mode: 'cors',
+      method: 'GET',
+      headers: new Headers({}),
+      ...data,
+    })
+
+    beforeEach(() => {
       mock()
+    })
 
+    it('should make get request', async () => {
       const http = new HttpService(url)
-
       const response = await http.get(path)
 
       expect(response).toEqual({ ok: true, status: 200, body })
     })
 
     it('should call fetchMock with expected url and options', async () => {
-      mock()
-
       const http = new HttpService(url)
 
       await http.get(path)
 
-      expect(fetchMock).toBeCalledWith(expectedPath, {
-        credentials: 'include',
-        mode: 'cors',
-        method: 'GET',
-        headers: new Headers({}),
-      })
+      expect(fetchMock).toBeCalledWith(expectedPath, getExpectedFetchParams())
     })
 
     it('should call fetchMock with default request options', async () => {
-      mock()
-
       const options = {
         redirect: 'error' as const,
         headers: {
@@ -172,100 +174,116 @@ describe('HttpService', () => {
         },
       }
 
-      const http = new HttpService(url, () => options)
+      const http = new HttpService(url).setDefaultRequestOptionsGetter(() => options)
 
       await http.get(path)
 
-      expect(fetchMock).toBeCalledWith(expectedPath, {
-        credentials: 'include',
-        mode: 'cors',
-        method: 'GET',
-        redirect: options.redirect,
-        headers: new Headers(options.headers),
-      })
+      expect(fetchMock).toBeCalledWith(
+        expectedPath,
+        getExpectedFetchParams({ redirect: options.redirect, headers: new Headers(options.headers) })
+      )
     })
 
     it('should call fetchMock with query parameters', async () => {
-      mock()
+      await new HttpService(url).get(path, { one: 'oneValue', two: 'twoValue' })
 
-      const http = new HttpService(url)
+      expect(fetchMock).toBeCalledWith(`${expectedPath}?one=oneValue&two=twoValue`, getExpectedFetchParams())
+    })
 
-      await http.get(path, { one: 'oneValue', two: 'twoValue' })
+    it(`should call fetchMock with get method's request options`, async () => {
+      const options = { redirect: 'error' as const }
 
-      expect(fetchMock).toBeCalledWith(`${expectedPath}?one=oneValue&two=twoValue`, {
-        credentials: 'include',
-        mode: 'cors',
-        method: 'GET',
-        headers: new Headers({}),
-      })
+      await new HttpService(url).get(path, undefined, options)
+
+      expect(fetchMock).toBeCalledWith(expectedPath, getExpectedFetchParams(options))
     })
 
     it('should make post request', async () => {
-      mock()
-
-      const http = new HttpService(url)
-
-      const response = await http.post(path, { one: 'oneValue', two: 'twoValue' })
+      const response = await new HttpService(url).post(path, { one: 'oneValue', two: 'twoValue' })
 
       expect(response).toEqual({ ok: true, status: 200, body })
     })
 
-    it('should call fetchMock with POST method and expected body', async () => {
-      mock()
-
+    it('should call fetchMock with POST method and expected parameters', async () => {
       const requestBody = { one: 'oneValue', two: 'twoValue' }
-      const http = new HttpService(url)
+      const requestHeaders = { origin: 'origin' }
 
-      await http.post(path, requestBody)
+      await new HttpService(url).post(path, requestBody, { headers: requestHeaders })
 
-      expect(fetchMock).toBeCalledWith(expectedPath, {
-        credentials: 'include',
-        mode: 'cors',
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-      })
+      expect(fetchMock).toBeCalledWith(
+        expectedPath,
+        getExpectedFetchParams({
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+          headers: new Headers({
+            'content-type': 'application/json',
+            ...requestHeaders,
+          }),
+        })
+      )
     })
 
     it('should make put request', async () => {
-      mock()
-
-      const http = new HttpService(url)
-
-      const response = await http.put(path, { one: 'oneValue', two: 'twoValue' })
+      const response = await new HttpService(url).put(path, { one: 'oneValue', two: 'twoValue' })
 
       expect(response).toEqual({ ok: true, status: 200, body })
     })
 
-    it('should call fetchMock with PUT method and expected body', async () => {
-      mock()
-
+    it('should call fetchMock with PUT method and expected parameters', async () => {
       const requestBody = { one: 'oneValue', two: 'twoValue' }
-      const http = new HttpService(url)
+      const requestHeaders = { origin: 'origin' }
+      const options = { redirect: 'error' as const, headers: requestHeaders }
 
-      await http.put(path, requestBody)
+      await new HttpService(url).put(path, requestBody, options)
 
-      expect(fetchMock).toBeCalledWith(expectedPath, {
-        credentials: 'include',
-        mode: 'cors',
-        method: 'PUT',
-        body: JSON.stringify(requestBody),
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-      })
+      expect(fetchMock).toBeCalledWith(
+        expectedPath,
+        getExpectedFetchParams({
+          method: 'PUT',
+          body: JSON.stringify(requestBody),
+          redirect: options.redirect,
+          headers: new Headers({
+            'content-type': 'application/json',
+            ...requestHeaders,
+          }),
+        })
+      )
     })
 
     it('should make delete request', async () => {
-      mock()
-
-      const http = new HttpService(url)
-
-      const response = await http.remove(path)
+      const response = await new HttpService(url).remove(path)
 
       expect(response).toEqual({ ok: true, status: 200, body })
+    })
+
+    it('should call fetchMock with DELETE method and expected parameters', async () => {
+      const requestHeaders = { origin: 'origin' }
+      const options = { redirect: 'error' as const, headers: requestHeaders }
+
+      await new HttpService(url).remove(path, options)
+
+      expect(fetchMock).toBeCalledWith(
+        expectedPath,
+        getExpectedFetchParams({
+          method: 'DELETE',
+          redirect: options.redirect,
+          headers: new Headers(requestHeaders),
+        })
+      )
+    })
+
+    it('should call middleware', async () => {
+      const middlewareStub = jest.fn()
+      const http = new HttpService(url).setResponseMiddleware(middlewareStub)
+
+      await http.get(path)
+
+      expect(middlewareStub).toHaveBeenCalledTimes(1)
+      expect(middlewareStub).toHaveBeenCalledWith({
+        ok: true,
+        status: 200,
+        body,
+      })
     })
   })
 })

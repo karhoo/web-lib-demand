@@ -1,12 +1,12 @@
 import { v4 as uuid } from 'uuid'
+import { Http } from '../http/types'
 import {
-  Http,
   LocationAddressDetailsParameters,
   LocationAddressAutocompleteParams,
   LocationAddressDetailsResponse,
   LocationAddressAutocompleteResponse,
 } from './types'
-import { toSnakeCase } from './utils'
+import { toSnakeCase } from '../utils'
 
 export class LocationService {
   private url = 'locations'

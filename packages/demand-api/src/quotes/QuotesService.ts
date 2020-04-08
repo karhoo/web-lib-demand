@@ -1,6 +1,7 @@
 import date from 'date-and-time'
-import { Http, QuotesAvailabilityParams, QuotesAvailabilityResponse } from './types'
-import { toSnakeCase } from './utils'
+import { Http } from '../http/types'
+import { QuotesAvailabilityParams, QuotesAvailabilityResponse } from './types'
+import { toSnakeCase } from '../utils'
 
 export class QuotesService {
   private url = 'quotes'

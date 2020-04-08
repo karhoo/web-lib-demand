@@ -1,11 +1,8 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
-import {
-  HttpResponse,
-  LocationAddressDetailsResponse,
-  LocationAddressAutocompleteResponse,
-  PoiSearchResponse,
-  QuotesAvailabilityResponse,
-} from './types'
+import { HttpResponse } from './http/types'
+import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from './location/types'
+import { PoiSearchResponse } from './poi/types'
+import { QuotesAvailabilityResponse } from './quotes/types'
 
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
