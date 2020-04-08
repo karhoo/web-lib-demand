@@ -5,6 +5,7 @@ import {
   travellerLocaleRegexp,
   passengerParameter,
   luggageParameter,
+  trainTime,
 } from './constants'
 import { isNotEmptyString, isObject, isPositiveInteger, excludeUndefined } from './utils'
 import { codes, getError } from './errors'
@@ -28,11 +29,18 @@ function validateMeta(data: Dictionary<string>, fieldName = 'meta') {
     devIsObjectCheck(data, fieldName)
   }
 
-  return Object.keys(data).reduce(
+  const result = Object.keys(data).reduce(
     (errors, key) =>
       isNotEmptyString(data[key]) ? errors : [...errors, getError(codes.DP005, `${fieldName}.${key}`)],
     [] as ValidationError[]
   )
+  // console.log('result', result)
+  // if (!result.length && ) {
+  //   console.log('I am here')
+  //   return result.concat(validateTime('meta.train-time', data['train-time']))
+  // }
+
+  return result
 }
 
 function validatePassengerInfo(data: PassengerInfo) {
@@ -74,19 +82,33 @@ function validateRoute(fields: string[], fieldName: string) {
   return errors
 }
 
-function validatePickupTime(time?: string) {
-  const fieldName = 'pickupTime'
-
+function validateTime(fieldName: string, time?: string) {
+  const pickupTimeField = 'pickupTime'
+  console.log(fieldName, time)
   if (!time) {
-    return [getError(codes.DP001, fieldName)]
+    return fieldName === pickupTimeField ? [getError(codes.DP001, fieldName)] : []
   }
 
   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
+  console.log('error', errors)
 
   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
 
+// function validatePickupTime(time?: string) {
+//   const fieldName = 'pickupTime'
+
+//   if (!time) {
+//     return [getError(codes.DP001, fieldName)]
+//   }
+
+//   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
+
+//   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
+// }
+
 export function validateLeg(leg: JourneyLeg, path: string) {
+  console.log(leg.meta)
   const errors = []
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
@@ -107,14 +129,22 @@ export function validateLeg(leg: JourneyLeg, path: string) {
 
   if (pickUpFields.length) {
     collectErrors(validateRoute(pickUpFields, 'pickup'))
-    collectErrors(validatePickupTime(leg.pickupTime))
+    collectErrors(validateTime('pickupTime', leg.pickupTime))
   } else if (!isUndefined(leg.pickupTime)) {
     collectErrors([getError(codes.DP009, 'pickupTime')])
   }
 
   dropoffFields.length && collectErrors(validateRoute(dropoffFields, 'dropoff'))
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
-  !isUndefined(leg.meta) && collectErrors(validateMeta(leg.meta))
+  if (!isUndefined(leg.meta)) {
+    const metaErrors = validateMeta(leg.meta)
+    collectErrors(!metaErrors.length ? validateTime('meta.train-time', leg.meta['train-time']) : metaErrors)
+  }
+  // {!isUndefined(leg.meta) && collectErrors(validateMeta(leg.meta))
+  // !isUndefined(leg.meta) && collectErrors(validateTime('meta.train-time', leg.meta['train-time']))}
+
+  // console.log(!isUndefined(leg.meta) && collectErrors(validateMeta(leg.meta)))
+
   !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
   !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
 

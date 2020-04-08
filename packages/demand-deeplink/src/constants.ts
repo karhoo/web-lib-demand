@@ -17,6 +17,7 @@ export const pickupTimeParameter = 'pickup-time'
 export const dropoffParameter = 'dropoff'
 export const dropoffKpoiParameter = 'dropoff-kpoi'
 export const dropoffPlaceIdParameter = 'dropoff-place_id'
+export const trainTime = 'train-time'
 
 export const passengerInfoFields = [
   passengerParameter,
