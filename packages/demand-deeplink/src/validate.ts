@@ -75,7 +75,7 @@ function validateRoute(fields: string[], fieldName: string) {
   return errors
 }
 
-function validateTime(fieldName: string, time?: string) {
+function validateTime(time: string, fieldName: string) {
   if (!time) {
     return [getError(codes.DP001, fieldName)]
   }
@@ -106,7 +106,7 @@ export function validateLeg(leg: JourneyLeg, path: string) {
 
   if (pickUpFields.length) {
     collectErrors(validateRoute(pickUpFields, 'pickup'))
-    collectErrors(validateTime('pickupTime', leg.pickupTime))
+    collectErrors(validateTime(leg.pickupTime || '', 'pickupTime'))
   } else if (!isUndefined(leg.pickupTime)) {
     collectErrors([getError(codes.DP009, 'pickupTime')])
   }
@@ -119,7 +119,7 @@ export function validateLeg(leg: JourneyLeg, path: string) {
       !isUndefined(leg.meta[trainTimeParameter])
         ? [
             ...validateMeta(leg.meta),
-            ...validateTime(`meta.${trainTimeParameter}`, leg.meta[trainTimeParameter]),
+            ...validateTime(leg.meta[trainTimeParameter], `meta.${trainTimeParameter}`),
           ]
         : validateMeta(leg.meta)
     )
