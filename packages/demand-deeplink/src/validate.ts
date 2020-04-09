@@ -5,7 +5,7 @@ import {
   travellerLocaleRegexp,
   passengerParameter,
   luggageParameter,
-  trainTime,
+  trainTimeParameter,
 } from './constants'
 import { isNotEmptyString, isObject, isPositiveInteger, excludeUndefined } from './utils'
 import { codes, getError } from './errors'
@@ -77,9 +77,9 @@ function validateRoute(fields: string[], fieldName: string) {
 
 function validateTime(fieldName: string, time?: string) {
   const pickupTimeField = 'pickupTime'
-  console.log(fieldName, time)
+
   if (!time) {
-    return fieldName === pickupTimeField ? [getError(codes.DP001, fieldName)] : []
+    return [getError(codes.DP001, pickupTimeField)]
   }
 
   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
@@ -117,7 +117,11 @@ export function validateLeg(leg: JourneyLeg, path: string) {
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
   if (!isUndefined(leg.meta)) {
     const metaErrors = validateMeta(leg.meta)
-    collectErrors(!metaErrors.length ? validateTime(`meta.${trainTime}`, leg.meta[trainTime]) : metaErrors)
+    collectErrors(
+      !metaErrors.length && !isUndefined(leg.meta[trainTimeParameter])
+        ? validateTime(`meta.${trainTimeParameter}`, leg.meta[trainTimeParameter])
+        : metaErrors
+    )
   }
   !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
   !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
