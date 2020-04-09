@@ -3,6 +3,10 @@ import { errorCodes } from '../responseCodes'
 
 import { HttpService, request, toJsonBody } from './HttpService'
 
+const uuidValue = 'uuidValue'
+
+jest.mock('uuid', () => ({ v4: () => uuidValue }))
+
 enableFetchMocks()
 
 describe('HttpService', () => {
@@ -94,7 +98,7 @@ describe('HttpService', () => {
       })
     })
 
-    it('should return response with empty message', async () => {
+    it('should return a response with an empty message', async () => {
       fetchMock.mockRejectOnce(new Error())
 
       const response = await request('url', { method: 'GET' })
@@ -139,11 +143,14 @@ describe('HttpService', () => {
       })
     }
 
-    const getExpectedFetchParams = (data: object = {}) => ({
+    const getExpectedFetchParams = (data: object = {}, headers = {}) => ({
       credentials: 'include',
       mode: 'cors',
       method: 'GET',
-      headers: new Headers({}),
+      headers: new Headers({
+        correlation_id: uuidValue,
+        ...headers,
+      }),
       ...data,
     })
 
@@ -180,7 +187,7 @@ describe('HttpService', () => {
 
       expect(fetchMock).toBeCalledWith(
         expectedPath,
-        getExpectedFetchParams({ redirect: options.redirect, headers: new Headers(options.headers) })
+        getExpectedFetchParams({ redirect: options.redirect }, options.headers)
       )
     })
 
@@ -212,14 +219,16 @@ describe('HttpService', () => {
 
       expect(fetchMock).toBeCalledWith(
         expectedPath,
-        getExpectedFetchParams({
-          method: 'POST',
-          body: JSON.stringify(requestBody),
-          headers: new Headers({
+        getExpectedFetchParams(
+          {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+          },
+          {
             'content-type': 'application/json',
             ...requestHeaders,
-          }),
-        })
+          }
+        )
       )
     })
 
@@ -238,15 +247,17 @@ describe('HttpService', () => {
 
       expect(fetchMock).toBeCalledWith(
         expectedPath,
-        getExpectedFetchParams({
-          method: 'PUT',
-          body: JSON.stringify(requestBody),
-          redirect: options.redirect,
-          headers: new Headers({
+        getExpectedFetchParams(
+          {
+            method: 'PUT',
+            body: JSON.stringify(requestBody),
+            redirect: options.redirect,
+          },
+          {
             'content-type': 'application/json',
             ...requestHeaders,
-          }),
-        })
+          }
+        )
       )
     })
 
@@ -264,11 +275,13 @@ describe('HttpService', () => {
 
       expect(fetchMock).toBeCalledWith(
         expectedPath,
-        getExpectedFetchParams({
-          method: 'DELETE',
-          redirect: options.redirect,
-          headers: new Headers(requestHeaders),
-        })
+        getExpectedFetchParams(
+          {
+            method: 'DELETE',
+            redirect: options.redirect,
+          },
+          requestHeaders
+        )
       )
     })
 
@@ -284,6 +297,17 @@ describe('HttpService', () => {
         status: 200,
         body,
       })
+    })
+
+    it('should use correlation id prefix', async () => {
+      const prefix = 'prefix'
+
+      await new HttpService(url).setCorrelationIdPrefix('prefix').get(path)
+
+      expect(fetchMock).toBeCalledWith(
+        expectedPath,
+        getExpectedFetchParams({}, { correlation_id: `${prefix}${uuidValue}` })
+      )
     })
   })
 })

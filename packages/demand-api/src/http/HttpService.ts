@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid'
 import {
   Http,
   HttpResponse,
@@ -47,6 +48,8 @@ export class HttpService implements Http {
 
   private getDefaultRequestOptions: DefaultRequestOptionsGetter = () => ({})
 
+  private correlationIdPrefix = ''
+
   private responseMiddleware: HttpResponseMiddleware = a => a
 
   constructor(url: string) {
@@ -55,6 +58,12 @@ export class HttpService implements Http {
 
   public setDefaultRequestOptionsGetter(getter: DefaultRequestOptionsGetter) {
     this.getDefaultRequestOptions = getter
+
+    return this
+  }
+
+  public setCorrelationIdPrefix(prefix: string) {
+    this.correlationIdPrefix = prefix
 
     return this
   }
@@ -88,7 +97,11 @@ export class HttpService implements Http {
       ...this.getDefaultRequestOptions(),
     }
 
-    const headers = new Headers({ ...(defaultRequestOptions.headers || {}), ...(options.headers || {}) })
+    const headers = new Headers({
+      correlation_id: `${this.correlationIdPrefix}${uuid()}`,
+      ...(defaultRequestOptions.headers || {}),
+      ...(options.headers || {}),
+    })
 
     return this.responseMiddleware(
       await request<T>(this.createFullUrl(url, query), { ...defaultRequestOptions, ...options, headers })

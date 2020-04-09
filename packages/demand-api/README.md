@@ -32,27 +32,44 @@ import { HttpService, LocationService, PoiService, QuotesService, errorCodes } f
 Http service usage:
 
 ```
-const httpService = new HttpService('url')
-                      .setDefaultRequestOptionsGetter(getter)
-                      .setResponseMiddleware(middleware)
+const url = 'https://public-api.karhoo.com/api/v1' // please note that there should not be a slash at the end of the line
 
-const response = await httpService.get('url')
+const correlationIdPrefix = 'prefix'
+
+const requestOptionsGetter = () => ({
+  headers: {
+    'custom-header': 'Custom header'
+  }
+})
+
+const middleware = <T>(response: HttpResponse<T>) => {
+  console.log(response.status)
+
+  return response
+}
+
+const httpService = new HttpService(url)
+  .setCorrelationIdPrefix('prefix')
+  .setDefaultRequestOptionsGetter(requestOptionsGetter)
+  .setResponseMiddleware(middleware)
+
+const response = await httpService.get('location/address-autocomplete')
 ```
 
-Location service:
+Location service usage:
 
 ```
-const locationService = new LocationService(new Http('url'))
+const locationService = new LocationService(httpService)
 ```
 
 Poi service:
 
 ```
-const poiService = new PoiService(new Http('url'))
+const poiService = new PoiService(httpService)
 ```
 
 Quotes service:
 
 ```
-const quotesService = new QuotesService(new Http('url'))
+const quotesService = new QuotesService(httpService)
 ```

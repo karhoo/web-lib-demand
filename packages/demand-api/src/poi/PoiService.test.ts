@@ -2,8 +2,6 @@ import { PoiService } from './PoiService'
 
 describe('PoiService', () => {
   const http = {
-    setDefaultRequestOptionsGetter: jest.fn(),
-    setResponseMiddleware: jest.fn(),
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
