@@ -76,10 +76,8 @@ function validateRoute(fields: string[], fieldName: string) {
 }
 
 function validateTime(fieldName: string, time?: string) {
-  const pickupTimeField = 'pickupTime'
-
   if (!time) {
-    return [getError(codes.DP001, pickupTimeField)]
+    return [getError(codes.DP001, fieldName)]
   }
 
   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
