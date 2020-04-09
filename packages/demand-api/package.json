@@ -13,6 +13,8 @@
     "dist/*.js",
     "dist/*.js.map",
     "dist/typings.d.ts",
+    "dist/mocks/*.js",
+    "dist/mocks/*.d.ts",
     "src"
   ],
   "module": "dist/demand-api.esm.js",
@@ -22,14 +24,15 @@
   },
   "scripts": {
     "start": "npx tsdx watch --tsconfig ./tsconfig.json",
-    "build": "npx tsdx build --tsconfig ./tsconfig.json && npx api-extractor run",
+    "build": "npx tsdx build --tsconfig ./tsconfig.json && npx api-extractor run && npm run build:mocks",
+    "build:mocks": "tsc --declaration --outDir dist/mocks src/testMocks.ts",
     "test": "npx tsdx test"
   },
   "bugs": {
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.7.13",
+    "@microsoft/api-extractor": "7.7.13",
     "@types/date-and-time": "0.6.0",
     "@types/jest": "25.1.3",
     "@types/lodash": "4.14.149",
@@ -41,6 +44,7 @@
   },
   "dependencies": {
     "date-and-time": "^0.13.1",
+    "jest": "^25.3.0",
     "lodash": "^4.17.15",
     "lodash-es": "^4.17.15",
     "uuid": "^7.0.3"
