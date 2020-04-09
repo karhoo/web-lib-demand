@@ -247,7 +247,7 @@ describe('parse', () => {
       ).toEqual([expectedError(codes.DP005, 'legs.0.meta.train')])
     })
 
-    it('should not return train-tine errors if train-time is undefined', () => {
+    it('should not return train-time errors if train-time is undefined', () => {
       expect(validateLeg(getData({ meta: { train: '4312' } }), 'legs.0')).toEqual([])
     })
   })
