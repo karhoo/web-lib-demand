@@ -113,14 +113,16 @@ export function validateLeg(leg: JourneyLeg, path: string) {
 
   dropoffFields.length && collectErrors(validateRoute(dropoffFields, 'dropoff'))
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
-  if (!isUndefined(leg.meta)) {
-    const metaErrors = validateMeta(leg.meta)
+
+  !isUndefined(leg.meta) &&
     collectErrors(
-      !metaErrors.length && !isUndefined(leg.meta[trainTimeParameter])
-        ? validateTime(`meta.${trainTimeParameter}`, leg.meta[trainTimeParameter])
-        : metaErrors
+      !isUndefined(leg.meta[trainTimeParameter])
+        ? [
+            ...validateMeta(leg.meta),
+            ...validateTime(`meta.${trainTimeParameter}`, leg.meta[trainTimeParameter]),
+          ]
+        : validateMeta(leg.meta)
     )
-  }
   !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
   !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
 

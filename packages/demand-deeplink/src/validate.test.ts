@@ -241,10 +241,13 @@ describe('parse', () => {
       ).toEqual([expectedError(codes.DP003, 'legs.0.meta.train-time')])
     })
 
-    it('should return meta errors without train-time error if other meta fields are wrong format', () => {
+    it('should return meta errors with train-time error if other meta fields are wrong format', () => {
       expect(
         validateLeg(getData({ meta: { train: 4312, [trainTimeParameter]: '2020-08-09T18+01:00' } }), 'legs.0')
-      ).toEqual([expectedError(codes.DP005, 'legs.0.meta.train')])
+      ).toEqual([
+        expectedError(codes.DP005, 'legs.0.meta.train'),
+        expectedError(codes.DP003, 'legs.0.meta.train-time'),
+      ])
     })
 
     it('should not return train-time errors if train-time is undefined', () => {
