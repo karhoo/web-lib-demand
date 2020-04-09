@@ -1,6 +1,8 @@
 # `Demand API`
 
-The **Demand API** is intended to be the standard way of working with Karhoo public API ([https://developer.karhoo.com/reference#karhoo-api-explorer](https://developer.karhoo.com/reference#karhoo-api-explorer))
+The **Demand API** provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. ([https://developer.karhoo.com/reference#karhoo-api-explorer](https://developer.karhoo.com/reference#karhoo-api-explorer)).
+
+The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 
 ## Warnings
 
@@ -9,15 +11,6 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 ## Installation
 
 ### NPM
-
-Add the following to .npmrc:
-
-```
-//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}
-@karhoo:registry=https://npm.pkg.github.com/
-``` 
-
-`GITHUB_ACCESS_TOKEN` - your [personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
 ```sh
 npm install --save @karhoo/demand-api
@@ -32,7 +25,7 @@ import { HttpService, LocationService, PoiService, QuotesService, errorCodes } f
 Http service usage:
 
 ```
-const url = 'https://public-api.karhoo.com/api/v1' // please note that there should not be a slash at the end of the line
+const url = 'https://public-api.karhoo.com/api/v1' // please note that there should not be a slash at the end of the url
 
 const correlationIdPrefix = 'prefix'
 
