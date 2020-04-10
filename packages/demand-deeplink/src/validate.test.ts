@@ -184,7 +184,7 @@ describe('parse', () => {
     it('should return errors when pickupTime is provided and pickup not', () => {
       expect(
         validateLeg(getData({ pickup: undefined, pickupTime: '2020-08-09T18:31:42' }), 'legs.0')
-      ).toEqual([expectedError(codes.DP009, 'legs.0.pickupTime')])
+      ).toEqual([expectedError(codes.DP009, 'legs.0.pickup')])
     })
 
     it('should return errors if pickup is provided and pickupTime not', () => {
