@@ -5,7 +5,7 @@
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",
   "main": "dist/index.js",
-  "typings": "dist/types.d.ts",
+  "typings": "dist/index.d.ts",
   "directories": {
     "src": "src"
   },
