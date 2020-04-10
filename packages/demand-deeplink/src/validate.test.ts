@@ -11,6 +11,8 @@ import {
   expectedMeta,
 } from './testData'
 
+import { trainTimeParameter } from './constants'
+
 describe('parse', () => {
   const baseDeeplinkData = {
     legs: [
@@ -231,6 +233,25 @@ describe('parse', () => {
           'legs.0'
         )
       ).toEqual([])
+    })
+
+    it('should return errors if train-time has wrong format', () => {
+      expect(
+        validateLeg(getData({ meta: { [trainTimeParameter]: '2020-08-09T18+01:00' } }), 'legs.0')
+      ).toEqual([expectedError(codes.DP003, 'legs.0.meta.train-time')])
+    })
+
+    it('should return meta errors with train-time error if other meta fields are wrong format', () => {
+      expect(
+        validateLeg(getData({ meta: { train: 4312, [trainTimeParameter]: '2020-08-09T18+01:00' } }), 'legs.0')
+      ).toEqual([
+        expectedError(codes.DP005, 'legs.0.meta.train'),
+        expectedError(codes.DP003, 'legs.0.meta.train-time'),
+      ])
+    })
+
+    it('should not return train-time errors if train-time is undefined', () => {
+      expect(validateLeg(getData({ meta: { train: '4312' } }), 'legs.0')).toEqual([])
     })
   })
 })
