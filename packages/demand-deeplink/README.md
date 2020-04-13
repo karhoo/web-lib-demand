@@ -52,6 +52,19 @@ const queryString = generate(deeplinkData)
 Deeplink usage:
 
 ```
+const options = {
+  url: 'https://public-api.karhoo.com/api/v1', // please note that there should not be a slash at the end of the url
+  getDefaultRequestOptions: () => {
+    return {
+      headers: {
+        correlation_id: 'correlation_id'
+      }
+    }
+  }
+}
+
+const subscriber = (data) => console.log(data)
+
 const deeplink = new Deeplink(window.location.search, options)
 
 deeplink.resolve(subscriber)

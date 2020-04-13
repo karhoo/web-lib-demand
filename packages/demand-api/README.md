@@ -19,7 +19,7 @@ npm install --save @karhoo/demand-api
 ## Usage
 
 ```
-import { HttpService, LocationService, PoiService, QuotesService, errorCodes } from 'demand-api';
+import { HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api';
 ```
 
 Http service usage:
@@ -42,7 +42,7 @@ const middleware = <T>(response: HttpResponse<T>) => {
 }
 
 const httpService = new HttpService(url)
-  .setCorrelationIdPrefix('prefix')
+  .setCorrelationIdPrefix(correlationIdPrefix)
   .setDefaultRequestOptionsGetter(requestOptionsGetter)
   .setResponseMiddleware(middleware)
 
