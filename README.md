@@ -4,11 +4,12 @@
 <a href="https://karhoo.com">
   <img
     alt="Karhoo logo"
+    width="300px"
     src="https://cdn.karhoo.com/s/images/logos/karhoo_logo.png"
   />
 </a>
 
-<p>Simple and complete set of components and utilities that helps to build web application with Karhoo Platform.</p>
+Simple and complete set of components and utilities that helps to build web application with [**Karhoo Platform**](https://karhoo.com/).
 
 <br />
 
