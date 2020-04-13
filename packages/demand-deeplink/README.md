@@ -150,3 +150,30 @@ console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pic
 When you get a deeplink you can navigate your user from you website by adding the link to `href` attribute.
 
 For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon"> Book a cab to a hotel </a>`
+
+## Issues
+
+_Looking to contribute?_
+
+### 🐛 Bugs
+
+Please file an issue for bugs, missing documentation, or unexpected behavior with a label `DEEPLINK`
+
+[**See Bugs**][bugs]
+
+### 💡 Feature Requests
+
+Please file an issue to suggest new features with a label `DEEPLINK`. Vote on feature requests by adding
+a 👍. This helps maintainers prioritize what to work on.
+
+[**See Feature Requests**][requests]
+
+### ❓ Questions
+
+For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed` and `DEEPLINK`.
+
+## Contributing
+
+### License
+
+[BSD-2-Clause](../LICENSE)

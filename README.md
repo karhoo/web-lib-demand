@@ -75,4 +75,4 @@ For questions related to using the library, please re-visit a documentation firs
 
 ### License
 
-[BSD-2-Clause](./LICENSE).
+[BSD-2-Clause](./LICENSE)
