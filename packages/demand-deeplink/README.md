@@ -53,14 +53,6 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 ## Usage
 
 ```
-const deeplinkData = {
-  legs: [
-
-  ]
-}
-```
-
-```
 import { parse, validate, generate, Deeplink } from 'demand-deeplink';
 ```
 
