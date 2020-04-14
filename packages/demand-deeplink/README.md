@@ -1,18 +1,18 @@
 <div align="center">
-<h1>Karhoo Demand Deeplink</h1>
-
 <a href="https://karhoo.com">
   <img
     alt="Karhoo logo"
-    width="300px"
+    width="250px"
     src="https://cdn.karhoo.com/s/images/logos/karhoo_logo.png"
   />
 </a>
 
+<h1>Karhoo Demand Deeplink</h1>
+
 Karhoo Deeplink is a method of passing the user’s required information from the Demand Partner’s side to a Karhoo web booking application.
 
 This library is intended to be the standard way of working with a deeplink.
-<br />
+
 [**Read The Docs**](https://developer.karhoo.com/docs/deeplink-integration)
 <hr />
 
