@@ -5,6 +5,9 @@
   "command": {
     "publish": {
       "registry": "https://npm.pkg.github.com"
+    },
+    "version": {
+      "conventionalCommits": true
     }
   },
   "version": "0.7.0"
