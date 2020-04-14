@@ -159,14 +159,10 @@ _Looking to contribute?_
 
 Please file an issue for bugs, missing documentation, or unexpected behavior with a label `DEEPLINK`
 
-[**See Bugs**](bugs)
-
 ### 💡 Feature Requests
 
 Please file an issue to suggest new features with a label `DEEPLINK`. Vote on feature requests by adding
 a 👍. This helps maintainers prioritize what to work on.
-
-[**See Feature Requests**](requests)
 
 ### ❓ Questions
 
