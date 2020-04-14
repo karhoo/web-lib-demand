@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-deeplink",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "🔗A library to integrate with a Karhoo web app via a deep link",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "ISC",

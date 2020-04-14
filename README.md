@@ -1,4 +1,25 @@
-# web-lib-demand
+<div align="center">
+<h1>Karhoo Web SDKs</h1>
+
+<a href="https://karhoo.com">
+  <img
+    alt="Karhoo logo"
+    width="300px"
+    src="https://cdn.karhoo.com/s/images/logos/karhoo_logo.png"
+  />
+</a>
+
+Simple and complete set of components and utilities that helps to build web application with [**Karhoo Platform**](https://karhoo.com/).
+
+<br />
+
+[**Read The Docs**](https://developer.karhoo.com/docs/using-web-traveller)
+
+</div>
+
+<hr />
+
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 ## Installation
 
@@ -29,8 +50,25 @@ Runs linting.
 
 Builds all packages.
 
+## Issues
+
+_Looking to contribute?_
+
+### 🐛 Bugs
+
+Please file an issue for bugs, missing documentation, or unexpected behavior.
+
+### 💡 Feature Requests
+
+Please file an issue to suggest new features. Vote on feature requests by adding
+a 👍. This helps maintainers prioritize what to work on.
+
+### ❓ Questions
+
+For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed`.
+
 ## Contributing
 
 ### License
 
-`web-lib-demand` is [BSD licensed](./LICENSE).
+[BSD-2-Clause](./LICENSE)
