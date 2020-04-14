@@ -23,7 +23,7 @@
 
 \+ **new LocationService**(`http`: [Http](../interfaces/_karhoo_demand_deeplink.http.md)): *[LocationService](_karhoo_demand_deeplink.locationservice.md)*
 
-*Defined in [demand-deeplink/src/api/LocationService.ts:9](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/LocationService.ts#L9)*
+*Defined in [demand-deeplink/src/api/LocationService.ts:9](https://github.com/karhoo/web-lib-demand/blob/4e5326f/packages/demand-deeplink/src/api/LocationService.ts#L9)*
 
 **Parameters:**
 
@@ -39,7 +39,7 @@ Name | Type |
 
 ▸ **getAddressAutocompleteData**(`data`: [LocationAddressAutocompleteParams](../modules/_karhoo_demand_deeplink.md#locationaddressautocompleteparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-deeplink/src/api/LocationService.ts:24](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/LocationService.ts#L24)*
+*Defined in [demand-deeplink/src/api/LocationService.ts:24](https://github.com/karhoo/web-lib-demand/blob/4e5326f/packages/demand-deeplink/src/api/LocationService.ts#L24)*
 
 **Parameters:**
 
@@ -55,7 +55,7 @@ ___
 
 ▸ **getAddressDetails**(`__namedParameters`: object): *Promise‹object & object | object & object›*
 
-*Defined in [demand-deeplink/src/api/LocationService.ts:15](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/api/LocationService.ts#L15)*
+*Defined in [demand-deeplink/src/api/LocationService.ts:15](https://github.com/karhoo/web-lib-demand/blob/4e5326f/packages/demand-deeplink/src/api/LocationService.ts#L15)*
 
 **Parameters:**
 
