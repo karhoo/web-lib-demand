@@ -8,8 +8,7 @@
     "build": "npx lerna run build --stream",
     "test": "npx lerna run test --stream",
     "lint": "npx eslint . --ext js,jsx,ts,tsx",
-    "docs": "rm -rf docs && typedoc",
-    "setup-npm": "echo '//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}\n@karhoo:registry=https://npm.pkg.github.com/' > ~/.npmrc"
+    "docs": "rm -rf docs && typedoc"
   },
   "repository": {
     "type": "git",
