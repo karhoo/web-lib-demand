@@ -12,6 +12,6 @@ CICD {
     [key: "GITHUB_ACCESS_TOKEN", path: "kubernetes/scratch/jenkins-prod/jenkins", field: "github-registry-token"]
   ]
   pr = [
-    scriptTargets: ["npm run bootstrap", "npm run lint", "npm run test", "npm run build"],
+    scriptTargets: ["npm run setup-npm", "npm run bootstrap", "npm run lint", "npm run test", "npm run build"],
   ]
 }

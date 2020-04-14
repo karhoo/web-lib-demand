@@ -1,30 +1,14 @@
-import { mocked } from 'ts-jest/utils'
+// import { mocked } from 'ts-jest/utils'
 import toPairs from 'lodash/toPairs'
 import isUndefined from 'lodash/isUndefined'
 import flatten from 'lodash/flatten'
-
-import { codes, getError } from './errors'
 import {
-  firstJourneyLegWithPlaceOnly,
-  firstJourneyLegWithKpoiOnly,
-  firstJourneyLegWithPlaceIdOnly,
-  secondJourneyLeg,
-  passengerInfo,
-} from './testData'
-import {
+  HttpResponse,
   LocationAddressDetailsResponse,
-  PoiSearchResponse,
-  ResolveResponse,
   LocationAddressAutocompleteResponse,
-} from './types'
-
-import { LocationService, PoiService, QuotesService } from './api'
-import { HttpResponse } from './api/types'
+  PoiSearchResponse,
+} from '@karhoo/demand-api'
 import {
-  mockHttpGet,
-  mockHttpPost,
-  mockHttpPut,
-  mockHttpRemove,
   mockLocationGetAddressDetails,
   mockLocationGetAddressAutocompleteData,
   mockPoiSearch,
@@ -36,36 +20,19 @@ import {
   getMockedLocationAddressAutocompleteResponse,
   getMockedErrorLocationAddressAutocompleteResponse,
   getMockedErrorPoiSearchResponse,
-} from './api/mocks'
+} from '@karhoo/demand-api/dist/mocks/testMocks'
+
+import { ResolveResponse, Api } from './types'
+import { codes, getError } from './errors'
+import {
+  firstJourneyLegWithPlaceOnly,
+  firstJourneyLegWithKpoiOnly,
+  firstJourneyLegWithPlaceIdOnly,
+  secondJourneyLeg,
+  passengerInfo,
+} from './testData'
 
 import { Deeplink } from './Deeplink'
-
-jest.mock('./api', () => ({
-  HttpService: jest.fn().mockImplementation(() => {
-    return {
-      get: mockHttpGet,
-      post: mockHttpPost,
-      put: mockHttpPut,
-      remove: mockHttpRemove,
-    }
-  }),
-  LocationService: jest.fn().mockImplementation(() => {
-    return {
-      getAddressDetails: mockLocationGetAddressDetails,
-      getAddressAutocompleteData: mockLocationGetAddressAutocompleteData,
-    }
-  }),
-  PoiService: jest.fn().mockImplementation(() => {
-    return {
-      search: mockPoiSearch,
-    }
-  }),
-  QuotesService: jest.fn().mockImplementation(() => {
-    return {
-      checkAvailability: mockQuotesCheckAvailability,
-    }
-  }),
-}))
 
 describe('Deeplink', () => {
   const getSearchString = (legs?: any[]) => {
@@ -82,11 +49,20 @@ describe('Deeplink', () => {
     )
   }
 
-  beforeEach(() => {
-    mocked(LocationService).mockClear()
-    mocked(PoiService).mockClear()
-    mocked(QuotesService).mockClear()
+  const api = {
+    locationService: {
+      getAddressDetails: mockLocationGetAddressDetails,
+      getAddressAutocompleteData: mockLocationGetAddressAutocompleteData,
+    },
+    poiService: {
+      search: mockPoiSearch,
+    },
+    quotesService: {
+      checkAvailability: mockQuotesCheckAvailability,
+    },
+  } as Api
 
+  beforeEach(() => {
     mockLocationGetAddressDetails.mockClear()
     mockLocationGetAddressAutocompleteData.mockClear()
     mockPoiSearch.mockClear()
@@ -106,10 +82,7 @@ describe('Deeplink', () => {
         }
       })
 
-      const deeplink = new Deeplink(getSearchString(legs), {
-        url: 'http://url',
-        getDefaultRequestOptions: () => ({}),
-      })
+      const deeplink = new Deeplink(getSearchString(legs), api)
 
       deeplink.resolve(subscriber)
     }
@@ -570,10 +543,7 @@ describe('Deeplink', () => {
 
     it('should not call subscriber after unsubscribe was called', async () => {
       const subscriber = jest.fn()
-      const deeplink = new Deeplink(getSearchString(), {
-        url: 'http://url',
-        getDefaultRequestOptions: () => ({}),
-      })
+      const deeplink = new Deeplink(getSearchString(), api)
 
       const result = deeplink.resolve(subscriber)
 
@@ -590,10 +560,7 @@ describe('Deeplink', () => {
       )
 
       const subscriber = jest.fn()
-      const deeplink = new Deeplink(getSearchString(), {
-        url: 'http://url',
-        getDefaultRequestOptions: () => ({}),
-      })
+      const deeplink = new Deeplink(getSearchString(), api)
 
       const result = deeplink.resolve(subscriber)
 
@@ -607,10 +574,7 @@ describe('Deeplink', () => {
     it('should throw error if deeplink is not valid', () => {
       const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-pickup-time': undefined }]
 
-      const deeplink = new Deeplink(getSearchString(legs), {
-        url: 'http://url',
-        getDefaultRequestOptions: () => ({}),
-      })
+      const deeplink = new Deeplink(getSearchString(legs), api)
 
       try {
         deeplink.resolve(jest.fn())
@@ -624,10 +588,7 @@ describe('Deeplink', () => {
     it('should return error when deeplink is not valid', () => {
       const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-pickup-time': undefined }]
 
-      const deeplink = new Deeplink(getSearchString(legs), {
-        url: 'http://url',
-        getDefaultRequestOptions: () => ({}),
-      })
+      const deeplink = new Deeplink(getSearchString(legs), api)
 
       expect(deeplink.isValid()).toEqual({ ok: false, errors: [getError(codes.DP001, 'legs.0.pickupTime')] })
     })

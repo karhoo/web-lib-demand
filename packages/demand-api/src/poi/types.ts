@@ -16,7 +16,7 @@ export type PoiResponse = {
     building_number?: string
     city?: string
     country_code?: string
-    display_address?: string
+    display_address: string
     line_1?: string
     line_2?: string
     postal_code?: string
