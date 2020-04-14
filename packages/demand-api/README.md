@@ -1,16 +1,17 @@
 <div align="center">
-<h1>Karhoo Demand API</h1>
-
 <a href="https://karhoo.com">
   <img
     alt="Karhoo logo"
-    width="300px"
+    width="250px"
     src="https://cdn.karhoo.com/s/images/logos/karhoo_logo.png"
   />
 </a>
 
+<h1>Karhoo Demand API</h1>
+
 The library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
+
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
 <hr />
 

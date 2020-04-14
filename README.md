@@ -1,13 +1,13 @@
 <div align="center">
-<h1>Karhoo Web SDKs</h1>
-
 <a href="https://karhoo.com">
   <img
     alt="Karhoo logo"
-    width="300px"
+    width="250px"
     src="https://cdn.karhoo.com/s/images/logos/karhoo_logo.png"
   />
 </a>
+
+<h1>Karhoo Web SDKs</h1>
 
 Simple and complete set of components and utilities that helps to build web application with [**Karhoo Platform**](https://karhoo.com/).
 
