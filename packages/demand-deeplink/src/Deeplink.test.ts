@@ -1,4 +1,3 @@
-// import { mocked } from 'ts-jest/utils'
 import toPairs from 'lodash/toPairs'
 import isUndefined from 'lodash/isUndefined'
 import flatten from 'lodash/flatten'
@@ -9,10 +8,7 @@ import {
   PoiSearchResponse,
 } from '@karhoo/demand-api'
 import {
-  mockLocationGetAddressDetails,
-  mockLocationGetAddressAutocompleteData,
-  mockPoiSearch,
-  mockQuotesCheckAvailability,
+  getApiMock,
   getMockedQuotesAvailabilityResponse,
   getMockedPoiSearchResponse,
   getMockedLocationAddressDetailsResponse,
@@ -22,7 +18,7 @@ import {
   getMockedErrorPoiSearchResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
-import { ResolveResponse, Api } from './types'
+import { ResolveResponse } from './types'
 import { codes, getError } from './errors'
 import {
   firstJourneyLegWithPlaceOnly,
@@ -49,24 +45,10 @@ describe('Deeplink', () => {
     )
   }
 
-  const api = {
-    locationService: {
-      getAddressDetails: mockLocationGetAddressDetails,
-      getAddressAutocompleteData: mockLocationGetAddressAutocompleteData,
-    },
-    poiService: {
-      search: mockPoiSearch,
-    },
-    quotesService: {
-      checkAvailability: mockQuotesCheckAvailability,
-    },
-  } as Api
+  const api = getApiMock()
 
   beforeEach(() => {
-    mockLocationGetAddressDetails.mockClear()
-    mockLocationGetAddressAutocompleteData.mockClear()
-    mockPoiSearch.mockClear()
-    mockQuotesCheckAvailability.mockClear()
+    api.mockClear()
   })
 
   describe('resolve', () => {
@@ -186,11 +168,11 @@ describe('Deeplink', () => {
 
     it('should call getAddressAutocompleteData of LocationService twice', done => {
       resolve(() => {
-        expect(mockLocationGetAddressAutocompleteData).toBeCalledTimes(2)
-        expect(mockLocationGetAddressAutocompleteData).toBeCalledWith({
+        expect(api.locationService.getAddressAutocompleteData).toBeCalledTimes(2)
+        expect(api.locationService.getAddressAutocompleteData).toBeCalledWith({
           query: firstJourneyLegWithPlaceOnly['leg-1-pickup'],
         })
-        expect(mockLocationGetAddressAutocompleteData).toBeCalledWith({
+        expect(api.locationService.getAddressAutocompleteData).toBeCalledWith({
           query: firstJourneyLegWithPlaceOnly['leg-1-dropoff'],
         })
       }, done)
@@ -220,7 +202,7 @@ describe('Deeplink', () => {
     })
 
     it('should call subscriber with address autocomplete error', done => {
-      mockLocationGetAddressAutocompleteData.mockReturnValueOnce(
+      api.locationService.getAddressAutocompleteData.mockReturnValueOnce(
         Promise.resolve(getMockedErrorLocationAddressAutocompleteResponse())
       )
 
@@ -240,13 +222,13 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockPoiSearch).toBeCalledTimes(2)
-          expect(mockPoiSearch).toBeCalledWith({
+          expect(api.poiService.search).toBeCalledTimes(2)
+          expect(api.poiService.search).toBeCalledWith({
             paginationOffset: 0,
             paginationRowCount: 1,
             searchKey: firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
           })
-          expect(mockPoiSearch).toBeCalledWith({
+          expect(api.poiService.search).toBeCalledWith({
             paginationOffset: 0,
             paginationRowCount: 1,
             searchKey: firstJourneyLegWithKpoiOnly['leg-1-dropoff-kpoi'],
@@ -289,7 +271,7 @@ describe('Deeplink', () => {
     it('should call subscriber with poi error', done => {
       const legs = [firstJourneyLegWithKpoiOnly]
 
-      mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
+      api.poiService.search.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
 
       resolve(
         (result, subscriber) => {
@@ -308,8 +290,8 @@ describe('Deeplink', () => {
 
     it('should call checkAvailability of QuotesService once', done => {
       resolve(() => {
-        expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
-        expect(mockQuotesCheckAvailability).toBeCalledWith({
+        expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
+        expect(api.quotesService.checkAvailability).toBeCalledWith({
           originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
           destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
           dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
@@ -339,8 +321,8 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
-          expect(mockQuotesCheckAvailability).toBeCalledWith({
+          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
+          expect(api.quotesService.checkAvailability).toBeCalledWith({
             originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
             dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
           })
@@ -357,8 +339,8 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
-          expect(mockQuotesCheckAvailability).toBeCalledWith({
+          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
+          expect(api.quotesService.checkAvailability).toBeCalledWith({
             originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
           })
         },
@@ -381,7 +363,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockQuotesCheckAvailability).toBeCalledTimes(2)
+          expect(api.quotesService.checkAvailability).toBeCalledTimes(2)
         },
         done,
         legs
@@ -391,11 +373,11 @@ describe('Deeplink', () => {
     it('should not call checkAvailability of QuotesService if call to Poi Service returns error', done => {
       const legs = [firstJourneyLegWithKpoiOnly]
 
-      mockPoiSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
+      api.poiService.search.mockReturnValueOnce(Promise.resolve(getMockedErrorPoiSearchResponse()))
 
       resolve(
         () => {
-          expect(mockQuotesCheckAvailability).toBeCalledTimes(0)
+          expect(api.quotesService.checkAvailability).toBeCalledTimes(0)
         },
         done,
         legs
@@ -407,7 +389,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockQuotesCheckAvailability).toBeCalledTimes(1)
+          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
         },
         done,
         legs
@@ -419,11 +401,11 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockLocationGetAddressDetails).toBeCalledTimes(2)
-          expect(mockLocationGetAddressDetails).toBeCalledWith({
+          expect(api.locationService.getAddressDetails).toBeCalledTimes(2)
+          expect(api.locationService.getAddressDetails).toBeCalledWith({
             placeId: firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id'],
           })
-          expect(mockLocationGetAddressDetails).toBeCalledWith({
+          expect(api.locationService.getAddressDetails).toBeCalledWith({
             placeId: firstJourneyLegWithPlaceIdOnly['leg-1-dropoff-place_id'],
           })
         },
@@ -464,7 +446,7 @@ describe('Deeplink', () => {
     it('should call subscriber with address details error response', done => {
       const legs = [firstJourneyLegWithPlaceIdOnly]
 
-      mockLocationGetAddressDetails.mockReturnValueOnce(
+      api.locationService.getAddressDetails.mockReturnValueOnce(
         Promise.resolve(getMockedErrorLocationAddressDetailsResponse())
       )
 
@@ -488,7 +470,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockPoiSearch).toBeCalledTimes(2)
+          expect(api.poiService.search).toBeCalledTimes(2)
         },
         done,
         legs
@@ -511,7 +493,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockPoiSearch).toBeCalledTimes(3)
+          expect(api.poiService.search).toBeCalledTimes(3)
         },
         done,
         legs
@@ -534,7 +516,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(mockPoiSearch).toBeCalledTimes(2)
+          expect(api.poiService.search).toBeCalledTimes(2)
         },
         done,
         legs
@@ -555,7 +537,7 @@ describe('Deeplink', () => {
     })
 
     it('should call subscriber 2 times', async () => {
-      mockQuotesCheckAvailability.mockReturnValueOnce(
+      api.quotesService.checkAvailability.mockReturnValueOnce(
         new Promise(resolve => setTimeout(() => resolve(getMockedQuotesAvailabilityResponse()), 20))
       )
 

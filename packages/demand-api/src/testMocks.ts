@@ -70,9 +70,9 @@ export const getMockedLocationAddressDetailsResponse = (
   ok: true,
   status: 200,
   body: {
-    place_id: `location_placeId:${data.placeId}`,
+    place_id: `location_placeId:${data?.placeId ?? ''}`,
     address: {
-      display_address: `location_display_address:${data.placeId}`,
+      display_address: `location_display_address:${data?.placeId ?? ''}`,
       line_1: 'line_1',
       city: 'city',
     },
@@ -96,8 +96,8 @@ export const getMockedLocationAddressAutocompleteResponse = (
   body: {
     locations: [
       {
-        place_id: `autocomplete_placeId:${data.query}`,
-        display_address: `autocomplete_display_address:${data.query}`,
+        place_id: `autocomplete_placeId:${data?.query ?? ''}`,
+        display_address: `autocomplete_display_address:${data?.query ?? ''}`,
         type: 'TRAIN_STATION',
       },
     ],
@@ -113,25 +113,53 @@ export const getMockedErrorLocationAddressAutocompleteResponse = (): HttpRespons
   },
 })
 
-export const mockLocationGetAddressDetails = jest.fn((data: any) => {
-  return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
-})
-
-export const mockLocationGetAddressAutocompleteData = jest.fn((data: any) => {
-  return Promise.resolve(getMockedLocationAddressAutocompleteResponse(data))
-})
-
-export const mockPoiSearch = jest.fn((data: any) => {
-  return Promise.resolve(getMockedPoiSearchResponse(data))
-})
-
-export const mockQuotesCheckAvailability = jest.fn(() =>
-  Promise.resolve(getMockedQuotesAvailabilityResponse())
-)
-
 export const mockHttpGet = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { get: true } }))
 export const mockHttpPost = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { post: true } }))
 export const mockHttpPut = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { put: true } }))
 export const mockHttpRemove = jest.fn(() =>
   Promise.resolve({ ok: true, status: 200, body: { remove: true } })
 )
+
+export const getLocationGetAddressDetailsMock = () =>
+  jest.fn((data: any) => {
+    return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
+  })
+
+export const getLocationGetAddressAutocompleteDataMock = () =>
+  jest.fn((data: any) => {
+    return Promise.resolve(getMockedLocationAddressAutocompleteResponse(data))
+  })
+
+export const getPoiSearchMock = () =>
+  jest.fn((data: any) => {
+    return Promise.resolve(getMockedPoiSearchResponse(data))
+  })
+
+export const getQuotesCheckAvailabilityMock = () =>
+  jest.fn(() => Promise.resolve(getMockedQuotesAvailabilityResponse()))
+
+export const getApiMock = () => {
+  const mockLocationGetAddressDetails = getLocationGetAddressDetailsMock()
+  const mockLocationGetAddressAutocompleteData = getLocationGetAddressAutocompleteDataMock()
+  const mockPoiSearch = getPoiSearchMock()
+  const mockQuotesCheckAvailability = getQuotesCheckAvailabilityMock()
+
+  return {
+    locationService: {
+      getAddressDetails: mockLocationGetAddressDetails,
+      getAddressAutocompleteData: mockLocationGetAddressAutocompleteData,
+    },
+    poiService: {
+      search: mockPoiSearch,
+    },
+    quotesService: {
+      checkAvailability: mockQuotesCheckAvailability,
+    },
+    mockClear: () => {
+      mockLocationGetAddressDetails.mockClear()
+      mockLocationGetAddressAutocompleteData.mockClear()
+      mockPoiSearch.mockClear()
+      mockQuotesCheckAvailability.mockClear()
+    },
+  }
+}
