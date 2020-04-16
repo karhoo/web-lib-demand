@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/karhoo/web-lib-demand/compare/v0.2.0...v0.8.1) (2020-04-16)
+
+
+### Bug Fixes
+
+* Remove unnecessary lines ([af95d2a](https://github.com/karhoo/web-lib-demand/commit/af95d2a209cc7dc2b982d153c85c7940a69a7d8b))
+* Update list of published files ([d3932a8](https://github.com/karhoo/web-lib-demand/commit/d3932a8efd9cc37b5950db225b75fed5c9617533))
+
+
+
+
+
 # [0.8.0](https://github.com/karhoo/web-lib-demand/compare/v0.2.0...v0.8.0) (2020-04-16)
 
 
