@@ -58,6 +58,17 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
 ```
 
+Please note that by default `fetch` will be called with following options
+
+```
+{
+  credentials: 'include',
+  mode: 'cors',
+}
+```
+
+You can override this default settings using `defaultRequestOptionsGetter`
+
 getApi usage:
 
 All options are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''` 
