@@ -1,12 +1,25 @@
-# `Demand API`
+<div align="center">
+<a href="https://karhoo.com">
+  <img
+    alt="Karhoo logo"
+    width="250px"
+    src="https://cdn.karhoo.com/s/images/logos/karhoo_logo.png"
+  />
+</a>
 
-The **Demand API** provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. ([https://developer.karhoo.com/reference#karhoo-api-explorer](https://developer.karhoo.com/reference#karhoo-api-explorer)).
+<h1>Karhoo Demand API</h1>
 
-The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
+The library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
+<br />
 
-## Warnings
+[**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+<hr />
 
-This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+
+</div>
+
+> <img src="https://d3qhp42p4neron.cloudfront.net/5.5/png/unicode/512/26a0.png?Expires=1586881180&Signature=UfYXLEl9gffLbFSMDpBcfwrMZev7EexJ3Szsw461t7uBvn0D3M5DUZnbI36uVUDaoCnYo6y6NK-N8j7rWSfUPDwI0g-vsvaERzl3naB5a5G3OZRPI5854zGl66ezLjVWwhBX08d6m-MQAjrDd0AImTJsaGlxRH4vByD9-XnNbnLF28Ve41SnTQuaIKN2uscMLvXzP1LAu62GML5PLVOoBs5JeGMhPJnd0Ag2qjGXgppMq~jGqPHC~Fn7GKfeacP-PySJ2h7kNMXU1RK0VydODmHvLTguFilk3OkQcx31kNGxz6dYhfDRcKNbsQzMkEGw6LVoshhXeFu5X373WYjWDA__&Key-Pair-Id=APKAIRGCVGOY7DOKYTJA" width="15px" /> This package is work in progress and can not be used as an independent package.
 
 ## Installation
 
@@ -16,10 +29,14 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 npm install --save @karhoo/demand-api
 ```
 
+## Warnings
+
+This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
+
 ## Usage
 
 ```
-import { HttpService, LocationService, PoiService, QuotesService, errorCodes } from 'demand-api';
+import { HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api';
 ```
 
 Http service usage:
@@ -42,7 +59,7 @@ const middleware = <T>(response: HttpResponse<T>) => {
 }
 
 const httpService = new HttpService(url)
-  .setCorrelationIdPrefix('prefix')
+  .setCorrelationIdPrefix(correlationIdPrefix)
   .setDefaultRequestOptionsGetter(requestOptionsGetter)
   .setResponseMiddleware(middleware)
 
@@ -66,3 +83,26 @@ Quotes service:
 ```
 const quotesService = new QuotesService(httpService)
 ```
+
+## Issues
+
+_Looking to contribute?_
+
+### 🐛 Bugs
+
+Please file an issue for bugs, missing documentation, or unexpected behavior with a label `API`
+
+### 💡 Feature Requests
+
+Please file an issue to suggest new features with a label `API`. Vote on feature requests by adding
+a 👍. This helps maintainers prioritize what to work on.
+
+### ❓ Questions
+
+For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed` and `API`.
+
+## Contributing
+
+### License
+
+[BSD-2-Clause](../LICENSE)
