@@ -7,11 +7,11 @@ CICD {
   helmCharts = []
   stepConfig = Constants.NO_DOCKER_IMAGE_NO_SCRATCH_ENV_NO_API_TESTS << [createGithubRelease: false]
   makeTargets = []
-  scriptTargets = ["npm run setup-npm", "npm run bootstrap", "npm run lint", "npm run test", "npm run build", "npx lerna publish from-package --yes"]
+  scriptTargets = ["npm run setup-npm", "npm run bootstrap", "npm run lint", "npm run build", "npm run test", "npx lerna publish from-package --yes"]
   vaultEnvVars = [
     [key: "GITHUB_ACCESS_TOKEN", path: "kubernetes/scratch/jenkins-prod/jenkins", field: "github-registry-token"]
   ]
   pr = [
-    scriptTargets: ["npm run setup-npm", "npm run bootstrap", "npm run lint", "npm run test", "npm run build"],
+    scriptTargets: ["npm run setup-npm", "npm run bootstrap", "npm run lint", "npm run build", "npm run test"],
   ]
 }
