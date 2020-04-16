@@ -6,5 +6,5 @@
 
 ### Modules
 
+* [@karhoo/demand-api](modules/_karhoo_demand_api.md)
 * [@karhoo/demand-deeplink](modules/_karhoo_demand_deeplink.md)
-* [@karhoo/web-lib-demand-hello-world](modules/_karhoo_web_lib_demand_hello_world.md)
