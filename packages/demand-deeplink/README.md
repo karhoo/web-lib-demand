@@ -47,13 +47,12 @@ npm install --save @karhoo/demand-deeplink
 
 This library uses `URLSearchParams`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use either `js-core@3` or [`url-search-params-polyfill`](https://www.npmjs.com/package/url-search-params-polyfill)
 
-This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
-
+This library uses `Promise`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise`
 
 ## Usage
 
 ```
-import { parse, validate, generate, Deeplink } from 'demand-deeplink';
+import { parse, validate, generate, Deeplink } from '@karhoo/demand-deeplink';
 ```
 
 Parse deeplink:
@@ -74,23 +73,18 @@ Generate deeplink:
 const queryString = generate(deeplinkData)
 ```
 
-Subscribe to updates usage:
+Resolve deeplink:
+
+To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.  
 
 ```
-const options = {
-  url: 'https://public-api.karhoo.com/api/v1', // please note that there should not be a slash at the end of the url
-  getDefaultRequestOptions: () => {
-    return {
-      headers: {
-        correlation_id: 'correlation_id'
-      }
-    }
-  }
-}
+import { getApi } from '@karhoo/demand-api';
+
+const api = getApi()
 
 const subscriber = (data) => console.log(data)
 
-const deeplink = new Deeplink(window.location.search, options)
+const deeplink = new Deeplink(window.location.search, api)
 
 deeplink.resolve(subscriber)
 ```

@@ -35,14 +35,12 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 
 ## Usage
 
-```
-import { HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api';
-```
-
-Http service usage:
+You can use each service separately or you can use `getApi` method which returns all available services
 
 ```
-const url = 'https://public-api.karhoo.com/api/v1' // please note that there should not be a slash at the end of the url
+import { getApi, HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api'
+
+const url = 'https://public-api.karhoo.com' // please note that there should not be a slash at the end of the url
 
 const correlationIdPrefix = 'prefix'
 
@@ -52,11 +50,45 @@ const requestOptionsGetter = () => ({
   }
 })
 
-const middleware = <T>(response: HttpResponse<T>) => {
+const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
   console.log(response.status)
 
   return response
 }
+
+```
+
+Please note that by default `fetch` will be called with following options
+
+```
+{
+  credentials: 'include',
+  mode: 'cors',
+}
+```
+
+You can override this default settings using `defaultRequestOptionsGetter`
+
+getApi usage:
+
+All options are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''` 
+
+```
+const options = {
+  url,
+  defaultRequestOptionsGetter: requestOptionsGetter,
+  responseMiddleware: middleware,
+  correlationIdPrefix,  
+}
+
+const api = getApi(options)
+
+```
+
+Http service usage:
+
+```
+const apiV1 = 'https://public-api.karhoo.com/api/v1' // please note that version should be specified
 
 const httpService = new HttpService(url)
   .setCorrelationIdPrefix(correlationIdPrefix)

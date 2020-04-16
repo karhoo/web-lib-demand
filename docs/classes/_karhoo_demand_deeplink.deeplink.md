@@ -25,16 +25,16 @@
 
 ###  constructor
 
-\+ **new Deeplink**(`query`: string, `options`: [DeeplinkOptions](../modules/_karhoo_demand_deeplink.md#deeplinkoptions)): *[Deeplink](_karhoo_demand_deeplink.deeplink.md)*
+\+ **new Deeplink**(`query`: string, `api`: [Api](../modules/_karhoo_demand_deeplink.md#api)): *[Deeplink](_karhoo_demand_deeplink.deeplink.md)*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:84](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L84)*
+*Defined in [demand-deeplink/src/Deeplink.ts:79](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L79)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `query` | string |
-`options` | [DeeplinkOptions](../modules/_karhoo_demand_deeplink.md#deeplinkoptions) |
+`api` | [Api](../modules/_karhoo_demand_deeplink.md#api) |
 
 **Returns:** *[Deeplink](_karhoo_demand_deeplink.deeplink.md)*
 
@@ -44,7 +44,7 @@ Name | Type |
 
 • **get deeplinkData**(): *object*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:98](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L98)*
+*Defined in [demand-deeplink/src/Deeplink.ts:87](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L87)*
 
 **Returns:** *object*
 
@@ -64,7 +64,7 @@ Name | Type |
 
 ▸ **isValid**(): *object*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:102](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L102)*
+*Defined in [demand-deeplink/src/Deeplink.ts:91](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L91)*
 
 **Returns:** *object*
 
@@ -78,7 +78,7 @@ ___
 
 ▸ **resolve**(`subscriber`: function): *object*
 
-*Defined in [demand-deeplink/src/Deeplink.ts:106](https://github.com/karhoo/web-lib-demand/blob/fbcb272/packages/demand-deeplink/src/Deeplink.ts#L106)*
+*Defined in [demand-deeplink/src/Deeplink.ts:95](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L95)*
 
 **Parameters:**
 

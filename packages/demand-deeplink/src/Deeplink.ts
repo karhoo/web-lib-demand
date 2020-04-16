@@ -2,13 +2,12 @@ import {
   DeeplinkData,
   ValidationResponse,
   JourneyLeg,
-  DeeplinkOptions,
   ResolveResponse,
   ResolvePlaceResult,
   ResolveAvailabilityParams,
   ResolveAvailabilityResult,
+  Api,
 } from './types'
-import { HttpService, LocationService, PoiService, QuotesService } from './api'
 import { parse } from './parse'
 import { validate } from './validate'
 import { codes, errorMessageByCode } from './errors'
@@ -77,22 +76,12 @@ export class Deeplink {
 
   private validation: ValidationResponse
 
-  private locationService: LocationService
+  private api: Api
 
-  private poiService: PoiService
-
-  private quotesService: QuotesService
-
-  constructor(query: string, options: DeeplinkOptions) {
+  constructor(query: string, api: Api) {
     this.deeplinkInfo = parse(query)
     this.validation = validate(this.deeplinkInfo)
-
-    //TODO: Refactor this after api logic will be extracted from this package
-    //all services should be passed from outside
-    const httpService = new HttpService(options.url, options.getDefaultRequestOptions)
-    this.locationService = new LocationService(httpService)
-    this.poiService = new PoiService(httpService)
-    this.quotesService = new QuotesService(httpService)
+    this.api = api
   }
 
   public get deeplinkData() {
@@ -194,7 +183,7 @@ export class Deeplink {
   }
 
   private async resolveByPlaceId(item: SearchPlaceData): Promise<ResolvePlaceResult> {
-    const response = await this.locationService.getAddressDetails({ placeId: item.value })
+    const response = await this.api.locationService.getAddressDetails({ placeId: item.value })
 
     if (!response.ok) {
       return { ok: false, error: response.error }
@@ -213,7 +202,7 @@ export class Deeplink {
   }
 
   private async resolveByPoi(item: SearchPlaceData): Promise<ResolvePlaceResult> {
-    const response = await this.poiService.search({
+    const response = await this.api.poiService.search({
       paginationRowCount: 1,
       paginationOffset: 0,
       searchKey: item.value,
@@ -238,7 +227,7 @@ export class Deeplink {
   }
 
   private async resolveByAddressAutocoplete(item: SearchPlaceData): Promise<ResolvePlaceResult> {
-    const response = await this.locationService.getAddressAutocompleteData({
+    const response = await this.api.locationService.getAddressAutocompleteData({
       query: item.value,
     })
 
@@ -254,7 +243,7 @@ export class Deeplink {
   }
 
   private async checkAvailability(data: ResolveAvailabilityParams): Promise<ResolveAvailabilityResult> {
-    const response = await this.quotesService.checkAvailability(data)
+    const response = await this.api.quotesService.checkAvailability(data)
 
     if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 
