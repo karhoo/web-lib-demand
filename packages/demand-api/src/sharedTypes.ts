@@ -14,3 +14,11 @@ export type MeetingPointType =
 export type CommonDetailsType = 'AIRPORT' | 'TRAIN_STATION' | 'METRO_STATION' | 'PORT' | 'HOTEL' | 'OTHER'
 
 export type CommonPoiType = 'ENRICHED' | 'REGULATED' | 'NEAREST'
+
+export type VehicleAttributes = Partial<{
+  child_seat: boolean
+  electric: boolean
+  hybrid: boolean
+  luggage_capacity: number
+  passenger_capacity: number
+}>
