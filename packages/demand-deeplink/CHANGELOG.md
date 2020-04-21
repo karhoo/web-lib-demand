@@ -5,7 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.8.1](https://github.com/karhoo/web-lib-demand/compare/v0.2.0...v0.8.1) (2020-04-16)
 
-**Note:** Version bump only for package @karhoo/demand-deeplink
+**Note:** Version bump for package @karhoo/demand-deeplink
 
 
 
@@ -27,7 +27,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.7.2](https://github.com/karhoo/web-lib-demand/compare/v0.2.0...v0.7.2) (2020-04-14)
 
-**Note:** Version bump only for package @karhoo/demand-deeplink
+**Note:** Version bump for package @karhoo/demand-deeplink
 
 
 
@@ -35,4 +35,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.7.1](https://github.com/karhoo/web-lib-demand/compare/v0.2.0...v0.7.1) (2020-04-14)
 
-**Note:** Version bump only for package @karhoo/demand-deeplink
+**Note:** Version bump for package @karhoo/demand-deeplink

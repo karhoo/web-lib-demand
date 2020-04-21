@@ -13,7 +13,7 @@
 
 <h1>Karhoo Demand API</h1>
 
-The library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
+This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API Library** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
@@ -64,14 +64,14 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
 getApi usage:
 
-All options are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''` 
+All config fields are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
 
 ```
 const options = {
   url,
   defaultRequestOptionsGetter: requestOptionsGetter,
   responseMiddleware: middleware,
-  correlationIdPrefix,  
+  correlationIdPrefix,
 }
 
 const api = getApi(options)
@@ -113,16 +113,16 @@ const quotesService = new QuotesService(httpService)
 
 _Looking to contribute?_
 
-### 🐛 Bugs
+### 🐛Bugs
 
 Please file an issue for bugs, missing documentation, or unexpected behavior with a label `API`
 
-### 💡 Feature Requests
+### 💡Feature Requests
 
 Please file an issue to suggest new features with a label `API`. Vote on feature requests by adding
 a 👍. This helps maintainers prioritize what to work on.
 
-### ❓ Questions
+### ❓Questions
 
 For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed` and `API`.
 
