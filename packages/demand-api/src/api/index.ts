@@ -2,9 +2,11 @@ import { HttpService } from '../http/HttpService'
 import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
+import { TripService } from '../trip/TripService'
 
 import { Api, ApiOptions } from './types'
 import { defaultUrl, apiV1 } from './constants'
+import { FaresService } from '../fares/FaresService'
 
 export function getApi(apiOptions: ApiOptions = {}): Api {
   const {
@@ -30,5 +32,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     locationService: new LocationService(httpV1),
     poiService: new PoiService(httpV1),
     quotesService: new QuotesService(httpV1),
+    tripService: new TripService(httpV1),
+    faresService: new FaresService(httpV1),
   }
 }
