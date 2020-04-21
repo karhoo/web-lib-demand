@@ -22,25 +22,8 @@ This library is intended to be the standard way of working with a deeplink.
 
 ## Installation
 
-### NPM
-
 ```
 npm i @karhoo/demand-deeplink
-```
-
-### Github packages
-
-Add the following to .npmrc:
-
-```
-//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}
-@karhoo:registry=https://npm.pkg.github.com/
-```
-
-`GITHUB_ACCESS_TOKEN` - your [personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
-
-```sh
-npm install --save @karhoo/demand-deeplink
 ```
 
 ## Warnings

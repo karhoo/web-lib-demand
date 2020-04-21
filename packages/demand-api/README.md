@@ -23,10 +23,8 @@ This library provides the ability to contact Karhoo's public API and allows you 
 
 ## Installation
 
-### NPM
-
 ```sh
-npm install --save @karhoo/demand-api
+npm i @karhoo/demand-api
 ```
 
 ## Warnings
