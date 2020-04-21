@@ -78,20 +78,20 @@ deeplink.resolve(subscriber)
 
 ### Example
 
-A lot of deeplink examples can be find [here](https://developer.karhoo.com/docs/deeplink-integration#section-examples)
+A lot of deeplink examples can be found [here](https://developer.karhoo.com/docs/deeplink-integration#section-examples)
 
-Let's imagine, you want to deeplink from a hotel booking website to a Karhoo cab booking webdite.
+Let's imagine, you want to deeplink from a hotel booking website to a Karhoo cab booking website.
 
-Your customer booked a room and reached a room booking confirmation page. From this stage you can offer an complementary service to book a cab to a hotel's location.
+Your customer booked a hotel room and reached a booking confirmation page. From here you can offer a complementary service to book a cab to a hotel's location.
 
 At this stage, you know:
 
-1. Hotel adderess
-2. Time when a cab is needed (based on hotel check-in hours)
+1. Hotel address
+2. Time when a cab is required (based on hotel check-in hours)
 3. Number of passengers
-4. Passenger first and last name (if you willing to bypass it)
+4. Passenger first and last name (if you're willing to pass it)
 
-All these parameters can be embedded to a deeplink and passed to a Karhoo booking app.
+All these parameters can be embedded to a Deeplink and passed to a Karhoo booking app.
 
 _Step 1. Compose deeplink data_
 
@@ -141,7 +141,7 @@ const deeplink = generate(deeplinkData)
 ```
 console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon
 ```
-When you get a deeplink you can navigate your user from you website by adding the link to `href` attribute.
+When you get a deeplink you can navigate your user from your website by adding the link to `href` attribute.
 
 For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon"> Book a cab to a hotel </a>`
 
