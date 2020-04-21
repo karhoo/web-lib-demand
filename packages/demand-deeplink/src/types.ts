@@ -1,3 +1,33 @@
+import {
+  HttpResponse,
+  LocationAddressDetailsParameters,
+  LocationAddressAutocompleteParams,
+  LocationAddressDetailsResponse,
+  LocationAddressAutocompleteResponse,
+  PoiSearchParams,
+  PoiSearchResponse,
+  PoiResponse,
+  QuotesAvailabilityParams,
+  QuotesAvailabilityResponse,
+} from '@karhoo/demand-api'
+
+export type Api = {
+  locationService: {
+    getAddressDetails: (
+      params: LocationAddressDetailsParameters
+    ) => Promise<HttpResponse<LocationAddressDetailsResponse>>
+    getAddressAutocompleteData: (
+      params: LocationAddressAutocompleteParams
+    ) => Promise<HttpResponse<LocationAddressAutocompleteResponse>>
+  }
+  poiService: {
+    search: (params: PoiSearchParams) => Promise<HttpResponse<PoiSearchResponse>>
+  }
+  quotesService: {
+    checkAvailability: (params: QuotesAvailabilityParams) => Promise<HttpResponse<QuotesAvailabilityResponse>>
+  }
+}
+
 export type Dictionary<T> = {
   [index: string]: T
 }
@@ -44,18 +74,6 @@ export type ValidationError = {
 export type ValidationResponse = {
   ok: boolean
   errors?: ValidationError[]
-}
-
-export type RequestOptions = Omit<RequestInit, 'window'> & {
-  method: string
-  headers?: Record<string, string>
-}
-
-export type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'signal'>
-
-export type DeeplinkOptions = {
-  url: string
-  getDefaultRequestOptions: () => DefaultRequestOptions
 }
 
 type ResolveError = {
@@ -106,40 +124,3 @@ export type ResolveResponse =
       done: true
       error?: Error
     }
-
-// ---------------------------------------------------------
-// TODO: This is temporary API responses that are not full
-// They should be moved outside of this package
-
-export type LocationAddressDetailsResponse = {
-  place_id: string
-  address?: {
-    display_address: string
-  }
-}
-
-export type LocationAddressAutocompleteResponseItem = {
-  place_id: string
-  display_address: string
-  type: string
-}
-
-export type LocationAddressAutocompleteResponse = {
-  locations: LocationAddressAutocompleteResponseItem[]
-}
-
-export type PoiResponse = {
-  id?: string
-  address: {
-    display_address: string
-  }
-}
-
-export type PoiSearchResponse = {
-  pois?: PoiResponse[]
-}
-
-export type QuotesAvailabilityResponse = {
-  availabilities?: [{ availability_id?: string }]
-  categories?: string[]
-}

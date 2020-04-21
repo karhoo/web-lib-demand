@@ -4,8 +4,11 @@
   ],
   "command": {
     "publish": {
-      "registry": "https://registry.npmjs.org"
+      "registry": "https://npm.pkg.github.com"
+    },
+    "version": {
+      "conventionalCommits": true
     }
   },
-  "version": "0.7.0"
+  "version": "0.8.1"
 }

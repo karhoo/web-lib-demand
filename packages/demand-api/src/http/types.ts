@@ -21,7 +21,9 @@ export type HttpResponse<T, TError = ApiError> = HttpResponseOk<T> | HttpRespons
 
 export type Query = Record<string, string | number>
 
-export type HttpResponseMiddleware = <T>(response: HttpResponse<T>) => HttpResponse<T>
+export type HttpResponseMiddleware = <T>(
+  response: HttpResponse<T>
+) => HttpResponse<T> | Promise<HttpResponse<T>>
 
 export type RequestOptions = Omit<RequestInit, 'window' | 'headers'> & {
   method: string
@@ -32,7 +34,7 @@ export type MethodRequestOptions = Omit<RequestOptions, 'body' | 'method'>
 
 export type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'signal'>
 
-export type DefaultRequestOptionsGetter = () => DefaultRequestOptions
+export type DefaultRequestOptionsGetter = () => DefaultRequestOptions | Promise<DefaultRequestOptions>
 
 export interface Http {
   get<T>(url: string, query?: Query, options?: MethodRequestOptions): Promise<HttpResponse<T>>

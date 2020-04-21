@@ -94,7 +94,7 @@ export class HttpService implements Http {
     const defaultRequestOptions = {
       credentials: 'include' as const,
       mode: 'cors' as const,
-      ...this.getDefaultRequestOptions(),
+      ...(await this.getDefaultRequestOptions()),
     }
 
     const headers = new Headers({
@@ -103,9 +103,11 @@ export class HttpService implements Http {
       ...(options.headers || {}),
     })
 
-    return this.responseMiddleware(
+    const response = await this.responseMiddleware(
       await request<T>(this.createFullUrl(url, query), { ...defaultRequestOptions, ...options, headers })
     )
+
+    return response
   }
 
   private createFullUrl(url: string, params?: Query): string {
