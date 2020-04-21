@@ -27,10 +27,8 @@ The library provides the ability to contact Karhoo's public API and allows you t
 
 ## Installation
 
-### NPM
-
 ```sh
-npm install --save @karhoo/demand-api
+npm i @karhoo/demand-api
 ```
 
 ## Warnings
@@ -62,16 +60,27 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
 ```
 
+Please note that by default `fetch` will be called with following options
+
+```
+{
+  credentials: 'include',
+  mode: 'cors',
+}
+```
+
+You can override this default settings using `defaultRequestOptionsGetter`
+
 getApi usage:
 
-All options are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''` 
+All options are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
 
 ```
 const options = {
   url,
   defaultRequestOptionsGetter: requestOptionsGetter,
   responseMiddleware: middleware,
-  correlationIdPrefix,  
+  correlationIdPrefix,
 }
 
 const api = getApi(options)
