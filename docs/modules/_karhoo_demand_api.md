@@ -13,7 +13,7 @@
 
 <h1>Karhoo Demand API</h1>
 
-The library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API Library** is designed to enable its consumers to integrate faster because they don't need to create their own complete network stack.
+This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API Library** is designed to enable its consumers to integrate faster because they don't need to create their own complete network stack.
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
