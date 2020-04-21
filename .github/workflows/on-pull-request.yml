@@ -14,5 +14,5 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     - run: npm run lint
-    - run: npm run test
     - run: npm run build
+    - run: npm run test
