@@ -162,16 +162,16 @@ For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landi
 
 _Looking to contribute?_
 
-###  Bugs
+### 🐛 Bugs
 
 Please file an issue for bugs, missing documentation, or unexpected behavior with a label `DEEPLINK`
 
-###  Feature Requests
+### 💡 Feature Requests
 
 Please file an issue to suggest new features with a label `DEEPLINK`. Vote on feature requests by adding
 a 👍. This helps maintainers prioritize what to work on.
 
-###  Questions
+### ❓ Questions
 
 For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed` and `DEEPLINK`.
 
