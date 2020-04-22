@@ -15,10 +15,10 @@ jobs:
         scope: '@karhoo'
     - run: npm run bootstrap
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
     - run: npm run lint
     - run: npm run build
     - run: npm run test
     - run: npx lerna publish from-package --yes
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
