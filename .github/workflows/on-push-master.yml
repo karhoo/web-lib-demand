@@ -13,12 +13,15 @@ jobs:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
         scope: '@karhoo'
+    - run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+      env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     - run: npm run bootstrap
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     - run: npm run lint
     - run: npm run build
     - run: npm run test
-    - run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && npx lerna publish from-package --yes
+    - run: npx lerna publish from-package --yes
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
