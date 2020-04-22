@@ -1,7 +1,7 @@
 import { Http } from '../http/types'
 import { FinalFareResponse } from './types'
 
-export class FaresService {
+export class FareService {
   private url = 'fares'
 
   private http: Http

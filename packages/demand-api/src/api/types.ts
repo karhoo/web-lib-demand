@@ -3,7 +3,7 @@ import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
 import { TripService } from '../trip/TripService'
-import { FaresService } from '../fares/FaresService'
+import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
 
 export type ApiOptions = Partial<{
@@ -18,6 +18,6 @@ export type Api = {
   poiService: PoiService
   quotesService: QuotesService
   tripService: TripService
-  faresService: FaresService
+  fareService: FareService
   paymentService: PaymentService
 }

@@ -3,11 +3,11 @@ import { Quote } from '../quotes/types'
 import { VehicleAttributes } from '../sharedTypes'
 
 type PassengerDetails = {
-  first_name: string
+  first_name?: string
   last_name: string
-  email: string
+  email?: string
   phone_number: string
-  locale: string
+  locale?: string
 }
 
 type Passengers = {
@@ -15,7 +15,7 @@ type Passengers = {
   luggage?: {
     total: number
   }
-  passenger_details?: PassengerDetails[]
+  passenger_details: PassengerDetails[]
 }
 
 type Address = {
@@ -26,7 +26,7 @@ type Address = {
   timezone?: string
 }
 
-type TripStatus =
+export type TripStatus =
   | 'REQUESTED'
   | 'COMPLETED'
   | 'DRIVER_EN_ROUTE'
@@ -101,7 +101,7 @@ export type BookATripParams = {
   partner_trip_id?: string
   flight_number?: string
   train_number?: string
-  cost_center_reference: string
+  cost_center_reference?: string
   payment_nonce: string
   train_time?: string
   loyalty_programme?: string
@@ -144,7 +144,7 @@ export interface BookATripResponse extends TripFollowResponse {
   }
 }
 
-export type CancelParams = {
+export type CancellationParams = {
   reason: string
   explanation?: string
 }
