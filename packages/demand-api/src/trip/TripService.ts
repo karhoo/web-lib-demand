@@ -7,7 +7,6 @@ import {
   SearchParams,
   SearchResponse,
 } from './types'
-import { toSnakeCase } from '../utils'
 
 export class TripService {
   private url = 'bookings'
@@ -23,9 +22,7 @@ export class TripService {
   }
 
   book(params: BookATripParams) {
-    const body = toSnakeCase(params)
-
-    return this.http.post<BookATripResponse>(`${this.url}/with-nonce`, body)
+    return this.http.post<BookATripResponse>(`${this.url}/with-nonce`, params)
   }
 
   cancel(id: string, params: CancelParams) {
@@ -37,8 +34,6 @@ export class TripService {
   }
 
   search(params: SearchParams) {
-    const body = toSnakeCase(params)
-
-    return this.http.post<SearchResponse>(`${this.url}/search`, body)
+    return this.http.post<SearchResponse>(`${this.url}/search`, params)
   }
 }

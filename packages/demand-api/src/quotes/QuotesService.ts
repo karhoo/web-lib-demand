@@ -1,6 +1,12 @@
 import date from 'date-and-time'
 import { Http } from '../http/types'
-import { QuotesAvailabilityParams, QuotesAvailabilityResponse } from './types'
+import {
+  QuotesAvailabilityParams,
+  QuotesAvailabilityResponse,
+  QutesSearchParams,
+  QuotesResponse,
+  QuotesByIdResponse,
+} from './types'
 import { toSnakeCase } from '../utils'
 
 export class QuotesService {
@@ -21,5 +27,23 @@ export class QuotesService {
     )
 
     return this.http.post<QuotesAvailabilityResponse>(`${this.url}/availability`, body)
+  }
+
+  quotesSearch(params: QutesSearchParams) {
+    const { local_time_of_pickup } = params
+    const body = toSnakeCase(
+      local_time_of_pickup
+        ? {
+            ...params,
+            local_time_of_pickup: date.format(new Date(local_time_of_pickup), 'YYYY-MM-DDTHH:mm', true),
+          }
+        : params
+    )
+
+    return this.http.post<QuotesResponse>(this.url, body)
+  }
+
+  quotesSearchById(id: string) {
+    return this.http.get<QuotesByIdResponse>(`${this.url}/${id}`)
   }
 }
