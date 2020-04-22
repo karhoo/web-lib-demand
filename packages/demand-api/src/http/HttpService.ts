@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid'
+import isEmpty from 'lodash/isEmpty'
 import {
   Http,
   HttpResponse,
@@ -78,8 +79,15 @@ export class HttpService implements Http {
     return this.request<T>(url, { method: 'GET', ...options }, query)
   }
 
-  public post<T>(url: string, body: object, options: MethodRequestOptions = {}): Promise<HttpResponse<T>> {
-    return this.request<T>(url, { method: 'POST', ...options, ...toJsonBody(body, options.headers) })
+  public post<T>(
+    url: string,
+    body: object,
+    options: MethodRequestOptions = {},
+    query?: Query
+  ): Promise<HttpResponse<T>> {
+    const jsonBody = !isEmpty(body) ? toJsonBody(body, options.headers) : {}
+
+    return this.request<T>(url, { method: 'POST', ...options, ...jsonBody }, query)
   }
 
   public put<T>(url: string, body: object, options: MethodRequestOptions = {}): Promise<HttpResponse<T>> {

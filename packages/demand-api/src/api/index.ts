@@ -3,10 +3,11 @@ import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
 import { TripService } from '../trip/TripService'
+import { FaresService } from '../fares/FaresService'
+import { PaymentService } from '../payment/PaymentService'
 
 import { Api, ApiOptions } from './types'
-import { defaultUrl, apiV1 } from './constants'
-import { FaresService } from '../fares/FaresService'
+import { defaultUrl, apiV1, apiV2 } from './constants'
 
 export function getApi(apiOptions: ApiOptions = {}): Api {
   const {
@@ -17,8 +18,10 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
   } = apiOptions
 
   const v1 = `${url}/${apiV1}`
+  const v2 = `${url}/${apiV2}`
 
   const httpV1 = new HttpService(v1).setCorrelationIdPrefix(correlationIdPrefix)
+  const httpV2 = new HttpService(v2).setCorrelationIdPrefix(correlationIdPrefix)
 
   if (defaultRequestOptionsGetter) {
     httpV1.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
@@ -34,5 +37,6 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     quotesService: new QuotesService(httpV1),
     tripService: new TripService(httpV1),
     faresService: new FaresService(httpV1),
+    paymentService: new PaymentService(httpV2),
   }
 }
