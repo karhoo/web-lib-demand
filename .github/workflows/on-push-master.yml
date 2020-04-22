@@ -19,6 +19,6 @@ jobs:
     - run: npm run lint
     - run: npm run build
     - run: npm run test
-    - run: npx lerna publish from-package --yes
+    - run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && npx lerna publish from-package --yes
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
