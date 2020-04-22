@@ -3,7 +3,7 @@ import {
   TripFollowResponse,
   BookATripParams,
   BookATripResponse,
-  CancelParams,
+  CancellationParams,
   SearchParams,
   SearchResponse,
 } from './types'
@@ -25,11 +25,11 @@ export class TripService {
     return this.http.post<BookATripResponse>(`${this.url}/with-nonce`, params)
   }
 
-  cancel(id: string, params: CancelParams) {
+  cancel(id: string, params: CancellationParams) {
     return this.http.post<void>(`${this.url}/${id}/cancel`, params)
   }
 
-  cancelByFollowCode(code: string, params: CancelParams) {
+  cancelByFollowCode(code: string, params: CancellationParams) {
     return this.http.post<void>(`${this.url}/follow/${code}/cancel`, params)
   }
 

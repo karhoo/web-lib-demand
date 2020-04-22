@@ -3,7 +3,7 @@ import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
 import { TripService } from '../trip/TripService'
-import { FaresService } from '../fares/FaresService'
+import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
 
 import { Api, ApiOptions } from './types'
@@ -36,7 +36,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     poiService: new PoiService(httpV1),
     quotesService: new QuotesService(httpV1),
     tripService: new TripService(httpV1),
-    faresService: new FaresService(httpV1),
+    fareService: new FareService(httpV1),
     paymentService: new PaymentService(httpV2),
   }
 }
