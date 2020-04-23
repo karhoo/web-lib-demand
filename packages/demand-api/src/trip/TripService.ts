@@ -26,11 +26,11 @@ export class TripService {
   }
 
   cancel(id: string, params: CancellationParams) {
-    return this.http.post<void>(`${this.url}/${id}/cancel`, params)
+    return this.http.post<object>(`${this.url}/${id}/cancel`, params)
   }
 
   cancelByFollowCode(code: string, params: CancellationParams) {
-    return this.http.post<void>(`${this.url}/follow/${code}/cancel`, params)
+    return this.http.post<object>(`${this.url}/follow/${code}/cancel`, params)
   }
 
   search(params: SearchParams) {
