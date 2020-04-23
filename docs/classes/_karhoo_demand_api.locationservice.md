@@ -4,66 +4,66 @@
 
 ## Hierarchy
 
-* **LocationService**
+- **LocationService**
 
 ## Index
 
 ### Constructors
 
-* [constructor](_karhoo_demand_api.locationservice.md#constructor)
+- [constructor](_karhoo_demand_api.locationservice.md#constructor)
 
 ### Methods
 
-* [getAddressAutocompleteData](_karhoo_demand_api.locationservice.md#getaddressautocompletedata)
-* [getAddressDetails](_karhoo_demand_api.locationservice.md#getaddressdetails)
+- [getAddressAutocompleteData](_karhoo_demand_api.locationservice.md#getaddressautocompletedata)
+- [getAddressDetails](_karhoo_demand_api.locationservice.md#getaddressdetails)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new LocationService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[LocationService](_karhoo_demand_api.locationservice.md)*
+\+ **new LocationService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): _[LocationService](_karhoo_demand_api.locationservice.md)_
 
-*Defined in [demand-api/src/location/LocationService.ts:14](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-api/src/location/LocationService.ts#L14)*
+_Defined in [demand-api/src/location/LocationService.ts:14](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/location/LocationService.ts#L14)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`http` | [Http](../interfaces/_karhoo_demand_api.http.md) |
+| Name   | Type                                             |
+| ------ | ------------------------------------------------ |
+| `http` | [Http](../interfaces/_karhoo_demand_api.http.md) |
 
-**Returns:** *[LocationService](_karhoo_demand_api.locationservice.md)*
+**Returns:** _[LocationService](_karhoo_demand_api.locationservice.md)_
 
 ## Methods
 
-###  getAddressAutocompleteData
+### getAddressAutocompleteData
 
-▸ **getAddressAutocompleteData**(`data`: [LocationAddressAutocompleteParams](../modules/_karhoo_demand_api.md#locationaddressautocompleteparams)): *Promise‹object & object | object & object›*
+▸ **getAddressAutocompleteData**(`data`: [LocationAddressAutocompleteParams](../modules/_karhoo_demand_api.md#locationaddressautocompleteparams)): _Promise‹object & object | object & object›_
 
-*Defined in [demand-api/src/location/LocationService.ts:29](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-api/src/location/LocationService.ts#L29)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`data` | [LocationAddressAutocompleteParams](../modules/_karhoo_demand_api.md#locationaddressautocompleteparams) |
-
-**Returns:** *Promise‹object & object | object & object›*
-
-___
-
-###  getAddressDetails
-
-▸ **getAddressDetails**(`__namedParameters`: object): *Promise‹object & object | object & object›*
-
-*Defined in [demand-api/src/location/LocationService.ts:20](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-api/src/location/LocationService.ts#L20)*
+_Defined in [demand-api/src/location/LocationService.ts:29](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/location/LocationService.ts#L29)_
 
 **Parameters:**
 
-▪ **__namedParameters**: *object*
+| Name   | Type                                                                                                    |
+| ------ | ------------------------------------------------------------------------------------------------------- |
+| `data` | [LocationAddressAutocompleteParams](../modules/_karhoo_demand_api.md#locationaddressautocompleteparams) |
 
-Name | Type |
------- | ------ |
-`placeId` | string |
-`sessionToken` | undefined &#124; string |
+**Returns:** _Promise‹object & object | object & object›_
 
-**Returns:** *Promise‹object & object | object & object›*
+---
+
+### getAddressDetails
+
+▸ **getAddressDetails**(`__namedParameters`: object): _Promise‹object & object | object & object›_
+
+_Defined in [demand-api/src/location/LocationService.ts:20](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/location/LocationService.ts#L20)_
+
+**Parameters:**
+
+▪ **\_\_namedParameters**: _object_
+
+| Name           | Type                    |
+| -------------- | ----------------------- |
+| `placeId`      | string                  |
+| `sessionToken` | undefined &#124; string |
+
+**Returns:** _Promise‹object & object | object & object›_

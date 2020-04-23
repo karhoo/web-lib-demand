@@ -9,10 +9,11 @@
 
 <h1>Karhoo Demand API</h1>
 
-The library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
+This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -23,10 +24,8 @@ The library provides the ability to contact Karhoo's public API and allows you t
 
 ## Installation
 
-### NPM
-
 ```sh
-npm install --save @karhoo/demand-api
+npm i @karhoo/demand-api
 ```
 
 ## Warnings
@@ -35,7 +34,7 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 
 ## Usage
 
-You can use each service separately or you can use `getApi` method which returns all available services
+You can use each service separately, or you can use `getApi` method which returns all available services
 
 ```
 import { getApi, HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api'
@@ -58,7 +57,7 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
 ```
 
-Please note that by default `fetch` will be called with following options
+Please note that by default `fetch` will be called with following config
 
 ```
 {
@@ -71,14 +70,14 @@ You can override this default settings using `defaultRequestOptionsGetter`
 
 getApi usage:
 
-All options are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''` 
+All config fields are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
 
 ```
 const options = {
   url,
   defaultRequestOptionsGetter: requestOptionsGetter,
   responseMiddleware: middleware,
-  correlationIdPrefix,  
+  correlationIdPrefix,
 }
 
 const api = getApi(options)

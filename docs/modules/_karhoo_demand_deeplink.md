@@ -18,6 +18,7 @@ Karhoo Deeplink is a method of passing the user’s required information from th
 This library is intended to be the standard way of working with a deeplink.
 
 [**Read The Docs**](https://developer.karhoo.com/docs/deeplink-integration)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -26,25 +27,8 @@ This library is intended to be the standard way of working with a deeplink.
 
 ## Installation
 
-### NPM
-
 ```
 npm i @karhoo/demand-deeplink
-```
-
-### Github packages
-
-Add the following to .npmrc:
-
-```
-//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}
-@karhoo:registry=https://npm.pkg.github.com/
-```
-
-`GITHUB_ACCESS_TOKEN` - your [personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
-
-```sh
-npm install --save @karhoo/demand-deeplink
 ```
 
 ## Warnings
@@ -79,7 +63,7 @@ const queryString = generate(deeplinkData)
 
 Resolve deeplink:
 
-To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.  
+To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.
 
 ```
 import { getApi } from '@karhoo/demand-api';
@@ -95,20 +79,20 @@ deeplink.resolve(subscriber)
 
 ### Example
 
-A lot of deeplink examples can be find [here](https://developer.karhoo.com/docs/deeplink-integration#section-examples)
+A lot of deeplink examples can be found [here](https://developer.karhoo.com/docs/deeplink-integration#section-examples)
 
-Let's imagine, you want to deeplink from a hotel booking website to a Karhoo cab booking webdite.
+Let's imagine, you want to deeplink from a hotel booking website to a Karhoo cab booking website.
 
-Your customer booked a room and reached a room booking confirmation page. From this stage you can offer an complementary service to book a cab to a hotel's location.
+Your customer booked a hotel room and reached a booking confirmation page. From here you can offer a complementary service to book a cab to a hotel's location.
 
 At this stage, you know:
 
-1. Hotel adderess
-2. Time when a cab is needed (based on hotel check-in hours)
+1. Hotel address
+2. Time when a cab is required (based on hotel check-in hours)
 3. Number of passengers
-4. Passenger first and last name (if you willing to bypass it)
+4. Passenger first and last name (if you're willing to pass it)
 
-All these parameters can be embedded to a deeplink and passed to a Karhoo booking app.
+All these parameters can be embedded to a Deeplink and passed to a Karhoo booking app.
 
 _Step 1. Compose deeplink data_
 
@@ -155,10 +139,12 @@ if (!ok) {
 
 const deeplink = generate(deeplinkData)
 ```
+
 ```
 console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon
 ```
-When you get a deeplink you can navigate your user from you website by adding the link to `href` attribute.
+
+When you get a deeplink you can navigate your user from your website by adding the link to `href` attribute.
 
 For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon"> Book a cab to a hotel </a>`
 
@@ -189,791 +175,791 @@ For questions related to using the library, please re-visit a documentation firs
 
 ### References
 
-* [Api](_karhoo_demand_deeplink.md#api)
-* [Deeplink](_karhoo_demand_deeplink.md#deeplink)
-* [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)
-* [Dictionary](_karhoo_demand_deeplink.md#dictionary)
-* [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)
-* [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)
-* [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)
-* [ResolveAvailabilityParams](_karhoo_demand_deeplink.md#resolveavailabilityparams)
-* [ResolveAvailabilityResult](_karhoo_demand_deeplink.md#resolveavailabilityresult)
-* [ResolvePlaceResult](_karhoo_demand_deeplink.md#resolveplaceresult)
-* [ResolveResponse](_karhoo_demand_deeplink.md#resolveresponse)
-* [ValidationError](_karhoo_demand_deeplink.md#validationerror)
-* [ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)
-* [errorCodes](_karhoo_demand_deeplink.md#errorcodes)
-* [errorMessageByCode](_karhoo_demand_deeplink.md#errormessagebycode)
-* [generate](_karhoo_demand_deeplink.md#generate)
-* [parse](_karhoo_demand_deeplink.md#parse)
-* [validate](_karhoo_demand_deeplink.md#validate)
+- [Api](_karhoo_demand_deeplink.md#api)
+- [Deeplink](_karhoo_demand_deeplink.md#deeplink)
+- [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)
+- [Dictionary](_karhoo_demand_deeplink.md#dictionary)
+- [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)
+- [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)
+- [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)
+- [ResolveAvailabilityParams](_karhoo_demand_deeplink.md#resolveavailabilityparams)
+- [ResolveAvailabilityResult](_karhoo_demand_deeplink.md#resolveavailabilityresult)
+- [ResolvePlaceResult](_karhoo_demand_deeplink.md#resolveplaceresult)
+- [ResolveResponse](_karhoo_demand_deeplink.md#resolveresponse)
+- [ValidationError](_karhoo_demand_deeplink.md#validationerror)
+- [ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)
+- [errorCodes](_karhoo_demand_deeplink.md#errorcodes)
+- [errorMessageByCode](_karhoo_demand_deeplink.md#errormessagebycode)
+- [generate](_karhoo_demand_deeplink.md#generate)
+- [parse](_karhoo_demand_deeplink.md#parse)
+- [validate](_karhoo_demand_deeplink.md#validate)
 
 ### Classes
 
-* [Deeplink](../classes/_karhoo_demand_deeplink.deeplink.md)
+- [Deeplink](../classes/_karhoo_demand_deeplink.deeplink.md)
 
 ### Type aliases
 
-* [Api](_karhoo_demand_deeplink.md#api)
-* [AvailabilityPromisesList](_karhoo_demand_deeplink.md#availabilitypromiseslist)
-* [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)
-* [Dictionary](_karhoo_demand_deeplink.md#dictionary)
-* [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)
-* [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)
-* [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)
-* [PlaceField](_karhoo_demand_deeplink.md#placefield)
-* [PlacePromisesList](_karhoo_demand_deeplink.md#placepromiseslist)
-* [ResolveAvailability](_karhoo_demand_deeplink.md#resolveavailability)
-* [ResolveAvailabilityError](_karhoo_demand_deeplink.md#resolveavailabilityerror)
-* [ResolveAvailabilityParams](_karhoo_demand_deeplink.md#resolveavailabilityparams)
-* [ResolveAvailabilityResult](_karhoo_demand_deeplink.md#resolveavailabilityresult)
-* [ResolveError](_karhoo_demand_deeplink.md#resolveerror)
-* [ResolvePlace](_karhoo_demand_deeplink.md#resolveplace)
-* [ResolvePlaceResult](_karhoo_demand_deeplink.md#resolveplaceresult)
-* [ResolvePlaceValue](_karhoo_demand_deeplink.md#resolveplacevalue)
-* [ResolveResponse](_karhoo_demand_deeplink.md#resolveresponse)
-* [SearchPlaceData](_karhoo_demand_deeplink.md#searchplacedata)
-* [ValidationError](_karhoo_demand_deeplink.md#validationerror)
-* [ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)
+- [Api](_karhoo_demand_deeplink.md#api)
+- [AvailabilityPromisesList](_karhoo_demand_deeplink.md#availabilitypromiseslist)
+- [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)
+- [Dictionary](_karhoo_demand_deeplink.md#dictionary)
+- [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)
+- [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)
+- [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)
+- [PlaceField](_karhoo_demand_deeplink.md#placefield)
+- [PlacePromisesList](_karhoo_demand_deeplink.md#placepromiseslist)
+- [ResolveAvailability](_karhoo_demand_deeplink.md#resolveavailability)
+- [ResolveAvailabilityError](_karhoo_demand_deeplink.md#resolveavailabilityerror)
+- [ResolveAvailabilityParams](_karhoo_demand_deeplink.md#resolveavailabilityparams)
+- [ResolveAvailabilityResult](_karhoo_demand_deeplink.md#resolveavailabilityresult)
+- [ResolveError](_karhoo_demand_deeplink.md#resolveerror)
+- [ResolvePlace](_karhoo_demand_deeplink.md#resolveplace)
+- [ResolvePlaceResult](_karhoo_demand_deeplink.md#resolveplaceresult)
+- [ResolvePlaceValue](_karhoo_demand_deeplink.md#resolveplacevalue)
+- [ResolveResponse](_karhoo_demand_deeplink.md#resolveresponse)
+- [SearchPlaceData](_karhoo_demand_deeplink.md#searchplacedata)
+- [ValidationError](_karhoo_demand_deeplink.md#validationerror)
+- [ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)
 
 ### Variables
 
-* [deepLinkMetaPrefix](_karhoo_demand_deeplink.md#const-deeplinkmetaprefix)
-* [dropoffKpoiParameter](_karhoo_demand_deeplink.md#const-dropoffkpoiparameter)
-* [dropoffParameter](_karhoo_demand_deeplink.md#const-dropoffparameter)
-* [dropoffPlaceFields](_karhoo_demand_deeplink.md#const-dropoffplacefields)
-* [dropoffPlaceIdParameter](_karhoo_demand_deeplink.md#const-dropoffplaceidparameter)
-* [emailParameter](_karhoo_demand_deeplink.md#const-emailparameter)
-* [expectedTimeFormatRegexp](_karhoo_demand_deeplink.md#const-expectedtimeformatregexp)
-* [firstNameParameter](_karhoo_demand_deeplink.md#const-firstnameparameter)
-* [journeyLegDropoffMetaPrefix](_karhoo_demand_deeplink.md#const-journeylegdropoffmetaprefix)
-* [journeyLegFieldsRegexp](_karhoo_demand_deeplink.md#const-journeylegfieldsregexp)
-* [journeyLegMainFields](_karhoo_demand_deeplink.md#const-journeylegmainfields)
-* [journeyLegMetaPrefix](_karhoo_demand_deeplink.md#const-journeylegmetaprefix)
-* [journeyLegPickupMetaPrefix](_karhoo_demand_deeplink.md#const-journeylegpickupmetaprefix)
-* [journeyLegPrefix](_karhoo_demand_deeplink.md#const-journeylegprefix)
-* [lastNameParameter](_karhoo_demand_deeplink.md#const-lastnameparameter)
-* [legNameIndex](_karhoo_demand_deeplink.md#const-legnameindex)
-* [luggageParameter](_karhoo_demand_deeplink.md#const-luggageparameter)
-* [passengerInfoFields](_karhoo_demand_deeplink.md#const-passengerinfofields)
-* [passengerParameter](_karhoo_demand_deeplink.md#const-passengerparameter)
-* [phoneNumberParameter](_karhoo_demand_deeplink.md#const-phonenumberparameter)
-* [pickupKpoiParameter](_karhoo_demand_deeplink.md#const-pickupkpoiparameter)
-* [pickupParameter](_karhoo_demand_deeplink.md#const-pickupparameter)
-* [pickupPlaceFields](_karhoo_demand_deeplink.md#const-pickupplacefields)
-* [pickupPlaceIdParameter](_karhoo_demand_deeplink.md#const-pickupplaceidparameter)
-* [pickupTimeParameter](_karhoo_demand_deeplink.md#const-pickuptimeparameter)
-* [timezoneRegexp](_karhoo_demand_deeplink.md#const-timezoneregexp)
-* [trainTimeParameter](_karhoo_demand_deeplink.md#const-traintimeparameter)
-* [travellerLocaleParameter](_karhoo_demand_deeplink.md#const-travellerlocaleparameter)
-* [travellerLocaleRegexp](_karhoo_demand_deeplink.md#const-travellerlocaleregexp)
+- [deepLinkMetaPrefix](_karhoo_demand_deeplink.md#const-deeplinkmetaprefix)
+- [dropoffKpoiParameter](_karhoo_demand_deeplink.md#const-dropoffkpoiparameter)
+- [dropoffParameter](_karhoo_demand_deeplink.md#const-dropoffparameter)
+- [dropoffPlaceFields](_karhoo_demand_deeplink.md#const-dropoffplacefields)
+- [dropoffPlaceIdParameter](_karhoo_demand_deeplink.md#const-dropoffplaceidparameter)
+- [emailParameter](_karhoo_demand_deeplink.md#const-emailparameter)
+- [expectedTimeFormatRegexp](_karhoo_demand_deeplink.md#const-expectedtimeformatregexp)
+- [firstNameParameter](_karhoo_demand_deeplink.md#const-firstnameparameter)
+- [journeyLegDropoffMetaPrefix](_karhoo_demand_deeplink.md#const-journeylegdropoffmetaprefix)
+- [journeyLegFieldsRegexp](_karhoo_demand_deeplink.md#const-journeylegfieldsregexp)
+- [journeyLegMainFields](_karhoo_demand_deeplink.md#const-journeylegmainfields)
+- [journeyLegMetaPrefix](_karhoo_demand_deeplink.md#const-journeylegmetaprefix)
+- [journeyLegPickupMetaPrefix](_karhoo_demand_deeplink.md#const-journeylegpickupmetaprefix)
+- [journeyLegPrefix](_karhoo_demand_deeplink.md#const-journeylegprefix)
+- [lastNameParameter](_karhoo_demand_deeplink.md#const-lastnameparameter)
+- [legNameIndex](_karhoo_demand_deeplink.md#const-legnameindex)
+- [luggageParameter](_karhoo_demand_deeplink.md#const-luggageparameter)
+- [passengerInfoFields](_karhoo_demand_deeplink.md#const-passengerinfofields)
+- [passengerParameter](_karhoo_demand_deeplink.md#const-passengerparameter)
+- [phoneNumberParameter](_karhoo_demand_deeplink.md#const-phonenumberparameter)
+- [pickupKpoiParameter](_karhoo_demand_deeplink.md#const-pickupkpoiparameter)
+- [pickupParameter](_karhoo_demand_deeplink.md#const-pickupparameter)
+- [pickupPlaceFields](_karhoo_demand_deeplink.md#const-pickupplacefields)
+- [pickupPlaceIdParameter](_karhoo_demand_deeplink.md#const-pickupplaceidparameter)
+- [pickupTimeParameter](_karhoo_demand_deeplink.md#const-pickuptimeparameter)
+- [timezoneRegexp](_karhoo_demand_deeplink.md#const-timezoneregexp)
+- [trainTimeParameter](_karhoo_demand_deeplink.md#const-traintimeparameter)
+- [travellerLocaleParameter](_karhoo_demand_deeplink.md#const-travellerlocaleparameter)
+- [travellerLocaleRegexp](_karhoo_demand_deeplink.md#const-travellerlocaleregexp)
 
 ### Functions
 
-* [configurePlaceId](_karhoo_demand_deeplink.md#const-configureplaceid)
-* [devIsObjectCheck](_karhoo_demand_deeplink.md#const-devisobjectcheck)
-* [excludeUndefined](_karhoo_demand_deeplink.md#const-excludeundefined)
-* [generate](_karhoo_demand_deeplink.md#generate)
-* [getActivePlace](_karhoo_demand_deeplink.md#getactiveplace)
-* [getAvailableParams](_karhoo_demand_deeplink.md#getavailableparams)
-* [getError](_karhoo_demand_deeplink.md#geterror)
-* [getJorneyLegsParams](_karhoo_demand_deeplink.md#getjorneylegsparams)
-* [getJourneyLeg](_karhoo_demand_deeplink.md#getjourneyleg)
-* [getJourneyLegs](_karhoo_demand_deeplink.md#getjourneylegs)
-* [getPassengerInfo](_karhoo_demand_deeplink.md#getpassengerinfo)
-* [getPlaceCacheKey](_karhoo_demand_deeplink.md#getplacecachekey)
-* [hasData](_karhoo_demand_deeplink.md#hasdata)
-* [isLegCommonQueryParameter](_karhoo_demand_deeplink.md#const-islegcommonqueryparameter)
-* [isLegDropoffMeta](_karhoo_demand_deeplink.md#const-islegdropoffmeta)
-* [isLegMeta](_karhoo_demand_deeplink.md#const-islegmeta)
-* [isLegMetaQueryParameter](_karhoo_demand_deeplink.md#const-islegmetaqueryparameter)
-* [isLegPassengerInfoMeta](_karhoo_demand_deeplink.md#const-islegpassengerinfometa)
-* [isLegPickupMeta](_karhoo_demand_deeplink.md#const-islegpickupmeta)
-* [isLegQueryParameter](_karhoo_demand_deeplink.md#const-islegqueryparameter)
-* [isNotEmptyString](_karhoo_demand_deeplink.md#const-isnotemptystring)
-* [isObject](_karhoo_demand_deeplink.md#const-isobject)
-* [isPickupPlace](_karhoo_demand_deeplink.md#ispickupplace)
-* [isPositiveInteger](_karhoo_demand_deeplink.md#const-ispositiveinteger)
-* [matchLegQueryParameter](_karhoo_demand_deeplink.md#const-matchlegqueryparameter)
-* [parse](_karhoo_demand_deeplink.md#parse)
-* [parseSearchString](_karhoo_demand_deeplink.md#parsesearchstring)
-* [resolvePromise](_karhoo_demand_deeplink.md#resolvepromise)
-* [transformMapByKey](_karhoo_demand_deeplink.md#transformmapbykey)
-* [validate](_karhoo_demand_deeplink.md#validate)
-* [validateLeg](_karhoo_demand_deeplink.md#validateleg)
-* [validateMeta](_karhoo_demand_deeplink.md#validatemeta)
-* [validatePassengerInfo](_karhoo_demand_deeplink.md#validatepassengerinfo)
-* [validateRoute](_karhoo_demand_deeplink.md#validateroute)
-* [validateTime](_karhoo_demand_deeplink.md#validatetime)
-* [validateTravellerLocale](_karhoo_demand_deeplink.md#validatetravellerlocale)
+- [configurePlaceId](_karhoo_demand_deeplink.md#const-configureplaceid)
+- [devIsObjectCheck](_karhoo_demand_deeplink.md#const-devisobjectcheck)
+- [excludeUndefined](_karhoo_demand_deeplink.md#const-excludeundefined)
+- [generate](_karhoo_demand_deeplink.md#generate)
+- [getActivePlace](_karhoo_demand_deeplink.md#getactiveplace)
+- [getAvailableParams](_karhoo_demand_deeplink.md#getavailableparams)
+- [getError](_karhoo_demand_deeplink.md#geterror)
+- [getJorneyLegsParams](_karhoo_demand_deeplink.md#getjorneylegsparams)
+- [getJourneyLeg](_karhoo_demand_deeplink.md#getjourneyleg)
+- [getJourneyLegs](_karhoo_demand_deeplink.md#getjourneylegs)
+- [getPassengerInfo](_karhoo_demand_deeplink.md#getpassengerinfo)
+- [getPlaceCacheKey](_karhoo_demand_deeplink.md#getplacecachekey)
+- [hasData](_karhoo_demand_deeplink.md#hasdata)
+- [isLegCommonQueryParameter](_karhoo_demand_deeplink.md#const-islegcommonqueryparameter)
+- [isLegDropoffMeta](_karhoo_demand_deeplink.md#const-islegdropoffmeta)
+- [isLegMeta](_karhoo_demand_deeplink.md#const-islegmeta)
+- [isLegMetaQueryParameter](_karhoo_demand_deeplink.md#const-islegmetaqueryparameter)
+- [isLegPassengerInfoMeta](_karhoo_demand_deeplink.md#const-islegpassengerinfometa)
+- [isLegPickupMeta](_karhoo_demand_deeplink.md#const-islegpickupmeta)
+- [isLegQueryParameter](_karhoo_demand_deeplink.md#const-islegqueryparameter)
+- [isNotEmptyString](_karhoo_demand_deeplink.md#const-isnotemptystring)
+- [isObject](_karhoo_demand_deeplink.md#const-isobject)
+- [isPickupPlace](_karhoo_demand_deeplink.md#ispickupplace)
+- [isPositiveInteger](_karhoo_demand_deeplink.md#const-ispositiveinteger)
+- [matchLegQueryParameter](_karhoo_demand_deeplink.md#const-matchlegqueryparameter)
+- [parse](_karhoo_demand_deeplink.md#parse)
+- [parseSearchString](_karhoo_demand_deeplink.md#parsesearchstring)
+- [resolvePromise](_karhoo_demand_deeplink.md#resolvepromise)
+- [transformMapByKey](_karhoo_demand_deeplink.md#transformmapbykey)
+- [validate](_karhoo_demand_deeplink.md#validate)
+- [validateLeg](_karhoo_demand_deeplink.md#validateleg)
+- [validateMeta](_karhoo_demand_deeplink.md#validatemeta)
+- [validatePassengerInfo](_karhoo_demand_deeplink.md#validatepassengerinfo)
+- [validateRoute](_karhoo_demand_deeplink.md#validateroute)
+- [validateTime](_karhoo_demand_deeplink.md#validatetime)
+- [validateTravellerLocale](_karhoo_demand_deeplink.md#validatetravellerlocale)
 
 ### Object literals
 
-* [codes](_karhoo_demand_deeplink.md#const-codes)
-* [errorMessageByCode](_karhoo_demand_deeplink.md#const-errormessagebycode)
-* [journeyLegMetaPrefixes](_karhoo_demand_deeplink.md#const-journeylegmetaprefixes)
+- [codes](_karhoo_demand_deeplink.md#const-codes)
+- [errorMessageByCode](_karhoo_demand_deeplink.md#const-errormessagebycode)
+- [journeyLegMetaPrefixes](_karhoo_demand_deeplink.md#const-journeylegmetaprefixes)
 
 ## References
 
-###  Api
+### Api
 
 • **Api**:
 
-___
+---
 
-###  Deeplink
+### Deeplink
 
 • **Deeplink**:
 
-___
+---
 
-###  DeeplinkData
+### DeeplinkData
 
 • **DeeplinkData**:
 
-___
+---
 
-###  Dictionary
+### Dictionary
 
 • **Dictionary**:
 
-___
+---
 
-###  JourneyLeg
+### JourneyLeg
 
 • **JourneyLeg**:
 
-___
+---
 
-###  KeyValueList
+### KeyValueList
 
 • **KeyValueList**:
 
-___
+---
 
-###  PassengerInfo
+### PassengerInfo
 
 • **PassengerInfo**:
 
-___
+---
 
-###  ResolveAvailabilityParams
+### ResolveAvailabilityParams
 
 • **ResolveAvailabilityParams**:
 
-___
+---
 
-###  ResolveAvailabilityResult
+### ResolveAvailabilityResult
 
 • **ResolveAvailabilityResult**:
 
-___
+---
 
-###  ResolvePlaceResult
+### ResolvePlaceResult
 
 • **ResolvePlaceResult**:
 
-___
+---
 
-###  ResolveResponse
+### ResolveResponse
 
 • **ResolveResponse**:
 
-___
+---
 
-###  ValidationError
+### ValidationError
 
 • **ValidationError**:
 
-___
+---
 
-###  ValidationResponse
+### ValidationResponse
 
 • **ValidationResponse**:
 
-___
+---
 
-###  errorCodes
+### errorCodes
 
 • **errorCodes**:
 
-___
+---
 
-###  errorMessageByCode
+### errorMessageByCode
 
 • **errorMessageByCode**:
 
-___
+---
 
-###  generate
+### generate
 
 • **generate**:
 
-___
+---
 
-###  parse
+### parse
 
 • **parse**:
 
-___
+---
 
-###  validate
+### validate
 
 • **validate**:
 
 ## Type aliases
 
-###  Api
+### Api
 
-Ƭ **Api**: *object*
+Ƭ **Api**: _object_
 
-*Defined in [demand-deeplink/src/types.ts:14](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L14)*
-
-#### Type declaration:
-
-* **locationService**(): *object*
-
-  * **getAddressAutocompleteData**(): *function*
-
-    * (`params`: [LocationAddressAutocompleteParams](_karhoo_demand_api.md#locationaddressautocompleteparams)): *Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressAutocompleteResponse](_karhoo_demand_api.md#locationaddressautocompleteresponse)››*
-
-  * **getAddressDetails**(): *function*
-
-    * (`params`: [LocationAddressDetailsParameters](_karhoo_demand_api.md#locationaddressdetailsparameters)): *Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)››*
-
-* **poiService**(): *object*
-
-  * **search**(): *function*
-
-    * (`params`: [PoiSearchParams](_karhoo_demand_api.md#poisearchparams)): *Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[PoiSearchResponse](_karhoo_demand_api.md#poisearchresponse)››*
-
-* **quotesService**(): *object*
-
-  * **checkAvailability**(): *function*
-
-    * (`params`: [QuotesAvailabilityParams](_karhoo_demand_api.md#quotesavailabilityparams)): *Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[QuotesAvailabilityResponse](_karhoo_demand_api.md#quotesavailabilityresponse)››*
-
-___
-
-###  AvailabilityPromisesList
-
-Ƭ **AvailabilityPromisesList**: *object[]*
-
-*Defined in [demand-deeplink/src/Deeplink.ts:27](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L27)*
-
-___
-
-###  DeeplinkData
-
-Ƭ **DeeplinkData**: *object*
-
-*Defined in [demand-deeplink/src/types.ts:60](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L60)*
+_Defined in [demand-deeplink/src/types.ts:14](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L14)_
 
 #### Type declaration:
 
-* **customFields**? : *[Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›*
+- **locationService**(): _object_
 
-* **legs**: *[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)[]*
+  - **getAddressAutocompleteData**(): _function_
 
-* **meta**: *[Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›*
+    - (`params`: [LocationAddressAutocompleteParams](_karhoo_demand_api.md#locationaddressautocompleteparams)): _Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressAutocompleteResponse](_karhoo_demand_api.md#locationaddressautocompleteresponse)››_
 
-* **passengerInfo**: *[PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)*
+  - **getAddressDetails**(): _function_
 
-* **travellerLocale**? : *undefined | string*
+    - (`params`: [LocationAddressDetailsParameters](_karhoo_demand_api.md#locationaddressdetailsparameters)): _Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)››_
 
-___
+- **poiService**(): _object_
 
-###  Dictionary
+  - **search**(): _function_
 
-Ƭ **Dictionary**: *object*
+    - (`params`: [PoiSearchParams](_karhoo_demand_api.md#poisearchparams)): _Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[PoiSearchResponse](_karhoo_demand_api.md#poisearchresponse)››_
 
-*Defined in [demand-deeplink/src/types.ts:31](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L31)*
+- **quotesService**(): _object_
 
-#### Type declaration:
+  - **checkAvailability**(): _function_
 
-* \[ **index**: *string*\]: T
+    - (`params`: [QuotesAvailabilityParams](_karhoo_demand_api.md#quotesavailabilityparams)): _Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[QuotesAvailabilityResponse](_karhoo_demand_api.md#quotesavailabilityresponse)››_
 
-___
+---
 
-###  JourneyLeg
+### AvailabilityPromisesList
 
-Ƭ **JourneyLeg**: *Partial‹object›*
+Ƭ **AvailabilityPromisesList**: _object[]_
 
-*Defined in [demand-deeplink/src/types.ts:46](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L46)*
+_Defined in [demand-deeplink/src/Deeplink.ts:27](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L27)_
 
-___
+---
 
-###  KeyValueList
+### DeeplinkData
 
-Ƭ **KeyValueList**: *[string, string][]*
+Ƭ **DeeplinkData**: _object_
 
-*Defined in [demand-deeplink/src/types.ts:35](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L35)*
-
-___
-
-###  PassengerInfo
-
-Ƭ **PassengerInfo**: *Partial‹object›*
-
-*Defined in [demand-deeplink/src/types.ts:37](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L37)*
-
-___
-
-###  PlaceField
-
-Ƭ **PlaceField**: *typeof pickupPlaceFields[0] | typeof dropoffPlaceFields[0]*
-
-*Defined in [demand-deeplink/src/Deeplink.ts:18](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L18)*
-
-___
-
-###  PlacePromisesList
-
-Ƭ **PlacePromisesList**: *object[]*
-
-*Defined in [demand-deeplink/src/Deeplink.ts:21](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L21)*
-
-___
-
-###  ResolveAvailability
-
-Ƭ **ResolveAvailability**: *object*
-
-*Defined in [demand-deeplink/src/types.ts:107](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L107)*
+_Defined in [demand-deeplink/src/types.ts:60](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L60)_
 
 #### Type declaration:
 
-* **ok**: *true*
+- **customFields**? : _[Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›_
 
-* **searchedParams**: *[ResolveAvailabilityParams](_karhoo_demand_deeplink.md#resolveavailabilityparams)*
+- **legs**: _[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)[]_
 
-___
+- **meta**: _[Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›_
 
-###  ResolveAvailabilityError
+- **passengerInfo**: _[PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)_
 
-Ƭ **ResolveAvailabilityError**: *[ResolveError](_karhoo_demand_deeplink.md#resolveerror) & object*
+- **travellerLocale**? : _undefined | string_
 
-*Defined in [demand-deeplink/src/types.ts:112](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L112)*
+---
 
-___
+### Dictionary
 
-###  ResolveAvailabilityParams
+Ƭ **Dictionary**: _object_
 
-Ƭ **ResolveAvailabilityParams**: *object*
-
-*Defined in [demand-deeplink/src/types.ts:101](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L101)*
+_Defined in [demand-deeplink/src/types.ts:31](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L31)_
 
 #### Type declaration:
 
-* **dateRequired**? : *undefined | string*
+- \[ **index**: _string_\]: T
 
-* **destinationPlaceId**? : *undefined | string*
+---
 
-* **originPlaceId**: *string*
+### JourneyLeg
 
-___
+Ƭ **JourneyLeg**: _Partial‹object›_
 
-###  ResolveAvailabilityResult
+_Defined in [demand-deeplink/src/types.ts:46](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L46)_
 
-Ƭ **ResolveAvailabilityResult**: *[ResolveAvailability](_karhoo_demand_deeplink.md#resolveavailability) | [ResolveAvailabilityError](_karhoo_demand_deeplink.md#resolveavailabilityerror)*
+---
 
-*Defined in [demand-deeplink/src/types.ts:114](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L114)*
+### KeyValueList
 
-___
+Ƭ **KeyValueList**: _[string, string][]_
 
-###  ResolveError
+_Defined in [demand-deeplink/src/types.ts:35](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L35)_
 
-Ƭ **ResolveError**: *object*
+---
 
-*Defined in [demand-deeplink/src/types.ts:79](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L79)*
+### PassengerInfo
 
-#### Type declaration:
+Ƭ **PassengerInfo**: _Partial‹object›_
 
-* **error**(): *object*
+_Defined in [demand-deeplink/src/types.ts:37](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L37)_
 
-  * **code**? : *undefined | string*
+---
 
-  * **message**: *string*
+### PlaceField
 
-* **ok**: *false*
+Ƭ **PlaceField**: _typeof pickupPlaceFields[0] | typeof dropoffPlaceFields[0]_
 
-___
+_Defined in [demand-deeplink/src/Deeplink.ts:18](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L18)_
 
-###  ResolvePlace
+---
 
-Ƭ **ResolvePlace**: *object*
+### PlacePromisesList
 
-*Defined in [demand-deeplink/src/types.ts:87](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L87)*
+Ƭ **PlacePromisesList**: _object[]_
 
-#### Type declaration:
+_Defined in [demand-deeplink/src/Deeplink.ts:21](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L21)_
 
-* **data**(): *object*
+---
 
-  * **displayAddress**: *string*
+### ResolveAvailability
 
-  * **placeId**: *string*
+Ƭ **ResolveAvailability**: _object_
 
-  * **placeInfo**? : *[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)*
-
-  * **poiInfo**? : *[PoiResponse](_karhoo_demand_api.md#poiresponse)*
-
-* **ok**: *true*
-
-___
-
-###  ResolvePlaceResult
-
-Ƭ **ResolvePlaceResult**: *[ResolvePlace](_karhoo_demand_deeplink.md#resolveplace) | [ResolveError](_karhoo_demand_deeplink.md#resolveerror)*
-
-*Defined in [demand-deeplink/src/types.ts:97](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L97)*
-
-___
-
-###  ResolvePlaceValue
-
-Ƭ **ResolvePlaceValue**: *[ResolvePlaceResult](_karhoo_demand_deeplink.md#resolveplaceresult) & object*
-
-*Defined in [demand-deeplink/src/types.ts:99](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L99)*
-
-___
-
-###  ResolveResponse
-
-Ƭ **ResolveResponse**: *object | object*
-
-*Defined in [demand-deeplink/src/types.ts:116](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L116)*
-
-___
-
-###  SearchPlaceData
-
-Ƭ **SearchPlaceData**: *object*
-
-*Defined in [demand-deeplink/src/Deeplink.ts:19](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L19)*
+_Defined in [demand-deeplink/src/types.ts:107](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L107)_
 
 #### Type declaration:
 
-* **key**: *[PlaceField](_karhoo_demand_deeplink.md#placefield)*
+- **ok**: _true_
 
-* **value**: *string*
+- **searchedParams**: _[ResolveAvailabilityParams](_karhoo_demand_deeplink.md#resolveavailabilityparams)_
 
-___
+---
 
-###  ValidationError
+### ResolveAvailabilityError
 
-Ƭ **ValidationError**: *object*
+Ƭ **ResolveAvailabilityError**: _[ResolveError](_karhoo_demand_deeplink.md#resolveerror) & object_
 
-*Defined in [demand-deeplink/src/types.ts:68](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L68)*
+_Defined in [demand-deeplink/src/types.ts:112](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L112)_
 
-#### Type declaration:
+---
 
-* **code**: *string*
+### ResolveAvailabilityParams
 
-* **error**: *string*
+Ƭ **ResolveAvailabilityParams**: _object_
 
-* **path**: *string*
-
-___
-
-###  ValidationResponse
-
-Ƭ **ValidationResponse**: *object*
-
-*Defined in [demand-deeplink/src/types.ts:74](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/types.ts#L74)*
+_Defined in [demand-deeplink/src/types.ts:101](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L101)_
 
 #### Type declaration:
 
-* **errors**? : *[ValidationError](_karhoo_demand_deeplink.md#validationerror)[]*
+- **dateRequired**? : _undefined | string_
 
-* **ok**: *boolean*
+- **destinationPlaceId**? : _undefined | string_
+
+- **originPlaceId**: _string_
+
+---
+
+### ResolveAvailabilityResult
+
+Ƭ **ResolveAvailabilityResult**: _[ResolveAvailability](_karhoo_demand_deeplink.md#resolveavailability) | [ResolveAvailabilityError](_karhoo_demand_deeplink.md#resolveavailabilityerror)_
+
+_Defined in [demand-deeplink/src/types.ts:114](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L114)_
+
+---
+
+### ResolveError
+
+Ƭ **ResolveError**: _object_
+
+_Defined in [demand-deeplink/src/types.ts:79](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L79)_
+
+#### Type declaration:
+
+- **error**(): _object_
+
+  - **code**? : _undefined | string_
+
+  - **message**: _string_
+
+- **ok**: _false_
+
+---
+
+### ResolvePlace
+
+Ƭ **ResolvePlace**: _object_
+
+_Defined in [demand-deeplink/src/types.ts:87](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L87)_
+
+#### Type declaration:
+
+- **data**(): _object_
+
+  - **displayAddress**: _string_
+
+  - **placeId**: _string_
+
+  - **placeInfo**? : _[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)_
+
+  - **poiInfo**? : _[PoiResponse](_karhoo_demand_api.md#poiresponse)_
+
+- **ok**: _true_
+
+---
+
+### ResolvePlaceResult
+
+Ƭ **ResolvePlaceResult**: _[ResolvePlace](_karhoo_demand_deeplink.md#resolveplace) | [ResolveError](_karhoo_demand_deeplink.md#resolveerror)_
+
+_Defined in [demand-deeplink/src/types.ts:97](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L97)_
+
+---
+
+### ResolvePlaceValue
+
+Ƭ **ResolvePlaceValue**: _[ResolvePlaceResult](_karhoo_demand_deeplink.md#resolveplaceresult) & object_
+
+_Defined in [demand-deeplink/src/types.ts:99](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L99)_
+
+---
+
+### ResolveResponse
+
+Ƭ **ResolveResponse**: _object | object_
+
+_Defined in [demand-deeplink/src/types.ts:116](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L116)_
+
+---
+
+### SearchPlaceData
+
+Ƭ **SearchPlaceData**: _object_
+
+_Defined in [demand-deeplink/src/Deeplink.ts:19](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L19)_
+
+#### Type declaration:
+
+- **key**: _[PlaceField](_karhoo_demand_deeplink.md#placefield)_
+
+- **value**: _string_
+
+---
+
+### ValidationError
+
+Ƭ **ValidationError**: _object_
+
+_Defined in [demand-deeplink/src/types.ts:68](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L68)_
+
+#### Type declaration:
+
+- **code**: _string_
+
+- **error**: _string_
+
+- **path**: _string_
+
+---
+
+### ValidationResponse
+
+Ƭ **ValidationResponse**: _object_
+
+_Defined in [demand-deeplink/src/types.ts:74](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/types.ts#L74)_
+
+#### Type declaration:
+
+- **errors**? : _[ValidationError](_karhoo_demand_deeplink.md#validationerror)[]_
+
+- **ok**: _boolean_
 
 ## Variables
 
 ### `Const` deepLinkMetaPrefix
 
-• **deepLinkMetaPrefix**: *"meta."* = "meta."
+• **deepLinkMetaPrefix**: _"meta."_ = "meta."
 
-*Defined in [demand-deeplink/src/constants.ts:41](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L41)*
+_Defined in [demand-deeplink/src/constants.ts:41](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L41)_
 
-___
+---
 
 ### `Const` dropoffKpoiParameter
 
-• **dropoffKpoiParameter**: *"dropoff-kpoi"* = "dropoff-kpoi"
+• **dropoffKpoiParameter**: _"dropoff-kpoi"_ = "dropoff-kpoi"
 
-*Defined in [demand-deeplink/src/constants.ts:18](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L18)*
+_Defined in [demand-deeplink/src/constants.ts:18](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L18)_
 
-___
+---
 
 ### `Const` dropoffParameter
 
-• **dropoffParameter**: *"dropoff"* = "dropoff"
+• **dropoffParameter**: _"dropoff"_ = "dropoff"
 
-*Defined in [demand-deeplink/src/constants.ts:17](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L17)*
+_Defined in [demand-deeplink/src/constants.ts:17](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L17)_
 
-___
+---
 
 ### `Const` dropoffPlaceFields
 
-• **dropoffPlaceFields**: *"dropoff" | "dropoffKpoi" | "dropoffPlaceId"[]* = ['dropoff' as const, 'dropoffKpoi' as const, 'dropoffPlaceId' as const]
+• **dropoffPlaceFields**: _"dropoff" | "dropoffKpoi" | "dropoffPlaceId"[]_ = ['dropoff' as const, 'dropoffKpoi' as const, 'dropoffPlaceId' as const]
 
-*Defined in [demand-deeplink/src/Deeplink.ts:16](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L16)*
+_Defined in [demand-deeplink/src/Deeplink.ts:16](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L16)_
 
-___
+---
 
 ### `Const` dropoffPlaceIdParameter
 
-• **dropoffPlaceIdParameter**: *"dropoff-place_id"* = "dropoff-place_id"
+• **dropoffPlaceIdParameter**: _"dropoff-place_id"_ = "dropoff-place_id"
 
-*Defined in [demand-deeplink/src/constants.ts:19](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L19)*
+_Defined in [demand-deeplink/src/constants.ts:19](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L19)_
 
-___
+---
 
 ### `Const` emailParameter
 
-• **emailParameter**: *"email"* = "email"
+• **emailParameter**: _"email"_ = "email"
 
-*Defined in [demand-deeplink/src/constants.ts:10](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L10)*
+_Defined in [demand-deeplink/src/constants.ts:10](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L10)_
 
-___
+---
 
 ### `Const` expectedTimeFormatRegexp
 
-• **expectedTimeFormatRegexp**: *RegExp‹›* = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
+• **expectedTimeFormatRegexp**: _RegExp‹›_ = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))\$/
 
-*Defined in [demand-deeplink/src/constants.ts:2](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L2)*
+_Defined in [demand-deeplink/src/constants.ts:2](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L2)_
 
-___
+---
 
 ### `Const` firstNameParameter
 
-• **firstNameParameter**: *"first-name"* = "first-name"
+• **firstNameParameter**: _"first-name"_ = "first-name"
 
-*Defined in [demand-deeplink/src/constants.ts:8](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L8)*
+_Defined in [demand-deeplink/src/constants.ts:8](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L8)_
 
-___
+---
 
 ### `Const` journeyLegDropoffMetaPrefix
 
-• **journeyLegDropoffMetaPrefix**: *"m-dropoff-"* = "m-dropoff-"
+• **journeyLegDropoffMetaPrefix**: _"m-dropoff-"_ = "m-dropoff-"
 
-*Defined in [demand-deeplink/src/constants.ts:47](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L47)*
+_Defined in [demand-deeplink/src/constants.ts:47](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L47)_
 
-___
+---
 
 ### `Const` journeyLegFieldsRegexp
 
-• **journeyLegFieldsRegexp**: *RegExp‹›* = /^leg-(\d+)-(.+)/i
+• **journeyLegFieldsRegexp**: _RegExp‹›_ = /^leg-(\d+)-(.+)/i
 
-*Defined in [demand-deeplink/src/constants.ts:1](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L1)*
+_Defined in [demand-deeplink/src/constants.ts:1](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L1)_
 
-___
+---
 
 ### `Const` journeyLegMainFields
 
-• **journeyLegMainFields**: *string[]* = [
-  pickupParameter,
-  pickupKpoiParameter,
-  pickupPlaceIdParameter,
-  pickupTimeParameter,
-  dropoffParameter,
-  dropoffKpoiParameter,
-  dropoffPlaceIdParameter,
+• **journeyLegMainFields**: _string[]_ = [
+pickupParameter,
+pickupKpoiParameter,
+pickupPlaceIdParameter,
+pickupTimeParameter,
+dropoffParameter,
+dropoffKpoiParameter,
+dropoffPlaceIdParameter,
 ]
 
-*Defined in [demand-deeplink/src/constants.ts:31](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L31)*
+_Defined in [demand-deeplink/src/constants.ts:31](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L31)_
 
-___
+---
 
 ### `Const` journeyLegMetaPrefix
 
-• **journeyLegMetaPrefix**: *"m-"* = "m-"
+• **journeyLegMetaPrefix**: _"m-"_ = "m-"
 
-*Defined in [demand-deeplink/src/constants.ts:45](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L45)*
+_Defined in [demand-deeplink/src/constants.ts:45](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L45)_
 
-___
+---
 
 ### `Const` journeyLegPickupMetaPrefix
 
-• **journeyLegPickupMetaPrefix**: *"m-pickup-"* = "m-pickup-"
+• **journeyLegPickupMetaPrefix**: _"m-pickup-"_ = "m-pickup-"
 
-*Defined in [demand-deeplink/src/constants.ts:46](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L46)*
+_Defined in [demand-deeplink/src/constants.ts:46](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L46)_
 
-___
+---
 
 ### `Const` journeyLegPrefix
 
-• **journeyLegPrefix**: *"leg-"* = "leg-"
+• **journeyLegPrefix**: _"leg-"_ = "leg-"
 
-*Defined in [demand-deeplink/src/constants.ts:43](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L43)*
+_Defined in [demand-deeplink/src/constants.ts:43](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L43)_
 
-___
+---
 
 ### `Const` lastNameParameter
 
-• **lastNameParameter**: *"last-name"* = "last-name"
+• **lastNameParameter**: _"last-name"_ = "last-name"
 
-*Defined in [demand-deeplink/src/constants.ts:9](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L9)*
+_Defined in [demand-deeplink/src/constants.ts:9](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L9)_
 
-___
+---
 
 ### `Const` legNameIndex
 
-• **legNameIndex**: *2* = 2
+• **legNameIndex**: _2_ = 2
 
-*Defined in [demand-deeplink/src/parse.ts:30](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L30)*
+_Defined in [demand-deeplink/src/parse.ts:30](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L30)_
 
-___
+---
 
 ### `Const` luggageParameter
 
-• **luggageParameter**: *"luggage"* = "luggage"
+• **luggageParameter**: _"luggage"_ = "luggage"
 
-*Defined in [demand-deeplink/src/constants.ts:12](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L12)*
+_Defined in [demand-deeplink/src/constants.ts:12](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L12)_
 
-___
+---
 
 ### `Const` passengerInfoFields
 
-• **passengerInfoFields**: *string[]* = [
-  passengerParameter,
-  firstNameParameter,
-  lastNameParameter,
-  emailParameter,
-  phoneNumberParameter,
-  luggageParameter,
+• **passengerInfoFields**: _string[]_ = [
+passengerParameter,
+firstNameParameter,
+lastNameParameter,
+emailParameter,
+phoneNumberParameter,
+luggageParameter,
 ]
 
-*Defined in [demand-deeplink/src/constants.ts:22](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L22)*
+_Defined in [demand-deeplink/src/constants.ts:22](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L22)_
 
-___
+---
 
 ### `Const` passengerParameter
 
-• **passengerParameter**: *"passengers"* = "passengers"
+• **passengerParameter**: _"passengers"_ = "passengers"
 
-*Defined in [demand-deeplink/src/constants.ts:7](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L7)*
+_Defined in [demand-deeplink/src/constants.ts:7](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L7)_
 
-___
+---
 
 ### `Const` phoneNumberParameter
 
-• **phoneNumberParameter**: *"phone-number"* = "phone-number"
+• **phoneNumberParameter**: _"phone-number"_ = "phone-number"
 
-*Defined in [demand-deeplink/src/constants.ts:11](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L11)*
+_Defined in [demand-deeplink/src/constants.ts:11](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L11)_
 
-___
+---
 
 ### `Const` pickupKpoiParameter
 
-• **pickupKpoiParameter**: *"pickup-kpoi"* = "pickup-kpoi"
+• **pickupKpoiParameter**: _"pickup-kpoi"_ = "pickup-kpoi"
 
-*Defined in [demand-deeplink/src/constants.ts:14](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L14)*
+_Defined in [demand-deeplink/src/constants.ts:14](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L14)_
 
-___
+---
 
 ### `Const` pickupParameter
 
-• **pickupParameter**: *"pickup"* = "pickup"
+• **pickupParameter**: _"pickup"_ = "pickup"
 
-*Defined in [demand-deeplink/src/constants.ts:13](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L13)*
+_Defined in [demand-deeplink/src/constants.ts:13](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L13)_
 
-___
+---
 
 ### `Const` pickupPlaceFields
 
-• **pickupPlaceFields**: *"pickup" | "pickupKpoi" | "pickupPlaceId"[]* = ['pickup' as const, 'pickupKpoi' as const, 'pickupPlaceId' as const]
+• **pickupPlaceFields**: _"pickup" | "pickupKpoi" | "pickupPlaceId"[]_ = ['pickup' as const, 'pickupKpoi' as const, 'pickupPlaceId' as const]
 
-*Defined in [demand-deeplink/src/Deeplink.ts:15](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L15)*
+_Defined in [demand-deeplink/src/Deeplink.ts:15](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L15)_
 
-___
+---
 
 ### `Const` pickupPlaceIdParameter
 
-• **pickupPlaceIdParameter**: *"pickup-place_id"* = "pickup-place_id"
+• **pickupPlaceIdParameter**: _"pickup-place_id"_ = "pickup-place_id"
 
-*Defined in [demand-deeplink/src/constants.ts:15](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L15)*
+_Defined in [demand-deeplink/src/constants.ts:15](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L15)_
 
-___
+---
 
 ### `Const` pickupTimeParameter
 
-• **pickupTimeParameter**: *"pickup-time"* = "pickup-time"
+• **pickupTimeParameter**: _"pickup-time"_ = "pickup-time"
 
-*Defined in [demand-deeplink/src/constants.ts:16](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L16)*
+_Defined in [demand-deeplink/src/constants.ts:16](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L16)_
 
-___
+---
 
 ### `Const` timezoneRegexp
 
-• **timezoneRegexp**: *RegExp‹›* = /([+-][0-2]\d:[0-5]\d|Z)$/
+• **timezoneRegexp**: _RegExp‹›_ = /([+-][0-2]\d:[0-5]\d|Z)\$/
 
-*Defined in [demand-deeplink/src/constants.ts:3](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L3)*
+_Defined in [demand-deeplink/src/constants.ts:3](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L3)_
 
-___
+---
 
 ### `Const` trainTimeParameter
 
-• **trainTimeParameter**: *"train-time"* = "train-time"
+• **trainTimeParameter**: _"train-time"_ = "train-time"
 
-*Defined in [demand-deeplink/src/constants.ts:20](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L20)*
+_Defined in [demand-deeplink/src/constants.ts:20](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L20)_
 
-___
+---
 
 ### `Const` travellerLocaleParameter
 
-• **travellerLocaleParameter**: *"traveller-locale"* = "traveller-locale"
+• **travellerLocaleParameter**: _"traveller-locale"_ = "traveller-locale"
 
-*Defined in [demand-deeplink/src/constants.ts:6](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L6)*
+_Defined in [demand-deeplink/src/constants.ts:6](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L6)_
 
-___
+---
 
 ### `Const` travellerLocaleRegexp
 
-• **travellerLocaleRegexp**: *RegExp‹›* = /^[a-z]{2}-[a-z]{2}$/i
+• **travellerLocaleRegexp**: _RegExp‹›_ = /^[a-z]{2}-[a-z]{2}\$/i
 
-*Defined in [demand-deeplink/src/constants.ts:4](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L4)*
+_Defined in [demand-deeplink/src/constants.ts:4](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L4)_
 
 ## Functions
 
 ### `Const` configurePlaceId
 
-▸ **configurePlaceId**(`id`: string): *string*
+▸ **configurePlaceId**(`id`: string): _string_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:34](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L34)*
+_Defined in [demand-deeplink/src/Deeplink.ts:34](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L34)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`id` | string |
+| Name | Type   |
+| ---- | ------ |
+| `id` | string |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
 ### `Const` devIsObjectCheck
 
-▸ **devIsObjectCheck**(`data`: object, `fieldName`: string): *void*
+▸ **devIsObjectCheck**(`data`: object, `fieldName`: string): _void_
 
-*Defined in [demand-deeplink/src/validate.ts:21](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L21)*
+_Defined in [demand-deeplink/src/validate.ts:21](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L21)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`data` | object |
-`fieldName` | string |
+| Name        | Type   |
+| ----------- | ------ |
+| `data`      | object |
+| `fieldName` | string |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
 ### `Const` excludeUndefined
 
-▸ **excludeUndefined**<**T**>(`arr`: Array‹T | undefined›): *T[]*
+▸ **excludeUndefined**<**T**>(`arr`: Array‹T | undefined›): _T[]_
 
-*Defined in [demand-deeplink/src/utils.ts:12](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/utils.ts#L12)*
+_Defined in [demand-deeplink/src/utils.ts:12](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/utils.ts#L12)_
 
 **Type parameters:**
 
@@ -981,700 +967,700 @@ ___
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`arr` | Array‹T &#124; undefined› |
+| Name  | Type                      |
+| ----- | ------------------------- |
+| `arr` | Array‹T &#124; undefined› |
 
-**Returns:** *T[]*
+**Returns:** _T[]_
 
-___
+---
 
-###  generate
+### generate
 
-▸ **generate**(`deeplink`: [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)): *string*
+▸ **generate**(`deeplink`: [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)): _string_
 
-*Defined in [demand-deeplink/src/generate.ts:63](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/generate.ts#L63)*
+_Defined in [demand-deeplink/src/generate.ts:63](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/generate.ts#L63)_
 
 Generates a query string from a Deeplink data
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`deeplink` | [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata) |
+| Name       | Type                                                    |
+| ---------- | ------------------------------------------------------- |
+| `deeplink` | [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata) |
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  getActivePlace
+### getActivePlace
 
-▸ **getActivePlace**(`leg`: [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg), `keys`: [PlaceField](_karhoo_demand_deeplink.md#placefield)[]): *undefined | object*
+▸ **getActivePlace**(`leg`: [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg), `keys`: [PlaceField](_karhoo_demand_deeplink.md#placefield)[]): _undefined | object_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:40](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L40)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`leg` | [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg) |
-`keys` | [PlaceField](_karhoo_demand_deeplink.md#placefield)[] |
-
-**Returns:** *undefined | object*
-
-___
-
-###  getAvailableParams
-
-▸ **getAvailableParams**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› | [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo), `prefix`: string, `transform`: (Anonymous function)): *[KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)*
-
-*Defined in [demand-deeplink/src/generate.ts:13](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/generate.ts#L13)*
+_Defined in [demand-deeplink/src/Deeplink.ts:40](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L40)_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› &#124; [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo) | - |
-`prefix` | string | "" |
-`transform` | (Anonymous function) | (a: string) => a |
+| Name   | Type                                                  |
+| ------ | ----------------------------------------------------- |
+| `leg`  | [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)   |
+| `keys` | [PlaceField](_karhoo_demand_deeplink.md#placefield)[] |
 
-**Returns:** *[KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)*
+**Returns:** _undefined | object_
 
-___
+---
 
-###  getError
+### getAvailableParams
 
-▸ **getError**(`code`: string, `path`: string): *object*
+▸ **getAvailableParams**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› | [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo), `prefix`: string, `transform`: (Anonymous function)): _[KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)_
 
-*Defined in [demand-deeplink/src/errors.ts:25](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L25)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`code` | string |
-`path` | string |
-
-**Returns:** *object*
-
-* **code**: *string*
-
-* **error**: *string* = errorMessageByCode[code] || ''
-
-* **path**: *string*
-
-___
-
-###  getJorneyLegsParams
-
-▸ **getJorneyLegsParams**(`data`: Array‹[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)›): *[string, string][]*
-
-*Defined in [demand-deeplink/src/generate.ts:27](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/generate.ts#L27)*
+_Defined in [demand-deeplink/src/generate.ts:13](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/generate.ts#L13)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`data` | Array‹[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)› |
+| Name        | Type                                                                                                                         | Default          |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `data`      | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› &#124; [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo) | -                |
+| `prefix`    | string                                                                                                                       | ""               |
+| `transform` | (Anonymous function)                                                                                                         | (a: string) => a |
 
-**Returns:** *[string, string][]*
+**Returns:** _[KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)_
 
-___
+---
 
-###  getJourneyLeg
+### getError
 
-▸ **getJourneyLeg**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›): *[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)*
+▸ **getError**(`code`: string, `path`: string): _object_
 
-*Defined in [demand-deeplink/src/parse.ts:86](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L86)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› |
-
-**Returns:** *[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)*
-
-___
-
-###  getJourneyLegs
-
-▸ **getJourneyLegs**(`legsInfo`: [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)): *object[]*
-
-*Defined in [demand-deeplink/src/parse.ts:112](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L112)*
+_Defined in [demand-deeplink/src/errors.ts:25](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L25)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`legsInfo` | [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist) |
+| Name   | Type   |
+| ------ | ------ |
+| `code` | string |
+| `path` | string |
 
-**Returns:** *object[]*
+**Returns:** _object_
 
-___
+- **code**: _string_
 
-###  getPassengerInfo
+- **error**: _string_ = errorMessageByCode[code] || ''
 
-▸ **getPassengerInfo**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›): *[PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)*
+- **path**: _string_
 
-*Defined in [demand-deeplink/src/parse.ts:75](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L75)*
+---
 
-**Parameters:**
+### getJorneyLegsParams
 
-Name | Type |
------- | ------ |
-`data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› |
+▸ **getJorneyLegsParams**(`data`: Array‹[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)›): _[string, string][]_
 
-**Returns:** *[PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)*
-
-___
-
-###  getPlaceCacheKey
-
-▸ **getPlaceCacheKey**(`key`: [PlaceField](_karhoo_demand_deeplink.md#placefield)): *string*
-
-*Defined in [demand-deeplink/src/Deeplink.ts:46](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L46)*
+_Defined in [demand-deeplink/src/generate.ts:27](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/generate.ts#L27)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | [PlaceField](_karhoo_demand_deeplink.md#placefield) |
+| Name   | Type                                                       |
+| ------ | ---------------------------------------------------------- |
+| `data` | Array‹[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)› |
 
-**Returns:** *string*
+**Returns:** _[string, string][]_
 
-___
+---
 
-###  hasData
+### getJourneyLeg
 
-▸ **hasData**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›): *boolean*
+▸ **getJourneyLeg**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›): _[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)_
 
-*Defined in [demand-deeplink/src/parse.ts:49](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L49)*
+_Defined in [demand-deeplink/src/parse.ts:86](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L86)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› |
+| Name   | Type                                                        |
+| ------ | ----------------------------------------------------------- |
+| `data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› |
 
-**Returns:** *boolean*
+**Returns:** _[JourneyLeg](_karhoo_demand_deeplink.md#journeyleg)_
 
-___
+---
+
+### getJourneyLegs
+
+▸ **getJourneyLegs**(`legsInfo`: [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist)): _object[]_
+
+_Defined in [demand-deeplink/src/parse.ts:112](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L112)_
+
+**Parameters:**
+
+| Name       | Type                                                    |
+| ---------- | ------------------------------------------------------- |
+| `legsInfo` | [KeyValueList](_karhoo_demand_deeplink.md#keyvaluelist) |
+
+**Returns:** _object[]_
+
+---
+
+### getPassengerInfo
+
+▸ **getPassengerInfo**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›): _[PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)_
+
+_Defined in [demand-deeplink/src/parse.ts:75](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L75)_
+
+**Parameters:**
+
+| Name   | Type                                                        |
+| ------ | ----------------------------------------------------------- |
+| `data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› |
+
+**Returns:** _[PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)_
+
+---
+
+### getPlaceCacheKey
+
+▸ **getPlaceCacheKey**(`key`: [PlaceField](_karhoo_demand_deeplink.md#placefield)): _string_
+
+_Defined in [demand-deeplink/src/Deeplink.ts:46](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L46)_
+
+**Parameters:**
+
+| Name  | Type                                                |
+| ----- | --------------------------------------------------- |
+| `key` | [PlaceField](_karhoo_demand_deeplink.md#placefield) |
+
+**Returns:** _string_
+
+---
+
+### hasData
+
+▸ **hasData**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›): _boolean_
+
+_Defined in [demand-deeplink/src/parse.ts:49](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L49)_
+
+**Parameters:**
+
+| Name   | Type                                                        |
+| ------ | ----------------------------------------------------------- |
+| `data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› |
+
+**Returns:** _boolean_
+
+---
 
 ### `Const` isLegCommonQueryParameter
 
-▸ **isLegCommonQueryParameter**(`key`: string): *boolean*
+▸ **isLegCommonQueryParameter**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:55](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L55)*
+_Defined in [demand-deeplink/src/parse.ts:55](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L55)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isLegDropoffMeta
 
-▸ **isLegDropoffMeta**(`key`: string): *boolean*
+▸ **isLegDropoffMeta**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:68](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L68)*
+_Defined in [demand-deeplink/src/parse.ts:68](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L68)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isLegMeta
 
-▸ **isLegMeta**(`key`: string): *boolean*
+▸ **isLegMeta**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:64](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L64)*
+_Defined in [demand-deeplink/src/parse.ts:64](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L64)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isLegMetaQueryParameter
 
-▸ **isLegMetaQueryParameter**(`key`: string): *boolean*
+▸ **isLegMetaQueryParameter**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:61](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L61)*
+_Defined in [demand-deeplink/src/parse.ts:61](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L61)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isLegPassengerInfoMeta
 
-▸ **isLegPassengerInfoMeta**(`key`: string): *boolean*
+▸ **isLegPassengerInfoMeta**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:70](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L70)*
+_Defined in [demand-deeplink/src/parse.ts:70](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L70)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isLegPickupMeta
 
-▸ **isLegPickupMeta**(`key`: string): *boolean*
+▸ **isLegPickupMeta**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:66](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L66)*
+_Defined in [demand-deeplink/src/parse.ts:66](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L66)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isLegQueryParameter
 
-▸ **isLegQueryParameter**(`key`: string): *boolean*
+▸ **isLegQueryParameter**(`key`: string): _boolean_
 
-*Defined in [demand-deeplink/src/parse.ts:73](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L73)*
+_Defined in [demand-deeplink/src/parse.ts:73](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L73)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isNotEmptyString
 
-▸ **isNotEmptyString**(`value`: any): *boolean*
+▸ **isNotEmptyString**(`value`: any): _boolean_
 
-*Defined in [demand-deeplink/src/utils.ts:5](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/utils.ts#L5)*
+_Defined in [demand-deeplink/src/utils.ts:5](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/utils.ts#L5)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | any |
+| Name    | Type |
+| ------- | ---- |
+| `value` | any  |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` isObject
 
-▸ **isObject**(`value`: any): *boolean*
+▸ **isObject**(`value`: any): _boolean_
 
-*Defined in [demand-deeplink/src/utils.ts:10](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/utils.ts#L10)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | any |
-
-**Returns:** *boolean*
-
-___
-
-###  isPickupPlace
-
-▸ **isPickupPlace**(`key`: [PlaceField](_karhoo_demand_deeplink.md#placefield)): *boolean*
-
-*Defined in [demand-deeplink/src/Deeplink.ts:50](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L50)*
+_Defined in [demand-deeplink/src/utils.ts:10](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/utils.ts#L10)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | [PlaceField](_karhoo_demand_deeplink.md#placefield) |
+| Name    | Type |
+| ------- | ---- |
+| `value` | any  |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
+
+### isPickupPlace
+
+▸ **isPickupPlace**(`key`: [PlaceField](_karhoo_demand_deeplink.md#placefield)): _boolean_
+
+_Defined in [demand-deeplink/src/Deeplink.ts:50](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L50)_
+
+**Parameters:**
+
+| Name  | Type                                                |
+| ----- | --------------------------------------------------- |
+| `key` | [PlaceField](_karhoo_demand_deeplink.md#placefield) |
+
+**Returns:** _boolean_
+
+---
 
 ### `Const` isPositiveInteger
 
-▸ **isPositiveInteger**(`value`: any): *boolean*
+▸ **isPositiveInteger**(`value`: any): _boolean_
 
-*Defined in [demand-deeplink/src/utils.ts:7](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/utils.ts#L7)*
+_Defined in [demand-deeplink/src/utils.ts:7](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/utils.ts#L7)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | any |
+| Name    | Type |
+| ------- | ---- |
+| `value` | any  |
 
-**Returns:** *boolean*
+**Returns:** _boolean_
 
-___
+---
 
 ### `Const` matchLegQueryParameter
 
-▸ **matchLegQueryParameter**(`key`: string): *null | RegExpMatchArray‹›*
+▸ **matchLegQueryParameter**(`key`: string): _null | RegExpMatchArray‹›_
 
-*Defined in [demand-deeplink/src/parse.ts:53](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L53)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`key` | string |
-
-**Returns:** *null | RegExpMatchArray‹›*
-
-___
-
-###  parse
-
-▸ **parse**(`query`: string): *[DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)*
-
-*Defined in [demand-deeplink/src/parse.ts:150](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L150)*
+_Defined in [demand-deeplink/src/parse.ts:53](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L53)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`query` | string |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *[DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)*
+**Returns:** _null | RegExpMatchArray‹›_
 
-___
+---
 
-###  parseSearchString
+### parse
 
-▸ **parseSearchString**(`query`: string): *[string, string][]*
+▸ **parse**(`query`: string): _[DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)_
 
-*Defined in [demand-deeplink/src/parse.ts:136](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L136)*
+_Defined in [demand-deeplink/src/parse.ts:150](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L150)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`query` | string |
+| Name    | Type   |
+| ------- | ------ |
+| `query` | string |
 
-**Returns:** *[string, string][]*
+**Returns:** _[DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)_
 
-___
+---
 
-###  resolvePromise
+### parseSearchString
 
-▸ **resolvePromise**<**T**, **Y**, **K**>(`cacheParams`: T, `promises`: K, `getNewPromise`: function): *Promise‹Y›*
+▸ **parseSearchString**(`query`: string): _[string, string][]_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:54](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L54)*
+_Defined in [demand-deeplink/src/parse.ts:136](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L136)_
+
+**Parameters:**
+
+| Name    | Type   |
+| ------- | ------ |
+| `query` | string |
+
+**Returns:** _[string, string][]_
+
+---
+
+### resolvePromise
+
+▸ **resolvePromise**<**T**, **Y**, **K**>(`cacheParams`: T, `promises`: K, `getNewPromise`: function): _Promise‹Y›_
+
+_Defined in [demand-deeplink/src/Deeplink.ts:54](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L54)_
 
 **Type parameters:**
 
-▪ **T**: *object*
+▪ **T**: _object_
 
 ▪ **Y**
 
-▪ **K**: *Array‹T & object›*
+▪ **K**: _Array‹T & object›_
 
 **Parameters:**
 
-▪ **cacheParams**: *T*
+▪ **cacheParams**: _T_
 
-▪ **promises**: *K*
+▪ **promises**: _K_
 
-▪ **getNewPromise**: *function*
+▪ **getNewPromise**: _function_
 
-▸ (): *Promise‹Y›*
+▸ (): _Promise‹Y›_
 
-**Returns:** *Promise‹Y›*
+**Returns:** _Promise‹Y›_
 
-___
+---
 
-###  transformMapByKey
+### transformMapByKey
 
-▸ **transformMapByKey**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›, `keyPrefix`: string, `filter`: function): *object*
+▸ **transformMapByKey**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›, `keyPrefix`: string, `filter`: function): _object_
 
-*Defined in [demand-deeplink/src/parse.ts:32](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/parse.ts#L32)*
-
-**Parameters:**
-
-▪ **data**: *[Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›*
-
-▪ **keyPrefix**: *string*
-
-▪`Default value`  **filter**: *function*= () => true
-
-▸ (`key`: string): *boolean*
+_Defined in [demand-deeplink/src/parse.ts:32](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/parse.ts#L32)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`key` | string |
+▪ **data**: _[Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›_
 
-**Returns:** *object*
+▪ **keyPrefix**: _string_
 
-* \[ **index**: *string*\]: T
+▪`Default value` **filter**: _function_= () => true
 
-___
-
-###  validate
-
-▸ **validate**(`deeplinkData`: [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)): *[ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)*
-
-*Defined in [demand-deeplink/src/validate.ts:132](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L132)*
+▸ (`key`: string): _boolean_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`deeplinkData` | [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata) |
+| Name  | Type   |
+| ----- | ------ |
+| `key` | string |
 
-**Returns:** *[ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)*
+**Returns:** _object_
 
-___
+- \[ **index**: _string_\]: T
 
-###  validateLeg
+---
 
-▸ **validateLeg**(`leg`: [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg), `path`: string): *object[]*
+### validate
 
-*Defined in [demand-deeplink/src/validate.ts:88](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L88)*
+▸ **validate**(`deeplinkData`: [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata)): _[ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)_
 
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`leg` | [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg) |
-`path` | string |
-
-**Returns:** *object[]*
-
-___
-
-###  validateMeta
-
-▸ **validateMeta**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›, `fieldName`: string): *object[]*
-
-*Defined in [demand-deeplink/src/validate.ts:27](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L27)*
+_Defined in [demand-deeplink/src/validate.ts:132](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L132)_
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`data` | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› | - |
-`fieldName` | string | "meta" |
+| Name           | Type                                                    |
+| -------------- | ------------------------------------------------------- |
+| `deeplinkData` | [DeeplinkData](_karhoo_demand_deeplink.md#deeplinkdata) |
 
-**Returns:** *object[]*
+**Returns:** _[ValidationResponse](_karhoo_demand_deeplink.md#validationresponse)_
 
-___
+---
 
-###  validatePassengerInfo
+### validateLeg
 
-▸ **validatePassengerInfo**(`data`: [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)): *object[]*
+▸ **validateLeg**(`leg`: [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg), `path`: string): _object[]_
 
-*Defined in [demand-deeplink/src/validate.ts:39](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L39)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`data` | [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo) |
-
-**Returns:** *object[]*
-
-___
-
-###  validateRoute
-
-▸ **validateRoute**(`fields`: string[], `fieldName`: string): *object[]*
-
-*Defined in [demand-deeplink/src/validate.ts:64](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L64)*
+_Defined in [demand-deeplink/src/validate.ts:88](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L88)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`fields` | string[] |
-`fieldName` | string |
+| Name   | Type                                                |
+| ------ | --------------------------------------------------- |
+| `leg`  | [JourneyLeg](_karhoo_demand_deeplink.md#journeyleg) |
+| `path` | string                                              |
 
-**Returns:** *object[]*
+**Returns:** _object[]_
 
-___
+---
 
-###  validateTime
+### validateMeta
 
-▸ **validateTime**(`time`: string, `fieldName`: string): *object[]*
+▸ **validateMeta**(`data`: [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string›, `fieldName`: string): _object[]_
 
-*Defined in [demand-deeplink/src/validate.ts:78](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L78)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`time` | string |
-`fieldName` | string |
-
-**Returns:** *object[]*
-
-___
-
-###  validateTravellerLocale
-
-▸ **validateTravellerLocale**(`locale?`: undefined | string): *object[]*
-
-*Defined in [demand-deeplink/src/validate.ts:58](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/validate.ts#L58)*
+_Defined in [demand-deeplink/src/validate.ts:27](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L27)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`locale?` | undefined &#124; string |
+| Name        | Type                                                        | Default |
+| ----------- | ----------------------------------------------------------- | ------- |
+| `data`      | [Dictionary](_karhoo_demand_deeplink.md#dictionary)‹string› | -       |
+| `fieldName` | string                                                      | "meta"  |
 
-**Returns:** *object[]*
+**Returns:** _object[]_
+
+---
+
+### validatePassengerInfo
+
+▸ **validatePassengerInfo**(`data`: [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo)): _object[]_
+
+_Defined in [demand-deeplink/src/validate.ts:39](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L39)_
+
+**Parameters:**
+
+| Name   | Type                                                      |
+| ------ | --------------------------------------------------------- |
+| `data` | [PassengerInfo](_karhoo_demand_deeplink.md#passengerinfo) |
+
+**Returns:** _object[]_
+
+---
+
+### validateRoute
+
+▸ **validateRoute**(`fields`: string[], `fieldName`: string): _object[]_
+
+_Defined in [demand-deeplink/src/validate.ts:64](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L64)_
+
+**Parameters:**
+
+| Name        | Type     |
+| ----------- | -------- |
+| `fields`    | string[] |
+| `fieldName` | string   |
+
+**Returns:** _object[]_
+
+---
+
+### validateTime
+
+▸ **validateTime**(`time`: string, `fieldName`: string): _object[]_
+
+_Defined in [demand-deeplink/src/validate.ts:78](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L78)_
+
+**Parameters:**
+
+| Name        | Type   |
+| ----------- | ------ |
+| `time`      | string |
+| `fieldName` | string |
+
+**Returns:** _object[]_
+
+---
+
+### validateTravellerLocale
+
+▸ **validateTravellerLocale**(`locale?`: undefined | string): _object[]_
+
+_Defined in [demand-deeplink/src/validate.ts:58](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/validate.ts#L58)_
+
+**Parameters:**
+
+| Name      | Type                    |
+| --------- | ----------------------- |
+| `locale?` | undefined &#124; string |
+
+**Returns:** _object[]_
 
 ## Object literals
 
 ### `Const` codes
 
-### ▪ **codes**: *object*
+### ▪ **codes**: _object_
 
-*Defined in [demand-deeplink/src/errors.ts:1](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L1)*
+_Defined in [demand-deeplink/src/errors.ts:1](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L1)_
 
-###  DP001
+### DP001
 
-• **DP001**: *string* = "DP001"
+• **DP001**: _string_ = "DP001"
 
-*Defined in [demand-deeplink/src/errors.ts:2](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L2)*
+_Defined in [demand-deeplink/src/errors.ts:2](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L2)_
 
-###  DP002
+### DP002
 
-• **DP002**: *string* = "DP002"
+• **DP002**: _string_ = "DP002"
 
-*Defined in [demand-deeplink/src/errors.ts:3](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L3)*
+_Defined in [demand-deeplink/src/errors.ts:3](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L3)_
 
-###  DP003
+### DP003
 
-• **DP003**: *string* = "DP003"
+• **DP003**: _string_ = "DP003"
 
-*Defined in [demand-deeplink/src/errors.ts:4](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L4)*
+_Defined in [demand-deeplink/src/errors.ts:4](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L4)_
 
-###  DP004
+### DP004
 
-• **DP004**: *string* = "DP004"
+• **DP004**: _string_ = "DP004"
 
-*Defined in [demand-deeplink/src/errors.ts:5](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L5)*
+_Defined in [demand-deeplink/src/errors.ts:5](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L5)_
 
-###  DP005
+### DP005
 
-• **DP005**: *string* = "DP005"
+• **DP005**: _string_ = "DP005"
 
-*Defined in [demand-deeplink/src/errors.ts:6](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L6)*
+_Defined in [demand-deeplink/src/errors.ts:6](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L6)_
 
-###  DP006
+### DP006
 
-• **DP006**: *string* = "DP006"
+• **DP006**: _string_ = "DP006"
 
-*Defined in [demand-deeplink/src/errors.ts:7](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L7)*
+_Defined in [demand-deeplink/src/errors.ts:7](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L7)_
 
-###  DP007
+### DP007
 
-• **DP007**: *string* = "DP007"
+• **DP007**: _string_ = "DP007"
 
-*Defined in [demand-deeplink/src/errors.ts:8](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L8)*
+_Defined in [demand-deeplink/src/errors.ts:8](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L8)_
 
-###  DP008
+### DP008
 
-• **DP008**: *string* = "DP008"
+• **DP008**: _string_ = "DP008"
 
-*Defined in [demand-deeplink/src/errors.ts:9](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L9)*
+_Defined in [demand-deeplink/src/errors.ts:9](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L9)_
 
-###  DP009
+### DP009
 
-• **DP009**: *string* = "DP009"
+• **DP009**: _string_ = "DP009"
 
-*Defined in [demand-deeplink/src/errors.ts:10](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L10)*
+_Defined in [demand-deeplink/src/errors.ts:10](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L10)_
 
-___
+---
 
 ### `Const` errorMessageByCode
 
-### ▪ **errorMessageByCode**: *object*
+### ▪ **errorMessageByCode**: _object_
 
-*Defined in [demand-deeplink/src/errors.ts:13](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L13)*
+_Defined in [demand-deeplink/src/errors.ts:13](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L13)_
 
-###  __computed
+### \_\_computed
 
-• **__computed**: *string* = "Pickup time is specified without pickup place"
+• **\_\_computed**: _string_ = "Pickup time is specified without pickup place"
 
-*Defined in [demand-deeplink/src/errors.ts:14](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L14)*
+_Defined in [demand-deeplink/src/errors.ts:14](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L14)_
 
-*Defined in [demand-deeplink/src/errors.ts:15](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L15)*
+_Defined in [demand-deeplink/src/errors.ts:15](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L15)_
 
-*Defined in [demand-deeplink/src/errors.ts:16](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L16)*
+_Defined in [demand-deeplink/src/errors.ts:16](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L16)_
 
-*Defined in [demand-deeplink/src/errors.ts:17](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L17)*
+_Defined in [demand-deeplink/src/errors.ts:17](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L17)_
 
-*Defined in [demand-deeplink/src/errors.ts:18](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L18)*
+_Defined in [demand-deeplink/src/errors.ts:18](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L18)_
 
-*Defined in [demand-deeplink/src/errors.ts:19](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L19)*
+_Defined in [demand-deeplink/src/errors.ts:19](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L19)_
 
-*Defined in [demand-deeplink/src/errors.ts:20](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L20)*
+_Defined in [demand-deeplink/src/errors.ts:20](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L20)_
 
-*Defined in [demand-deeplink/src/errors.ts:21](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L21)*
+_Defined in [demand-deeplink/src/errors.ts:21](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L21)_
 
-*Defined in [demand-deeplink/src/errors.ts:22](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/errors.ts#L22)*
+_Defined in [demand-deeplink/src/errors.ts:22](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/errors.ts#L22)_
 
-___
+---
 
 ### `Const` journeyLegMetaPrefixes
 
-### ▪ **journeyLegMetaPrefixes**: *object*
+### ▪ **journeyLegMetaPrefixes**: _object_
 
-*Defined in [demand-deeplink/src/constants.ts:49](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L49)*
+_Defined in [demand-deeplink/src/constants.ts:49](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L49)_
 
-###  dropoffMeta
+### dropoffMeta
 
-• **dropoffMeta**: *string* = journeyLegDropoffMetaPrefix
+• **dropoffMeta**: _string_ = journeyLegDropoffMetaPrefix
 
-*Defined in [demand-deeplink/src/constants.ts:51](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L51)*
+_Defined in [demand-deeplink/src/constants.ts:51](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L51)_
 
-###  meta
+### meta
 
-• **meta**: *string* = journeyLegMetaPrefix
+• **meta**: _string_ = journeyLegMetaPrefix
 
-*Defined in [demand-deeplink/src/constants.ts:52](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L52)*
+_Defined in [demand-deeplink/src/constants.ts:52](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L52)_
 
-###  passengerInfo
+### passengerInfo
 
-• **passengerInfo**: *string* = journeyLegMetaPrefix
+• **passengerInfo**: _string_ = journeyLegMetaPrefix
 
-*Defined in [demand-deeplink/src/constants.ts:53](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L53)*
+_Defined in [demand-deeplink/src/constants.ts:53](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L53)_
 
-###  pickupMeta
+### pickupMeta
 
-• **pickupMeta**: *string* = journeyLegPickupMetaPrefix
+• **pickupMeta**: _string_ = journeyLegPickupMetaPrefix
 
-*Defined in [demand-deeplink/src/constants.ts:50](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/constants.ts#L50)*
+_Defined in [demand-deeplink/src/constants.ts:50](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/constants.ts#L50)_

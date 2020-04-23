@@ -14,6 +14,7 @@ Karhoo Deeplink is a method of passing the user’s required information from th
 This library is intended to be the standard way of working with a deeplink.
 
 [**Read The Docs**](https://developer.karhoo.com/docs/deeplink-integration)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -22,25 +23,8 @@ This library is intended to be the standard way of working with a deeplink.
 
 ## Installation
 
-### NPM
-
 ```
 npm i @karhoo/demand-deeplink
-```
-
-### Github packages
-
-Add the following to .npmrc:
-
-```
-//npm.pkg.github.com/:_authToken=${GITHUB_ACCESS_TOKEN}
-@karhoo:registry=https://npm.pkg.github.com/
-```
-
-`GITHUB_ACCESS_TOKEN` - your [personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
-
-```sh
-npm install --save @karhoo/demand-deeplink
 ```
 
 ## Warnings
@@ -75,7 +59,7 @@ const queryString = generate(deeplinkData)
 
 Resolve deeplink:
 
-To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.  
+To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.
 
 ```
 import { getApi } from '@karhoo/demand-api';
@@ -93,18 +77,18 @@ deeplink.resolve(subscriber)
 
 A lot of deeplink examples can be find [here](https://developer.karhoo.com/docs/deeplink-integration#section-examples)
 
-Let's imagine, you want to deeplink from a hotel booking website to a Karhoo cab booking webdite.
+Let's imagine, you want to deeplink from a hotel booking website to a Karhoo cab booking website.
 
-Your customer booked a room and reached a room booking confirmation page. From this stage you can offer an complementary service to book a cab to a hotel's location.
+Your customer booked a hotel room and reached their booking confirmation page. From here you can offer a complementary service to book a cab to a hotel's location.
 
 At this stage, you know:
 
-1. Hotel adderess
-2. Time when a cab is needed (based on hotel check-in hours)
+1. Hotel address
+2. Time when a cab required _(based on hotel check-in hours)_
 3. Number of passengers
-4. Passenger first and last name (if you willing to bypass it)
+4. Passenger first and last name _(if you're willing to pass it)_
 
-All these parameters can be embedded to a deeplink and passed to a Karhoo booking app.
+All these parameters can be embedded to a Deeplink and passed to a Karhoo booking app.
 
 _Step 1. Compose deeplink data_
 
@@ -151,10 +135,12 @@ if (!ok) {
 
 const deeplink = generate(deeplinkData)
 ```
+
 ```
 console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon
 ```
-When you get a deeplink you can navigate your user from you website by adding the link to `href` attribute.
+
+When you get a deeplink you can navigate your user from your website by adding the link to `href` attribute.
 
 For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon"> Book a cab to a hotel </a>`
 

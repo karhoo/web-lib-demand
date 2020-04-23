@@ -4,94 +4,94 @@
 
 ## Hierarchy
 
-* **Deeplink**
+- **Deeplink**
 
 ## Index
 
 ### Constructors
 
-* [constructor](_karhoo_demand_deeplink.deeplink.md#constructor)
+- [constructor](_karhoo_demand_deeplink.deeplink.md#constructor)
 
 ### Accessors
 
-* [deeplinkData](_karhoo_demand_deeplink.deeplink.md#deeplinkdata)
+- [deeplinkData](_karhoo_demand_deeplink.deeplink.md#deeplinkdata)
 
 ### Methods
 
-* [isValid](_karhoo_demand_deeplink.deeplink.md#isvalid)
-* [resolve](_karhoo_demand_deeplink.deeplink.md#resolve)
+- [isValid](_karhoo_demand_deeplink.deeplink.md#isvalid)
+- [resolve](_karhoo_demand_deeplink.deeplink.md#resolve)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new Deeplink**(`query`: string, `api`: [Api](../modules/_karhoo_demand_deeplink.md#api)): *[Deeplink](_karhoo_demand_deeplink.deeplink.md)*
+\+ **new Deeplink**(`query`: string, `api`: [Api](../modules/_karhoo_demand_deeplink.md#api)): _[Deeplink](_karhoo_demand_deeplink.deeplink.md)_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:79](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L79)*
+_Defined in [demand-deeplink/src/Deeplink.ts:79](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L79)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`query` | string |
-`api` | [Api](../modules/_karhoo_demand_deeplink.md#api) |
+| Name    | Type                                             |
+| ------- | ------------------------------------------------ |
+| `query` | string                                           |
+| `api`   | [Api](../modules/_karhoo_demand_deeplink.md#api) |
 
-**Returns:** *[Deeplink](_karhoo_demand_deeplink.deeplink.md)*
+**Returns:** _[Deeplink](_karhoo_demand_deeplink.deeplink.md)_
 
 ## Accessors
 
-###  deeplinkData
+### deeplinkData
 
-• **get deeplinkData**(): *object*
+• **get deeplinkData**(): _object_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:87](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L87)*
+_Defined in [demand-deeplink/src/Deeplink.ts:87](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L87)_
 
-**Returns:** *object*
+**Returns:** _object_
 
-* **customFields**? : *[Dictionary](../modules/_karhoo_demand_deeplink.md#dictionary)‹string›*
+- **customFields**? : _[Dictionary](../modules/_karhoo_demand_deeplink.md#dictionary)‹string›_
 
-* **legs**: *[JourneyLeg](../modules/_karhoo_demand_deeplink.md#journeyleg)[]*
+- **legs**: _[JourneyLeg](../modules/_karhoo_demand_deeplink.md#journeyleg)[]_
 
-* **meta**: *[Dictionary](../modules/_karhoo_demand_deeplink.md#dictionary)‹string›*
+- **meta**: _[Dictionary](../modules/_karhoo_demand_deeplink.md#dictionary)‹string›_
 
-* **passengerInfo**: *[PassengerInfo](../modules/_karhoo_demand_deeplink.md#passengerinfo)*
+- **passengerInfo**: _[PassengerInfo](../modules/_karhoo_demand_deeplink.md#passengerinfo)_
 
-* **travellerLocale**? : *undefined | string*
+- **travellerLocale**? : _undefined | string_
 
 ## Methods
 
-###  isValid
+### isValid
 
-▸ **isValid**(): *object*
+▸ **isValid**(): _object_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:91](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L91)*
+_Defined in [demand-deeplink/src/Deeplink.ts:91](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L91)_
 
-**Returns:** *object*
+**Returns:** _object_
 
-* **errors**? : *[ValidationError](../modules/_karhoo_demand_deeplink.md#validationerror)[]*
+- **errors**? : _[ValidationError](../modules/_karhoo_demand_deeplink.md#validationerror)[]_
 
-* **ok**: *boolean*
+- **ok**: _boolean_
 
-___
+---
 
-###  resolve
+### resolve
 
-▸ **resolve**(`subscriber`: function): *object*
+▸ **resolve**(`subscriber`: function): _object_
 
-*Defined in [demand-deeplink/src/Deeplink.ts:95](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-deeplink/src/Deeplink.ts#L95)*
-
-**Parameters:**
-
-▪ **subscriber**: *function*
-
-▸ (`data`: [ResolveResponse](../modules/_karhoo_demand_deeplink.md#resolveresponse)): *void*
+_Defined in [demand-deeplink/src/Deeplink.ts:95](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-deeplink/src/Deeplink.ts#L95)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`data` | [ResolveResponse](../modules/_karhoo_demand_deeplink.md#resolveresponse) |
+▪ **subscriber**: _function_
 
-**Returns:** *object*
+▸ (`data`: [ResolveResponse](../modules/_karhoo_demand_deeplink.md#resolveresponse)): _void_
 
-* **unsubscribe**: *unsubscribe*
+**Parameters:**
+
+| Name   | Type                                                                     |
+| ------ | ------------------------------------------------------------------------ |
+| `data` | [ResolveResponse](../modules/_karhoo_demand_deeplink.md#resolveresponse) |
+
+**Returns:** _object_
+
+- **unsubscribe**: _unsubscribe_

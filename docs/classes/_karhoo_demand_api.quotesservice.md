@@ -4,46 +4,46 @@
 
 ## Hierarchy
 
-* **QuotesService**
+- **QuotesService**
 
 ## Index
 
 ### Constructors
 
-* [constructor](_karhoo_demand_api.quotesservice.md#constructor)
+- [constructor](_karhoo_demand_api.quotesservice.md#constructor)
 
 ### Methods
 
-* [checkAvailability](_karhoo_demand_api.quotesservice.md#checkavailability)
+- [checkAvailability](_karhoo_demand_api.quotesservice.md#checkavailability)
 
 ## Constructors
 
-###  constructor
+### constructor
 
-\+ **new QuotesService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[QuotesService](_karhoo_demand_api.quotesservice.md)*
+\+ **new QuotesService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): _[QuotesService](_karhoo_demand_api.quotesservice.md)_
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:9](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-api/src/quotes/QuotesService.ts#L9)*
+_Defined in [demand-api/src/quotes/QuotesService.ts:9](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/quotes/QuotesService.ts#L9)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`http` | [Http](../interfaces/_karhoo_demand_api.http.md) |
+| Name   | Type                                             |
+| ------ | ------------------------------------------------ |
+| `http` | [Http](../interfaces/_karhoo_demand_api.http.md) |
 
-**Returns:** *[QuotesService](_karhoo_demand_api.quotesservice.md)*
+**Returns:** _[QuotesService](_karhoo_demand_api.quotesservice.md)_
 
 ## Methods
 
-###  checkAvailability
+### checkAvailability
 
-▸ **checkAvailability**(`params`: [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams)): *Promise‹object & object | object & object›*
+▸ **checkAvailability**(`params`: [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams)): _Promise‹object & object | object & object›_
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/09183f8/packages/demand-api/src/quotes/QuotesService.ts#L15)*
+_Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/quotes/QuotesService.ts#L15)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`params` | [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams) |
+| Name     | Type                                                                                  |
+| -------- | ------------------------------------------------------------------------------------- |
+| `params` | [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams) |
 
-**Returns:** *Promise‹object & object | object & object›*
+**Returns:** _Promise‹object & object | object & object›_
