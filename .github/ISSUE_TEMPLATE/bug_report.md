@@ -8,11 +8,7 @@ assignees:
 
 ## Information
 
-Device:
-
-Android version:
-
-App Version:
+Browser:
 
 Environment:
 
