@@ -13,7 +13,7 @@
 
 <h1>Karhoo Demand API</h1>
 
-This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API Library** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
+This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
@@ -23,7 +23,7 @@ This library provides the ability to contact Karhoo's public API and allows you 
 
 </div>
 
-> <img src="https://d3qhp42p4neron.cloudfront.net/5.5/png/unicode/512/26a0.png?Expires=1586881180&Signature=UfYXLEl9gffLbFSMDpBcfwrMZev7EexJ3Szsw461t7uBvn0D3M5DUZnbI36uVUDaoCnYo6y6NK-N8j7rWSfUPDwI0g-vsvaERzl3naB5a5G3OZRPI5854zGl66ezLjVWwhBX08d6m-MQAjrDd0AImTJsaGlxRH4vByD9-XnNbnLF28Ve41SnTQuaIKN2uscMLvXzP1LAu62GML5PLVOoBs5JeGMhPJnd0Ag2qjGXgppMq~jGqPHC~Fn7GKfeacP-PySJ2h7kNMXU1RK0VydODmHvLTguFilk3OkQcx31kNGxz6dYhfDRcKNbsQzMkEGw6LVoshhXeFu5X373WYjWDA__&Key-Pair-Id=APKAIRGCVGOY7DOKYTJA" width="15px" /> This package is work in progress and can not be used as an independent package.
+> ⚠️ This package is work in progress and can not be used as an independent package.
 
 ## Installation
 
@@ -37,7 +37,7 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 
 ## Usage
 
-You can use each service separately or you can use `getApi` method which returns all available services
+You can use each service separately, or you can use `getApi` method which returns all available services
 
 ```
 import { getApi, HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api'
@@ -60,7 +60,7 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
 ```
 
-Please note that by default `fetch` will be called with following options
+Please note that by default `fetch` will be called with following config
 
 ```
 {
@@ -122,16 +122,16 @@ const quotesService = new QuotesService(httpService)
 
 _Looking to contribute?_
 
-### 🐛Bugs
+### 🐛 Bugs
 
 Please file an issue for bugs, missing documentation, or unexpected behavior with a label `API`
 
-### 💡Feature Requests
+### 💡 Feature Requests
 
 Please file an issue to suggest new features with a label `API`. Vote on feature requests by adding
 a 👍. This helps maintainers prioritize what to work on.
 
-### ❓Questions
+### ❓ Questions
 
 For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed` and `API`.
 

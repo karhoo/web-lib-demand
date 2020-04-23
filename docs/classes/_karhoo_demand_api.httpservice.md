@@ -32,7 +32,7 @@
 
 \+ **new HttpService**(`url`: string): *[HttpService](_karhoo_demand_api.httpservice.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:53](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L53)*
+*Defined in [demand-api/src/http/HttpService.ts:53](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L53)*
 
 **Parameters:**
 
@@ -50,7 +50,7 @@ Name | Type |
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:77](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L77)*
+*Defined in [demand-api/src/http/HttpService.ts:77](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L77)*
 
 **Type parameters:**
 
@@ -74,7 +74,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:81](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L81)*
+*Defined in [demand-api/src/http/HttpService.ts:81](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L81)*
 
 **Type parameters:**
 
@@ -98,7 +98,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:85](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L85)*
+*Defined in [demand-api/src/http/HttpService.ts:85](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L85)*
 
 **Type parameters:**
 
@@ -122,7 +122,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:89](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L89)*
+*Defined in [demand-api/src/http/HttpService.ts:89](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L89)*
 
 **Type parameters:**
 
@@ -143,7 +143,7 @@ ___
 
 ▸ **setCorrelationIdPrefix**(`prefix`: string): *this*
 
-*Defined in [demand-api/src/http/HttpService.ts:65](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L65)*
+*Defined in [demand-api/src/http/HttpService.ts:65](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L65)*
 
 **Parameters:**
 
@@ -159,7 +159,7 @@ ___
 
 ▸ **setDefaultRequestOptionsGetter**(`getter`: [DefaultRequestOptionsGetter](../modules/_karhoo_demand_api.md#defaultrequestoptionsgetter)): *this*
 
-*Defined in [demand-api/src/http/HttpService.ts:59](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L59)*
+*Defined in [demand-api/src/http/HttpService.ts:59](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L59)*
 
 **Parameters:**
 
@@ -175,7 +175,7 @@ ___
 
 ▸ **setResponseMiddleware**(`middleware`: [HttpResponseMiddleware](../modules/_karhoo_demand_api.md#httpresponsemiddleware)): *this*
 
-*Defined in [demand-api/src/http/HttpService.ts:71](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L71)*
+*Defined in [demand-api/src/http/HttpService.ts:71](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/http/HttpService.ts#L71)*
 
 **Parameters:**
 
