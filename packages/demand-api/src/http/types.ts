@@ -38,7 +38,7 @@ export type DefaultRequestOptionsGetter = () => DefaultRequestOptions | Promise<
 
 export interface Http {
   get<T>(url: string, query?: Query, options?: MethodRequestOptions): Promise<HttpResponse<T>>
-  post<T>(url: string, body: object, options?: MethodRequestOptions): Promise<HttpResponse<T>>
+  post<T>(url: string, body: object, options?: MethodRequestOptions, query?: Query): Promise<HttpResponse<T>>
   put<T>(url: string, body: object, options?: MethodRequestOptions): Promise<HttpResponse<T>>
   remove<T>(url: string, options?: MethodRequestOptions): Promise<HttpResponse<T>>
 }

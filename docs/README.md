@@ -13,7 +13,7 @@
 
 <h1>Karhoo Demand API</h1>
 
-This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API Library** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
+This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
@@ -37,7 +37,7 @@ This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must br
 
 ## Usage
 
-You can use each service separately or you can use `getApi` method which returns all available services
+You can use each service separately, or you can use `getApi` method which returns all available services
 
 ```
 import { getApi, HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api'
@@ -60,7 +60,7 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
 ```
 
-Please note that by default `fetch` will be called with following options
+Please note that by default `fetch` will be called with following config
 
 ```
 {
@@ -118,20 +118,39 @@ Quotes service:
 const quotesService = new QuotesService(httpService)
 ```
 
+Trip service:
+
+```
+const tripService = new TripService(httpService)
+```
+
+Fare service:
+
+```
+const fareService = new FareService(httpService)
+
+Payment service:
+
+```
+
+const paymentService = new PaymentService(httpService)
+
+````
+
 ## Issues
 
 _Looking to contribute?_
 
-### 🐛Bugs
+### 🐛 Bugs
 
 Please file an issue for bugs, missing documentation, or unexpected behavior with a label `API`
 
-### 💡Feature Requests
+### 💡 Feature Requests
 
 Please file an issue to suggest new features with a label `API`. Vote on feature requests by adding
 a 👍. This helps maintainers prioritize what to work on.
 
-### ❓Questions
+### ❓ Questions
 
 For questions related to using the library, please re-visit a documentation first. If there are no answer, please create an issue with a label `help needed` and `API`.
 
@@ -139,4 +158,5 @@ For questions related to using the library, please re-visit a documentation firs
 
 ### License
 
-[BSD-2-Clause](../LICENSE)
+[BSD-2-Clause](../LICENSE)```
+````

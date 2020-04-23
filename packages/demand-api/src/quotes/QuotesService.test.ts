@@ -8,6 +8,10 @@ describe('QuotesService', () => {
     remove: jest.fn(),
   }
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe('checkAvailability', () => {
     const params = {
       originPlaceId: 'originPlaceId',
@@ -19,10 +23,6 @@ describe('QuotesService', () => {
       destination_place_id: 'destinationPlaceId',
     }
 
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
     it('should call post of http without date', () => {
       new QuotesService(http).checkAvailability(params)
 
@@ -30,7 +30,7 @@ describe('QuotesService', () => {
       expect(http.post).toHaveBeenCalledWith('quotes/availability', expectedBody)
     })
 
-    it('should call post of http without date', () => {
+    it('should call post of http with date', () => {
       new QuotesService(http).checkAvailability({ ...params, dateRequired: '2020-03-03T18:00:00+01:00' })
 
       expect(http.post).toHaveBeenCalledTimes(1)
@@ -38,6 +38,41 @@ describe('QuotesService', () => {
         ...expectedBody,
         date_required: '2020-03-03T17:00',
       })
+    })
+  })
+
+  describe('quotesSearch', () => {
+    const params = {
+      origin_place_id: 'originPlaceId',
+      destination_place_id: 'destinationPlaceID',
+    }
+
+    it('should call post of http without local_time_of_pickup', () => {
+      new QuotesService(http).quotesSearch(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('quotes', params)
+    })
+
+    it('should call post of http with local_time_of_pickup', () => {
+      new QuotesService(http).quotesSearch({ ...params, local_time_of_pickup: '2020-03-03T18:00:00+01:00' })
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('quotes', {
+        ...params,
+        local_time_of_pickup: '2020-03-03T17:00',
+      })
+    })
+  })
+
+  describe('quotesSearchById', () => {
+    const id = '123asd'
+
+    it('should call get of http', () => {
+      new QuotesService(http).quotesSearchById(id)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(`quotes/${id}`)
     })
   })
 })

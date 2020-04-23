@@ -32,7 +32,7 @@
 
 \+ **new HttpService**(`url`: string): *[HttpService](_karhoo_demand_api.httpservice.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:53](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L53)*
+*Defined in [demand-api/src/http/HttpService.ts:54](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L54)*
 
 **Parameters:**
 
@@ -50,7 +50,7 @@ Name | Type |
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:77](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L77)*
+*Defined in [demand-api/src/http/HttpService.ts:78](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L78)*
 
 **Type parameters:**
 
@@ -70,11 +70,11 @@ ___
 
 ###  post
 
-▸ **post**<**T**>(`url`: string, `body`: object, `options`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
+▸ **post**<**T**>(`url`: string, `body`: object, `options`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions), `query?`: [Query](../modules/_karhoo_demand_api.md#query)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:81](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L81)*
+*Defined in [demand-api/src/http/HttpService.ts:82](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L82)*
 
 **Type parameters:**
 
@@ -87,6 +87,7 @@ Name | Type | Default |
 `url` | string | - |
 `body` | object | - |
 `options` | [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions) | {} |
+`query?` | [Query](../modules/_karhoo_demand_api.md#query) | - |
 
 **Returns:** *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
@@ -98,7 +99,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:85](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L85)*
+*Defined in [demand-api/src/http/HttpService.ts:93](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L93)*
 
 **Type parameters:**
 
@@ -122,7 +123,7 @@ ___
 
 *Implementation of [Http](../interfaces/_karhoo_demand_api.http.md)*
 
-*Defined in [demand-api/src/http/HttpService.ts:89](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L89)*
+*Defined in [demand-api/src/http/HttpService.ts:97](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L97)*
 
 **Type parameters:**
 
@@ -143,7 +144,7 @@ ___
 
 ▸ **setCorrelationIdPrefix**(`prefix`: string): *this*
 
-*Defined in [demand-api/src/http/HttpService.ts:65](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L65)*
+*Defined in [demand-api/src/http/HttpService.ts:66](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L66)*
 
 **Parameters:**
 
@@ -159,7 +160,7 @@ ___
 
 ▸ **setDefaultRequestOptionsGetter**(`getter`: [DefaultRequestOptionsGetter](../modules/_karhoo_demand_api.md#defaultrequestoptionsgetter)): *this*
 
-*Defined in [demand-api/src/http/HttpService.ts:59](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L59)*
+*Defined in [demand-api/src/http/HttpService.ts:60](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L60)*
 
 **Parameters:**
 
@@ -175,7 +176,7 @@ ___
 
 ▸ **setResponseMiddleware**(`middleware`: [HttpResponseMiddleware](../modules/_karhoo_demand_api.md#httpresponsemiddleware)): *this*
 
-*Defined in [demand-api/src/http/HttpService.ts:71](https://github.com/karhoo/web-lib-demand/blob/ac75fec/packages/demand-api/src/http/HttpService.ts#L71)*
+*Defined in [demand-api/src/http/HttpService.ts:72](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/http/HttpService.ts#L72)*
 
 **Parameters:**
 
