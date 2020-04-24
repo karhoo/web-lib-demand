@@ -34,6 +34,7 @@
     "eslint-plugin-react-hooks": "1.7.0",
     "husky": "4.2.3",
     "lerna": "3.20.2",
+    "lerna-changelog": "^1.0.1",
     "lint-staged": "10.0.7",
     "prettier": "1.19.1",
     "typedoc": "0.16.7",
@@ -51,5 +52,11 @@
     "*.{js,jsx,ts,tsx}": [
       "npx eslint --fix"
     ]
+  },
+  "changelog": {
+    "labels": {
+      "feature": "New Feature",
+      "bug": "Bug Fix"
+    }
   }
 }
