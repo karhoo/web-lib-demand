@@ -55,7 +55,7 @@ Builds all packages.
 
 _Looking to contribute?_
 
-try to lerna-chagelog 12122331231213
+try to lerna-chagelog again and again
 
 ### 🐛 Bugs
 
