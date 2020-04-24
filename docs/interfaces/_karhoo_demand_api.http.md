@@ -25,7 +25,7 @@
 
 ▸ **get**<**T**>(`url`: string, `query?`: [Query](../modules/_karhoo_demand_api.md#query), `options?`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
-*Defined in [demand-api/src/http/types.ts:40](https://github.com/karhoo/web-lib-demand/blob/2aabb00/packages/demand-api/src/http/types.ts#L40)*
+*Defined in [demand-api/src/http/types.ts:40](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L40)*
 
 **Type parameters:**
 
@@ -45,9 +45,9 @@ ___
 
 ###  post
 
-▸ **post**<**T**>(`url`: string, `body`: object, `options?`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
+▸ **post**<**T**>(`url`: string, `body`: object, `options?`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions), `query?`: [Query](../modules/_karhoo_demand_api.md#query)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
-*Defined in [demand-api/src/http/types.ts:41](https://github.com/karhoo/web-lib-demand/blob/2aabb00/packages/demand-api/src/http/types.ts#L41)*
+*Defined in [demand-api/src/http/types.ts:41](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L41)*
 
 **Type parameters:**
 
@@ -60,6 +60,7 @@ Name | Type |
 `url` | string |
 `body` | object |
 `options?` | [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions) |
+`query?` | [Query](../modules/_karhoo_demand_api.md#query) |
 
 **Returns:** *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
@@ -69,7 +70,7 @@ ___
 
 ▸ **put**<**T**>(`url`: string, `body`: object, `options?`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
-*Defined in [demand-api/src/http/types.ts:42](https://github.com/karhoo/web-lib-demand/blob/2aabb00/packages/demand-api/src/http/types.ts#L42)*
+*Defined in [demand-api/src/http/types.ts:42](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L42)*
 
 **Type parameters:**
 
@@ -91,7 +92,7 @@ ___
 
 ▸ **remove**<**T**>(`url`: string, `options?`: [MethodRequestOptions](../modules/_karhoo_demand_api.md#methodrequestoptions)): *Promise‹[HttpResponse](../modules/_karhoo_demand_api.md#httpresponse)‹T››*
 
-*Defined in [demand-api/src/http/types.ts:43](https://github.com/karhoo/web-lib-demand/blob/2aabb00/packages/demand-api/src/http/types.ts#L43)*
+*Defined in [demand-api/src/http/types.ts:43](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L43)*
 
 **Type parameters:**
 

@@ -114,6 +114,25 @@ Quotes service:
 const quotesService = new QuotesService(httpService)
 ```
 
+Trip service:
+
+```
+const tripService = new TripService(httpService)
+```
+
+Fare service:
+
+```
+const fareService = new FareService(httpService)
+
+Payment service:
+
+```
+
+const paymentService = new PaymentService(httpService)
+
+````
+
 ## Issues
 
 _Looking to contribute?_
@@ -135,4 +154,5 @@ For questions related to using the library, please re-visit a documentation firs
 
 ### License
 
-[BSD-2-Clause](../LICENSE)
+[BSD-2-Clause](../LICENSE)```
+````
