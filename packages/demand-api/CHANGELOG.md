@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.9.2 (2020-04-24)
+
+
+### Features
+
+* new comment ([6bf6173](https://github.com/karhoo/web-lib-demand/commit/6bf617322f14d29779b8e51b564513bf7a014715))
+
+
+
+
+
 ## 0.9.1 (2020-04-24)
 
 **Note:** Version bump only for package @karhoo/demand-api
