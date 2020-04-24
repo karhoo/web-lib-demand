@@ -13,6 +13,7 @@ This library provides the ability to contact Karhoo's public API and allows you 
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -130,6 +131,8 @@ Payment service:
 ```
 
 const paymentService = new PaymentService(httpService)
+
+test lerna changelog package
 
 ````
 
