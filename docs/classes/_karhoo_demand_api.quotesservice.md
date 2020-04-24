@@ -22,7 +22,7 @@
 
 \+ **new QuotesService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[QuotesService](_karhoo_demand_api.quotesservice.md)*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:9](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/quotes/QuotesService.ts#L9)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:9](https://github.com/karhoo/web-lib-demand/blob/2aabb00/packages/demand-api/src/quotes/QuotesService.ts#L9)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ Name | Type |
 
 ▸ **checkAvailability**(`params`: [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/a4e9dde/packages/demand-api/src/quotes/QuotesService.ts#L15)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/2aabb00/packages/demand-api/src/quotes/QuotesService.ts#L15)*
 
 **Parameters:**
 

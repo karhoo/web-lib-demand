@@ -20,6 +20,7 @@ Simple and complete set of components and utilities that helps to build web appl
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+![master build](https://github.com/karhoo/web-lib-demand/workflows/On%20push%20to%20master/badge.svg)
 
 ## Installation
 
