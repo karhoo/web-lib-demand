@@ -23,7 +23,7 @@ This library provides the ability to contact Karhoo's public API and allows you 
 
 </div>
 
-> <img src="https://d3qhp42p4neron.cloudfront.net/5.5/png/unicode/512/26a0.png?Expires=1586881180&Signature=UfYXLEl9gffLbFSMDpBcfwrMZev7EexJ3Szsw461t7uBvn0D3M5DUZnbI36uVUDaoCnYo6y6NK-N8j7rWSfUPDwI0g-vsvaERzl3naB5a5G3OZRPI5854zGl66ezLjVWwhBX08d6m-MQAjrDd0AImTJsaGlxRH4vByD9-XnNbnLF28Ve41SnTQuaIKN2uscMLvXzP1LAu62GML5PLVOoBs5JeGMhPJnd0Ag2qjGXgppMq~jGqPHC~Fn7GKfeacP-PySJ2h7kNMXU1RK0VydODmHvLTguFilk3OkQcx31kNGxz6dYhfDRcKNbsQzMkEGw6LVoshhXeFu5X373WYjWDA__&Key-Pair-Id=APKAIRGCVGOY7DOKYTJA" width="15px" /> This package is work in progress and can not be used as an independent package.
+> ⚠️ This package is work in progress and can not be used as an independent package.
 
 ## Installation
 

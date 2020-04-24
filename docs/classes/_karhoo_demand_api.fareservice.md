@@ -22,7 +22,7 @@
 
 \+ **new FareService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[FareService](_karhoo_demand_api.fareservice.md)*
 
-*Defined in [demand-api/src/fare/FareService.ts:7](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/fare/FareService.ts#L7)*
+*Defined in [demand-api/src/fare/FareService.ts:7](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/fare/FareService.ts#L7)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ Name | Type |
 
 ▸ **status**(`tripId`: string): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/fare/FareService.ts:13](https://github.com/karhoo/web-lib-demand/blob/f775a07/packages/demand-api/src/fare/FareService.ts#L13)*
+*Defined in [demand-api/src/fare/FareService.ts:13](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/fare/FareService.ts#L13)*
 
 **Parameters:**
 
