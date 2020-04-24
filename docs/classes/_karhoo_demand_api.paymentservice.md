@@ -24,7 +24,7 @@
 
 \+ **new PaymentService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[PaymentService](_karhoo_demand_api.paymentservice.md)*
 
-*Defined in [demand-api/src/payment/PaymentService.ts:13](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/PaymentService.ts#L13)*
+*Defined in [demand-api/src/payment/PaymentService.ts:13](https://github.com/karhoo/web-lib-demand/blob/14a45c9/packages/demand-api/src/payment/PaymentService.ts#L13)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ Name | Type |
 
 ▸ **addPaymentCard**(`params`: [AddPaymentCardParams](../interfaces/_karhoo_demand_api.addpaymentcardparams.md)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/payment/PaymentService.ts:32](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/PaymentService.ts#L32)*
+*Defined in [demand-api/src/payment/PaymentService.ts:32](https://github.com/karhoo/web-lib-demand/blob/14a45c9/packages/demand-api/src/payment/PaymentService.ts#L32)*
 
 **Parameters:**
 
@@ -56,7 +56,7 @@ ___
 
 ▸ **createClientToken**(`params`: [CreateTokenParams](../modules/_karhoo_demand_api.md#createtokenparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/payment/PaymentService.ts:19](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/PaymentService.ts#L19)*
+*Defined in [demand-api/src/payment/PaymentService.ts:19](https://github.com/karhoo/web-lib-demand/blob/14a45c9/packages/demand-api/src/payment/PaymentService.ts#L19)*
 
 **Parameters:**
 
@@ -72,7 +72,7 @@ ___
 
 ▸ **getClientNonce**(`params`: [ClientNonceParams](../modules/_karhoo_demand_api.md#clientnonceparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/payment/PaymentService.ts:28](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/PaymentService.ts#L28)*
+*Defined in [demand-api/src/payment/PaymentService.ts:28](https://github.com/karhoo/web-lib-demand/blob/14a45c9/packages/demand-api/src/payment/PaymentService.ts#L28)*
 
 **Parameters:**
 
