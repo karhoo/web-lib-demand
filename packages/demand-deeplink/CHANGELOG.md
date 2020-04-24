@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.10.0 (2020-04-24)
+
+**Note:** Version bump only for package @karhoo/demand-deeplink
+
+
+
+
+
+## 0.9.2 (2020-04-24)
+
+**Note:** Version bump only for package @karhoo/demand-deeplink
+
+
+
+
+
 ## 0.9.1 (2020-04-24)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink
