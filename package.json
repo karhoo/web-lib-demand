@@ -52,11 +52,5 @@
     "*.{js,jsx,ts,tsx}": [
       "npx eslint --fix"
     ]
-  },
-  "changelog": {
-    "labels": {
-      "feature": "New Feature",
-      "bug": "Bug Fix"
-    }
-  }
+  }  
 }

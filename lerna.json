@@ -10,5 +10,12 @@
       "conventionalCommits": true
     }
   },
-  "version": "0.9.0"
+  "version": "0.9.0",
+  "changelog": {
+      "labels": {
+      "enhancement": ":rocket: New Feature",
+      "core": ":earth_asia: Core",
+      "bug": ":bug: Bug Fix"
+    }
+  }
 }
