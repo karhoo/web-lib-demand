@@ -25,10 +25,12 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
 
   if (defaultRequestOptionsGetter) {
     httpV1.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
+    httpV2.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
   }
 
   if (responseMiddleware) {
     httpV1.setResponseMiddleware(responseMiddleware)
+    httpV2.setResponseMiddleware(responseMiddleware)
   }
 
   return {
