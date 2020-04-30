@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.9.1 (2020-04-30)
+
+
+### Bug Fixes
+
+* add defaultRequestOptions for httpV2 ([e4938cd](https://github.com/karhoo/web-lib-demand/commit/e4938cd52440c51e1d46711444a5d097cd69a888))
+
+
+
+
+
 # 0.9.0 (2020-04-23)
 
 **Note:** Version bump only for package web-lib-demand

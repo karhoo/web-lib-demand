@@ -69,14 +69,14 @@ describe('getApi', () => {
   it('should set defaultRequestOptionsGetter', () => {
     getApi(params)
 
-    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledTimes(1)
+    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledTimes(2)
     expect(setDefaultRequestOptionsGetter).toHaveBeenCalledWith(params.defaultRequestOptionsGetter)
   })
 
   it('should set responseMiddleware', () => {
     getApi(params)
 
-    expect(setResponseMiddleware).toHaveBeenCalledTimes(1)
+    expect(setResponseMiddleware).toHaveBeenCalledTimes(2)
     expect(setResponseMiddleware).toHaveBeenCalledWith(params.responseMiddleware)
   })
 
