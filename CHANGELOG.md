@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.9.2 (2020-05-04)
+
+
+### Bug Fixes
+
+*  remove check empty body in post request ([f01ed0f](https://github.com/karhoo/web-lib-demand/commit/f01ed0ffe1a8429c9c4a7b6a6e3b0ddb47c347e1))
+* add defaultRequestOptions for httpV2 ([#36](https://github.com/karhoo/web-lib-demand/issues/36)) ([84b823b](https://github.com/karhoo/web-lib-demand/commit/84b823b77f11927987b9931054d2f8a508a0ba22))
+
+
+
+
+
 ## 0.9.1 (2020-04-30)
 
 
