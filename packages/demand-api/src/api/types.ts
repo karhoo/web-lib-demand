@@ -5,6 +5,7 @@ import { QuotesService } from '../quotes/QuotesService'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
+import { FlagsService } from '../flags/FlagsService'
 
 export type ApiOptions = Partial<{
   url: string
@@ -20,4 +21,5 @@ export type Api = {
   tripService: TripService
   fareService: FareService
   paymentService: PaymentService
+  flagsService: FlagsService
 }
