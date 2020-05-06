@@ -3,7 +3,7 @@ export type FlagsRequestPathParameters = {
   platform: string
 }
 
-// As a structure of `flags` object may change from version to version we need keep type versiongon here as well
+// As a structure of `flags` object may change from version to version we need keep type version here as well
 // See `flags` endpoint documentation on developer.karhoo.com
 type v1FlagsType = Record<string, boolean | string>
 

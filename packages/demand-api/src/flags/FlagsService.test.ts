@@ -50,19 +50,6 @@ describe('FlagsService', () => {
     })
   })
 
-  describe('getLatestVersion', () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it('should call get of http without a query param to get latest flags', () => {
-      new FlagsService(http).getLatestVersion(params)
-
-      expect(http.get).toHaveBeenCalledTimes(1)
-      expect(http.get).toHaveBeenCalledWith(`flags/${params.identifier}/${params.platform}`, undefined)
-    })
-  })
-
   describe('getCurrentVersion', () => {
     beforeEach(() => {
       jest.clearAllMocks()
