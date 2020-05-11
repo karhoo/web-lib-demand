@@ -60,7 +60,7 @@ describe('QuotesService', () => {
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
         ...params,
-        local_time_of_pickup: '2020-03-03T17:00',
+        local_time_of_pickup: '2020-03-03T18:00:00+01:00',
       })
     })
   })

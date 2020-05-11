@@ -30,17 +30,7 @@ export class QuotesService {
   }
 
   quotesSearch(params: QutesSearchParams) {
-    const { local_time_of_pickup } = params
-    const body = toSnakeCase(
-      local_time_of_pickup
-        ? {
-            ...params,
-            local_time_of_pickup: date.format(new Date(local_time_of_pickup), 'YYYY-MM-DDTHH:mm', true),
-          }
-        : params
-    )
-
-    return this.http.post<QuotesResponse>(this.url, body)
+    return this.http.post<QuotesResponse>(this.url, params)
   }
 
   quotesSearchById(id: string) {
