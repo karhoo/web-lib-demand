@@ -13,6 +13,7 @@ This library provides the ability to contact Karhoo's public API and allows you 
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -125,13 +126,42 @@ Fare service:
 ```
 const fareService = new FareService(httpService)
 
+```
+
 Payment service:
 
 ```
-
 const paymentService = new PaymentService(httpService)
 
-````
+```
+
+Flags service:
+
+```
+const flagsService = new FlagsService(httpService)
+
+```
+
+### Example
+
+Let's see how to use one of the services, listed above.
+
+For example, you need to get a list of quotes for trip from one location to another. For this purpose you have to use Quotes service and call quotesSearch method:
+
+const quotesSearchParams = {
+origin_place_id: "123456778qwertyu"
+destination_place_id: "0988765poiuyt"
+local_time_of_pickup?: "2020-05-12T10:00"
+}
+
+const quotesResponse =
+quotesService.quotesSearch(quotesSearchParams)
+.then(result => {
+//handleResult
+})
+.catch(error => {
+//handle error
+})
 
 ## Issues
 
@@ -155,4 +185,7 @@ For questions related to using the library, please re-visit a documentation firs
 ### License
 
 [BSD-2-Clause](../LICENSE)```
-````
+
+```
+
+```
