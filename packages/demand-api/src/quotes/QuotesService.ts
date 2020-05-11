@@ -30,6 +30,19 @@ export class QuotesService {
   }
 
   quotesSearch(params: QutesSearchParams) {
+    const { local_time_of_pickup } = params
+
+    if (local_time_of_pickup) {
+      const isValidPickupTime = date.isValid(local_time_of_pickup, 'YYYY-MM-DD HH:mm')
+
+      if (!isValidPickupTime) {
+        return Promise.reject({
+          code: 'K0002',
+          message: 'Pickup local time wrong format',
+        })
+      }
+    }
+
     return this.http.post<QuotesResponse>(this.url, params)
   }
 
