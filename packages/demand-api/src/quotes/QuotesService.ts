@@ -31,16 +31,19 @@ export class QuotesService {
 
   quotesSearch(params: QutesSearchParams) {
     const { local_time_of_pickup } = params
-    const body = toSnakeCase(
-      local_time_of_pickup
-        ? {
-            ...params,
-            local_time_of_pickup: date.format(new Date(local_time_of_pickup), 'YYYY-MM-DDTHH:mm', true),
-          }
-        : params
-    )
 
-    return this.http.post<QuotesResponse>(this.url, body)
+    if (local_time_of_pickup) {
+      const isValidPickupTime = date.isValid(local_time_of_pickup, 'YYYY-MM-DD HH:mm')
+
+      if (!isValidPickupTime) {
+        return Promise.reject({
+          code: 'K0002',
+          message: 'Pickup local time wrong format',
+        })
+      }
+    }
+
+    return this.http.post<QuotesResponse>(this.url, params)
   }
 
   quotesSearchById(id: string) {

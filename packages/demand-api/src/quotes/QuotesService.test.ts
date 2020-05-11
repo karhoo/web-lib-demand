@@ -54,14 +54,30 @@ describe('QuotesService', () => {
       expect(http.post).toHaveBeenCalledWith('quotes', params)
     })
 
-    it('should call post of http with local_time_of_pickup', () => {
-      new QuotesService(http).quotesSearch({ ...params, local_time_of_pickup: '2020-03-03T18:00:00+01:00' })
+    it('should call post of http with local_time_of_pickup in correct format', () => {
+      new QuotesService(http).quotesSearch({ ...params, local_time_of_pickup: '2018-02-02T14:14' })
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
         ...params,
-        local_time_of_pickup: '2020-03-03T17:00',
+        local_time_of_pickup: '2018-02-02T14:14',
       })
+    })
+
+    it('should not call post of http if local_time_of_pickup in wrong format', () => {
+      const result = new QuotesService(http).quotesSearch({
+        ...params,
+        local_time_of_pickup: '2020-03-03T18:00:00+01:00',
+      })
+
+      expect(result).toEqual(
+        Promise.reject({
+          code: 'K0002',
+          message: 'Pickup local time wrong format',
+        })
+      )
+
+      expect(http.post).not.toHaveBeenCalled()
     })
   })
 
