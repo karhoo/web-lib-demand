@@ -63,6 +63,39 @@ describe('QuotesService', () => {
         local_time_of_pickup: '2020-03-03T18:00:00+01:00',
       })
     })
+
+    it('should call post of http with local_time_of_pickup in another format', () => {
+      new QuotesService(http).quotesSearch({ ...params, local_time_of_pickup: '2018-02-02T14:14' })
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('quotes', {
+        ...params,
+        local_time_of_pickup: '2018-02-02T14:14',
+      })
+    })
+
+    it('should call post of http with local_time_of_pickup in another format', () => {
+      new QuotesService(http).quotesSearch({ ...params, local_time_of_pickup: '2018-02-02' })
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('quotes', {
+        ...params,
+        local_time_of_pickup: '2018-02-02',
+      })
+    })
+
+    it('should call post of http with local_time_of_pickup with milliseconds', () => {
+      new QuotesService(http).quotesSearch({
+        ...params,
+        local_time_of_pickup: '2020-01-26T13:51:50.417-07:00',
+      })
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('quotes', {
+        ...params,
+        local_time_of_pickup: '2020-01-26T13:51:50.417-07:00',
+      })
+    })
   })
 
   describe('quotesSearchById', () => {
