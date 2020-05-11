@@ -125,21 +125,18 @@ Fare service:
 
 ```
 const fareService = new FareService(httpService)
-
 ```
 
 Payment service:
 
 ```
 const paymentService = new PaymentService(httpService)
-
 ```
 
 Flags service:
 
 ```
 const flagsService = new FlagsService(httpService)
-
 ```
 
 ### Example
