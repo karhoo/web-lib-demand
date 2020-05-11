@@ -1,0 +1,38 @@
+{
+  "name": "@karhoo/lib-feature-flags",
+  "version": "0.10.0",
+  "description": "Feature flags library for Karhoo web apps",
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/lib-feature-flags#readme",
+  "license": "ISC",
+  "directories": {
+    "lib": "src"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karhoo/web-lib-demand.git"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "bugs": {
+    "url": "https://github.com/karhoo/web-lib-demand/issues"
+  },
+  "devDependencies": {
+    "@babel/core": "7.6.0",
+    "@babel/plugin-proposal-class-properties": "7.7.0",
+    "@babel/plugin-transform-runtime": "7.6.0",
+    "@babel/preset-env": "7.6.0",
+    "@babel/preset-react": "7.7.0",
+    "@babel/runtime": "7.6.0",
+    "@types/jest": "24.0.18",
+    "babel-jest": "24.9.0",
+    "jest": "24.9.0",
+    "react": "16.12.0"
+  },
+  "peerDependencies": {
+    "react": "16.12.0"
+  }
+}
