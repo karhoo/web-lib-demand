@@ -152,7 +152,7 @@ For example, you need to get a list of quotes for trip from one location to anot
 const quotesSearchParams = {
   origin_place_id: "123456778qwertyu",
   destination_place_id: "0988765poiuyt",
-  local_time_of_pickup?: "2020-05-12T10:00"
+  local_time_of_pickup: "2020-05-12T10:00"
 }
 
 const quotesResponse = quotesService.quotesSearch(quotesSearchParams)
