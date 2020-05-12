@@ -14,6 +14,7 @@ Karhoo Deeplink is a method of passing the user’s required information from th
 This library is intended to be the standard way of working with a deeplink.
 
 [**Read The Docs**](https://developer.karhoo.com/docs/deeplink-integration)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -34,25 +35,25 @@ This library uses `Promise`. For old browsers, e.g. IE11 you must bring your own
 
 ## Usage
 
-```
-import { parse, validate, generate, Deeplink } from '@karhoo/demand-deeplink';
+```js
+import { parse, validate, generate, Deeplink } from '@karhoo/demand-deeplink'
 ```
 
 Parse deeplink:
 
-```
+```js
 const deeplinkData = parse(window.location.search)
 ```
 
 Validate deeplink:
 
-```
+```js
 const { ok, errors } = validate(deeplinkData)
 ```
 
 Generate deeplink:
 
-```
+```js
 const queryString = generate(deeplinkData)
 ```
 
@@ -60,12 +61,12 @@ Resolve deeplink:
 
 To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.
 
-```
-import { getApi } from '@karhoo/demand-api';
+```js
+import { getApi } from '@karhoo/demand-api'
 
 const api = getApi()
 
-const subscriber = (data) => console.log(data)
+const subscriber = data => console.log(data)
 
 const deeplink = new Deeplink(window.location.search, api)
 
@@ -91,17 +92,17 @@ All these parameters can be embedded to a Deeplink and passed to a Karhoo bookin
 
 _Step 1. Compose deeplink data_
 
-```
+```js
 const deeplinkData = {
   legs: [
     {
-      dropoff: "Hotel Ermitage, London, UK",
-      pickupTime: "2020-03-12T12:00:00+01:00"
-    }
+      dropoff: 'Hotel Ermitage, London, UK',
+      pickupTime: '2020-03-12T12:00:00+01:00',
+    },
   ],
   passengerInfo: {
     passengers: 3,
-    firstName: 'Jon'
+    firstName: 'Jon',
   },
   meta: {},
 }
@@ -109,34 +110,35 @@ const deeplinkData = {
 
 _Step 2. Validate deeplink data_
 
-```
+```js
 import { validate } from '@karhoo/demand-deeplink'
 
 const { ok, errors } = validate(deeplinkData)
 
 if (!ok) {
-  console.log("Deeplink data is invalid", errors)
+  console.log('Deeplink data is invalid', errors)
 }
-
 ```
 
 _Step 3. Generate a deeplink_
 
-```
+```js
 import { validate, generate } from '@karhoo/demand-deeplink'
 
 const { ok, errors } = validate(deeplinkData)
 
 if (!ok) {
-  console.log("Deeplink data is invalid", errors)
+  console.log('Deeplink data is invalid', errors)
   return
 }
 
 const deeplink = generate(deeplinkData)
 ```
-```
+
+```js
 console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon
 ```
+
 When you get a deeplink you can navigate your user from your website by adding the link to `href` attribute.
 
 For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon"> Book a cab to a hotel </a>`
