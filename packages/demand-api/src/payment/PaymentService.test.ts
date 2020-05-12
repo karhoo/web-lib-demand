@@ -66,10 +66,7 @@ describe('PaymentService', () => {
       new PaymentService(http).addPaymentCard(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith(
-        'payments/payment-methods/braintree/add-payment-card-details',
-        params
-      )
+      expect(http.post).toHaveBeenCalledWith('payments/payment-methods/braintree/add-payment-details', params)
     })
   })
 })

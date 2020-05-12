@@ -31,7 +31,7 @@ export class PaymentService {
 
   addPaymentCard(params: AddPaymentCardParams) {
     return this.http.post<ClientNonceResponse>(
-      `${this.url}/payment-methods/braintree/add-payment-card-details`,
+      `${this.url}/payment-methods/braintree/add-payment-details`,
       params
     )
   }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.2](https://github.com/karhoo/web-lib-demand/compare/v0.10.0...v0.10.2) (2020-05-12)
+
+
+### Bug Fixes
+
+*  remove date transform from quotesSearch method ([#40](https://github.com/karhoo/web-lib-demand/issues/40)) ([efaabfa](https://github.com/karhoo/web-lib-demand/commit/efaabfabf1cee5af5159b840cf3860dc2f34fd44))
+
+
+
+
+
 ## [0.10.1](https://github.com/karhoo/web-lib-demand/compare/v0.10.0...v0.10.1) (2020-05-11)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink
