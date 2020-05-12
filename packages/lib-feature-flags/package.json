@@ -1,8 +1,12 @@
 {
   "name": "@karhoo/lib-feature-flags",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Feature flags 🚩 library for Karhoo web apps. It provides possibility to enable/disable certain feature per environment without redeployment 🙃",
-  "keywords": [ "feature-flags", "featureflags", "lib-feature-flags" ],
+  "keywords": [
+    "feature-flags",
+    "featureflags",
+    "lib-feature-flags"
+  ],
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/lib-feature-flags#readme",
   "license": "ISC",
   "directories": {
