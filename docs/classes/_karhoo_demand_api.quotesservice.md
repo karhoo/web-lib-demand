@@ -24,7 +24,7 @@
 
 \+ **new QuotesService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[QuotesService](_karhoo_demand_api.quotesservice.md)*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/QuotesService.ts#L15)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/QuotesService.ts#L15)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ Name | Type |
 
 ▸ **checkAvailability**(`params`: [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:21](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/QuotesService.ts#L21)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:21](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/QuotesService.ts#L21)*
 
 **Parameters:**
 
@@ -56,7 +56,7 @@ ___
 
 ▸ **quotesSearch**(`params`: [QutesSearchParams](../modules/_karhoo_demand_api.md#qutessearchparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:32](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/QuotesService.ts#L32)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:32](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/QuotesService.ts#L32)*
 
 **Parameters:**
 
@@ -72,7 +72,7 @@ ___
 
 ▸ **quotesSearchById**(`id`: string): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:46](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/QuotesService.ts#L46)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:49](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/QuotesService.ts#L49)*
 
 **Parameters:**
 

@@ -17,6 +17,7 @@ This library provides the ability to contact Karhoo's public API and allows you 
 <br />
 
 [**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+
 <hr />
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
@@ -35,12 +36,21 @@ npm i @karhoo/demand-api
 
 This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
 
+This library uses `URLSearchParams`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use either `js-core@3` or [`url-search-params-polyfill`](https://www.npmjs.com/package/url-search-params-polyfill)(version 8 and above)
+
 ## Usage
 
 You can use each service separately, or you can use `getApi` method which returns all available services
 
-```
-import { getApi, HttpService, LocationService, PoiService, QuotesService, errorCodes } from '@karhoo/demand-api'
+```js
+import {
+  getApi,
+  HttpService,
+  LocationService,
+  PoiService,
+  QuotesService,
+  errorCodes,
+} from '@karhoo/demand-api'
 
 const url = 'https://public-api.karhoo.com' // please note that there should not be a slash at the end of the url
 
@@ -48,8 +58,8 @@ const correlationIdPrefix = 'prefix'
 
 const requestOptionsGetter = () => ({
   headers: {
-    'custom-header': 'Custom header'
-  }
+    'custom-header': 'Custom header',
+  },
 })
 
 const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
@@ -57,12 +67,11 @@ const middleware = <T>(response: HttpResponse<T>): HttpResponse<T> => {
 
   return response
 }
-
 ```
 
 Please note that by default `fetch` will be called with following config
 
-```
+```js
 {
   credentials: 'include',
   mode: 'cors',
@@ -75,7 +84,7 @@ getApi usage:
 
 All config fields are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
 
-```
+```js
 const options = {
   url,
   defaultRequestOptionsGetter: requestOptionsGetter,
@@ -84,58 +93,85 @@ const options = {
 }
 
 const api = getApi(options)
-
 ```
 
 Http service usage:
 
-```
-const apiV1 = 'https://public-api.karhoo.com/api/v1' // please note that version should be specified
+```js
+const apiV1 = 'https://public-api.karhoo.com/v1' // please note that version should be specified
 
 const httpService = new HttpService(url)
   .setCorrelationIdPrefix(correlationIdPrefix)
   .setDefaultRequestOptionsGetter(requestOptionsGetter)
   .setResponseMiddleware(middleware)
 
-const response = await httpService.get('location/address-autocomplete')
+const response = await httpService.post('locations/address-autocomplete', { query: 'lond' })
 ```
 
-Location service usage:
+# Location service usage:
 
-```
+```js
 const locationService = new LocationService(httpService)
 ```
 
-Poi service:
+# Poi service:
 
-```
+```js
 const poiService = new PoiService(httpService)
 ```
 
-Quotes service:
+# Quotes service:
 
-```
+```js
 const quotesService = new QuotesService(httpService)
 ```
 
-Trip service:
+# Trip service:
 
-```
+```js
 const tripService = new TripService(httpService)
 ```
 
-Fare service:
+# Fare service:
 
-```
+```js
 const fareService = new FareService(httpService)
-
-Payment service:
-
 ```
 
-const paymentService = new PaymentService(httpService)
+# Payment service:
 
-````
+```js
+const paymentService = new PaymentService(httpService)
+```
+
+# Flags service:
+
+```js
+const flagsService = new FlagsService(httpService)
+```
+
+### Example
+
+Let's see how to use one of the services, listed above.
+
+For example, you need to get a list of quotes for trip from one location to another. For this purpose you have to use Quotes service and call quotesSearch method:
+
+```js
+const quotesSearchParams = {
+  origin_place_id: '123456778qwertyu',
+  destination_place_id: '0988765poiuyt',
+  local_time_of_pickup: '2020-05-12T10:00',
+}
+
+const quotesResponse = quotesService
+  .quotesSearch(quotesSearchParams)
+  .then(result => {
+    //handleResult
+  })
+  .catch(error => {
+    //handle error
+  })
+```
 
 ## Issues
 
@@ -158,8 +194,7 @@ For questions related to using the library, please re-visit a documentation firs
 
 ### License
 
-[BSD-2-Clause](../LICENSE)```
-````
+[BSD-2-Clause](../LICENSE)
 
 ## Index
 
@@ -170,6 +205,10 @@ For questions related to using the library, please re-visit a documentation firs
 * [ApiOptions](_karhoo_demand_api.md#apioptions)
 * [DefaultRequestOptions](_karhoo_demand_api.md#defaultrequestoptions)
 * [DefaultRequestOptionsGetter](_karhoo_demand_api.md#defaultrequestoptionsgetter)
+* [FlagsRequestPathParameters](_karhoo_demand_api.md#flagsrequestpathparameters)
+* [FlagsResponse](_karhoo_demand_api.md#flagsresponse)
+* [FlagsService](_karhoo_demand_api.md#flagsservice)
+* [FlagsVersionType](_karhoo_demand_api.md#flagsversiontype)
 * [Http](_karhoo_demand_api.md#http)
 * [HttpResponse](_karhoo_demand_api.md#httpresponse)
 * [HttpResponseError](_karhoo_demand_api.md#httpresponseerror)
@@ -202,6 +241,7 @@ For questions related to using the library, please re-visit a documentation firs
 ### Classes
 
 * [FareService](../classes/_karhoo_demand_api.fareservice.md)
+* [FlagsService](../classes/_karhoo_demand_api.flagsservice.md)
 * [HttpService](../classes/_karhoo_demand_api.httpservice.md)
 * [LocationService](../classes/_karhoo_demand_api.locationservice.md)
 * [PaymentService](../classes/_karhoo_demand_api.paymentservice.md)
@@ -234,6 +274,9 @@ For questions related to using the library, please re-visit a documentation firs
 * [DefaultRequestOptions](_karhoo_demand_api.md#defaultrequestoptions)
 * [DefaultRequestOptionsGetter](_karhoo_demand_api.md#defaultrequestoptionsgetter)
 * [FinalFareResponse](_karhoo_demand_api.md#finalfareresponse)
+* [FlagsRequestPathParameters](_karhoo_demand_api.md#flagsrequestpathparameters)
+* [FlagsResponse](_karhoo_demand_api.md#flagsresponse)
+* [FlagsVersionType](_karhoo_demand_api.md#flagsversiontype)
 * [HttpResponse](_karhoo_demand_api.md#httpresponse)
 * [HttpResponseError](_karhoo_demand_api.md#httpresponseerror)
 * [HttpResponseMiddleware](_karhoo_demand_api.md#httpresponsemiddleware)
@@ -269,6 +312,7 @@ For questions related to using the library, please re-visit a documentation firs
 * [TripFollowResponse](_karhoo_demand_api.md#tripfollowresponse)
 * [TripStatus](_karhoo_demand_api.md#tripstatus)
 * [VehicleAttributes](_karhoo_demand_api.md#vehicleattributes)
+* [v1FlagsType](_karhoo_demand_api.md#v1flagstype)
 
 ### Variables
 
@@ -334,6 +378,30 @@ ___
 ###  DefaultRequestOptionsGetter
 
 • **DefaultRequestOptionsGetter**:
+
+___
+
+###  FlagsRequestPathParameters
+
+• **FlagsRequestPathParameters**:
+
+___
+
+###  FlagsResponse
+
+• **FlagsResponse**:
+
+___
+
+###  FlagsService
+
+• **FlagsService**:
+
+___
+
+###  FlagsVersionType
+
+• **FlagsVersionType**:
 
 ___
 
@@ -509,7 +577,7 @@ ___
 
 Ƭ **Address**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:21](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L21)*
+*Defined in [demand-api/src/trip/types.ts:21](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L21)*
 
 #### Type declaration:
 
@@ -529,11 +597,13 @@ ___
 
 Ƭ **Api**: *object*
 
-*Defined in [demand-api/src/api/types.ts:16](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/api/types.ts#L16)*
+*Defined in [demand-api/src/api/types.ts:17](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/api/types.ts#L17)*
 
 #### Type declaration:
 
 * **fareService**: *[FareService](../classes/_karhoo_demand_api.fareservice.md)*
+
+* **flagsService**: *[FlagsService](../classes/_karhoo_demand_api.flagsservice.md)*
 
 * **locationService**: *[LocationService](../classes/_karhoo_demand_api.locationservice.md)*
 
@@ -551,7 +621,7 @@ ___
 
 Ƭ **ApiError**: *object*
 
-*Defined in [demand-api/src/http/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L1)*
+*Defined in [demand-api/src/http/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L1)*
 
 #### Type declaration:
 
@@ -565,7 +635,7 @@ ___
 
 Ƭ **ApiOptions**: *Partial‹object›*
 
-*Defined in [demand-api/src/api/types.ts:9](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/api/types.ts#L9)*
+*Defined in [demand-api/src/api/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/api/types.ts#L10)*
 
 ___
 
@@ -573,7 +643,7 @@ ___
 
 Ƭ **BookATripParams**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:97](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L97)*
+*Defined in [demand-api/src/trip/types.ts:97](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L97)*
 
 #### Type declaration:
 
@@ -605,7 +675,7 @@ ___
 
 Ƭ **BreakdownItem**: *Partial‹object›*
 
-*Defined in [demand-api/src/fare/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/fare/types.ts#L1)*
+*Defined in [demand-api/src/fare/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/fare/types.ts#L1)*
 
 ___
 
@@ -613,7 +683,7 @@ ___
 
 Ƭ **CancellationParams**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:147](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L147)*
+*Defined in [demand-api/src/trip/types.ts:147](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L147)*
 
 #### Type declaration:
 
@@ -627,7 +697,7 @@ ___
 
 Ƭ **ClientNonceParams**: *object*
 
-*Defined in [demand-api/src/payment/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/types.ts#L10)*
+*Defined in [demand-api/src/payment/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L10)*
 
 #### Type declaration:
 
@@ -649,7 +719,7 @@ ___
 
 Ƭ **ClientNonceResponse**: *object*
 
-*Defined in [demand-api/src/payment/types.ts:20](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/types.ts#L20)*
+*Defined in [demand-api/src/payment/types.ts:20](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L20)*
 
 #### Type declaration:
 
@@ -665,7 +735,7 @@ ___
 
 Ƭ **CommonDetailsType**: *"AIRPORT" | "TRAIN_STATION" | "METRO_STATION" | "PORT" | "HOTEL" | "OTHER"*
 
-*Defined in [demand-api/src/sharedTypes.ts:14](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/sharedTypes.ts#L14)*
+*Defined in [demand-api/src/sharedTypes.ts:14](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/sharedTypes.ts#L14)*
 
 ___
 
@@ -673,7 +743,7 @@ ___
 
 Ƭ **CommonPoiType**: *"ENRICHED" | "REGULATED" | "NEAREST"*
 
-*Defined in [demand-api/src/sharedTypes.ts:16](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/sharedTypes.ts#L16)*
+*Defined in [demand-api/src/sharedTypes.ts:16](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/sharedTypes.ts#L16)*
 
 ___
 
@@ -681,7 +751,7 @@ ___
 
 Ƭ **CreateTokenParams**: *object*
 
-*Defined in [demand-api/src/payment/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/types.ts#L1)*
+*Defined in [demand-api/src/payment/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L1)*
 
 #### Type declaration:
 
@@ -695,7 +765,7 @@ ___
 
 Ƭ **CreateTokenResponse**: *object*
 
-*Defined in [demand-api/src/payment/types.ts:6](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/payment/types.ts#L6)*
+*Defined in [demand-api/src/payment/types.ts:6](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L6)*
 
 #### Type declaration:
 
@@ -707,7 +777,7 @@ ___
 
 Ƭ **DefaultRequestOptions**: *Omit‹[RequestOptions](_karhoo_demand_api.md#requestoptions), "body" | "method" | "signal"›*
 
-*Defined in [demand-api/src/http/types.ts:35](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L35)*
+*Defined in [demand-api/src/http/types.ts:35](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L35)*
 
 ___
 
@@ -715,7 +785,7 @@ ___
 
 Ƭ **DefaultRequestOptionsGetter**: *function*
 
-*Defined in [demand-api/src/http/types.ts:37](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L37)*
+*Defined in [demand-api/src/http/types.ts:37](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L37)*
 
 #### Type declaration:
 
@@ -727,7 +797,7 @@ ___
 
 Ƭ **FinalFareResponse**: *object*
 
-*Defined in [demand-api/src/fare/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/fare/types.ts#L10)*
+*Defined in [demand-api/src/fare/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/fare/types.ts#L10)*
 
 #### Type declaration:
 
@@ -741,11 +811,53 @@ ___
 
 ___
 
+###  FlagsRequestPathParameters
+
+Ƭ **FlagsRequestPathParameters**: *object*
+
+*Defined in [demand-api/src/flags/types.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/types.ts#L1)*
+
+#### Type declaration:
+
+* **identifier**: *string*
+
+* **platform**: *string*
+
+___
+
+###  FlagsResponse
+
+Ƭ **FlagsResponse**: *object*
+
+*Defined in [demand-api/src/flags/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/types.ts#L10)*
+
+#### Type declaration:
+
+* **flags**: *[v1FlagsType](_karhoo_demand_api.md#v1flagstype)*
+
+* **identifier**: *string*
+
+* **version**: *string*
+
+___
+
+###  FlagsVersionType
+
+Ƭ **FlagsVersionType**: *object*
+
+*Defined in [demand-api/src/flags/types.ts:16](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/types.ts#L16)*
+
+#### Type declaration:
+
+* **version**: *string*
+
+___
+
 ###  HttpResponse
 
 Ƭ **HttpResponse**: *[HttpResponseOk](_karhoo_demand_api.md#httpresponseok)‹T› | [HttpResponseError](_karhoo_demand_api.md#httpresponseerror)‹TError›*
 
-*Defined in [demand-api/src/http/types.ts:20](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L20)*
+*Defined in [demand-api/src/http/types.ts:20](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L20)*
 
 ___
 
@@ -753,7 +865,7 @@ ___
 
 Ƭ **HttpResponseError**: *[HttpResponsePayload](_karhoo_demand_api.md#httpresponsepayload) & object*
 
-*Defined in [demand-api/src/http/types.ts:15](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L15)*
+*Defined in [demand-api/src/http/types.ts:15](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L15)*
 
 ___
 
@@ -761,7 +873,7 @@ ___
 
 Ƭ **HttpResponseMiddleware**: *function*
 
-*Defined in [demand-api/src/http/types.ts:24](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L24)*
+*Defined in [demand-api/src/http/types.ts:24](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L24)*
 
 #### Type declaration:
 
@@ -783,7 +895,7 @@ ___
 
 Ƭ **HttpResponseOk**: *[HttpResponsePayload](_karhoo_demand_api.md#httpresponsepayload) & object*
 
-*Defined in [demand-api/src/http/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L10)*
+*Defined in [demand-api/src/http/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L10)*
 
 ___
 
@@ -791,7 +903,7 @@ ___
 
 Ƭ **HttpResponsePayload**: *object*
 
-*Defined in [demand-api/src/http/types.ts:6](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L6)*
+*Defined in [demand-api/src/http/types.ts:6](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L6)*
 
 #### Type declaration:
 
@@ -803,7 +915,7 @@ ___
 
 Ƭ **LatLng**: *object*
 
-*Defined in [demand-api/src/sharedTypes.ts:1](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/sharedTypes.ts#L1)*
+*Defined in [demand-api/src/sharedTypes.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/sharedTypes.ts#L1)*
 
 #### Type declaration:
 
@@ -817,7 +929,7 @@ ___
 
 Ƭ **LocationAddressAutocompleteParams**: *object*
 
-*Defined in [demand-api/src/location/types.ts:8](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L8)*
+*Defined in [demand-api/src/location/types.ts:8](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L8)*
 
 #### Type declaration:
 
@@ -835,7 +947,7 @@ ___
 
 Ƭ **LocationAddressAutocompleteResponse**: *object*
 
-*Defined in [demand-api/src/location/types.ts:57](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L57)*
+*Defined in [demand-api/src/location/types.ts:57](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L57)*
 
 #### Type declaration:
 
@@ -847,7 +959,7 @@ ___
 
 Ƭ **LocationAddressAutocompleteResponseItem**: *object*
 
-*Defined in [demand-api/src/location/types.ts:51](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L51)*
+*Defined in [demand-api/src/location/types.ts:51](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L51)*
 
 #### Type declaration:
 
@@ -863,7 +975,7 @@ ___
 
 Ƭ **LocationAddressDetailsParameters**: *object*
 
-*Defined in [demand-api/src/location/types.ts:3](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L3)*
+*Defined in [demand-api/src/location/types.ts:3](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L3)*
 
 #### Type declaration:
 
@@ -877,7 +989,7 @@ ___
 
 Ƭ **LocationAddressDetailsResponse**: *object*
 
-*Defined in [demand-api/src/location/types.ts:21](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L21)*
+*Defined in [demand-api/src/location/types.ts:21](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L21)*
 
 #### Type declaration:
 
@@ -903,7 +1015,7 @@ ___
 
 Ƭ **LocationDetailsType**: *"NOT_SET_DETAILS_TYPE" | [CommonDetailsType](_karhoo_demand_api.md#commondetailstype)*
 
-*Defined in [demand-api/src/location/types.ts:19](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L19)*
+*Defined in [demand-api/src/location/types.ts:19](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L19)*
 
 ___
 
@@ -911,7 +1023,7 @@ ___
 
 Ƭ **LocationPoiType**: *"NOT_SET_POI_TYPE" | [CommonPoiType](_karhoo_demand_api.md#commonpoitype)*
 
-*Defined in [demand-api/src/location/types.ts:18](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/location/types.ts#L18)*
+*Defined in [demand-api/src/location/types.ts:18](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/location/types.ts#L18)*
 
 ___
 
@@ -919,7 +1031,7 @@ ___
 
 Ƭ **MeetingPointType**: *"DEFAULT" | "PICK_UP" | "DROP_OFF" | "MEET_AND_GREET" | "CURB_SIDE" | "STAND_BY"*
 
-*Defined in [demand-api/src/sharedTypes.ts:6](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/sharedTypes.ts#L6)*
+*Defined in [demand-api/src/sharedTypes.ts:6](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/sharedTypes.ts#L6)*
 
 ___
 
@@ -927,7 +1039,7 @@ ___
 
 Ƭ **MethodRequestOptions**: *Omit‹[RequestOptions](_karhoo_demand_api.md#requestoptions), "body" | "method"›*
 
-*Defined in [demand-api/src/http/types.ts:33](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L33)*
+*Defined in [demand-api/src/http/types.ts:33](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L33)*
 
 ___
 
@@ -935,7 +1047,7 @@ ___
 
 Ƭ **POIDetailsType**: *"UNSPECIFIED" | [CommonDetailsType](_karhoo_demand_api.md#commondetailstype)*
 
-*Defined in [demand-api/src/poi/types.ts:11](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/poi/types.ts#L11)*
+*Defined in [demand-api/src/poi/types.ts:11](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/poi/types.ts#L11)*
 
 ___
 
@@ -943,7 +1055,7 @@ ___
 
 Ƭ **POIType**: *"UNSET" | [CommonPoiType](_karhoo_demand_api.md#commonpoitype)*
 
-*Defined in [demand-api/src/poi/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/poi/types.ts#L10)*
+*Defined in [demand-api/src/poi/types.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/poi/types.ts#L10)*
 
 ___
 
@@ -951,7 +1063,7 @@ ___
 
 Ƭ **PassengerDetails**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:5](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L5)*
+*Defined in [demand-api/src/trip/types.ts:5](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L5)*
 
 #### Type declaration:
 
@@ -971,7 +1083,7 @@ ___
 
 Ƭ **Passengers**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:13](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L13)*
+*Defined in [demand-api/src/trip/types.ts:13](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L13)*
 
 #### Type declaration:
 
@@ -987,7 +1099,7 @@ ___
 
 Ƭ **PoiResponse**: *object*
 
-*Defined in [demand-api/src/poi/types.ts:13](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/poi/types.ts#L13)*
+*Defined in [demand-api/src/poi/types.ts:13](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/poi/types.ts#L13)*
 
 #### Type declaration:
 
@@ -1051,7 +1163,7 @@ ___
 
 Ƭ **PoiSearchParams**: *object*
 
-*Defined in [demand-api/src/poi/types.ts:3](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/poi/types.ts#L3)*
+*Defined in [demand-api/src/poi/types.ts:3](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/poi/types.ts#L3)*
 
 #### Type declaration:
 
@@ -1069,7 +1181,7 @@ ___
 
 Ƭ **PoiSearchResponse**: *object*
 
-*Defined in [demand-api/src/poi/types.ts:50](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/poi/types.ts#L50)*
+*Defined in [demand-api/src/poi/types.ts:50](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/poi/types.ts#L50)*
 
 #### Type declaration:
 
@@ -1081,7 +1193,7 @@ ___
 
 Ƭ **Query**: *Record‹string, string | number›*
 
-*Defined in [demand-api/src/http/types.ts:22](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L22)*
+*Defined in [demand-api/src/http/types.ts:22](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L22)*
 
 ___
 
@@ -1089,7 +1201,7 @@ ___
 
 Ƭ **Quote**: *object*
 
-*Defined in [demand-api/src/quotes/types.ts:66](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L66)*
+*Defined in [demand-api/src/quotes/types.ts:66](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L66)*
 
 #### Type declaration:
 
@@ -1123,7 +1235,7 @@ ___
 
 Ƭ **QuoteItem**: *object*
 
-*Defined in [demand-api/src/quotes/types.ts:32](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L32)*
+*Defined in [demand-api/src/quotes/types.ts:32](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L32)*
 
 #### Type declaration:
 
@@ -1173,7 +1285,7 @@ ___
 
 Ƭ **QuotesAvailabilityParams**: *object*
 
-*Defined in [demand-api/src/quotes/types.ts:3](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L3)*
+*Defined in [demand-api/src/quotes/types.ts:3](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L3)*
 
 #### Type declaration:
 
@@ -1189,7 +1301,7 @@ ___
 
 Ƭ **QuotesAvailabilityResponse**: *object*
 
-*Defined in [demand-api/src/quotes/types.ts:9](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L9)*
+*Defined in [demand-api/src/quotes/types.ts:9](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L9)*
 
 #### Type declaration:
 
@@ -1203,7 +1315,7 @@ ___
 
 Ƭ **QuotesResponse**: *object*
 
-*Defined in [demand-api/src/quotes/types.ts:55](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L55)*
+*Defined in [demand-api/src/quotes/types.ts:55](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L55)*
 
 #### Type declaration:
 
@@ -1221,7 +1333,7 @@ ___
 
 Ƭ **QutesSearchParams**: *object*
 
-*Defined in [demand-api/src/quotes/types.ts:26](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L26)*
+*Defined in [demand-api/src/quotes/types.ts:26](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L26)*
 
 #### Type declaration:
 
@@ -1237,7 +1349,7 @@ ___
 
 Ƭ **RequestOptions**: *Omit‹RequestInit, "window" | "headers"› & object*
 
-*Defined in [demand-api/src/http/types.ts:28](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/types.ts#L28)*
+*Defined in [demand-api/src/http/types.ts:28](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/types.ts#L28)*
 
 ___
 
@@ -1245,7 +1357,7 @@ ___
 
 Ƭ **SearchParams**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:152](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L152)*
+*Defined in [demand-api/src/trip/types.ts:152](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L152)*
 
 #### Type declaration:
 
@@ -1293,7 +1405,7 @@ ___
 
 Ƭ **SearchResponse**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:174](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L174)*
+*Defined in [demand-api/src/trip/types.ts:174](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L174)*
 
 #### Type declaration:
 
@@ -1305,7 +1417,7 @@ ___
 
 Ƭ **TripFollowResponse**: *object*
 
-*Defined in [demand-api/src/trip/types.ts:44](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L44)*
+*Defined in [demand-api/src/trip/types.ts:44](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L44)*
 
 #### Type declaration:
 
@@ -1349,7 +1461,7 @@ ___
 
 Ƭ **TripStatus**: *"REQUESTED" | "COMPLETED" | "DRIVER_EN_ROUTE" | "CONFIRMED" | "ARRIVED" | "POB" | "DRIVER_CANCELLED" | "BOOKER_CANCELLED" | "NO_DRIVERS_AVAILABLE" | "KARHOO_CANCELLED" | "FAILED" | "PREAUTH_DECLINED" | "INCOMPLETE"*
 
-*Defined in [demand-api/src/trip/types.ts:29](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L29)*
+*Defined in [demand-api/src/trip/types.ts:29](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/types.ts#L29)*
 
 ___
 
@@ -1357,31 +1469,41 @@ ___
 
 Ƭ **VehicleAttributes**: *Partial‹object›*
 
-*Defined in [demand-api/src/sharedTypes.ts:18](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/sharedTypes.ts#L18)*
+*Defined in [demand-api/src/sharedTypes.ts:18](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/sharedTypes.ts#L18)*
+
+___
+
+###  v1FlagsType
+
+Ƭ **v1FlagsType**: *Record‹string, boolean | string›*
+
+*Defined in [demand-api/src/flags/types.ts:8](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/types.ts#L8)*
 
 ## Variables
 
 ### `Const` apiV1
 
-• **apiV1**: *"api/v1"* = "api/v1"
+• **apiV1**: *"v1"* = "v1"
 
-*Defined in [demand-api/src/api/constants.ts:3](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/api/constants.ts#L3)*
+*Defined in [demand-api/src/api/constants.ts:6](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/api/constants.ts#L6)*
 
 ___
 
 ### `Const` apiV2
 
-• **apiV2**: *"api/v2"* = "api/v2"
+• **apiV2**: *"v2"* = "v2"
 
-*Defined in [demand-api/src/api/constants.ts:4](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/api/constants.ts#L4)*
+*Defined in [demand-api/src/api/constants.ts:7](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/api/constants.ts#L7)*
 
 ___
 
 ### `Const` defaultUrl
 
-• **defaultUrl**: *"https://public-api.karhoo.com" | "public-api.sandbox.karhoo.com"* = process.env.NODE_ENV === 'production' ? 'https://public-api.karhoo.com' : 'public-api.sandbox.karhoo.com'
+• **defaultUrl**: *"https://public-api.karhoo.com" | "https://public-api.sandbox.karhoo.com"* = process.env.NODE_ENV === 'production'
+    ? 'https://public-api.karhoo.com'
+    : 'https://public-api.sandbox.karhoo.com'
 
-*Defined in [demand-api/src/api/constants.ts:1](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/api/constants.ts#L1)*
+*Defined in [demand-api/src/api/constants.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/api/constants.ts#L1)*
 
 ___
 
@@ -1389,7 +1511,7 @@ ___
 
 • **mockHttpGet**: *Mock‹Promise‹object›, []›* = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { get: true } }))
 
-*Defined in [demand-api/src/testMocks.ts:116](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L116)*
+*Defined in [demand-api/src/testMocks.ts:116](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L116)*
 
 ___
 
@@ -1397,7 +1519,7 @@ ___
 
 • **mockHttpPost**: *Mock‹Promise‹object›, []›* = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { post: true } }))
 
-*Defined in [demand-api/src/testMocks.ts:117](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L117)*
+*Defined in [demand-api/src/testMocks.ts:117](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L117)*
 
 ___
 
@@ -1405,7 +1527,7 @@ ___
 
 • **mockHttpPut**: *Mock‹Promise‹object›, []›* = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { put: true } }))
 
-*Defined in [demand-api/src/testMocks.ts:118](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L118)*
+*Defined in [demand-api/src/testMocks.ts:118](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L118)*
 
 ___
 
@@ -1415,7 +1537,7 @@ ___
   Promise.resolve({ ok: true, status: 200, body: { remove: true } })
 )
 
-*Defined in [demand-api/src/testMocks.ts:119](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L119)*
+*Defined in [demand-api/src/testMocks.ts:119](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L119)*
 
 ## Functions
 
@@ -1423,7 +1545,7 @@ ___
 
 ▸ **getApi**(`apiOptions`: [ApiOptions](_karhoo_demand_api.md#apioptions)): *[Api](_karhoo_demand_api.md#api)*
 
-*Defined in [demand-api/src/api/index.ts:12](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/api/index.ts#L12)*
+*Defined in [demand-api/src/api/index.ts:13](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/api/index.ts#L13)*
 
 **Parameters:**
 
@@ -1439,7 +1561,7 @@ ___
 
 ▸ **getApiMock**(): *object*
 
-*Defined in [demand-api/src/testMocks.ts:141](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L141)*
+*Defined in [demand-api/src/testMocks.ts:141](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L141)*
 
 **Returns:** *object*
 
@@ -1465,7 +1587,7 @@ ___
 
 ▸ **getLocationGetAddressAutocompleteDataMock**(): *Mock‹Promise‹object & object | object & object›, [any]›*
 
-*Defined in [demand-api/src/testMocks.ts:128](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L128)*
+*Defined in [demand-api/src/testMocks.ts:128](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L128)*
 
 **Returns:** *Mock‹Promise‹object & object | object & object›, [any]›*
 
@@ -1475,7 +1597,7 @@ ___
 
 ▸ **getLocationGetAddressDetailsMock**(): *Mock‹Promise‹object & object | object & object›, [any]›*
 
-*Defined in [demand-api/src/testMocks.ts:123](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L123)*
+*Defined in [demand-api/src/testMocks.ts:123](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L123)*
 
 **Returns:** *Mock‹Promise‹object & object | object & object›, [any]›*
 
@@ -1485,7 +1607,7 @@ ___
 
 ▸ **getMockedErrorLocationAddressAutocompleteResponse**(): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressAutocompleteResponse](_karhoo_demand_api.md#locationaddressautocompleteresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:107](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L107)*
+*Defined in [demand-api/src/testMocks.ts:107](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L107)*
 
 **Returns:** *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressAutocompleteResponse](_karhoo_demand_api.md#locationaddressautocompleteresponse)›*
 
@@ -1495,7 +1617,7 @@ ___
 
 ▸ **getMockedErrorLocationAddressDetailsResponse**(): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:82](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L82)*
+*Defined in [demand-api/src/testMocks.ts:82](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L82)*
 
 **Returns:** *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)›*
 
@@ -1505,7 +1627,7 @@ ___
 
 ▸ **getMockedErrorPoiSearchResponse**(): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[PoiSearchResponse](_karhoo_demand_api.md#poisearchresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:40](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L40)*
+*Defined in [demand-api/src/testMocks.ts:40](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L40)*
 
 **Returns:** *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[PoiSearchResponse](_karhoo_demand_api.md#poisearchresponse)›*
 
@@ -1515,7 +1637,7 @@ ___
 
 ▸ **getMockedErrorQuotesAvailabilityResponse**(): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[QuotesAvailabilityResponse](_karhoo_demand_api.md#quotesavailabilityresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:58](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L58)*
+*Defined in [demand-api/src/testMocks.ts:58](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L58)*
 
 **Returns:** *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[QuotesAvailabilityResponse](_karhoo_demand_api.md#quotesavailabilityresponse)›*
 
@@ -1525,7 +1647,7 @@ ___
 
 ▸ **getMockedLocationAddressAutocompleteResponse**(`data`: any): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressAutocompleteResponse](_karhoo_demand_api.md#locationaddressautocompleteresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:91](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L91)*
+*Defined in [demand-api/src/testMocks.ts:91](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L91)*
 
 **Parameters:**
 
@@ -1541,7 +1663,7 @@ ___
 
 ▸ **getMockedLocationAddressDetailsResponse**(`data`: any): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[LocationAddressDetailsResponse](_karhoo_demand_api.md#locationaddressdetailsresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:67](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L67)*
+*Defined in [demand-api/src/testMocks.ts:67](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L67)*
 
 **Parameters:**
 
@@ -1557,7 +1679,7 @@ ___
 
 ▸ **getMockedPoiSearchResponse**(`data`: any): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[PoiSearchResponse](_karhoo_demand_api.md#poisearchresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:7](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L7)*
+*Defined in [demand-api/src/testMocks.ts:7](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L7)*
 
 **Parameters:**
 
@@ -1573,7 +1695,7 @@ ___
 
 ▸ **getMockedQuotesAvailabilityResponse**(): *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[QuotesAvailabilityResponse](_karhoo_demand_api.md#quotesavailabilityresponse)›*
 
-*Defined in [demand-api/src/testMocks.ts:49](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L49)*
+*Defined in [demand-api/src/testMocks.ts:49](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L49)*
 
 **Returns:** *[HttpResponse](_karhoo_demand_api.md#httpresponse)‹[QuotesAvailabilityResponse](_karhoo_demand_api.md#quotesavailabilityresponse)›*
 
@@ -1583,7 +1705,7 @@ ___
 
 ▸ **getPoiSearchMock**(): *Mock‹Promise‹object & object | object & object›, [any]›*
 
-*Defined in [demand-api/src/testMocks.ts:133](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L133)*
+*Defined in [demand-api/src/testMocks.ts:133](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L133)*
 
 **Returns:** *Mock‹Promise‹object & object | object & object›, [any]›*
 
@@ -1593,7 +1715,7 @@ ___
 
 ▸ **getQuotesCheckAvailabilityMock**(): *Mock‹Promise‹object & object | object & object›, []›*
 
-*Defined in [demand-api/src/testMocks.ts:138](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/testMocks.ts#L138)*
+*Defined in [demand-api/src/testMocks.ts:138](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/testMocks.ts#L138)*
 
 **Returns:** *Mock‹Promise‹object & object | object & object›, []›*
 
@@ -1603,7 +1725,7 @@ ___
 
 ▸ **isOffline**(`message`: string): *boolean*
 
-*Defined in [demand-api/src/http/HttpService.ts:14](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/HttpService.ts#L14)*
+*Defined in [demand-api/src/http/HttpService.ts:13](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/HttpService.ts#L13)*
 
 **Parameters:**
 
@@ -1619,7 +1741,7 @@ ___
 
 ▸ **request**<**T**>(`url`: string, `options`: RequestInit): *Promise‹[HttpResponse](_karhoo_demand_api.md#httpresponse)‹T››*
 
-*Defined in [demand-api/src/http/HttpService.ts:16](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/HttpService.ts#L16)*
+*Defined in [demand-api/src/http/HttpService.ts:15](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/HttpService.ts#L15)*
 
 **Type parameters:**
 
@@ -1640,7 +1762,7 @@ ___
 
 ▸ **toJsonBody**(`body`: object, `headers`: Record‹string, string›): *object*
 
-*Defined in [demand-api/src/http/HttpService.ts:40](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/http/HttpService.ts#L40)*
+*Defined in [demand-api/src/http/HttpService.ts:39](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/http/HttpService.ts#L39)*
 
 **Parameters:**
 
@@ -1663,7 +1785,7 @@ ___
 
 ▸ **toSnakeCase**<**T**, **Y**>(`data`: T): *Y*
 
-*Defined in [demand-api/src/utils.ts:4](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/utils.ts#L4)*
+*Defined in [demand-api/src/utils.ts:4](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/utils.ts#L4)*
 
 **Type parameters:**
 
@@ -1685,256 +1807,256 @@ Name | Type |
 
 ### ▪ **errorCodes**: *object*
 
-*Defined in [demand-api/src/responseCodes.ts:1](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L1)*
+*Defined in [demand-api/src/responseCodes.ts:1](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L1)*
 
 ###  ERR_OFFLINE
 
 • **ERR_OFFLINE**: *string* = "ERR_OFFLINE"
 
-*Defined in [demand-api/src/responseCodes.ts:3](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L3)*
+*Defined in [demand-api/src/responseCodes.ts:3](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L3)*
 
 ###  ERR_UNKNOWN
 
 • **ERR_UNKNOWN**: *string* = "ERR_UNKNOWN"
 
-*Defined in [demand-api/src/responseCodes.ts:2](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L2)*
+*Defined in [demand-api/src/responseCodes.ts:2](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L2)*
 
 ###  K0001
 
 • **K0001**: *string* = "K0001"
 
-*Defined in [demand-api/src/responseCodes.ts:4](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L4)*
+*Defined in [demand-api/src/responseCodes.ts:4](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L4)*
 
 ###  K0002
 
 • **K0002**: *string* = "K0002"
 
-*Defined in [demand-api/src/responseCodes.ts:5](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L5)*
+*Defined in [demand-api/src/responseCodes.ts:5](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L5)*
 
 ###  K0003
 
 • **K0003**: *string* = "K0003"
 
-*Defined in [demand-api/src/responseCodes.ts:6](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L6)*
+*Defined in [demand-api/src/responseCodes.ts:6](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L6)*
 
 ###  K0004
 
 • **K0004**: *string* = "K0004"
 
-*Defined in [demand-api/src/responseCodes.ts:7](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L7)*
+*Defined in [demand-api/src/responseCodes.ts:7](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L7)*
 
 ###  K0005
 
 • **K0005**: *string* = "K0005"
 
-*Defined in [demand-api/src/responseCodes.ts:8](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L8)*
+*Defined in [demand-api/src/responseCodes.ts:8](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L8)*
 
 ###  K0006
 
 • **K0006**: *string* = "K0006"
 
-*Defined in [demand-api/src/responseCodes.ts:9](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L9)*
+*Defined in [demand-api/src/responseCodes.ts:9](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L9)*
 
 ###  K0007
 
 • **K0007**: *string* = "K0007"
 
-*Defined in [demand-api/src/responseCodes.ts:10](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L10)*
+*Defined in [demand-api/src/responseCodes.ts:10](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L10)*
 
 ###  K1001
 
 • **K1001**: *string* = "K1001"
 
-*Defined in [demand-api/src/responseCodes.ts:11](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L11)*
+*Defined in [demand-api/src/responseCodes.ts:11](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L11)*
 
 ###  K1002
 
 • **K1002**: *string* = "K1002"
 
-*Defined in [demand-api/src/responseCodes.ts:12](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L12)*
+*Defined in [demand-api/src/responseCodes.ts:12](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L12)*
 
 ###  K1003
 
 • **K1003**: *string* = "K1003"
 
-*Defined in [demand-api/src/responseCodes.ts:13](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L13)*
+*Defined in [demand-api/src/responseCodes.ts:13](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L13)*
 
 ###  K1004
 
 • **K1004**: *string* = "K1004"
 
-*Defined in [demand-api/src/responseCodes.ts:14](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L14)*
+*Defined in [demand-api/src/responseCodes.ts:14](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L14)*
 
 ###  K1005
 
 • **K1005**: *string* = "K1005"
 
-*Defined in [demand-api/src/responseCodes.ts:15](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L15)*
+*Defined in [demand-api/src/responseCodes.ts:15](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L15)*
 
 ###  K1006
 
 • **K1006**: *string* = "K1006"
 
-*Defined in [demand-api/src/responseCodes.ts:16](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L16)*
+*Defined in [demand-api/src/responseCodes.ts:16](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L16)*
 
 ###  K2001
 
 • **K2001**: *string* = "K2001"
 
-*Defined in [demand-api/src/responseCodes.ts:17](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L17)*
+*Defined in [demand-api/src/responseCodes.ts:17](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L17)*
 
 ###  K3001
 
 • **K3001**: *string* = "K3001"
 
-*Defined in [demand-api/src/responseCodes.ts:18](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L18)*
+*Defined in [demand-api/src/responseCodes.ts:18](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L18)*
 
 ###  K3002
 
 • **K3002**: *string* = "K3002"
 
-*Defined in [demand-api/src/responseCodes.ts:19](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L19)*
+*Defined in [demand-api/src/responseCodes.ts:19](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L19)*
 
 ###  K3003
 
 • **K3003**: *string* = "K3003"
 
-*Defined in [demand-api/src/responseCodes.ts:20](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L20)*
+*Defined in [demand-api/src/responseCodes.ts:20](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L20)*
 
 ###  K4001
 
 • **K4001**: *string* = "K4001"
 
-*Defined in [demand-api/src/responseCodes.ts:21](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L21)*
+*Defined in [demand-api/src/responseCodes.ts:21](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L21)*
 
 ###  K4002
 
 • **K4002**: *string* = "K4002"
 
-*Defined in [demand-api/src/responseCodes.ts:22](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L22)*
+*Defined in [demand-api/src/responseCodes.ts:22](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L22)*
 
 ###  K4003
 
 • **K4003**: *string* = "K4003"
 
-*Defined in [demand-api/src/responseCodes.ts:23](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L23)*
+*Defined in [demand-api/src/responseCodes.ts:23](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L23)*
 
 ###  K4004
 
 • **K4004**: *string* = "K4004"
 
-*Defined in [demand-api/src/responseCodes.ts:24](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L24)*
+*Defined in [demand-api/src/responseCodes.ts:24](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L24)*
 
 ###  K4005
 
 • **K4005**: *string* = "K4005"
 
-*Defined in [demand-api/src/responseCodes.ts:25](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L25)*
+*Defined in [demand-api/src/responseCodes.ts:25](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L25)*
 
 ###  K4006
 
 • **K4006**: *string* = "K4006"
 
-*Defined in [demand-api/src/responseCodes.ts:26](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L26)*
+*Defined in [demand-api/src/responseCodes.ts:26](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L26)*
 
 ###  K4007
 
 • **K4007**: *string* = "K4007"
 
-*Defined in [demand-api/src/responseCodes.ts:27](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L27)*
+*Defined in [demand-api/src/responseCodes.ts:27](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L27)*
 
 ###  K4008
 
 • **K4008**: *string* = "K4008"
 
-*Defined in [demand-api/src/responseCodes.ts:28](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L28)*
+*Defined in [demand-api/src/responseCodes.ts:28](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L28)*
 
 ###  K4009
 
 • **K4009**: *string* = "K4009"
 
-*Defined in [demand-api/src/responseCodes.ts:29](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L29)*
+*Defined in [demand-api/src/responseCodes.ts:29](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L29)*
 
 ###  K4010
 
 • **K4010**: *string* = "K4010"
 
-*Defined in [demand-api/src/responseCodes.ts:30](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L30)*
+*Defined in [demand-api/src/responseCodes.ts:30](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L30)*
 
 ###  K4011
 
 • **K4011**: *string* = "K4011"
 
-*Defined in [demand-api/src/responseCodes.ts:31](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L31)*
+*Defined in [demand-api/src/responseCodes.ts:31](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L31)*
 
 ###  K4012
 
 • **K4012**: *string* = "K4012"
 
-*Defined in [demand-api/src/responseCodes.ts:32](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L32)*
+*Defined in [demand-api/src/responseCodes.ts:32](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L32)*
 
 ###  K4013
 
 • **K4013**: *string* = "K4013"
 
-*Defined in [demand-api/src/responseCodes.ts:33](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L33)*
+*Defined in [demand-api/src/responseCodes.ts:33](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L33)*
 
 ###  K4020
 
 • **K4020**: *string* = "K4020"
 
-*Defined in [demand-api/src/responseCodes.ts:34](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L34)*
+*Defined in [demand-api/src/responseCodes.ts:34](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L34)*
 
 ###  K5001
 
 • **K5001**: *string* = "K5001"
 
-*Defined in [demand-api/src/responseCodes.ts:35](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L35)*
+*Defined in [demand-api/src/responseCodes.ts:35](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L35)*
 
 ###  K5002
 
 • **K5002**: *string* = "K5002"
 
-*Defined in [demand-api/src/responseCodes.ts:36](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L36)*
+*Defined in [demand-api/src/responseCodes.ts:36](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L36)*
 
 ###  K5003
 
 • **K5003**: *string* = "K5003"
 
-*Defined in [demand-api/src/responseCodes.ts:37](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L37)*
+*Defined in [demand-api/src/responseCodes.ts:37](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L37)*
 
 ###  K6001
 
 • **K6001**: *string* = "K6001"
 
-*Defined in [demand-api/src/responseCodes.ts:38](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L38)*
+*Defined in [demand-api/src/responseCodes.ts:38](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L38)*
 
 ###  K7001
 
 • **K7001**: *string* = "K7001"
 
-*Defined in [demand-api/src/responseCodes.ts:39](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L39)*
+*Defined in [demand-api/src/responseCodes.ts:39](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L39)*
 
 ###  K7002
 
 • **K7002**: *string* = "K7002"
 
-*Defined in [demand-api/src/responseCodes.ts:40](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L40)*
+*Defined in [demand-api/src/responseCodes.ts:40](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L40)*
 
 ###  K7003
 
 • **K7003**: *string* = "K7003"
 
-*Defined in [demand-api/src/responseCodes.ts:41](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L41)*
+*Defined in [demand-api/src/responseCodes.ts:41](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L41)*
 
 ###  K7004
 
 • **K7004**: *string* = "K7004"
 
-*Defined in [demand-api/src/responseCodes.ts:42](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L42)*
+*Defined in [demand-api/src/responseCodes.ts:42](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L42)*
 
 ###  K7005
 
 • **K7005**: *string* = "K7005"
 
-*Defined in [demand-api/src/responseCodes.ts:43](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/responseCodes.ts#L43)*
+*Defined in [demand-api/src/responseCodes.ts:43](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/responseCodes.ts#L43)*

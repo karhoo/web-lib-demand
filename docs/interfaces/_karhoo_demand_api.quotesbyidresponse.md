@@ -25,7 +25,7 @@
 
 *Inherited from [__type](../modules/_karhoo_demand_api.md#__type).[id](../modules/_karhoo_demand_api.md#optional-id)*
 
-*Defined in [demand-api/src/quotes/types.ts:56](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L56)*
+*Defined in [demand-api/src/quotes/types.ts:56](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L56)*
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 *Overrides __type.quote_items*
 
-*Defined in [demand-api/src/quotes/types.ts:63](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L63)*
+*Defined in [demand-api/src/quotes/types.ts:63](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L63)*
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 *Inherited from [__type](../modules/_karhoo_demand_api.md#__type).[status](../modules/_karhoo_demand_api.md#status)*
 
-*Defined in [demand-api/src/quotes/types.ts:57](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L57)*
+*Defined in [demand-api/src/quotes/types.ts:57](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L57)*
 
 ___
 
@@ -55,4 +55,4 @@ ___
 
 *Inherited from __type.validity*
 
-*Defined in [demand-api/src/quotes/types.ts:59](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/quotes/types.ts#L59)*
+*Defined in [demand-api/src/quotes/types.ts:59](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/quotes/types.ts#L59)*
