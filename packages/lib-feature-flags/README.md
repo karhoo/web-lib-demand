@@ -22,7 +22,7 @@ npm i @karhoo/lib-feture-flags
 ```
 ## Warnings
 
-This library uses `Promise` and `async/await`. For old browsers, e.g. IE11 you must bring your own polyfill.
+This library uses `Promise`, `async/await` and other modern JS features so currently it works only in modern browsers by default. For old browsers you must run babel on it.
 
 ## Usage
 
