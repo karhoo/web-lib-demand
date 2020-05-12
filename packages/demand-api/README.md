@@ -46,7 +46,7 @@ import {
   errorCodes,
 } from '@karhoo/demand-api'
 
-const url = 'https://public-api.karhoo.com' // please note that there should not be a slash at the end of the url
+const url = 'https://public-api.sandbox.karhoo.com' // please note that there should not be a slash at the end of the url
 
 const correlationIdPrefix = 'prefix'
 
@@ -76,7 +76,7 @@ You can override this default settings using `defaultRequestOptionsGetter`
 
 getApi usage:
 
-All config fields are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
+All config fields are optional, default value for `url` - `https://public-api.sandbox.karhoo.com`, default value for `correlationIdPrefix` - `''`
 
 ```js
 const options = {
@@ -92,7 +92,7 @@ const api = getApi(options)
 Http service usage:
 
 ```js
-const apiV1 = 'https://public-api.karhoo.com/api/v1' // please note that version should be specified
+const apiV1 = 'https://public-api.sandbox.karhoo.com/api/v1' // please note that version should be specified
 
 const httpService = new HttpService(url)
   .setCorrelationIdPrefix(correlationIdPrefix)
