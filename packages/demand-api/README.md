@@ -32,6 +32,8 @@ npm i @karhoo/demand-api
 
 This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
 
+This library uses `URLSearchParams`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use either `js-core@3` or [`url-search-params-polyfill`](https://www.npmjs.com/package/url-search-params-polyfill)(version 8 and above)
+
 ## Usage
 
 You can use each service separately, or you can use `getApi` method which returns all available services
@@ -92,14 +94,14 @@ const api = getApi(options)
 Http service usage:
 
 ```js
-const apiV1 = 'https://public-api.karhoo.com/api/v1' // please note that version should be specified
+const apiV1 = 'https://public-api.karhoo.com/v1' // please note that version should be specified
 
 const httpService = new HttpService(url)
   .setCorrelationIdPrefix(correlationIdPrefix)
   .setDefaultRequestOptionsGetter(requestOptionsGetter)
   .setResponseMiddleware(middleware)
 
-const response = await httpService.get('location/address-autocomplete')
+const response = await httpService.post('locations/address-autocomplete', { query: 'lond' })
 ```
 
 # Location service usage:
