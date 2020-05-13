@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v1.0.0) (2020-05-13)
+
+
+### Documentation
+
+* update docs ([7c49717](https://github.com/karhoo/web-lib-demand/commit/7c497171630848d34485b0346f897ffdfcb33508))
+
+
+### BREAKING CHANGES
+
+* Update api url creation in getApi of demand-api package
+
+
+
+
+
 # [0.11.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v0.11.0) (2020-05-12)
 
 
