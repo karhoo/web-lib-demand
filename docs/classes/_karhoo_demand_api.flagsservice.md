@@ -24,7 +24,7 @@
 
 \+ **new FlagsService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[FlagsService](_karhoo_demand_api.flagsservice.md)*
 
-*Defined in [demand-api/src/flags/FlagsService.ts:7](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/FlagsService.ts#L7)*
+*Defined in [demand-api/src/flags/FlagsService.ts:7](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/flags/FlagsService.ts#L7)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ Name | Type |
 
 ▸ **getByVersion**(`params`: [FlagsRequestPathParameters](../modules/_karhoo_demand_api.md#flagsrequestpathparameters), `query?`: [FlagsVersionType](../modules/_karhoo_demand_api.md#flagsversiontype)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/flags/FlagsService.ts:13](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/FlagsService.ts#L13)*
+*Defined in [demand-api/src/flags/FlagsService.ts:13](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/flags/FlagsService.ts#L13)*
 
 **Parameters:**
 
@@ -57,7 +57,7 @@ ___
 
 ▸ **getCurrentVersion**(`params`: [FlagsRequestPathParameters](../modules/_karhoo_demand_api.md#flagsrequestpathparameters)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/flags/FlagsService.ts:21](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/FlagsService.ts#L21)*
+*Defined in [demand-api/src/flags/FlagsService.ts:21](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/flags/FlagsService.ts#L21)*
 
 **Parameters:**
 
@@ -73,7 +73,7 @@ ___
 
 ▸ **getLatestVersion**(`params`: [FlagsRequestPathParameters](../modules/_karhoo_demand_api.md#flagsrequestpathparameters)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/flags/FlagsService.ts:17](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/flags/FlagsService.ts#L17)*
+*Defined in [demand-api/src/flags/FlagsService.ts:17](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/flags/FlagsService.ts#L17)*
 
 **Parameters:**
 

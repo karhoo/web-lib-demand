@@ -26,7 +26,7 @@
 
 \+ **new TripService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[TripService](_karhoo_demand_api.tripservice.md)*
 
-*Defined in [demand-api/src/trip/TripService.ts:14](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/TripService.ts#L14)*
+*Defined in [demand-api/src/trip/TripService.ts:14](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/TripService.ts#L14)*
 
 **Parameters:**
 
@@ -42,7 +42,7 @@ Name | Type |
 
 ▸ **book**(`params`: [BookATripParams](../modules/_karhoo_demand_api.md#bookatripparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/trip/TripService.ts:24](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/TripService.ts#L24)*
+*Defined in [demand-api/src/trip/TripService.ts:24](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/TripService.ts#L24)*
 
 **Parameters:**
 
@@ -58,7 +58,7 @@ ___
 
 ▸ **cancel**(`id`: string, `params`: [CancellationParams](../modules/_karhoo_demand_api.md#cancellationparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/trip/TripService.ts:28](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/TripService.ts#L28)*
+*Defined in [demand-api/src/trip/TripService.ts:28](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/TripService.ts#L28)*
 
 **Parameters:**
 
@@ -75,7 +75,7 @@ ___
 
 ▸ **cancelByFollowCode**(`code`: string, `params`: [CancellationParams](../modules/_karhoo_demand_api.md#cancellationparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/trip/TripService.ts:32](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/TripService.ts#L32)*
+*Defined in [demand-api/src/trip/TripService.ts:32](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/TripService.ts#L32)*
 
 **Parameters:**
 
@@ -92,7 +92,7 @@ ___
 
 ▸ **search**(`params`: [SearchParams](../modules/_karhoo_demand_api.md#searchparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/trip/TripService.ts:36](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/TripService.ts#L36)*
+*Defined in [demand-api/src/trip/TripService.ts:36](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/TripService.ts#L36)*
 
 **Parameters:**
 
@@ -108,7 +108,7 @@ ___
 
 ▸ **trackTrip**(`id`: string): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/trip/TripService.ts:20](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/trip/TripService.ts#L20)*
+*Defined in [demand-api/src/trip/TripService.ts:20](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/TripService.ts#L20)*
 
 **Parameters:**
 

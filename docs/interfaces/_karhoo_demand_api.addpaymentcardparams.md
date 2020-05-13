@@ -22,7 +22,7 @@
 
 • **nonce**: *string*
 
-*Defined in [demand-api/src/payment/types.ts:27](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L27)*
+*Defined in [demand-api/src/payment/types.ts:27](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/payment/types.ts#L27)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 *Inherited from __type.organisation_id*
 
-*Defined in [demand-api/src/payment/types.ts:17](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L17)*
+*Defined in [demand-api/src/payment/types.ts:17](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/payment/types.ts#L17)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 *Inherited from __type.payer*
 
-*Defined in [demand-api/src/payment/types.ts:11](https://github.com/karhoo/web-lib-demand/blob/af835b5/packages/demand-api/src/payment/types.ts#L11)*
+*Defined in [demand-api/src/payment/types.ts:11](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/payment/types.ts#L11)*
 
 #### Type declaration:
 

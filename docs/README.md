@@ -82,7 +82,9 @@ You can override this default settings using `defaultRequestOptionsGetter`
 
 getApi usage:
 
-All config fields are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
+All config fields are optional, default value for `url` - `https://public-api.karhoo.com` in case if `NODE_ENV === 'production'`, otherwise `https://public-api.sandbox.karhoo.com`.
+
+Default value for `correlationIdPrefix` - `''`.
 
 ```js
 const options = {
