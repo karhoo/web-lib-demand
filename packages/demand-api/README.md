@@ -12,7 +12,7 @@
 This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
 
-[**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+[**Read The Docs**](https://developer.karhoo.com/docs/using-web-demand-api-package)
 
 <hr />
 
@@ -27,12 +27,6 @@ This library provides the ability to contact Karhoo's public API and allows you 
 ```sh
 npm i @karhoo/demand-api
 ```
-
-## Warnings
-
-This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
-
-This library uses `URLSearchParams`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use either `js-core@3` or [`url-search-params-polyfill`](https://www.npmjs.com/package/url-search-params-polyfill)(version 8 and above)
 
 ## Usage
 
