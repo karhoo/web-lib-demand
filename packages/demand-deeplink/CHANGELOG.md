@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v1.0.1) (2020-05-14)
+
+
+* demand-api: getApi - update api url creation  (#45) ([b172204](https://github.com/karhoo/web-lib-demand/commit/b17220434f794b628f57f8888eed95fc4967ed9f)), closes [#45](https://github.com/karhoo/web-lib-demand/issues/45)
+
+
+### BREAKING CHANGES
+
+* Update api url creation in getApi of demand-api package
+
+* v1.0.0
+
+
+
+
+
 # [1.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v1.0.0) (2020-05-13)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink
