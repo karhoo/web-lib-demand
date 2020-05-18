@@ -1,0 +1,17 @@
+{
+  "name": "@karhoo/create-demand-bloc-module",
+  "version": "1.0.1",
+  "homepage": "https://github.com/karhoo/web-lib-demand#readme",
+  "bin": "src/create-demand-bloc-module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karhoo/web-lib-demand.git"
+  },
+  "bugs": {
+    "url": "https://github.com/karhoo/web-lib-demand/issues"
+  },
+  "dependencies": {
+    "yeoman-environment": "^2.8.0",
+    "yeoman-generator": "^4.5.0"
+  }
+}
