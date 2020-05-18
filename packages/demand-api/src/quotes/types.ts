@@ -29,7 +29,7 @@ export type QutesSearchParams = {
   local_time_of_pickup?: string
 }
 
-type QuoteItem = {
+export type QuoteItem = {
   quote_id: string
   fleet_id?: string
   fleet_description?: string
