@@ -35,7 +35,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath('**/*'),
-      this.destinationRoot(`../${this.answers.appName}`),
+      this.destinationRoot(path.resolve(__dirname, `../../../../${this.answers.appName}`)),
       this.answers,
       null,
       { globOptions: { dot: true } }
