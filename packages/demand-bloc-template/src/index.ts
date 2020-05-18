@@ -1,1 +1,1 @@
-export { SampleBLoC } from './SampleBLoC'
+export { QuotesBloc } from './QuotesBloc'
