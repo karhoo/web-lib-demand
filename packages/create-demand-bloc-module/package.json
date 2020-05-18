@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "homepage": "https://github.com/karhoo/web-lib-demand#readme",
   "bin": "src/create-demand-bloc-module",
+  "license": "BSD-2-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
