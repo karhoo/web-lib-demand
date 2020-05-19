@@ -1,6 +1,6 @@
+import polling from 'rx-polling'
 import { QuotesService, QutesSearchParams } from '@karhoo/demand-api'
-import poll from './poll'
-import { Subject } from 'rxjs'
+import { Subject, from } from 'rxjs'
 import { scan, publishReplay, refCount } from 'rxjs/operators'
 
 type QuoteItem = {
@@ -50,22 +50,20 @@ export class SampleBloc {
   async loadQuotes(params: QutesSearchParams) {
     const { body } = await this.quotesService.quotesSearch(params)
 
+    if (!body) {
+      return
+    }
+
     this.quotes$.next(body.quote_items)
 
-    let shouldStopPolling = false
+    const subscription = polling(from(this.quotesService.quotesSearchById(body.id)), {
+      interval: 1000,
+    }).subscribe(data => {
+      this.quotes$.next(data.body.quote_items)
 
-    poll(
-      () => {
-        this.quotesService.quotesSearchById(body.id).then(data => {
-          this.quotes$.next(data.body.quote_items)
-
-          if (data.body.status === 'COMPLETED') {
-            shouldStopPolling = true
-          }
-        })
-      },
-      1000,
-      () => shouldStopPolling
-    )
+      if (data.body.status === 'COMPLETED') {
+        subscription.unsubscribe()
+      }
+    })
   }
 }
