@@ -1,21 +1,14 @@
 {
-  "name": "@karhoo/demand-deeplink",
-  "version": "1.1.0",
-  "description": "🔗A library to integrate with a Karhoo web app via a deep link",
-  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
+  "name": "<%- appName %>",
+  "version": "<%- version %>",
+  "description": "<%- description %>",
+  "keywords": [
+    "bloc",
+    "pattern"
+  ],
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-bloc-template#readme",
   "license": "BSD-2-Clause",
   "main": "dist/index.js",
-  "typings": "dist/typings.d.ts",
-  "directories": {
-    "src": "src"
-  },
-  "files": [
-    "dist/*.js",
-    "dist/*.js.map",
-    "dist/typings.d.ts",
-    "src"
-  ],
-  "module": "dist/demand-deeplink.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
@@ -28,6 +21,11 @@
   "bugs": {
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
+  "dependencies": {
+    "@karhoo/demand-api": "^1.0.1",
+    "rx-polling": "^1.1.0",
+    "rxjs": "6.5.5"
+  },
   "devDependencies": {
     "@microsoft/api-extractor": "7.7.13",
     "@types/date-and-time": "0.6.0",
@@ -38,12 +36,5 @@
     "ts-jest": "25.2.1",
     "tsdx": "0.12.3",
     "typescript": "3.8.3"
-  },
-  "dependencies": {
-    "@karhoo/demand-api": "^1.1.0",
-    "date-and-time": "^0.13.1",
-    "lodash": "^4.17.15",
-    "lodash-es": "^4.17.15",
-    "uuid": "^7.0.2"
   }
 }
