@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/create-demand-bloc-module",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "homepage": "https://github.com/karhoo/web-lib-demand#readme",
   "bin": "src/create-demand-bloc-module",
   "license": "BSD-2-Clause",
