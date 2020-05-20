@@ -59,7 +59,7 @@ console.log(
   'We will use',
   chalk.bgMagentaBright('SANDBOX'),
   'environment with',
-  chalk.bgMagentaBright('API idenifier')
+  chalk.bgMagentaBright('API identifier')
 )
 
 const run = async () => {
