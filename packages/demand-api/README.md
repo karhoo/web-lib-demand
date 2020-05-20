@@ -12,7 +12,7 @@
 This library provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses. The **Demand API** is designed to enable it's consumers to integrate faster because they do not need to create their own complete network stack.
 <br />
 
-[**Read The Docs**](https://developer.karhoo.com/reference#karhoo-api-explorer)
+[**Read The Docs**](https://developer.karhoo.com/docs/using-web-demand-api-package)
 
 <hr />
 
@@ -27,10 +27,6 @@ This library provides the ability to contact Karhoo's public API and allows you 
 ```sh
 npm i @karhoo/demand-api
 ```
-
-## Warnings
-
-This library uses `Promise` and `fetch`. For old browsers, e.g. IE11 you must bring your own polyfill. You can use `js-core@3` to polyfill `Promise` and [`isomorphic-fetch`](https://www.npmjs.com/package/isomorphic-fetch) to polyfill `fetch`
 
 ## Usage
 
@@ -76,7 +72,9 @@ You can override this default settings using `defaultRequestOptionsGetter`
 
 getApi usage:
 
-All config fields are optional, default value for `url` - `https://public-api.karhoo.com`, default value for `correlationIdPrefix` - `''`
+All config fields are optional, default value for `url` - `https://public-api.karhoo.com` in case if `NODE_ENV === 'production'`, otherwise `https://public-api.sandbox.karhoo.com`.
+
+Default value for `correlationIdPrefix` - `''`.
 
 ```js
 const options = {
@@ -92,14 +90,14 @@ const api = getApi(options)
 Http service usage:
 
 ```js
-const apiV1 = 'https://public-api.karhoo.com/api/v1' // please note that version should be specified
+const apiV1 = 'https://public-api.karhoo.com/v1' // please note that version should be specified
 
 const httpService = new HttpService(url)
   .setCorrelationIdPrefix(correlationIdPrefix)
   .setDefaultRequestOptionsGetter(requestOptionsGetter)
   .setResponseMiddleware(middleware)
 
-const response = await httpService.get('location/address-autocomplete')
+const response = await httpService.post('locations/address-autocomplete', { query: 'lond' })
 ```
 
 # Location service usage:

@@ -47,7 +47,7 @@
 
 • **agent**? : *undefined | object*
 
-*Defined in [demand-api/src/trip/types.ts:112](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L112)*
+*Defined in [demand-api/src/trip/types.ts:112](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L112)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 • **cancelled_by**? : *undefined | object*
 
-*Defined in [demand-api/src/trip/types.ts:118](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L118)*
+*Defined in [demand-api/src/trip/types.ts:118](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L118)*
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 • **comments**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:124](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L124)*
+*Defined in [demand-api/src/trip/types.ts:124](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L124)*
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 • **cost_center_reference**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:125](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L125)*
+*Defined in [demand-api/src/trip/types.ts:125](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L125)*
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 *Inherited from __type.date_booked*
 
-*Defined in [demand-api/src/trip/types.ts:51](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L51)*
+*Defined in [demand-api/src/trip/types.ts:51](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L51)*
 
 ___
 
@@ -91,7 +91,7 @@ ___
 
 *Inherited from __type.date_scheduled*
 
-*Defined in [demand-api/src/trip/types.ts:50](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L50)*
+*Defined in [demand-api/src/trip/types.ts:50](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L50)*
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 *Overrides __type.destination*
 
-*Defined in [demand-api/src/trip/types.ts:127](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L127)*
+*Defined in [demand-api/src/trip/types.ts:127](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L127)*
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 *Inherited from __type.display_trip_id*
 
-*Defined in [demand-api/src/trip/types.ts:53](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L53)*
+*Defined in [demand-api/src/trip/types.ts:53](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L53)*
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 • **external_trip_id**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:128](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L128)*
+*Defined in [demand-api/src/trip/types.ts:128](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L128)*
 
 ___
 
@@ -127,7 +127,7 @@ ___
 
 • **fare**? : *undefined | object*
 
-*Defined in [demand-api/src/trip/types.ts:135](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L135)*
+*Defined in [demand-api/src/trip/types.ts:135](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L135)*
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 *Inherited from __type.fleet_info*
 
-*Defined in [demand-api/src/trip/types.ts:54](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L54)*
+*Defined in [demand-api/src/trip/types.ts:54](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L54)*
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 • **flight_number**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:129](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L129)*
+*Defined in [demand-api/src/trip/types.ts:129](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L129)*
 
 ___
 
@@ -153,7 +153,7 @@ ___
 
 • **follow_code**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:130](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L130)*
+*Defined in [demand-api/src/trip/types.ts:130](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L130)*
 
 ___
 
@@ -161,7 +161,7 @@ ___
 
 • **id**: *string*
 
-*Defined in [demand-api/src/trip/types.ts:131](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L131)*
+*Defined in [demand-api/src/trip/types.ts:131](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L131)*
 
 ___
 
@@ -171,7 +171,7 @@ ___
 
 *Inherited from [__type](../modules/_karhoo_demand_api.md#__type).[meeting_point](../modules/_karhoo_demand_api.md#optional-meeting_point)*
 
-*Defined in [demand-api/src/trip/types.ts:88](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L88)*
+*Defined in [demand-api/src/trip/types.ts:88](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L88)*
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 *Inherited from __type.meta*
 
-*Defined in [demand-api/src/trip/types.ts:94](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L94)*
+*Defined in [demand-api/src/trip/types.ts:94](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L94)*
 
 ___
 
@@ -191,7 +191,7 @@ ___
 
 *Overrides __type.origin*
 
-*Defined in [demand-api/src/trip/types.ts:126](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L126)*
+*Defined in [demand-api/src/trip/types.ts:126](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L126)*
 
 ___
 
@@ -199,7 +199,7 @@ ___
 
 • **partner_trip_id**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:132](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L132)*
+*Defined in [demand-api/src/trip/types.ts:132](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L132)*
 
 ___
 
@@ -209,7 +209,7 @@ ___
 
 *Inherited from __type.passengers*
 
-*Defined in [demand-api/src/trip/types.ts:45](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L45)*
+*Defined in [demand-api/src/trip/types.ts:45](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L45)*
 
 ___
 
@@ -219,7 +219,7 @@ ___
 
 *Overrides __type.quote*
 
-*Defined in [demand-api/src/trip/types.ts:133](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L133)*
+*Defined in [demand-api/src/trip/types.ts:133](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L133)*
 
 ___
 
@@ -229,7 +229,7 @@ ___
 
 *Inherited from __type.state_details*
 
-*Defined in [demand-api/src/trip/types.ts:47](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L47)*
+*Defined in [demand-api/src/trip/types.ts:47](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L47)*
 
 ___
 
@@ -239,7 +239,7 @@ ___
 
 *Inherited from [__type](../modules/_karhoo_demand_api.md#__type).[status](../modules/_karhoo_demand_api.md#status)*
 
-*Defined in [demand-api/src/trip/types.ts:46](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L46)*
+*Defined in [demand-api/src/trip/types.ts:46](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L46)*
 
 ___
 
@@ -249,7 +249,7 @@ ___
 
 *Inherited from __type.tracking*
 
-*Defined in [demand-api/src/trip/types.ts:76](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L76)*
+*Defined in [demand-api/src/trip/types.ts:76](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L76)*
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
 *Inherited from __type.train_number*
 
-*Defined in [demand-api/src/trip/types.ts:85](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L85)*
+*Defined in [demand-api/src/trip/types.ts:85](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L85)*
 
 ___
 
@@ -269,7 +269,7 @@ ___
 
 *Inherited from __type.train_time*
 
-*Defined in [demand-api/src/trip/types.ts:86](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L86)*
+*Defined in [demand-api/src/trip/types.ts:86](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L86)*
 
 ___
 
@@ -277,7 +277,7 @@ ___
 
 • **traveller_id**? : *undefined | string*
 
-*Defined in [demand-api/src/trip/types.ts:134](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L134)*
+*Defined in [demand-api/src/trip/types.ts:134](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L134)*
 
 ___
 
@@ -287,7 +287,7 @@ ___
 
 *Inherited from __type.trip_id*
 
-*Defined in [demand-api/src/trip/types.ts:87](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L87)*
+*Defined in [demand-api/src/trip/types.ts:87](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L87)*
 
 ___
 
@@ -297,4 +297,4 @@ ___
 
 *Inherited from __type.vehicle*
 
-*Defined in [demand-api/src/trip/types.ts:63](https://github.com/karhoo/web-lib-demand/blob/5e6cd0c/packages/demand-api/src/trip/types.ts#L63)*
+*Defined in [demand-api/src/trip/types.ts:63](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/trip/types.ts#L63)*
