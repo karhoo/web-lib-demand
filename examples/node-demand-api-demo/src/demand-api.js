@@ -1,21 +1,44 @@
-const {
-  getApi,
-  HttpService,
-  LocationService,
-  PoiService,
-  QuotesService,
-  errorCodes,
-} = require('@karhoo/demand-api')
+const { HttpService, LocationService, QuotesService } = require('@karhoo/demand-api')
 
-module.exports.runExample = async function runExample() {
-  const httpService = new HttpService(
-    'https://public-api.sandbox.karhoo.com/api/v1'
-  ).setDefaultRequestOptionsGetter(() => ({
-    identifier: process.env.identifier || 'XXXXXXXX-XXX',
-    referer: 'https://traveller.sandbox.karhoo.com/trip-details',
+const getHttpClient = identifier => {
+  return new HttpService('https://public-api.sandbox.karhoo.com/v1').setDefaultRequestOptionsGetter(() => ({
+    headers: {
+      identifier,
+      referer: 'https://traveller.sandbox.karhoo.com/trip-details',
+    },
   }))
+}
 
-  const response = await httpService.get('location/address-autocomplete')
+const testHttpClient = httpService => {
+  return httpService.post('locations/address-autocomplete', { query: 'lond' })
+}
 
-  console.log(response)
+const getAddressSuggestions = (httpService, address) => {
+  const locationService = new LocationService(httpService)
+
+  return locationService.getAddressAutocompleteData({
+    query: address,
+  })
+}
+
+const getPlaceDetails = (httpService, placeId) => {
+  const locationService = new LocationService(httpService)
+
+  return locationService.getAddressDetails({ placeId })
+}
+
+const checkAvailability = (httpService, placeId) => {
+  const quotesService = new QuotesService(httpService)
+
+  return quotesService.checkAvailability({
+    origin_place_id: placeId,
+  })
+}
+
+module.exports = {
+  getHttpClient,
+  testHttpClient,
+  getAddressSuggestions,
+  getPlaceDetails,
+  checkAvailability,
 }
