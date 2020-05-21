@@ -9,6 +9,7 @@
   ],
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/lib-feature-flags#readme",
   "license": "BSD-2-Clause",
+  "main": "src/index.js",
   "directories": {
     "lib": "src"
   },
