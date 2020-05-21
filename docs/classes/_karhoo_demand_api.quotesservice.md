@@ -6,6 +6,10 @@
 
 * **QuotesService**
 
+## Implements
+
+* [Quotes](../interfaces/_karhoo_demand_api.quotes.md)
+
 ## Index
 
 ### Constructors
@@ -24,7 +28,7 @@
 
 \+ **new QuotesService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[QuotesService](_karhoo_demand_api.quotesservice.md)*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:15](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/quotes/QuotesService.ts#L15)*
+*Defined in [demand-api/src/quotes/QuotesService.ts:16](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/quotes/QuotesService.ts#L16)*
 
 **Parameters:**
 
@@ -40,7 +44,9 @@ Name | Type |
 
 ▸ **checkAvailability**(`params`: [QuotesAvailabilityParams](../modules/_karhoo_demand_api.md#quotesavailabilityparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:21](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/quotes/QuotesService.ts#L21)*
+*Implementation of [Quotes](../interfaces/_karhoo_demand_api.quotes.md)*
+
+*Defined in [demand-api/src/quotes/QuotesService.ts:22](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/quotes/QuotesService.ts#L22)*
 
 **Parameters:**
 
@@ -54,15 +60,17 @@ ___
 
 ###  quotesSearch
 
-▸ **quotesSearch**(`params`: [QutesSearchParams](../modules/_karhoo_demand_api.md#qutessearchparams)): *Promise‹object & object | object & object›*
+▸ **quotesSearch**(`params`: [QuotesSearchParams](../modules/_karhoo_demand_api.md#quotessearchparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:32](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/quotes/QuotesService.ts#L32)*
+*Implementation of [Quotes](../interfaces/_karhoo_demand_api.quotes.md)*
+
+*Defined in [demand-api/src/quotes/QuotesService.ts:33](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/quotes/QuotesService.ts#L33)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`params` | [QutesSearchParams](../modules/_karhoo_demand_api.md#qutessearchparams) |
+`params` | [QuotesSearchParams](../modules/_karhoo_demand_api.md#quotessearchparams) |
 
 **Returns:** *Promise‹object & object | object & object›*
 
@@ -72,7 +80,9 @@ ___
 
 ▸ **quotesSearchById**(`id`: string): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/quotes/QuotesService.ts:49](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/quotes/QuotesService.ts#L49)*
+*Implementation of [Quotes](../interfaces/_karhoo_demand_api.quotes.md)*
+
+*Defined in [demand-api/src/quotes/QuotesService.ts:56](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/quotes/QuotesService.ts#L56)*
 
 **Parameters:**
 

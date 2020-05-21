@@ -195,6 +195,8 @@ export const getApiMock = () => {
   const mockLocationGetAddressAutocompleteData = getLocationGetAddressAutocompleteDataMock()
   const mockPoiSearch = getPoiSearchMock()
   const mockQuotesCheckAvailability = getQuotesCheckAvailabilityMock()
+  const mockQuoteSearch = getQuotesSearchByIdMock()
+  const mockQuoteSearchById = getQuotesSearchByIdMock()
 
   return {
     locationService: {
@@ -210,10 +212,14 @@ export const getApiMock = () => {
       quotesSearchById: getQuotesSearchByIdMock,
     },
     mockClear: () => {
-      mockLocationGetAddressDetails.mockClear()
-      mockLocationGetAddressAutocompleteData.mockClear()
-      mockPoiSearch.mockClear()
-      mockQuotesCheckAvailability.mockClear()
+      ;[
+        mockLocationGetAddressDetails,
+        mockLocationGetAddressAutocompleteData,
+        mockPoiSearch,
+        mockQuotesCheckAvailability,
+        mockQuoteSearch,
+        mockQuoteSearchById,
+      ].forEach(m => m.mockClear())
     },
   }
 }
