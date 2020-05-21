@@ -1,6 +1,6 @@
-import { QuoteBloc } from './QuoteBloc'
+import { SampleBloc } from './SampleBloc'
 
-describe('QuoteBloc', () => {
+describe('SampleBloc', () => {
   const quotesMock = {
     checkAvailability: jest.fn(),
     quotesSearch: jest.fn(),
@@ -9,7 +9,7 @@ describe('QuoteBloc', () => {
 
   describe('loadQuotes', () => {
     it('should be a function', () => {
-      expect(typeof new QuoteBloc(quotesMock).loadQuotes).toBe('function')
+      expect(typeof new SampleBloc(quotesMock).loadQuotes).toBe('function')
     })
   })
 })

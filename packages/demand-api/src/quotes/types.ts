@@ -1,9 +1,16 @@
 import { VehicleAttributes } from '../sharedTypes'
+import { HttpResponse } from '../http/types'
 
 export type QuotesAvailabilityParams = {
   originPlaceId: string
   destinationPlaceId?: string
   dateRequired?: string
+}
+
+export type QuotesSearchParams = {
+  originPlaceId: string
+  destinationPlaceId: string
+  dateScheduled?: string
 }
 
 export type QuotesAvailabilityResponse = {
@@ -21,12 +28,6 @@ export type QuotesAvailabilityResponse = {
     integrated_fleet?: boolean
   }[]
   categories?: string[]
-}
-
-export type QutesSearchParams = {
-  origin_place_id: string
-  destination_place_id: string
-  local_time_of_pickup?: string
 }
 
 export type QuoteItem = {
@@ -80,4 +81,11 @@ export type Quote = {
   source?: string
   high_price?: number
   low_price?: number
+}
+
+export interface Quotes {
+  checkAvailability(params: QuotesAvailabilityParams): Promise<HttpResponse<QuotesAvailabilityResponse>>
+
+  quotesSearch(params: QuotesSearchParams): Promise<HttpResponse<QuotesResponse>>
+  quotesSearchById(id: string): Promise<HttpResponse<QuotesByIdResponse>>
 }
