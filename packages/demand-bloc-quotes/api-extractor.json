@@ -1,5 +1,0 @@
-{
-  "extends": "../../api-extractor.json",
-  "projectFolder": ".",
-  "mainEntryPointFilePath": "dist/index.d.ts"
-}

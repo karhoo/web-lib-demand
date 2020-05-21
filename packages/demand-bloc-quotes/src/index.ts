@@ -1,1 +1,0 @@
-export { QuoteBloc } from './QuoteBloc'
