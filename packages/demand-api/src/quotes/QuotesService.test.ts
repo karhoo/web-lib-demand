@@ -51,7 +51,11 @@ describe('QuotesService', () => {
       new QuotesService(http).quotesSearch(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('quotes', params)
+      expect(http.post).toHaveBeenCalledWith('quotes', {
+        origin_place_id: params.originPlaceId,
+        destination_place_id: params.destinationPlaceId,
+        local_time_of_pickup: undefined,
+      })
     })
 
     it('should call post of http with local_time_of_pickup in correct format', () => {
@@ -59,7 +63,8 @@ describe('QuotesService', () => {
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
-        ...params,
+        origin_place_id: params.originPlaceId,
+        destination_place_id: params.destinationPlaceId,
         local_time_of_pickup: '2018-02-02T14:14',
       })
     })
