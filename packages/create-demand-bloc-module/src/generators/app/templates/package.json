@@ -22,7 +22,6 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^1.0.1",
     "rx-polling": "^1.1.0",
     "rxjs": "6.5.5"
   },
