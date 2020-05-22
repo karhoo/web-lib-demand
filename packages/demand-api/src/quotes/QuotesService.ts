@@ -31,10 +31,10 @@ export class QuotesService implements Quotes {
   }
 
   quotesSearch(params: QuotesSearchParams) {
-    const { dateScheduled } = params
+    const { localTimeOfPickup } = params
 
-    if (dateScheduled) {
-      const isValidPickupTime = date.isValid(dateScheduled, 'YYYY-MM-DD HH:mm')
+    if (localTimeOfPickup) {
+      const isValidPickupTime = date.isValid(localTimeOfPickup, 'YYYY-MM-DD HH:mm')
 
       if (!isValidPickupTime) {
         return Promise.reject({
@@ -44,13 +44,7 @@ export class QuotesService implements Quotes {
       }
     }
 
-    const callParams = {
-      origin_place_id: params.originPlaceId,
-      destination_place_id: params.destinationPlaceId,
-      local_time_of_pickup: params.dateScheduled,
-    }
-
-    return this.http.post<QuotesResponse>(this.url, callParams)
+    return this.http.post<QuotesResponse>(this.url, toSnakeCase(params))
   }
 
   quotesSearchById(id: string) {

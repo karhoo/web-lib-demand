@@ -10,7 +10,7 @@ export type QuotesAvailabilityParams = {
 export type QuotesSearchParams = {
   originPlaceId: string
   destinationPlaceId: string
-  dateScheduled?: string
+  localTimeOfPickup?: string
 }
 
 export type QuotesAvailabilityResponse = {

@@ -59,7 +59,7 @@ describe('QuotesService', () => {
     })
 
     it('should call post of http with local_time_of_pickup in correct format', () => {
-      new QuotesService(http).quotesSearch({ ...params, dateScheduled: '2018-02-02T14:14' })
+      new QuotesService(http).quotesSearch({ ...params, localTimeOfPickup: '2018-02-02T14:14' })
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
@@ -72,7 +72,7 @@ describe('QuotesService', () => {
     it('should not call post of http if local_time_of_pickup in wrong format', () => {
       const result = new QuotesService(http).quotesSearch({
         ...params,
-        dateScheduled: '2020-03-03T18:00:00+01:00',
+        localTimeOfPickup: '2020-03-03T18:00:00+01:00',
       })
 
       expect(result).toEqual(
