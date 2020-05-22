@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v2.0.0) (2020-05-22)
+
+
+### Bug Fixes
+
+* add "main" into package.json ([#51](https://github.com/karhoo/web-lib-demand/issues/51)) ([045755b](https://github.com/karhoo/web-lib-demand/commit/045755b8045d406a685575577f0627b8d50a383c))
+
+
+
+
+
 ## [1.1.1](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v1.1.1) (2020-05-21)
 
 **Note:** Version bump only for package @karhoo/create-demand-bloc-module
