@@ -1,15 +1,16 @@
 import date from 'date-and-time'
 import { Http } from '../http/types'
 import {
+  Quotes,
   QuotesAvailabilityParams,
   QuotesAvailabilityResponse,
-  QutesSearchParams,
+  QuotesSearchParams,
   QuotesResponse,
   QuotesByIdResponse,
 } from './types'
 import { toSnakeCase } from '../utils'
 
-export class QuotesService {
+export class QuotesService implements Quotes {
   private url = 'quotes'
 
   private http: Http
@@ -29,11 +30,11 @@ export class QuotesService {
     return this.http.post<QuotesAvailabilityResponse>(`${this.url}/availability`, body)
   }
 
-  quotesSearch(params: QutesSearchParams) {
-    const { local_time_of_pickup } = params
+  quotesSearch(params: QuotesSearchParams) {
+    const { localTimeOfPickup } = params
 
-    if (local_time_of_pickup) {
-      const isValidPickupTime = date.isValid(local_time_of_pickup, 'YYYY-MM-DD HH:mm')
+    if (localTimeOfPickup) {
+      const isValidPickupTime = date.isValid(localTimeOfPickup, 'YYYY-MM-DD HH:mm')
 
       if (!isValidPickupTime) {
         return Promise.reject({
@@ -43,7 +44,7 @@ export class QuotesService {
       }
     }
 
-    return this.http.post<QuotesResponse>(this.url, params)
+    return this.http.post<QuotesResponse>(this.url, toSnakeCase(params))
   }
 
   quotesSearchById(id: string) {

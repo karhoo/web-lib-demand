@@ -23,7 +23,7 @@
 
 \+ **new LocationService**(`http`: [Http](../interfaces/_karhoo_demand_api.http.md)): *[LocationService](_karhoo_demand_api.locationservice.md)*
 
-*Defined in [demand-api/src/location/LocationService.ts:14](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/location/LocationService.ts#L14)*
+*Defined in [demand-api/src/location/LocationService.ts:14](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/location/LocationService.ts#L14)*
 
 **Parameters:**
 
@@ -39,7 +39,7 @@ Name | Type |
 
 ▸ **getAddressAutocompleteData**(`data`: [LocationAddressAutocompleteParams](../modules/_karhoo_demand_api.md#locationaddressautocompleteparams)): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/location/LocationService.ts:29](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/location/LocationService.ts#L29)*
+*Defined in [demand-api/src/location/LocationService.ts:29](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/location/LocationService.ts#L29)*
 
 **Parameters:**
 
@@ -55,7 +55,7 @@ ___
 
 ▸ **getAddressDetails**(`__namedParameters`: object): *Promise‹object & object | object & object›*
 
-*Defined in [demand-api/src/location/LocationService.ts:20](https://github.com/karhoo/web-lib-demand/blob/a5799e7/packages/demand-api/src/location/LocationService.ts#L20)*
+*Defined in [demand-api/src/location/LocationService.ts:20](https://github.com/karhoo/web-lib-demand/blob/e2b078c/packages/demand-api/src/location/LocationService.ts#L20)*
 
 **Parameters:**
 

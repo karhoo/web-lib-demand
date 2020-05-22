@@ -2,7 +2,7 @@
 import { HttpResponse } from './http/types'
 import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from './location/types'
 import { PoiSearchResponse } from './poi/types'
-import { QuotesAvailabilityResponse } from './quotes/types'
+import { QuotesAvailabilityResponse, QuotesResponse, QuotesByIdResponse } from './quotes/types'
 
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
@@ -138,11 +138,65 @@ export const getPoiSearchMock = () =>
 export const getQuotesCheckAvailabilityMock = () =>
   jest.fn(() => Promise.resolve(getMockedQuotesAvailabilityResponse()))
 
+export const getMockedQuotesSearchResponse = (): QuotesResponse => ({
+  id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
+  quote_items: [],
+  status: 'PROGRESSING',
+  validity: 599,
+})
+
+export const getMockedQuotesSerchByIdResponse = (): QuotesByIdResponse => ({
+  id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
+  quote_items: [
+    {
+      availability_id: 'ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
+      category_name: 'MPV',
+      currency_code: 'GBP',
+      fleet_description:
+        'Robot PHV Fleet operating globally. Example description: Regional Private Hire Company operating in London and surroundings.',
+      fleet_id: 'd5905a3d-da80-45dc-bdf2-903ea9ea2235',
+      fleet_name: 'Global PHV (Robot Fleet WWW)',
+      high_price: 3000,
+      low_price: 3000,
+      phone_number: '+448000000000',
+      pick_up_type: 'DEFAULT',
+      qta_high_minutes: 0,
+      qta_low_minutes: 0,
+      quote_id:
+        '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e:ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
+      quote_type: 'FIXED',
+      source: 'FLEET',
+      supplier_logo_url: '',
+      terms_conditions_url: '',
+      vehicle_attributes: {
+        child_seat: false,
+        electric: false,
+        hybrid: false,
+        luggage_capacity: 2,
+        passenger_capacity: 4,
+      },
+      vehicle_class: 'mpv',
+    },
+  ],
+  status: 'COMPLETED',
+  validity: 600,
+})
+
+export const getQuotesSearchMock = () =>
+  jest.fn(() => {
+    return Promise.resolve(getMockedQuotesSearchResponse())
+  })
+
+export const getQuotesSearchByIdMock = () =>
+  jest.fn(() => Promise.resolve(getMockedQuotesSerchByIdResponse()))
+
 export const getApiMock = () => {
   const mockLocationGetAddressDetails = getLocationGetAddressDetailsMock()
   const mockLocationGetAddressAutocompleteData = getLocationGetAddressAutocompleteDataMock()
   const mockPoiSearch = getPoiSearchMock()
   const mockQuotesCheckAvailability = getQuotesCheckAvailabilityMock()
+  const mockQuoteSearch = getQuotesSearchByIdMock()
+  const mockQuoteSearchById = getQuotesSearchByIdMock()
 
   return {
     locationService: {
@@ -154,12 +208,18 @@ export const getApiMock = () => {
     },
     quotesService: {
       checkAvailability: mockQuotesCheckAvailability,
+      quotesSearch: getQuotesSearchMock,
+      quotesSearchById: getQuotesSearchByIdMock,
     },
     mockClear: () => {
-      mockLocationGetAddressDetails.mockClear()
-      mockLocationGetAddressAutocompleteData.mockClear()
-      mockPoiSearch.mockClear()
-      mockQuotesCheckAvailability.mockClear()
+      ;[
+        mockLocationGetAddressDetails,
+        mockLocationGetAddressAutocompleteData,
+        mockPoiSearch,
+        mockQuotesCheckAvailability,
+        mockQuoteSearch,
+        mockQuoteSearchById,
+      ].forEach(m => m.mockClear())
     },
   }
 }

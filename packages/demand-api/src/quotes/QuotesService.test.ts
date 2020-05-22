@@ -43,23 +43,28 @@ describe('QuotesService', () => {
 
   describe('quotesSearch', () => {
     const params = {
-      origin_place_id: 'originPlaceId',
-      destination_place_id: 'destinationPlaceID',
+      originPlaceId: 'originPlaceId',
+      destinationPlaceId: 'destinationPlaceID',
     }
 
     it('should call post of http without local_time_of_pickup', () => {
       new QuotesService(http).quotesSearch(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('quotes', params)
+      expect(http.post).toHaveBeenCalledWith('quotes', {
+        origin_place_id: params.originPlaceId,
+        destination_place_id: params.destinationPlaceId,
+        local_time_of_pickup: undefined,
+      })
     })
 
     it('should call post of http with local_time_of_pickup in correct format', () => {
-      new QuotesService(http).quotesSearch({ ...params, local_time_of_pickup: '2018-02-02T14:14' })
+      new QuotesService(http).quotesSearch({ ...params, localTimeOfPickup: '2018-02-02T14:14' })
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
-        ...params,
+        origin_place_id: params.originPlaceId,
+        destination_place_id: params.destinationPlaceId,
         local_time_of_pickup: '2018-02-02T14:14',
       })
     })
@@ -67,7 +72,7 @@ describe('QuotesService', () => {
     it('should not call post of http if local_time_of_pickup in wrong format', () => {
       const result = new QuotesService(http).quotesSearch({
         ...params,
-        local_time_of_pickup: '2020-03-03T18:00:00+01:00',
+        localTimeOfPickup: '2020-03-03T18:00:00+01:00',
       })
 
       expect(result).toEqual(

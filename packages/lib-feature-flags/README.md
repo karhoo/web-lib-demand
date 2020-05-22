@@ -18,7 +18,7 @@ This library was created in order to have a possibility to enable/disable certai
 ## Installation
 
 ```sh
-npm i @karhoo/lib-feture-flags
+npm i @karhoo/lib-feature-flags
 ```
 ## Warnings
 

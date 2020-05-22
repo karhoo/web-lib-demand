@@ -1,37 +1,21 @@
 import polling from 'rx-polling'
-import { QuotesService, QutesSearchParams } from '@karhoo/demand-api'
+import {
+  Quotes,
+  QuotesSearchParams,
+  QuoteItem,
+  QuotesByIdResponse,
+  ApiError,
+  HttpResponse,
+} from '@karhoo/demand-api'
 import { Subject, from } from 'rxjs'
 import { scan, publishReplay, refCount } from 'rxjs/operators'
 
-type QuoteItem = {
-  quote_id: string
-  fleet_id?: string
-  fleet_description?: string
-  availability_id?: string
-  fleet_name: string
-  phone_number?: string
-  pick_up_type?: 'DEFAULT' | 'STAND_BY' | 'CURB_SIDE' | 'MEET_AND_GREET'
-  supplier_logo_url?: string
-  vehicle_class?: string
-  quote_type: 'FIXED' | 'ESTIMATED' | 'METERED'
-  high_price?: number
-  low_price?: number
-  currency_code?: string
-  qta_high_minutes?: number
-  qta_low_minutes?: number
-  terms_conditions_url?: string
-  category_name?: string
-  vehicle_attributes?: object
-  source?: 'FLEET' | 'MARKET'
-  validity?: number
-}
-
 export class SampleBloc {
-  private quotesService: QuotesService
+  private quotesService: Quotes
 
   private quotes$ = new Subject<QuoteItem[]>()
 
-  constructor(quotesService: QuotesService) {
+  constructor(quotesService: Quotes) {
     this.quotesService = quotesService
   }
 
@@ -47,18 +31,23 @@ export class SampleBloc {
     this.quotes$.complete()
   }
 
-  async loadQuotes(params: QutesSearchParams) {
-    const { body } = await this.quotesService.quotesSearch(params)
+  async loadQuotes(params: QuotesSearchParams) {
+    const data = await this.quotesService.quotesSearch(params)
 
-    if (!body) {
+    if (!data.ok) {
       return
     }
 
-    this.quotes$.next(body.quote_items)
+    this.quotes$.next(data.body.quote_items)
 
-    const subscription = polling(from(this.quotesService.quotesSearchById(body.id)), {
-      interval: 1000,
-    }).subscribe(data => {
+    const subscription = polling<HttpResponse<QuotesByIdResponse, ApiError>>(
+      from(this.quotesService.quotesSearchById(data.body.id)),
+      { interval: 1000 }
+    ).subscribe(data => {
+      if (!data.ok) {
+        return
+      }
+
       this.quotes$.next(data.body.quote_items)
 
       if (data.body.status === 'COMPLETED') {

@@ -1,7 +1,7 @@
 {
   "mode":"modules",
   "out":"docs",
-  "exclude":["**/node_modules/**","**/*.spec.ts","**/*.test.ts", "**/*testData*", "**/*mocks*"],
+  "exclude":["**/node_modules/**","**/*.spec.ts","**/*.test.ts", "**/*testData*", "**/*mocks*", "**/create-demand-bloc-module/src/generators/app/**"],
   "name":"web-lib-demand",
   "excludePrivate":true
 }
