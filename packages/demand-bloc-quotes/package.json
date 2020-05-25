@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@karhoo/demand-api": "^2.0.0",
-    "rx-polling": "^1.1.0",
     "rxjs": "6.5.5"
   },
   "devDependencies": {
