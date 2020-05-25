@@ -9,6 +9,7 @@ import {
   QuoteResponseStatuses,
   QuotePriceTypes,
 } from './quotes/types'
+import { PlaceDetailTypes, MeetingPointTypes } from './sharedTypes'
 
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
@@ -21,7 +22,7 @@ export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchRes
           display_address: `k_poi_display_address:${data?.searchKey ?? ''}`,
         },
         details: {
-          type: 'TRAIN_STATION',
+          type: PlaceDetailTypes.TRAIN_STATION,
         },
         geojson: 'geojson',
         name: 'name',
@@ -31,7 +32,7 @@ export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchRes
               latitude: 90,
               longitude: 90,
             },
-            type: 'DEFAULT',
+            type: MeetingPointTypes.DEFAULT,
           },
         ],
         position: {

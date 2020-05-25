@@ -19,7 +19,7 @@ type QuoteFilters = {
 const NO_QUOTES_AVAILABLE = errorCodes.K3002
 
 const transformQuotesFromResponse = (response: HttpResponseOk<QuotesResponse>): QuoteItem[] => {
-  if (response.body && response.body.quote_items) {
+  if (response.body?.quote_items) {
     return response.body.quote_items.map(quote => transformer(quote))
   }
 

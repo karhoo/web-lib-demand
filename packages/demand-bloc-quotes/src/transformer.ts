@@ -1,4 +1,3 @@
-import { get } from 'lodash'
 import { QuoteItem as OriginalQuoteItem } from '@karhoo/demand-api'
 
 export interface QuoteItem {
@@ -51,8 +50,8 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
     quotedPrice: high_price || null,
     type: quote_type || '',
     vehicleClass: vehicle_class || '',
-    vehicleLuggageCapacity: get(vehicle_attributes, 'luggage_capacity') || 0,
-    vehiclePassengerCapacity: get(vehicle_attributes, 'passenger_capacity') || 0,
+    vehicleLuggageCapacity: vehicle_attributes?.luggage_capacity ?? 0,
+    vehiclePassengerCapacity: vehicle_attributes?.passenger_capacity ?? 0,
     fleetDescription: fleet_description || '',
     originalQuote: quote,
   }
