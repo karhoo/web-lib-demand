@@ -7,8 +7,7 @@
     "bootstrap": "npm ci && npx lerna bootstrap --hoist",
     "build": "npx lerna run build --stream",
     "test": "npx lerna run test --stream",
-    "lint": "npx eslint . --ext js,jsx,ts,tsx",
-    "docs": "rm -rf docs && typedoc"
+    "lint": "npx eslint . --ext js,jsx,ts,tsx"
   },
   "repository": {
     "type": "git",
@@ -36,9 +35,6 @@
     "lerna": "3.20.2",
     "lint-staged": "10.0.7",
     "prettier": "1.19.1",
-    "typedoc": "0.16.7",
-    "typedoc-plugin-lerna-packages": "0.3.0",
-    "typedoc-plugin-markdown": "2.2.17",
     "typescript": "3.8.3"
   },
   "husky": {
