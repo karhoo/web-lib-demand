@@ -198,7 +198,7 @@ export class QuotesBloc {
     }
   }
 
-  despose() {
+  dispose() {
     this.quotes$.complete()
     this.noQuotesFound$.complete()
     this.quotesLoadingError$.complete()
