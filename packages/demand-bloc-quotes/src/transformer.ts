@@ -12,7 +12,7 @@ export interface QuoteItem {
   fleetTermsAndConditions: string
   id: string
   quotedPrice: number | null
-  type: 'FIXED' | 'ESTIMATED' | 'METERED' | ''
+  type: 'FIXED' | 'ESTIMATED' | 'METERED' | '' // TODO: import from @karhoo/demand-api after v2.0.1
   vehicleClass: string
   vehicleLuggageCapacity: number
   vehiclePassengerCapacity: number

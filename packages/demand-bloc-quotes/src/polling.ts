@@ -3,6 +3,7 @@ import { HttpResponse, QuotesResponse } from '@karhoo/demand-api'
 
 const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
 
+// TODO: import from @karhoo/demand-api after v2.0.1
 export const GetQuoteResponseStatuses = {
   PROGRESSING: 'PROGRESSING',
   COMPLETED: 'COMPLETED',
