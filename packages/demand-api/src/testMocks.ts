@@ -2,7 +2,14 @@
 import { HttpResponse } from './http/types'
 import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from './location/types'
 import { PoiSearchResponse } from './poi/types'
-import { QuotesAvailabilityResponse, QuotesResponse, QuotesByIdResponse } from './quotes/types'
+import {
+  QuotesAvailabilityResponse,
+  QuotesResponse,
+  QuotesByIdResponse,
+  QuoteResponseStatuses,
+  QuotePriceTypes,
+} from './quotes/types'
+import { PlaceDetailTypes, MeetingPointTypes } from './sharedTypes'
 
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
@@ -15,7 +22,7 @@ export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchRes
           display_address: `k_poi_display_address:${data?.searchKey ?? ''}`,
         },
         details: {
-          type: 'TRAIN_STATION',
+          type: PlaceDetailTypes.TRAIN_STATION,
         },
         geojson: 'geojson',
         name: 'name',
@@ -25,7 +32,7 @@ export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchRes
               latitude: 90,
               longitude: 90,
             },
-            type: 'DEFAULT',
+            type: MeetingPointTypes.DEFAULT,
           },
         ],
         position: {
@@ -141,7 +148,7 @@ export const getQuotesCheckAvailabilityMock = () =>
 export const getMockedQuotesSearchResponse = (): QuotesResponse => ({
   id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
   quote_items: [],
-  status: 'PROGRESSING',
+  status: QuoteResponseStatuses.PROGRESSING,
   validity: 599,
 })
 
@@ -164,7 +171,7 @@ export const getMockedQuotesSerchByIdResponse = (): QuotesByIdResponse => ({
       qta_low_minutes: 0,
       quote_id:
         '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e:ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
-      quote_type: 'FIXED',
+      quote_type: QuotePriceTypes.FIXED,
       source: 'FLEET',
       supplier_logo_url: '',
       terms_conditions_url: '',
@@ -178,7 +185,7 @@ export const getMockedQuotesSerchByIdResponse = (): QuotesByIdResponse => ({
       vehicle_class: 'mpv',
     },
   ],
-  status: 'COMPLETED',
+  status: QuoteResponseStatuses.COMPLETED,
   validity: 600,
 })
 

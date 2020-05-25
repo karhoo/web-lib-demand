@@ -1,6 +1,17 @@
 import { VehicleAttributes } from '../sharedTypes'
 import { HttpResponse } from '../http/types'
 
+export enum QuoteResponseStatuses {
+  PROGRESSING = 'PROGRESSING',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum QuotePriceTypes {
+  FIXED = 'FIXED',
+  ESTIMATED = 'ESTIMATED',
+  METERED = 'METERED',
+}
+
 export type QuotesAvailabilityParams = {
   originPlaceId: string
   destinationPlaceId?: string
@@ -40,7 +51,7 @@ export type QuoteItem = {
   pick_up_type?: 'DEFAULT' | 'STAND_BY' | 'CURB_SIDE' | 'MEET_AND_GREET'
   supplier_logo_url?: string
   vehicle_class?: string
-  quote_type: 'FIXED' | 'ESTIMATED' | 'METERED'
+  quote_type: keyof typeof QuotePriceTypes
   high_price?: number
   low_price?: number
   currency_code?: string
@@ -55,7 +66,7 @@ export type QuoteItem = {
 
 export type QuotesResponse = {
   id: string
-  status: string
+  status: keyof typeof QuoteResponseStatuses
   quote_items?: QuoteItem[]
   validity?: number
 }
