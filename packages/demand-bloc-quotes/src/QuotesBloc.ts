@@ -193,7 +193,9 @@ export class QuotesBloc {
 
         this.pollingSubscription = poller.subscribe({
           next: handleQuotesLoaded,
-          complete: this.stopLoading,
+          complete: () => {
+            this.stopLoading()
+          },
         })
 
         return
