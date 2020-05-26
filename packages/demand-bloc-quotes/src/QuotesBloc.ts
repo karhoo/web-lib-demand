@@ -98,6 +98,13 @@ export class QuotesBloc {
   }
 
   /**
+   * Gets filters value (number of passengers and number of luggage)
+   */
+  get filters() {
+    return this._filters
+  }
+
+  /**
    * Sets filters value (number of passengers and number of luggage)
    */
   set filters(params: QuoteFilters) {
@@ -105,9 +112,16 @@ export class QuotesBloc {
   }
 
   /**
+   * Gets quote search params
+   */
+  get searchParams(): QuotesSearchParams | null {
+    return this._searchParams
+  }
+
+  /**
    * Sets quote search params
    */
-  set searchParams(params: QuotesSearchParams) {
+  set searchParams(params: QuotesSearchParams | null) {
     this._searchParams = params
   }
 
