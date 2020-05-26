@@ -20,8 +20,6 @@ This library provides the ability to contact Karhoo's public API and allows you 
 
 </div>
 
-> ⚠️ This package is work in progress and can not be used as an independent package.
-
 ## Installation
 
 ```sh

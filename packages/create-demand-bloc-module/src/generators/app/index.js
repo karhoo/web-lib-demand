@@ -33,9 +33,10 @@ module.exports = class extends Generator {
   writing() {
     this.sourceRoot(path.resolve(__dirname, 'templates'))
 
+    const executionFolder = process.cwd()
     this.fs.copyTpl(
       this.templatePath('**/*'),
-      this.destinationRoot(path.resolve(__dirname, `../../../../${this.answers.appName}`)),
+      this.destinationRoot(path.resolve(executionFolder, `${this.answers.appName}`)),
       this.answers,
       null,
       { globOptions: { dot: true } }
