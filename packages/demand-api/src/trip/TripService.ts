@@ -1,5 +1,6 @@
 import { Http } from '../http/types'
 import {
+  Trip,
   TripFollowResponse,
   BookATripParams,
   BookATripResponse,
@@ -8,7 +9,7 @@ import {
   SearchResponse,
 } from './types'
 
-export class TripService {
+export class TripService implements Trip {
   private url = 'bookings'
 
   private http: Http

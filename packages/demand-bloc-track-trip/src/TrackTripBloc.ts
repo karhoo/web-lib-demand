@@ -10,7 +10,7 @@ import {
 import { Subject, from } from 'rxjs'
 import { scan, publishReplay, refCount } from 'rxjs/operators'
 
-export class SampleBloc {
+export class TrackTripBloc {
   private quotesService: Quotes
 
   private quotes$ = new Subject<QuoteItem[]>()
