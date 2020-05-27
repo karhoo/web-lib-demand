@@ -1,1 +1,1 @@
-export { TrackTripBloc } from './TrackTripBloc'
+export { TripBloc } from './TripBloc'
