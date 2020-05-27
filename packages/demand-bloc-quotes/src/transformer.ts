@@ -1,4 +1,4 @@
-import { QuoteItem as OriginalQuoteItem } from '@karhoo/demand-api'
+import { QuoteItem as OriginalQuoteItem, QuotePriceTypes } from '@karhoo/demand-api'
 
 export interface QuoteItem {
   currencyCode: string
@@ -12,7 +12,7 @@ export interface QuoteItem {
   fleetTermsAndConditions: string
   id: string
   quotedPrice: number | null
-  type: 'FIXED' | 'ESTIMATED' | 'METERED' | ''
+  type: keyof typeof QuotePriceTypes | ''
   vehicleClass: string
   vehicleLuggageCapacity: number
   vehiclePassengerCapacity: number
