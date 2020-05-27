@@ -27,20 +27,23 @@ type Address = {
   timezone?: string
 }
 
-export type TripStatus =
-  | 'REQUESTED'
-  | 'COMPLETED'
-  | 'DRIVER_EN_ROUTE'
-  | 'CONFIRMED'
-  | 'ARRIVED'
-  | 'POB'
-  | 'DRIVER_CANCELLED'
-  | 'BOOKER_CANCELLED'
-  | 'NO_DRIVERS_AVAILABLE'
-  | 'KARHOO_CANCELLED'
-  | 'FAILED'
-  | 'PREAUTH_DECLINED'
-  | 'INCOMPLETE'
+export enum TripStatuses {
+  ARRIVED = 'ARRIVED',
+  BOOKER_CANCELLED = 'BOOKER_CANCELLED',
+  COMPLETED = 'COMPLETED',
+  CONFIRMED = 'CONFIRMED',
+  DRIVER_CANCELLED = 'DRIVER_CANCELLED',
+  DRIVER_EN_ROUTE = 'DRIVER_EN_ROUTE',
+  NO_DRIVERS_AVAILABLE = 'NO_DRIVERS_AVAILABLE',
+  POB = 'POB',
+  REQUESTED = 'REQUESTED',
+  KARHOO_CANCELLED = 'KARHOO_CANCELLED',
+  PREAUTH_DECLINED = 'PREAUTH_DECLINED',
+  INCOMPLETE = 'INCOMPLETE',
+  FAILED = 'FAILED',
+}
+
+export type TripStatus = keyof typeof TripStatuses
 
 export type TripFollowResponse = {
   passengers?: Passengers

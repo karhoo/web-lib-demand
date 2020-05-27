@@ -7,8 +7,15 @@ type BreakdownItem = Partial<{
   net_price: number
 }>
 
+export enum FinalFareStatuses {
+  PENDING = 'PENDING',
+  FINAL = 'FINAL',
+  CANCELLED = 'CANCELLED',
+  FAILED = 'FAILED',
+}
+
 export type FinalFareResponse = {
-  state: 'PENDING' | 'FINAL' | 'CANCELLED' | 'FAILED'
+  state: keyof typeof FinalFareStatuses
   expected_final_time?: string
   expected_in?: number
   breakdown?: Partial<{
