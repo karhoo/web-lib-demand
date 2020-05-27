@@ -7,7 +7,7 @@
   />
 </a>
 
-<h1>demand-bloc-track-trip</h1>
+<h1>@karhoo/demand-bloc-track-trip</h1>
 
 Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo API
 <br />
