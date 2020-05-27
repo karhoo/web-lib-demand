@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs'
 import { HttpResponse, QuotesResponse } from '@karhoo/demand-api'
 
-const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
+export const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
 
 export const GetQuoteResponseStatuses = {
   PROGRESSING: 'PROGRESSING',
   COMPLETED: 'COMPLETED',
-}
+} as const
 
 type QuotesAPIResponse = HttpResponse<QuotesResponse>
 
