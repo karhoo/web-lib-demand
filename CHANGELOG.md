@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v2.1.1) (2020-05-27)
+
+
+* demand-api: getApi - update api url creation  (#45) ([b172204](https://github.com/karhoo/web-lib-demand/commit/b17220434f794b628f57f8888eed95fc4967ed9f)), closes [#45](https://github.com/karhoo/web-lib-demand/issues/45)
+
+
+### Bug Fixes
+
+* add "main" into package.json ([#51](https://github.com/karhoo/web-lib-demand/issues/51)) ([045755b](https://github.com/karhoo/web-lib-demand/commit/045755b8045d406a685575577f0627b8d50a383c))
+* change polling subscription complete handler ([#56](https://github.com/karhoo/web-lib-demand/issues/56)) ([180c113](https://github.com/karhoo/web-lib-demand/commit/180c1138be70702921711a246b1101f9d54ac9fb))
+
+
+### Features
+
+* et-994 Add missing API calls ([c6d42ea](https://github.com/karhoo/web-lib-demand/commit/c6d42eaf43ab1a218af84a61e8b3e04a4e902906))
+
+
+### BREAKING CHANGES
+
+* Update api url creation in getApi of demand-api package
+
+* v1.0.0
+
+
+
+
+
 # [2.1.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v2.1.0) (2020-05-26)
 
 
