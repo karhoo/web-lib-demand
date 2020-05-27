@@ -7,7 +7,7 @@ import {
   HttpResponse,
 } from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
-import { scan, publishReplay, refCount, map } from 'rxjs/operators'
+import { publishReplay, refCount, map } from 'rxjs/operators'
 import { poll } from './polling'
 import { transformer, QuoteItem } from './transformer'
 
@@ -56,7 +56,6 @@ export class QuotesBloc {
    */
   get quotes() {
     return this.quotes$.pipe(
-      scan((allQuotes, newQuotes = []) => allQuotes.concat(newQuotes)),
       publishReplay(1),
       refCount()
     )
