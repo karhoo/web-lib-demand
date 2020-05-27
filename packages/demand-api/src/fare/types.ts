@@ -1,3 +1,5 @@
+import { HttpResponse } from '../http/types'
+
 type BreakdownItem = Partial<{
   tax_percentage: number
   discount_percentage: number
@@ -26,4 +28,8 @@ export type FinalFareResponse = {
     total: number
     currency: string
   }>
+}
+
+export interface Fare {
+  status(id: string): Promise<HttpResponse<FinalFareResponse>>
 }
