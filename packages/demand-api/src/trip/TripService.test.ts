@@ -50,6 +50,62 @@ describe('TripService', () => {
     })
   })
 
+  describe('bookWithoutNonce', () => {
+    const params = {
+      quote_id: 'quote_ID',
+      passengers: {
+        passenger_details: [
+          {
+            first_name: 'first_name',
+            last_name: 'last_name',
+            email: 'email',
+            phone_number: '12345',
+          },
+        ],
+      },
+    }
+
+    it('should call post of http', () => {
+      new TripService(http).bookWithoutNonce(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith(`${url}`, params)
+    })
+  })
+
+  describe('getBookingDetails', () => {
+    const id = 'id'
+
+    it('should call get of http', () => {
+      new TripService(http).getBookingDetails(id)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(`${url}/${id}`)
+    })
+  })
+
+  describe('getTripStatus', () => {
+    const id = 'id'
+
+    it('should call get of http', () => {
+      new TripService(http).getTripStatus(id)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(`${url}/${id}/status`)
+    })
+  })
+
+  describe('getTripPosition', () => {
+    const id = 'id'
+
+    it('should call get of http', () => {
+      new TripService(http).getTripPosition(id)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(`${url}/${id}/track`)
+    })
+  })
+
   describe('cancel', () => {
     const id = 'id'
     const params = {

@@ -140,6 +140,18 @@ const paymentService = new PaymentService(httpService)
 const flagsService = new FlagsService(httpService)
 ```
 
+# User service:
+
+```js
+const userService = new UserService(httpService)
+```
+
+# Auth service:
+
+```js
+const authService = new AuthService(httpService)
+```
+
 ### Example
 
 Let's see how to use one of the services, listed above.

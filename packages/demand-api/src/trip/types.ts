@@ -108,6 +108,18 @@ export type BookATripParams = {
   loyalty_points?: number
 }
 
+export type BookATripWithoutNonceParams = {
+  quote_id: string
+  passengers: Passengers
+  meta?: object
+  partner_trip_id?: string
+  comments?: string
+  flight_number?: string
+  train_number?: string
+  cost_center_reference?: string
+  train_time?: string
+}
+
 export interface BookATripResponse extends TripFollowResponse {
   agent?: {
     organisation_id?: string
@@ -173,4 +185,20 @@ export type SearchParams = {
 
 export type SearchResponse = {
   bookings?: BookATripResponse[]
+}
+
+export type GetTripStatusResponse = {
+  status: TripStatus
+  position?: LatLng
+  timestamp?: string
+}
+
+export type GetTripPositionResponse = {
+  position?: LatLng
+  direction?: {
+    kph: number
+    heading: number
+  }
+  origin_eta?: number
+  destination_eta?: number
 }
