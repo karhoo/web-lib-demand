@@ -95,7 +95,9 @@ export type TripFollowResponse = {
     instructions?: string
     note?: string
   }
-  meta?: object
+  meta?: {
+    [k: string]: string
+  }
 }
 
 export type BookATripParams = {
