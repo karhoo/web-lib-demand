@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { mocked } from 'ts-jest/utils'
-import { errorCodes, QuoteItem } from '@karhoo/demand-api'
+import { errorCodes, QuoteItem, HttpResponse, QuotesResponse, QuotesByIdResponse } from '@karhoo/demand-api'
 import {
   getMockedQuotesSearchResponse,
   getMockedQuotesSerchByIdResponse,
@@ -65,8 +65,12 @@ describe('QuotesBloc', () => {
 
   const quotesMock = {
     checkAvailability: jest.fn(),
-    quotesSearch: jest.fn(() => Promise.resolve(mockedQuotesSearchResponse)),
-    quotesSearchById: jest.fn(() => Promise.resolve(mockedQuotesSerchByIdResponse)),
+    quotesSearch: jest.fn(
+      (): Promise<HttpResponse<QuotesResponse>> => Promise.resolve(mockedQuotesSearchResponse)
+    ),
+    quotesSearchById: jest.fn(
+      (): Promise<HttpResponse<QuotesByIdResponse>> => Promise.resolve(mockedQuotesSerchByIdResponse)
+    ),
   }
 
   let bloc: QuotesBloc
@@ -126,7 +130,7 @@ describe('QuotesBloc', () => {
     let promise: Promise<void>
 
     beforeEach(() => {
-      let resolve: any
+      let resolve: Function
 
       promise = new Promise(r => {
         resolve = r
@@ -182,7 +186,7 @@ describe('QuotesBloc', () => {
     })
 
     it('should emit quotes', async () => {
-      const quotes: any = []
+      const quotes: transformer.QuoteItem[][] = []
       const expectedQuotes = [
         transformQuotesFromResponse(mockedQuotesSearchResponse),
         transformQuotesFromResponse(mockedQuotesSerchByIdResponse),
@@ -197,7 +201,7 @@ describe('QuotesBloc', () => {
     })
 
     it('should emit matchingQuotes', async () => {
-      const matchingQuotes: any[] = []
+      const matchingQuotes: transformer.QuoteItem[][] = []
       const expectedMatchingQuotes = [[], testQuoteItems.slice(0, 2).map(transformer.transformer)]
 
       bloc.filters = filters
@@ -210,7 +214,7 @@ describe('QuotesBloc', () => {
     })
 
     it('should emit otherAvailibleQuotes', async () => {
-      const otherAvailibleQuotes: any[] = []
+      const otherAvailibleQuotes: transformer.QuoteItem[][] = []
       const expectedQuotes = [[], testQuoteItems.slice(2, 4).map(transformer.transformer)]
 
       bloc.filters = filters
@@ -223,9 +227,7 @@ describe('QuotesBloc', () => {
     })
 
     it('should loading emit false when quotesSearch response is not ok', done => {
-      quotesMock.quotesSearch.mockReturnValueOnce(
-        Promise.resolve(getMockedErrorQuotesSearchResponse()) as any
-      )
+      quotesMock.quotesSearch.mockReturnValueOnce(Promise.resolve(getMockedErrorQuotesSearchResponse()))
 
       bloc.loading.subscribe(isLoading => {
         if (!isLoading) {
@@ -238,9 +240,9 @@ describe('QuotesBloc', () => {
     })
 
     it('should not emit quotes if quotesSearchById response is not ok', done => {
-      const quotes: any = []
+      const quotes: transformer.QuoteItem[][] = []
       quotesMock.quotesSearchById.mockReturnValueOnce(
-        Promise.resolve(getMockedErrorQuotesSerchByIdResponse()) as any
+        Promise.resolve(getMockedErrorQuotesSerchByIdResponse())
       )
 
       bloc.quotes.subscribe(data => quotes.push(data))
@@ -256,7 +258,7 @@ describe('QuotesBloc', () => {
 
     it('should emit noQuotesFound when error code of quotesSearch response is K3002', done => {
       quotesMock.quotesSearch.mockReturnValueOnce(
-        Promise.resolve(getMockedErrorQuotesSearchResponse(errorCodes.K3002) as any)
+        Promise.resolve(getMockedErrorQuotesSearchResponse(errorCodes.K3002))
       )
 
       bloc.noQuotesFound.subscribe(() => done())

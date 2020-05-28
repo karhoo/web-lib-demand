@@ -1,3 +1,4 @@
+import { HttpResponse, QuotesByIdResponse } from '@karhoo/demand-api'
 import {
   getMockedQuotesSerchByIdResponse,
   getMockedErrorQuotesSerchByIdResponse,
@@ -11,7 +12,7 @@ describe('polling', () => {
   })
 
   it('should poll quotes once', done => {
-    const responses: any = []
+    const responses: HttpResponse<QuotesByIdResponse>[] = []
     const expectedResponses = [getMockedQuotesSerchByIdResponse()]
 
     const fn = jest.fn(() => Promise.resolve(expectedResponses[0]))
@@ -32,7 +33,7 @@ describe('polling', () => {
   })
 
   it('should poll quotes once when response is not ok', done => {
-    const responses: any = []
+    const responses: HttpResponse<QuotesByIdResponse>[] = []
     const expectedResponses = [getMockedErrorQuotesSerchByIdResponse()]
 
     const fn = jest.fn(() => Promise.resolve(expectedResponses[0]))
@@ -53,7 +54,7 @@ describe('polling', () => {
   })
 
   it('should poll quotes twice', done => {
-    const responses: any = []
+    const responses: HttpResponse<QuotesByIdResponse>[] = []
     const expectedResponses = [
       getMockedQuotesSerchByIdResponse({ status: GetQuoteResponseStatuses.PROGRESSING }),
       getMockedQuotesSerchByIdResponse(),
