@@ -7,7 +7,7 @@ import {
   HttpResponse,
 } from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
-import { scan, publishReplay, refCount, map } from 'rxjs/operators'
+import { publishReplay, refCount, map } from 'rxjs/operators'
 import { poll } from './polling'
 import { transformer, QuoteItem } from './transformer'
 
@@ -18,12 +18,16 @@ type QuoteFilters = {
 
 const NO_QUOTES_AVAILABLE = errorCodes.K3002
 
-const transformQuotesFromResponse = (response: HttpResponseOk<QuotesResponse>): QuoteItem[] => {
+export const transformQuotesFromResponse = (response: HttpResponseOk<QuotesResponse>): QuoteItem[] => {
   if (response.body?.quote_items) {
     return response.body.quote_items.map(quote => transformer(quote))
   }
 
   return []
+}
+
+function createStream<T>(stream: Subject<T>) {
+  return stream.pipe(publishReplay(1), refCount())
 }
 
 export class QuotesBloc {
@@ -55,11 +59,7 @@ export class QuotesBloc {
    * Returns not-filtered quotes stream. Each iteration it is a quotes array
    */
   get quotes() {
-    return this.quotes$.pipe(
-      scan((allQuotes, newQuotes = []) => allQuotes.concat(newQuotes)),
-      publishReplay(1),
-      refCount()
-    )
+    return createStream(this.quotes$)
   }
 
   /**
@@ -80,21 +80,21 @@ export class QuotesBloc {
    * Emits value once there are no quotes available for given search params
    */
   get noQuotesFound() {
-    return this.noQuotesFound$
+    return createStream(this.noQuotesFound$)
   }
 
   /**
    * Emits true/false when all quotes started/finished to load
    */
   get loading() {
-    return this.loading$
+    return createStream(this.loading$)
   }
 
   /**
    * Emits a value once loaded quotes are expired
    */
   get quotesExpired() {
-    return this.quotesExpired$
+    return createStream(this.quotesExpired$)
   }
 
   /**

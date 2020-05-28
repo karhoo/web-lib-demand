@@ -1,15 +1,9 @@
 import { Observable } from 'rxjs'
-import { HttpResponse, QuotesResponse } from '@karhoo/demand-api'
+import { HttpResponse, QuotesByIdResponse, QuoteResponseStatuses } from '@karhoo/demand-api'
 
-const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
+export const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
 
-export const GetQuoteResponseStatuses = {
-  PROGRESSING: 'PROGRESSING',
-  COMPLETED: 'COMPLETED',
-}
-
-type QuotesAPIResponse = HttpResponse<QuotesResponse>
-
+type QuotesAPIResponse = HttpResponse<QuotesByIdResponse>
 type shouldStopPollingFunc = (data: QuotesAPIResponse) => boolean
 type PollFunc = () => Promise<QuotesAPIResponse>
 
@@ -25,7 +19,7 @@ export function poll(fn: PollFunc): Observable<QuotesAPIResponse> {
   let count = 0
 
   const shouldStopPolling: shouldStopPollingFunc = response =>
-    response.ok ? response.body.status === GetQuoteResponseStatuses.COMPLETED : true
+    response.ok ? response.body.status === QuoteResponseStatuses.COMPLETED : true
 
   return new Observable(observer => {
     async function init() {

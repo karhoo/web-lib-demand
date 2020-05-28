@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v3.0.0) (2020-05-28)
+
+
+### Bug Fixes
+
+* add "main" into package.json ([#51](https://github.com/karhoo/web-lib-demand/issues/51)) ([045755b](https://github.com/karhoo/web-lib-demand/commit/045755b8045d406a685575577f0627b8d50a383c))
+* change polling subscription complete handler ([#56](https://github.com/karhoo/web-lib-demand/issues/56)) ([180c113](https://github.com/karhoo/web-lib-demand/commit/180c1138be70702921711a246b1101f9d54ac9fb))
+* change typing of meta trip and add createStream func to QuotesBloc ([9a0f1b6](https://github.com/karhoo/web-lib-demand/commit/9a0f1b6ae9e375317cccdd38ae9d681e852183e5))
+* remove scan operator from quotes stream ([8a73a90](https://github.com/karhoo/web-lib-demand/commit/8a73a90560c9c758a2c3fb54a955c9b7ff4b0763))
+* update tests ([81ed7d6](https://github.com/karhoo/web-lib-demand/commit/81ed7d6b99ce9b59c6f9a79f5927eff105dd6bd2))
+
+
+### Features
+
+* add tests for QuotesBloc ([c3d4109](https://github.com/karhoo/web-lib-demand/commit/c3d410923e294120b707db80f5413cc925ed4e90))
+* bootstrap demand-bloc-track-trip module ([f1ccea5](https://github.com/karhoo/web-lib-demand/commit/f1ccea5fb6b331a74dd37b17e6263ce0f72a2c83))
+* change typings for fare api ([3feda5a](https://github.com/karhoo/web-lib-demand/commit/3feda5a146552f8699c0ae2ca65f1047887ebdef))
+* export trip module types ([1512c5f](https://github.com/karhoo/web-lib-demand/commit/1512c5f8133c029fca66411ba46b61453e0cfe91))
+* extend Trip Interface ([cf62de5](https://github.com/karhoo/web-lib-demand/commit/cf62de58a999df035b8631ad6f2373bee1c7ba41))
+* update name of the packages, remove unnecessary code ([e1ca256](https://github.com/karhoo/web-lib-demand/commit/e1ca256f8fdc56c2271a8eb137b458606a320bbe))
+* Update types in tests ([21363b4](https://github.com/karhoo/web-lib-demand/commit/21363b4f6887eeaae61a9a18e40a6c0697e157ec))
+
+
+* demand-api: getApi - update api url creation  (#45) ([b172204](https://github.com/karhoo/web-lib-demand/commit/b17220434f794b628f57f8888eed95fc4967ed9f)), closes [#45](https://github.com/karhoo/web-lib-demand/issues/45)
+
+
+### BREAKING CHANGES
+
+* Update api url creation in getApi of demand-api package
+
+* v1.0.0
+
+
+
+
+
 ## [2.1.1](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v2.1.1) (2020-05-27)
 
 

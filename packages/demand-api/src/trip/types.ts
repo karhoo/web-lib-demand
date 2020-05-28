@@ -1,6 +1,7 @@
 import { LatLng, MeetingPointType, CommonPoiType } from '../sharedTypes'
 import { Quote } from '../quotes/types'
 import { VehicleAttributes } from '../sharedTypes'
+import { HttpResponse } from '../http/types'
 
 type PassengerDetails = {
   first_name?: string
@@ -26,20 +27,23 @@ type Address = {
   timezone?: string
 }
 
-export type TripStatus =
-  | 'REQUESTED'
-  | 'COMPLETED'
-  | 'DRIVER_EN_ROUTE'
-  | 'CONFIRMED'
-  | 'ARRIVED'
-  | 'POB'
-  | 'DRIVER_CANCELLED'
-  | 'BOOKER_CANCELLED'
-  | 'NO_DRIVERS_AVAILABLE'
-  | 'KARHOO_CANCELLED'
-  | 'FAILED'
-  | 'PREAUTH_DECLINED'
-  | 'INCOMPLETE'
+export enum TripStatuses {
+  ARRIVED = 'ARRIVED',
+  BOOKER_CANCELLED = 'BOOKER_CANCELLED',
+  COMPLETED = 'COMPLETED',
+  CONFIRMED = 'CONFIRMED',
+  DRIVER_CANCELLED = 'DRIVER_CANCELLED',
+  DRIVER_EN_ROUTE = 'DRIVER_EN_ROUTE',
+  NO_DRIVERS_AVAILABLE = 'NO_DRIVERS_AVAILABLE',
+  POB = 'POB',
+  REQUESTED = 'REQUESTED',
+  KARHOO_CANCELLED = 'KARHOO_CANCELLED',
+  PREAUTH_DECLINED = 'PREAUTH_DECLINED',
+  INCOMPLETE = 'INCOMPLETE',
+  FAILED = 'FAILED',
+}
+
+export type TripStatus = keyof typeof TripStatuses
 
 export type TripFollowResponse = {
   passengers?: Passengers
@@ -91,7 +95,9 @@ export type TripFollowResponse = {
     instructions?: string
     note?: string
   }
-  meta?: object
+  meta?: {
+    [k: string]: string
+  }
 }
 
 export type BookATripParams = {
@@ -201,4 +207,16 @@ export type GetTripPositionResponse = {
   }
   origin_eta?: number
   destination_eta?: number
+}
+
+export interface Trip {
+  trackTrip(id: string): Promise<HttpResponse<TripFollowResponse>>
+  book(params: BookATripParams): Promise<HttpResponse<BookATripResponse>>
+  bookWithoutNonce(params: BookATripWithoutNonceParams): Promise<HttpResponse<BookATripResponse>>
+  getBookingDetails(id: string): Promise<HttpResponse<BookATripResponse>>
+  getTripStatus(id: string): Promise<HttpResponse<GetTripStatusResponse>>
+  getTripPosition(id: string): Promise<HttpResponse<GetTripPositionResponse>>
+  cancel(id: string, params: CancellationParams): Promise<HttpResponse<object>>
+  cancelByFollowCode(code: string, params: CancellationParams): Promise<HttpResponse<object>>
+  search(params: SearchParams): Promise<HttpResponse<SearchResponse>>
 }

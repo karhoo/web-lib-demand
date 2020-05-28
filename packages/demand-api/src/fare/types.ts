@@ -1,3 +1,5 @@
+import { HttpResponse } from '../http/types'
+
 type BreakdownItem = Partial<{
   tax_percentage: number
   discount_percentage: number
@@ -7,8 +9,15 @@ type BreakdownItem = Partial<{
   net_price: number
 }>
 
+export enum FinalFareStatuses {
+  PENDING = 'PENDING',
+  FINAL = 'FINAL',
+  CANCELLED = 'CANCELLED',
+  FAILED = 'FAILED',
+}
+
 export type FinalFareResponse = {
-  state: 'PENDING' | 'FINAL' | 'CANCELLED' | 'FAILED'
+  state: keyof typeof FinalFareStatuses
   expected_final_time?: string
   expected_in?: number
   breakdown?: Partial<{
@@ -19,4 +28,8 @@ export type FinalFareResponse = {
     total: number
     currency: string
   }>
+}
+
+export interface Fare {
+  status(id: string): Promise<HttpResponse<FinalFareResponse>>
 }
