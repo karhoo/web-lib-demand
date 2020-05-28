@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
-import { HttpResponse } from './http/types'
+import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from './http/types'
 import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from './location/types'
 import { PoiSearchResponse } from './poi/types'
 import {
@@ -10,6 +10,8 @@ import {
   QuotePriceTypes,
 } from './quotes/types'
 import { PlaceDetailTypes, MeetingPointTypes } from './sharedTypes'
+
+import { errorCodes } from './responseCodes'
 
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
@@ -120,6 +122,84 @@ export const getMockedErrorLocationAddressAutocompleteResponse = (): HttpRespons
   },
 })
 
+export const getMockedQuotesSearchResponse = (
+  partialBody: Partial<QuotesResponse> = {}
+): HttpResponseOk<QuotesResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
+    quote_items: [],
+    status: QuoteResponseStatuses.PROGRESSING,
+    validity: 599,
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorQuotesSearchResponse = (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Quotes search: Something went wrong`,
+  },
+})
+
+export const getMockedQuotesSerchByIdResponse = (
+  partialBody: Partial<QuotesByIdResponse> = {}
+): HttpResponseOk<QuotesByIdResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
+    quote_items: [
+      {
+        availability_id: 'ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
+        category_name: 'MPV',
+        currency_code: 'GBP',
+        fleet_description:
+          'Robot PHV Fleet operating globally. Example description: Regional Private Hire Company operating in London and surroundings.',
+        fleet_id: 'd5905a3d-da80-45dc-bdf2-903ea9ea2235',
+        fleet_name: 'Global PHV (Robot Fleet WWW)',
+        high_price: 3000,
+        low_price: 3000,
+        phone_number: '+448000000000',
+        pick_up_type: 'DEFAULT',
+        qta_high_minutes: 0,
+        qta_low_minutes: 0,
+        quote_id:
+          '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e:ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
+        quote_type: QuotePriceTypes.FIXED,
+        source: 'FLEET',
+        supplier_logo_url: '',
+        terms_conditions_url: '',
+        vehicle_attributes: {
+          child_seat: false,
+          electric: false,
+          hybrid: false,
+          luggage_capacity: 2,
+          passenger_capacity: 4,
+        },
+        vehicle_class: 'mpv',
+      },
+    ],
+    status: QuoteResponseStatuses.COMPLETED,
+    validity: 600,
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorQuotesSerchByIdResponse = (
+  code = errorCodes.K0001
+): HttpResponseError<ApiError> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Quotes search by id: Something went wrong`,
+  },
+})
+
 export const mockHttpGet = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { get: true } }))
 export const mockHttpPost = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { post: true } }))
 export const mockHttpPut = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { put: true } }))
@@ -144,50 +224,6 @@ export const getPoiSearchMock = () =>
 
 export const getQuotesCheckAvailabilityMock = () =>
   jest.fn(() => Promise.resolve(getMockedQuotesAvailabilityResponse()))
-
-export const getMockedQuotesSearchResponse = (): QuotesResponse => ({
-  id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
-  quote_items: [],
-  status: QuoteResponseStatuses.PROGRESSING,
-  validity: 599,
-})
-
-export const getMockedQuotesSerchByIdResponse = (): QuotesByIdResponse => ({
-  id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
-  quote_items: [
-    {
-      availability_id: 'ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
-      category_name: 'MPV',
-      currency_code: 'GBP',
-      fleet_description:
-        'Robot PHV Fleet operating globally. Example description: Regional Private Hire Company operating in London and surroundings.',
-      fleet_id: 'd5905a3d-da80-45dc-bdf2-903ea9ea2235',
-      fleet_name: 'Global PHV (Robot Fleet WWW)',
-      high_price: 3000,
-      low_price: 3000,
-      phone_number: '+448000000000',
-      pick_up_type: 'DEFAULT',
-      qta_high_minutes: 0,
-      qta_low_minutes: 0,
-      quote_id:
-        '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e:ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
-      quote_type: QuotePriceTypes.FIXED,
-      source: 'FLEET',
-      supplier_logo_url: '',
-      terms_conditions_url: '',
-      vehicle_attributes: {
-        child_seat: false,
-        electric: false,
-        hybrid: false,
-        luggage_capacity: 2,
-        passenger_capacity: 4,
-      },
-      vehicle_class: 'mpv',
-    },
-  ],
-  status: QuoteResponseStatuses.COMPLETED,
-  validity: 600,
-})
 
 export const getQuotesSearchMock = () =>
   jest.fn(() => {
@@ -215,8 +251,8 @@ export const getApiMock = () => {
     },
     quotesService: {
       checkAvailability: mockQuotesCheckAvailability,
-      quotesSearch: getQuotesSearchMock,
-      quotesSearchById: getQuotesSearchByIdMock,
+      quotesSearch: mockQuoteSearch,
+      quotesSearchById: mockQuoteSearchById,
     },
     mockClear: () => {
       ;[

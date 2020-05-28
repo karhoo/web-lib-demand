@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-track-trip",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo API",
   "keywords": [
     "bloc",
@@ -22,7 +22,8 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^2.1.0",
+    "@karhoo/demand-api": "^3.0.0",
+    "rx-polling": "^1.1.0",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
     "rxjs": "6.5.5"

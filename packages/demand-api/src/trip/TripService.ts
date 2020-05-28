@@ -3,7 +3,10 @@ import {
   Trip,
   TripFollowResponse,
   BookATripParams,
+  BookATripWithoutNonceParams,
   BookATripResponse,
+  GetTripStatusResponse,
+  GetTripPositionResponse,
   CancellationParams,
   SearchParams,
   SearchResponse,
@@ -24,6 +27,22 @@ export class TripService implements Trip {
 
   book(params: BookATripParams) {
     return this.http.post<BookATripResponse>(`${this.url}/with-nonce`, params)
+  }
+
+  bookWithoutNonce(params: BookATripWithoutNonceParams) {
+    return this.http.post<BookATripResponse>(`${this.url}`, params)
+  }
+
+  getBookingDetails(id: string) {
+    return this.http.get<BookATripResponse>(`${this.url}/${id}`)
+  }
+
+  getTripStatus(id: string) {
+    return this.http.get<GetTripStatusResponse>(`${this.url}/${id}/status`)
+  }
+
+  getTripPosition(id: string) {
+    return this.http.get<GetTripPositionResponse>(`${this.url}/${id}/track`)
   }
 
   cancel(id: string, params: CancellationParams) {

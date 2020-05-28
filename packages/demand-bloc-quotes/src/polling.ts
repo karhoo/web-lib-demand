@@ -1,10 +1,9 @@
 import { Observable } from 'rxjs'
-import { HttpResponse, QuotesResponse, QuoteResponseStatuses } from '@karhoo/demand-api'
+import { HttpResponse, QuotesByIdResponse, QuoteResponseStatuses } from '@karhoo/demand-api'
 
-const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
+export const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
 
-type QuotesAPIResponse = HttpResponse<QuotesResponse>
-
+type QuotesAPIResponse = HttpResponse<QuotesByIdResponse>
 type shouldStopPollingFunc = (data: QuotesAPIResponse) => boolean
 type PollFunc = () => Promise<QuotesAPIResponse>
 

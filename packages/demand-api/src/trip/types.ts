@@ -114,6 +114,18 @@ export type BookATripParams = {
   loyalty_points?: number
 }
 
+export type BookATripWithoutNonceParams = {
+  quote_id: string
+  passengers: Passengers
+  meta?: object
+  partner_trip_id?: string
+  comments?: string
+  flight_number?: string
+  train_number?: string
+  cost_center_reference?: string
+  train_time?: string
+}
+
 export interface BookATripResponse extends TripFollowResponse {
   agent?: {
     organisation_id?: string
@@ -181,9 +193,29 @@ export type SearchResponse = {
   bookings?: BookATripResponse[]
 }
 
+export type GetTripStatusResponse = {
+  status: TripStatus
+  position?: LatLng
+  timestamp?: string
+}
+
+export type GetTripPositionResponse = {
+  position?: LatLng
+  direction?: {
+    kph: number
+    heading: number
+  }
+  origin_eta?: number
+  destination_eta?: number
+}
+
 export interface Trip {
   trackTrip(id: string): Promise<HttpResponse<TripFollowResponse>>
   book(params: BookATripParams): Promise<HttpResponse<BookATripResponse>>
+  bookWithoutNonce(params: BookATripWithoutNonceParams): Promise<HttpResponse<BookATripResponse>>
+  getBookingDetails(id: string): Promise<HttpResponse<BookATripResponse>>
+  getTripStatus(id: string): Promise<HttpResponse<GetTripStatusResponse>>
+  getTripPosition(id: string): Promise<HttpResponse<GetTripPositionResponse>>
   cancel(id: string, params: CancellationParams): Promise<HttpResponse<object>>
   cancelByFollowCode(code: string, params: CancellationParams): Promise<HttpResponse<object>>
   search(params: SearchParams): Promise<HttpResponse<SearchResponse>>
