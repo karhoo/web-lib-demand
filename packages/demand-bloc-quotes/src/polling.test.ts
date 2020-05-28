@@ -1,10 +1,10 @@
-import { HttpResponse, QuotesByIdResponse } from '@karhoo/demand-api'
+import { HttpResponse, QuotesByIdResponse, QuoteResponseStatuses } from '@karhoo/demand-api'
 import {
   getMockedQuotesSerchByIdResponse,
   getMockedErrorQuotesSerchByIdResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
-import { poll, GetQuoteResponseStatuses, POLLING_INTERVALS } from './polling'
+import { poll, POLLING_INTERVALS } from './polling'
 
 describe('polling', () => {
   beforeEach(() => {
@@ -56,7 +56,7 @@ describe('polling', () => {
   it('should poll quotes twice', done => {
     const responses: HttpResponse<QuotesByIdResponse>[] = []
     const expectedResponses = [
-      getMockedQuotesSerchByIdResponse({ status: GetQuoteResponseStatuses.PROGRESSING }),
+      getMockedQuotesSerchByIdResponse({ status: QuoteResponseStatuses.PROGRESSING }),
       getMockedQuotesSerchByIdResponse(),
     ]
 
@@ -100,7 +100,7 @@ describe('polling', () => {
 
   it('should schedule expected timers', done => {
     const progressingResponse = getMockedQuotesSerchByIdResponse({
-      status: GetQuoteResponseStatuses.PROGRESSING,
+      status: QuoteResponseStatuses.PROGRESSING,
     })
     const completedResponse = getMockedQuotesSerchByIdResponse()
 
