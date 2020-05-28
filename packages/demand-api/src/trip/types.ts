@@ -212,6 +212,10 @@ export type GetTripPositionResponse = {
 export interface Trip {
   trackTrip(id: string): Promise<HttpResponse<TripFollowResponse>>
   book(params: BookATripParams): Promise<HttpResponse<BookATripResponse>>
+  bookWithoutNonce(params: BookATripWithoutNonceParams): Promise<HttpResponse<BookATripResponse>>
+  getBookingDetails(id: string): Promise<HttpResponse<BookATripResponse>>
+  getTripStatus(id: string): Promise<HttpResponse<GetTripStatusResponse>>
+  getTripPosition(id: string): Promise<HttpResponse<GetTripPositionResponse>>
   cancel(id: string, params: CancellationParams): Promise<HttpResponse<object>>
   cancelByFollowCode(code: string, params: CancellationParams): Promise<HttpResponse<object>>
   search(params: SearchParams): Promise<HttpResponse<SearchResponse>>
