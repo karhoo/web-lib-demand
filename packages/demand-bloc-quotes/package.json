@@ -1,5 +1,5 @@
 {
-  "name": "demand-bloc-quotes",
+  "name": "@karhoo/demand-bloc-quotes",
   "version": "2.1.1",
   "description": "BLoC to work with Karhoo Quotes API",
   "keywords": [
