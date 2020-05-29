@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 
 const POLLING_INTERVALS = [2000, 1000, 2000, 5000]
 
-const getPollInterval = (index = 0, intervals = POLLING_INTERVALS): number => {
+const getPollInterval = (index: number, intervals: number[]): number => {
   return intervals[index] || intervals[intervals.length - 1]
 }
 
@@ -11,9 +11,8 @@ const getPollInterval = (index = 0, intervals = POLLING_INTERVALS): number => {
  * @param fn function to poll quotes by Id
  */
 export function poll<T>(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fn: any,
-  shouldStopPolling: (d: T) => boolean,
+  fn: () => Promise<T> | T,
+  shouldStopPolling: (response: T) => boolean,
   intervals = POLLING_INTERVALS
 ): Observable<T> {
   let canceled = false

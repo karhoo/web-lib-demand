@@ -16,7 +16,7 @@ module.exports = {
   overrides: [
     {
       files: [
-          '**/*.{ts, tsx}'
+          '**/*.{ts,tsx}'
       ],
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
@@ -45,7 +45,7 @@ module.exports = {
     },
     {
       files: [
-          '**/*.test.{ts, tsx}'
+          '**/*.test.{ts,tsx}'
       ],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off'

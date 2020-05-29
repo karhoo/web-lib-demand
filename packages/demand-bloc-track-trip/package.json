@@ -24,8 +24,6 @@
   "dependencies": {
     "@karhoo/demand-api": "^3.0.0",
     "rx-polling": "^1.1.0",
-    "moment": "^2.26.0",
-    "moment-timezone": "^0.5.31",
     "rxjs": "6.5.5"
   },
   "devDependencies": {

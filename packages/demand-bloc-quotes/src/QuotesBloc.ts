@@ -30,8 +30,10 @@ function createStream<T>(stream: Subject<T>) {
   return stream.pipe(publishReplay(1), refCount())
 }
 
+export type QuotesService = Pick<Quotes, 'quotesSearch' | 'quotesSearchById'>
+
 export class QuotesBloc {
-  private quotesService: Quotes
+  private quotesService: QuotesService
   private _filters: QuoteFilters
   private _searchParams: QuotesSearchParams | null
 
@@ -44,7 +46,7 @@ export class QuotesBloc {
   private pollingSubscription = new Subscription()
   private timerSubscription = new Subscription()
 
-  constructor(quotesService: Quotes) {
+  constructor(quotesService: QuotesService) {
     this.quotesService = quotesService
 
     this._filters = {

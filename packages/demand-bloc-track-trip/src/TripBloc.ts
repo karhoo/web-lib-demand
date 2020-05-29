@@ -1,8 +1,8 @@
 import {
   Trip,
-  TripFollowResponse,
+  TripFollowResponse as OriginalTripFollowResponse,
   HttpResponse,
-  FareService,
+  Fare,
   FinalFareResponse,
   CancellationParams,
 } from '@karhoo/demand-api'
@@ -10,7 +10,7 @@ import { Subject, Subscription } from 'rxjs'
 import { publishReplay, refCount } from 'rxjs/operators'
 import { poll } from './polling'
 import { FinalTripStatuses, FinalFareStatuses } from './statuses'
-import { tripTransformer } from './tripTransformer'
+import { tripTransformer, TripFollowResponse } from './tripTransformer'
 
 const POLLING_INTERVAL_TRACK = 5000
 const POLLING_FINAL_FARE = 20000
@@ -19,20 +19,23 @@ function createStream<T>(stream: Subject<T>) {
   return stream.pipe(publishReplay(1), refCount())
 }
 
-interface Storage {
+export interface Storage {
   setItem: (key: string, value: string) => void
   getItem: (key: string) => string | null
 }
 
+export type TripService = Pick<Trip, 'cancelByFollowCode' | 'trackTrip'>
+export type FareService = Pick<Fare, 'status'>
+
 export class TripBloc {
-  private tripService: Trip
+  private tripService: TripService
   private fareService: FareService
   private storage: Storage
 
   private trackSubscription = new Subscription()
   private fareSubscription = new Subscription()
 
-  private trip$ = new Subject<any>() // TODO change here to type from transformer
+  private trip$ = new Subject<TripFollowResponse>() // TODO change here to type from transformer
   private finalFare$ = new Subject<FinalFareResponse>()
   private pickUpTimeUpdates$ = new Subject()
 
@@ -42,7 +45,7 @@ export class TripBloc {
    * @param fareService
    * @param storage to save pickup time details
    */
-  constructor(tripService: Trip, fareService: FareService, storage: Storage = localStorage) {
+  constructor(tripService: TripService, fareService: FareService, storage: Storage = localStorage) {
     this.tripService = tripService
     this.fareService = fareService
 
@@ -87,10 +90,10 @@ export class TripBloc {
   /**
    * Cancels a trip
    * @param code trip follow code
-   * @param reason reason to cancel
+   * @param params CancellationParams
    */
-  cancelByFollowCode(code: string, reason: CancellationParams) {
-    return this.tripService.cancelByFollowCode(code, reason)
+  cancelByFollowCode(code: string, params: CancellationParams) {
+    return this.tripService.cancelByFollowCode(code, params)
   }
 
   /**
@@ -119,13 +122,14 @@ export class TripBloc {
    * @param id follow code
    */
   track(id: string) {
-    type ResponseType = HttpResponse<TripFollowResponse>
+    const isFinalStatus = (response: HttpResponse<OriginalTripFollowResponse>) =>
+      response.ok && FinalTripStatuses.includes(response.body.status)
 
-    const isFinalStatus = (d: ResponseType) => d.ok && FinalTripStatuses.includes(d.body.status)
-
-    const poller = poll<ResponseType>(() => this.tripService.trackTrip(id), isFinalStatus, [
-      POLLING_INTERVAL_TRACK,
-    ])
+    const poller = poll<HttpResponse<OriginalTripFollowResponse>>(
+      () => this.tripService.trackTrip(id),
+      isFinalStatus,
+      [POLLING_INTERVAL_TRACK]
+    )
 
     this.trackSubscription = poller.subscribe(data => {
       if (!data.ok) {

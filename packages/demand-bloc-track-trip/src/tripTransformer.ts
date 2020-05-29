@@ -1,14 +1,66 @@
-import moment from 'moment'
-import 'moment-timezone'
-import { TripFollowResponse as OriginalTripFollowResponse } from '@karhoo/demand-api'
+import {
+  TripFollowResponse as OriginalTripFollowResponse,
+  PassengerDetails,
+  LatLng,
+  TripStatus,
+} from '@karhoo/demand-api'
 import { TripStatusCodes } from './statuses'
 
 const dv = (v: string | undefined) => v || ''
 
-// TODO: need to define return type here
-type TripFollowResponse = {}
+export type TripFollowResponse = {
+  driver: {
+    name: string
+    phoneNumber: string
+    vehicleDescription: string
+    licensePlate: string
+    licenseNumber: string
+  } | null
+  fleet: {
+    phoneNumber: string
+    name: string
+    termsAndConditionsUrl: string
+    supplierLogoUrl: string
+    fleetId: string
+    vehicleClass: string
+  }
+  priceInfo: {
+    currencyCode: string
+    price?: number
+    type: string
+  }
+  passengersAndLuggage: {
+    numberOfLuggage: number
+    additionalPassengers: number
+    passengersDetails: PassengerDetails[]
+  }
+  dateScheduled: string
+  dateBooked: string
+  originalDateScheduled: string
+  originDisplayName: string
+  originPlaceId: string
+  originPosition: Partial<LatLng>
+  originTimezone: string
+  originEta?: number
+  destinationDisplayName: string
+  destinationPlaceId: string
+  destinationPosition: Partial<LatLng>
+  destinationEta?: number
+  driverPosition: Partial<LatLng>
+  meetDriverMessage: string
+  meetingPointPosition: Partial<LatLng>
+  status: TripStatus
+  stateDetails: string
+  trainNumber: string | null
+  trainTime: string | null
+  tripId: string | null
+  internalTripId: string | null
+  meta: {
+    [k: string]: string
+  } | null
+}
 
-export const tripTransformer = (trip: OriginalTripFollowResponse) => {
+export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowResponse => {
   const {
     fleet_info = {},
     vehicle,
@@ -63,7 +115,9 @@ export const tripTransformer = (trip: OriginalTripFollowResponse) => {
   const original_date_scheduled = meta?.original_date_scheduled
 
   const datesDifference =
-    original_date_scheduled && moment(date_scheduled).diff(original_date_scheduled) >= 60000
+    original_date_scheduled &&
+    date_scheduled &&
+    new Date(date_scheduled).getTime() - new Date(original_date_scheduled).getTime() >= 60000
 
   const originEta = status === TripStatusCodes.ARRIVED ? 0 : tracking?.origin_eta
 
@@ -72,23 +126,9 @@ export const tripTransformer = (trip: OriginalTripFollowResponse) => {
     fleet,
     priceInfo,
     passengersAndLuggage,
-    dateScheduled:
-      date_scheduled && origin?.timezone
-        ? moment(date_scheduled)
-            .tz(origin.timezone)
-            .format('YYYY-MM-DDTHH:mm')
-        : '',
-    dateBooked: date_booked
-      ? moment(date_booked)
-          .tz(moment.tz.guess())
-          .format('YYYY-MM-DDTHH:mm')
-      : '',
-    originalDateScheduled:
-      datesDifference && origin?.timezone
-        ? moment(original_date_scheduled)
-            .tz(origin.timezone)
-            .format('YYYY-MM-DDTHH:mm')
-        : '',
+    dateScheduled: dv(date_scheduled),
+    dateBooked: dv(date_booked),
+    originalDateScheduled: datesDifference && original_date_scheduled ? original_date_scheduled : '',
     originDisplayName: dv(origin?.display_address),
     originPlaceId: dv(origin?.place_id),
     originPosition: origin?.position || {},

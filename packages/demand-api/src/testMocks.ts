@@ -9,6 +9,8 @@ import {
   QuoteResponseStatuses,
   QuotePriceTypes,
 } from './quotes/types'
+import { TripFollowResponse, TripStatuses } from './trip/types'
+import { FinalFareResponse, FinalFareStatuses } from './fare/types'
 import { PlaceDetailTypes, MeetingPointTypes } from './sharedTypes'
 
 import { errorCodes } from './responseCodes'
@@ -197,6 +199,54 @@ export const getMockedErrorQuotesSerchByIdResponse = (
   error: {
     code,
     message: `Quotes search by id: Something went wrong`,
+  },
+})
+
+export const getMockedTrackTripResponse = (
+  partialBody: Partial<TripFollowResponse> = {}
+): HttpResponseOk<TripFollowResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    trip_id: 'trip_id',
+    date_scheduled: '2020-05-28T08:17:07Z',
+    status: TripStatuses.COMPLETED,
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorTrackTripResponse = (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Track trip: Something went wrong`,
+  },
+})
+
+export const getMockedCancelByFollowCodeResponse = (): HttpResponseOk<object> => ({
+  ok: true,
+  status: 200,
+  body: {},
+})
+
+export const getMockedFinalFareResponse = (
+  partialBody: Partial<FinalFareResponse> = {}
+): HttpResponseOk<FinalFareResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    state: FinalFareStatuses.FINAL,
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorFinalFareResponse = (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Track trip: Something went wrong`,
   },
 })
 
