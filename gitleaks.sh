@@ -1,5 +1,4 @@
-#!/bin/sh
-# This is an example of what adding gitleaks to a pre-commit hook would look like.
+#script that detects hardcoded secrets and prevents pushing them to repo
 
 gitleaksEnabled=$(git config --bool hooks.gitleaks)
 cmd="gitleaks --repo-path=./ --verbose --redact --pretty"
