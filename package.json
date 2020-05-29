@@ -39,7 +39,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "./gitleaks.sh lint-staged",
       "pre-push": "npm run bootstrap && npm run build && npm run test"
     }
   },
