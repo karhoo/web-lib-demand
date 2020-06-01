@@ -6,6 +6,7 @@ import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
 import { FlagsService } from '../flags/FlagsService'
+import { UserService } from '../user/UserService'
 import { AuthService } from '../auth/AuthService'
 
 import { Api, ApiOptions } from './types'
@@ -43,6 +44,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     fareService: new FareService(httpV1),
     paymentService: new PaymentService(httpV2),
     flagsService: new FlagsService(httpV1),
+    userService: new UserService(httpV1),
     authService: new AuthService(httpV1),
   }
 }
