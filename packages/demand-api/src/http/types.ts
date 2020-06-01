@@ -41,4 +41,5 @@ export interface Http {
   post<T>(url: string, body: object, options?: MethodRequestOptions, query?: Query): Promise<HttpResponse<T>>
   put<T>(url: string, body: object, options?: MethodRequestOptions): Promise<HttpResponse<T>>
   remove<T>(url: string, options?: MethodRequestOptions): Promise<HttpResponse<T>>
+  patch<T>(url: string, body: object, options?: MethodRequestOptions): Promise<HttpResponse<T>>
 }
