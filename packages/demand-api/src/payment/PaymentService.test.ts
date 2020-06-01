@@ -6,6 +6,7 @@ describe('PaymentService', () => {
     post: jest.fn(),
     put: jest.fn(),
     remove: jest.fn(),
+    patch: jest.fn(),
   }
 
   beforeEach(() => {

@@ -95,6 +95,10 @@ export class HttpService implements Http {
     return this.request<T>(url, { method: 'DELETE', ...options })
   }
 
+  public patch<T>(url: string, body: object, options: MethodRequestOptions = {}): Promise<HttpResponse<T>> {
+    return this.request<T>(url, { method: 'PATCH', ...options, ...toJsonBody(body, options.headers) })
+  }
+
   private async request<T>(url: string, options: RequestOptions, query?: Query): Promise<HttpResponse<T>> {
     const defaultRequestOptions = {
       credentials: 'include' as const,
