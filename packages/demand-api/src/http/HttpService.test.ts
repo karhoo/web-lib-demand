@@ -285,6 +285,35 @@ describe('HttpService', () => {
       )
     })
 
+    it('should make patch request', async () => {
+      const response = await new HttpService(url).patch(path, { one: 'oneValue', two: 'twoValue' })
+
+      expect(response).toEqual({ ok: true, status: 200, body })
+    })
+
+    it('should call fetchMock with PATCH method and expected parameters', async () => {
+      const requestBody = { one: 'oneValue', two: 'twoValue' }
+      const requestHeaders = { origin: 'origin' }
+      const options = { redirect: 'error' as const, headers: requestHeaders }
+
+      await new HttpService(url).patch(path, requestBody, options)
+
+      expect(fetchMock).toBeCalledWith(
+        expectedPath,
+        getExpectedFetchParams(
+          {
+            method: 'PATCH',
+            body: JSON.stringify(requestBody),
+            redirect: options.redirect,
+          },
+          {
+            'content-type': 'application/json',
+            ...requestHeaders,
+          }
+        )
+      )
+    })
+
     it('should call middleware', async () => {
       const middlewareStub = jest.fn()
       const http = new HttpService(url).setResponseMiddleware(middlewareStub)
