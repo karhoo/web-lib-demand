@@ -3,8 +3,8 @@ import {
   PassengerDetails,
   LatLng,
   TripStatus,
+  TripStatuses,
 } from '@karhoo/demand-api'
-import { TripStatusCodes } from './statuses'
 
 const dv = (v: string | undefined) => v || ''
 
@@ -119,7 +119,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowRes
     date_scheduled &&
     new Date(date_scheduled).getTime() - new Date(original_date_scheduled).getTime() >= 60000
 
-  const originEta = status === TripStatusCodes.ARRIVED ? 0 : tracking?.origin_eta
+  const originEta = status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta
 
   return {
     driver,

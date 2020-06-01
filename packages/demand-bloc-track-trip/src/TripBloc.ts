@@ -5,11 +5,12 @@ import {
   Fare,
   FinalFareResponse,
   CancellationParams,
+  FinalFareStatuses,
 } from '@karhoo/demand-api'
 import { Subject, Subscription } from 'rxjs'
 import { publishReplay, refCount } from 'rxjs/operators'
 import { poll } from './polling'
-import { FinalTripStatuses, FinalFareStatuses } from './statuses'
+import { FinalTripStatuses } from './statuses'
 import { tripTransformer, TripFollowResponse } from './tripTransformer'
 
 const POLLING_INTERVAL_TRACK = 5000

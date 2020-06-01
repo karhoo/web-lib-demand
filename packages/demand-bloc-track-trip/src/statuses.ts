@@ -1,50 +1,24 @@
-// TODO: import from demand-api
-export const TripStatusCodes = {
-  ARRIVED: 'ARRIVED',
-  BOOKER_CANCELLED: 'BOOKER_CANCELLED',
-  COMPLETED: 'COMPLETED',
-  CONFIRMED: 'CONFIRMED',
-  DRIVER_CANCELLED: 'DRIVER_CANCELLED',
-  DRIVER_EN_ROUTE: 'DRIVER_EN_ROUTE',
-  NO_DRIVERS_AVAILABLE: 'NO_DRIVERS_AVAILABLE',
-  POB: 'POB',
-  REQUESTED: 'REQUESTED',
-  KARHOO_CANCELLED: 'KARHOO_CANCELLED',
-}
+import { TripStatuses, TripStatus } from '@karhoo/demand-api'
 
-export const FinalFareStatuses = {
-  PENDING: 'PENDING',
-  FINAL: 'FINAL',
-  CANCELLED: 'CANCELLED',
-  FAILED: 'FAILED',
-}
-
-export const FinalTripStatuses = [
-  TripStatusCodes.COMPLETED,
-  TripStatusCodes.BOOKER_CANCELLED,
-  TripStatusCodes.DRIVER_CANCELLED,
-  TripStatusCodes.NO_DRIVERS_AVAILABLE,
+export const FinalTripStatuses: TripStatus[] = [
+  TripStatuses.COMPLETED,
+  TripStatuses.BOOKER_CANCELLED,
+  TripStatuses.DRIVER_CANCELLED,
+  TripStatuses.NO_DRIVERS_AVAILABLE,
 ]
 
-export const TrackableStatuses = [
-  TripStatusCodes.ARRIVED,
-  TripStatusCodes.DRIVER_EN_ROUTE,
-  TripStatusCodes.POB,
-]
+export const TrackableStatuses = [TripStatuses.ARRIVED, TripStatuses.DRIVER_EN_ROUTE, TripStatuses.POB]
 
 export const CancelableStatuses = [
-  TripStatusCodes.ARRIVED,
-  TripStatusCodes.CONFIRMED,
-  TripStatusCodes.DRIVER_EN_ROUTE,
-  TripStatusCodes.REQUESTED,
+  TripStatuses.ARRIVED,
+  TripStatuses.CONFIRMED,
+  TripStatuses.DRIVER_EN_ROUTE,
+  TripStatuses.REQUESTED,
 ]
 
-export const BeforeDriverEnRouteStatuses = [TripStatusCodes.REQUESTED, TripStatusCodes.CONFIRMED]
+export const BeforeDriverEnRouteStatuses = [TripStatuses.REQUESTED, TripStatuses.CONFIRMED]
 
-export const CancelledByFleetStatuses = [
-  TripStatusCodes.NO_DRIVERS_AVAILABLE,
-  TripStatusCodes.DRIVER_CANCELLED,
-]
+export const CancelledByFleetStatuses = [TripStatuses.NO_DRIVERS_AVAILABLE, TripStatuses.DRIVER_CANCELLED]
 
 export const StateDetailsCodes = {
   REASON_NOT_SET: 'REASON_NOT_SET',
