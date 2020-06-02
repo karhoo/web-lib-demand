@@ -6,6 +6,7 @@ import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
 import { FlagsService } from '../flags/FlagsService'
+import { UserService } from '../user/UserService'
 import { AuthService } from '../auth/AuthService'
 
 export type ApiOptions = Partial<{
@@ -23,5 +24,6 @@ export type Api = {
   fareService: FareService
   paymentService: PaymentService
   flagsService: FlagsService
+  userService: UserService
   authService: AuthService
 }
