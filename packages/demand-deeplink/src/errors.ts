@@ -25,7 +25,7 @@ export const errorMessageByCode = {
   [codes.DP008]: 'Unable to check availability',
   [codes.DP009]: 'Pickup time is specified without pickup place',
   [codes.DP010]: `Unsupported booking type. Supported types are ${BookingTypes.ASAP} and ${BookingTypes.PREBOOK}`,
-  [codes.DP011]: `Booking type is ${BookingTypes.ASAP} but time is specified`,
+  [codes.DP011]: `Booking type is ${BookingTypes.ASAP} but pickup time is specified`,
 }
 
 export function getError(code: string, path: string) {
