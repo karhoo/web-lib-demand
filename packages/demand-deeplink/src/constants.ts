@@ -4,6 +4,7 @@ export const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
 export const travellerLocaleRegexp = /^[a-z]{2}-[a-z]{2}$/i
 
 export const travellerLocaleParameter = 'traveller-locale'
+export const bookingTypeParameter = 'booking-type'
 export const passengerParameter = 'passengers'
 export const firstNameParameter = 'first-name'
 export const lastNameParameter = 'last-name'
@@ -36,6 +37,7 @@ export const journeyLegMainFields = [
   dropoffParameter,
   dropoffKpoiParameter,
   dropoffPlaceIdParameter,
+  bookingTypeParameter,
 ]
 
 export const deepLinkMetaPrefix = 'meta.'
@@ -51,4 +53,10 @@ export const journeyLegMetaPrefixes: Record<string, string> = {
   dropoffMeta: journeyLegDropoffMetaPrefix,
   meta: journeyLegMetaPrefix,
   passengerInfo: journeyLegMetaPrefix,
+}
+
+export enum BookingTypes {
+  ASAP = 'ASAP',
+  PREBOOK = 'PRE-BOOK',
+  CUSTOM = 'CUSTOM',
 }

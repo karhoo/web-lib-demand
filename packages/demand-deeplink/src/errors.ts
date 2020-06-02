@@ -1,3 +1,5 @@
+import { BookingTypes } from './constants'
+
 export const codes = {
   DP001: 'DP001',
   DP002: 'DP002',
@@ -8,6 +10,8 @@ export const codes = {
   DP007: 'DP007',
   DP008: 'DP008',
   DP009: 'DP009',
+  DP010: 'DP010',
+  DP011: 'DP011',
 }
 
 export const errorMessageByCode = {
@@ -20,6 +24,8 @@ export const errorMessageByCode = {
   [codes.DP007]: 'No information about place in response',
   [codes.DP008]: 'Unable to check availability',
   [codes.DP009]: 'Pickup time is specified without pickup place',
+  [codes.DP010]: `Unsupported booking type. Supported types are ${BookingTypes.ASAP} and ${BookingTypes.PREBOOK}`,
+  [codes.DP011]: `Booking type is ${BookingTypes.ASAP} but time is specified`,
 }
 
 export function getError(code: string, path: string) {

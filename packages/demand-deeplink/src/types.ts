@@ -43,6 +43,8 @@ export type PassengerInfo = Partial<{
   luggage: number
 }>
 
+export type BookingType = 'ASAP' | 'PRE-BOOK' | 'CUSTOM'
+
 export type JourneyLeg = Partial<{
   pickup: string
   pickupKpoi: string
@@ -55,10 +57,12 @@ export type JourneyLeg = Partial<{
   dropoffMeta: Dictionary<string>
   passengerInfo: PassengerInfo
   meta: Dictionary<string>
+  bookingType: BookingType
 }>
 
 export type DeeplinkData = {
   legs: JourneyLeg[]
+  bookingType: BookingType
   passengerInfo: PassengerInfo
   travellerLocale?: string
   meta: Dictionary<string>

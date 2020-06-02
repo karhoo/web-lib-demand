@@ -1,11 +1,12 @@
 import { toPairs } from 'lodash'
 
-import { getJourneyLegs, parse } from './parse'
+import { BookingTypes } from './constants'
 import {
   firstJourneyLeg,
   firstJourneyLegDropoffMeta,
   firstJourneyLegMeta,
   firstJourneyLegPickupMeta,
+  firstJourneyLegBookingType,
   secondJourneyLeg,
   passengerInfo,
   meta,
@@ -17,7 +18,10 @@ import {
   expectedPassengerInfo,
   expectedSecondJourneyLeg,
   expectedMeta,
+  expectedFirstJourneyLegBookingType,
 } from './testData'
+
+import { getJourneyLegs, parse } from './parse'
 
 describe('parse', () => {
   const getQueryString = (data: object) =>
@@ -26,39 +30,36 @@ describe('parse', () => {
       .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
       .join('&')
 
+  const defaultExpectedInfo = {
+    legs: [],
+    passengerInfo: {},
+    bookingType: BookingTypes.PREBOOK,
+    travellerLocale: undefined,
+    meta: {},
+  }
+
   it('should return empty info', () => {
-    expect(parse('')).toEqual({
-      legs: [],
-      passengerInfo: {},
-      travellerLocale: undefined,
-      meta: {},
-    })
+    expect(parse('')).toEqual(defaultExpectedInfo)
   })
 
   it('should have passenger info', () => {
     expect(parse(getQueryString(passengerInfo))).toEqual({
-      legs: [],
-      travellerLocale: undefined,
-      meta: {},
+      ...defaultExpectedInfo,
       passengerInfo: expectedPassengerInfo,
     })
   })
 
   it('should have travellerLocale', () => {
     expect(parse(`traveller-locale=${travellerLocale}`)).toEqual({
-      legs: [],
+      ...defaultExpectedInfo,
       travellerLocale,
-      meta: {},
-      passengerInfo: {},
     })
   })
 
   it('should have meta', () => {
     expect(parse(getQueryString(meta))).toEqual({
-      legs: [],
-      travellerLocale: undefined,
+      ...defaultExpectedInfo,
       meta: expectedMeta,
-      passengerInfo: {},
     })
   })
 
@@ -69,11 +70,22 @@ describe('parse', () => {
     }
 
     expect(parse(getQueryString(customFields))).toEqual({
-      legs: [],
-      travellerLocale: undefined,
-      meta: {},
-      passengerInfo: {},
+      ...defaultExpectedInfo,
       customFields,
+    })
+  })
+
+  it('should have provided bookingType', () => {
+    expect(parse(`booking-type=${BookingTypes.ASAP}`)).toEqual({
+      ...defaultExpectedInfo,
+      bookingType: BookingTypes.ASAP,
+    })
+  })
+
+  it('should set CUSTOM bookingType in case of unexpected booking type parameter', () => {
+    expect(parse(`booking-type=test`)).toEqual({
+      ...defaultExpectedInfo,
+      bookingType: BookingTypes.CUSTOM,
     })
   })
 
@@ -84,14 +96,12 @@ describe('parse', () => {
     }
 
     expect(parse(getQueryString(fields))).toEqual({
+      ...defaultExpectedInfo,
       legs: [
         {
           dropoff: fields['leg-1-dropoff'],
         },
       ],
-      travellerLocale: undefined,
-      meta: {},
-      passengerInfo: {},
       customFields: {
         'leg-1-dropoff-some-data': fields['leg-1-dropoff-some-data'],
       },
@@ -151,6 +161,15 @@ describe('parse', () => {
         {
           ...expectedFirstJourneyLeg,
           passengerInfo: expectedPassengerInfo,
+        },
+      ])
+    })
+
+    it('should have bookingType', () => {
+      expect(getJourneyLegs([...toPairs(firstJourneyLeg), ...toPairs(firstJourneyLegBookingType)])).toEqual([
+        {
+          ...expectedFirstJourneyLeg,
+          ...expectedFirstJourneyLegBookingType,
         },
       ])
     })

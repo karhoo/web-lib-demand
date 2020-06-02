@@ -2,6 +2,8 @@ import camelCase from 'lodash/camelCase'
 import toPairs from 'lodash/toPairs'
 import fromPairs from 'lodash/fromPairs'
 
+import { BookingTypes } from './constants'
+
 export const travellerLocale = 'en-GB'
 
 export const passengerInfo = {
@@ -67,6 +69,10 @@ export const firstJourneyLegDropoffMeta = {
   'leg-1-m-dropoff-second-test': 'dropoff second test',
 }
 
+export const firstJourneyLegBookingType = {
+  'leg-1-booking-type': BookingTypes.ASAP,
+}
+
 export const secondJourneyLeg = {
   'leg-2-pickup': 'Mercure, Paris, Hotel',
   'leg-2-pickup-kpoi': 'MPH2',
@@ -86,6 +92,10 @@ export const expectedPassengerInfo = {
 export const expectedMeta = {
   first: meta['meta.first'],
   second: meta['meta.second'],
+}
+
+export const expectedFirstJourneyLegBookingType = {
+  bookingType: firstJourneyLegBookingType['leg-1-booking-type'],
 }
 
 export const expectedFirstJourneyLeg = {

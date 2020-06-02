@@ -104,6 +104,7 @@ const deeplinkData = {
     passengers: 3,
     firstName: 'Jon',
   },
+  bookingType: 'PRE-BOOK',
   meta: {},
 }
 ```
@@ -136,12 +137,12 @@ const deeplink = generate(deeplinkData)
 ```
 
 ```js
-console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon
+console.log(deeplink) // ?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon&booking-type=PRE-BOOK
 ```
 
 When you get a deeplink you can navigate your user from your website by adding the link to `href` attribute.
 
-For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon"> Book a cab to a hotel </a>`
+For example, `<a target="_blank" href="https://your-branded-app.kathoo.com/landing/?leg-1-dropoff=Hotel+Ermitage%2C+London%2C+UK&leg-1-pickup-time=2020-03-12T12%3A00%3A00%2B01%3A00&passengers=3&first-name=Jon&booking-type=PRE-BOOK"> Book a cab to a hotel </a>`
 
 ## Issues
 

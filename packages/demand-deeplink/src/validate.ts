@@ -6,6 +6,7 @@ import {
   passengerParameter,
   luggageParameter,
   trainTimeParameter,
+  BookingTypes,
 } from './constants'
 import { isNotEmptyString, isObject, isPositiveInteger, excludeUndefined } from './utils'
 import { codes, getError } from './errors'
@@ -16,6 +17,7 @@ import {
   ValidationResponse,
   ValidationError,
   Dictionary,
+  BookingType,
 } from './types'
 
 const devIsObjectCheck = (data: object, fieldName: string) => {
@@ -61,6 +63,14 @@ function validateTravellerLocale(locale?: string) {
     : [getError(codes.DP003, 'travellerLocale')]
 }
 
+function validateBookingType(bookingType: BookingType, fieldName = 'bookingType') {
+  if (bookingType === BookingTypes.ASAP || bookingType === BookingTypes.PREBOOK) {
+    return []
+  }
+
+  return [getError(codes.DP010, fieldName)]
+}
+
 function validateRoute(fields: string[], fieldName: string) {
   const errors = []
 
@@ -75,7 +85,7 @@ function validateRoute(fields: string[], fieldName: string) {
   return errors
 }
 
-function validateTime(time: string, fieldName: string) {
+function validateTime(time: string | undefined, fieldName: string) {
   if (!time) {
     return [getError(codes.DP001, fieldName)]
   }
@@ -85,16 +95,24 @@ function validateTime(time: string, fieldName: string) {
   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
 
-export function validateLeg(leg: JourneyLeg, path: string) {
+function validatePickupTime(time: string | undefined, bookingType: BookingType) {
+  const errors = []
+
+  if (bookingType === BookingTypes.ASAP && !isUndefined(time)) {
+    errors.push(getError(codes.DP011, 'pickupTime'))
+  }
+
+  if (bookingType === BookingTypes.PREBOOK) {
+    errors.push(...validateTime(time, 'pickupTime'))
+  }
+
+  return errors
+}
+
+export function validateLeg(leg: JourneyLeg, defaultBookingType: BookingType, path: string) {
   const errors = []
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
-
-  if (!pickUpFields.length && !dropoffFields.length) {
-    errors.push(getError(codes.DP001, path))
-  } else if (pickUpFields[0] === dropoffFields[0]) {
-    errors.push(getError(codes.DP006, path))
-  }
 
   const collectErrors = (currentErrors: ValidationError[]) =>
     errors.push(
@@ -104,9 +122,21 @@ export function validateLeg(leg: JourneyLeg, path: string) {
       })
     )
 
+  if (!pickUpFields.length && !dropoffFields.length) {
+    errors.push(getError(codes.DP001, path))
+  } else if (pickUpFields[0] === dropoffFields[0]) {
+    errors.push(getError(codes.DP006, path))
+  }
+
+  if (leg.bookingType) {
+    collectErrors(validateBookingType(leg.bookingType))
+  }
+
+  const activeBookingType = leg.bookingType ?? defaultBookingType
+
   if (pickUpFields.length) {
     collectErrors(validateRoute(pickUpFields, 'pickup'))
-    collectErrors(validateTime(leg.pickupTime || '', 'pickupTime'))
+    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType))
   } else if (!isUndefined(leg.pickupTime)) {
     collectErrors([getError(codes.DP009, 'pickup')])
   }
@@ -131,10 +161,10 @@ export function validateLeg(leg: JourneyLeg, path: string) {
 
 export function validate(deeplinkData: DeeplinkData): ValidationResponse {
   const errors = []
-  const { legs, passengerInfo, travellerLocale, meta, customFields } = deeplinkData
+  const { legs, passengerInfo, travellerLocale, meta, customFields, bookingType } = deeplinkData
 
   if (legs.length) {
-    legs.forEach((leg, index) => errors.push(...validateLeg(leg, `legs.${index}`)))
+    legs.forEach((leg, index) => errors.push(...validateLeg(leg, bookingType, `legs.${index}`)))
   } else {
     errors.push(getError(codes.DP001, 'legs'))
   }
@@ -142,6 +172,7 @@ export function validate(deeplinkData: DeeplinkData): ValidationResponse {
   errors.push(
     ...validatePassengerInfo(passengerInfo),
     ...validateTravellerLocale(travellerLocale),
+    ...validateBookingType(bookingType),
     ...validateMeta(meta)
   )
 
