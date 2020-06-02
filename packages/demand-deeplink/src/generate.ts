@@ -7,6 +7,7 @@ import {
   journeyLegPrefix,
   deepLinkMetaPrefix,
   travellerLocaleParameter,
+  bookingTypeParameter,
   journeyLegMetaPrefixes,
 } from './constants'
 
@@ -63,6 +64,7 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
 export function generate(deeplink: DeeplinkData): string {
   const legsParams = getJorneyLegsParams(deeplink.legs)
   const passengerInfoParams = getAvailableParams(deeplink.passengerInfo, '', kebabCase)
+  const bookingTypeParam = [[bookingTypeParameter, deeplink.bookingType]]
   const travellerLocaleParam = deeplink.travellerLocale
     ? [[travellerLocaleParameter, deeplink.travellerLocale]]
     : []
@@ -75,6 +77,7 @@ export function generate(deeplink: DeeplinkData): string {
     ...travellerLocaleParam,
     ...metaParams,
     ...customFieldsParams,
+    ...bookingTypeParam,
   ]
   const queryString = new URLSearchParams(queryParams).toString()
 

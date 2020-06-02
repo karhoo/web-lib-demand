@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined'
 import fromPairs from 'lodash/fromPairs'
 import isNil from 'lodash/isNil'
 
@@ -25,6 +26,8 @@ import {
   dropoffParameter,
   dropoffKpoiParameter,
   dropoffPlaceIdParameter,
+  bookingTypeParameter,
+  BookingTypes,
 } from './constants'
 
 const legNameIndex = 2
@@ -72,6 +75,16 @@ const isLegPassengerInfoMeta = (key: string) =>
 
 const isLegQueryParameter = (key: string) => isLegCommonQueryParameter(key) || isLegMetaQueryParameter(key)
 
+function getBookingType(type?: string) {
+  if (!type) {
+    return BookingTypes.PREBOOK
+  }
+
+  const value = type.toUpperCase()
+
+  return value === BookingTypes.PREBOOK || value === BookingTypes.ASAP ? value : BookingTypes.CUSTOM
+}
+
 function getPassengerInfo(data: Dictionary<string>): PassengerInfo {
   return {
     passengers: data[passengerParameter] ? parseFloat(data[passengerParameter]) : undefined,
@@ -87,6 +100,9 @@ function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
   const pickupMeta = transformMapByKey(data, journeyLegPickupMetaPrefix, isLegPickupMeta)
   const dropoffMeta = transformMapByKey(data, journeyLegDropoffMetaPrefix, isLegDropoffMeta)
   const passengerInfo = transformMapByKey(data, journeyLegMetaPrefix, isLegPassengerInfoMeta)
+  const bookingType = !isUndefined(data[bookingTypeParameter])
+    ? getBookingType(data[bookingTypeParameter])
+    : undefined
 
   const meta = transformMapByKey(
     data,
@@ -102,6 +118,7 @@ function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
     dropoff: data[dropoffParameter],
     dropoffKpoi: data[dropoffKpoiParameter],
     dropoffPlaceId: data[dropoffPlaceIdParameter],
+    bookingType,
     ...(hasData(pickupMeta) ? { pickupMeta } : {}),
     ...(hasData(dropoffMeta) ? { dropoffMeta } : {}),
     ...(hasData(meta) ? { meta } : {}),
@@ -153,9 +170,13 @@ export function parse(query: string): DeeplinkData {
   const passengerFields = data.filter(([key]) => passengerInfoFields.indexOf(key) >= 0)
   const metaFields = data.filter(([key]) => key.indexOf(deepLinkMetaPrefix) === 0)
 
-  const expectedKeys = [[travellerLocaleParameter], ...metaFields, ...passengerFields, ...legFields].map(
-    ([key]) => key
-  )
+  const expectedKeys = [
+    [travellerLocaleParameter],
+    [bookingTypeParameter],
+    ...metaFields,
+    ...passengerFields,
+    ...legFields,
+  ].map(([key]) => key)
 
   const customFields = data.filter(([key]) => expectedKeys.indexOf(key) === -1)
 
@@ -163,6 +184,7 @@ export function parse(query: string): DeeplinkData {
     legs: getJourneyLegs(legFields),
     passengerInfo: getPassengerInfo(fromPairs(passengerFields)),
     travellerLocale: fromPairs(data)[travellerLocaleParameter],
+    bookingType: getBookingType(fromPairs(data)[bookingTypeParameter]),
     meta: transformMapByKey(fromPairs(metaFields), deepLinkMetaPrefix),
     ...(customFields.length ? { customFields: fromPairs(customFields) } : {}),
   }

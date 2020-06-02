@@ -11,7 +11,7 @@ import {
   expectedMeta,
 } from './testData'
 
-import { trainTimeParameter } from './constants'
+import { trainTimeParameter, BookingTypes } from './constants'
 
 describe('parse', () => {
   const baseDeeplinkData = {
@@ -33,6 +33,7 @@ describe('parse', () => {
     ],
     passengerInfo: expectedPassengerInfo,
     travellerLocale,
+    bookingType: BookingTypes.PREBOOK,
     meta: expectedMeta,
   }
 
@@ -59,6 +60,7 @@ describe('parse', () => {
     const deeplinkData = {
       legs: baseDeeplinkData.legs,
       passengerInfo: {},
+      bookingType: BookingTypes.PREBOOK,
       meta: {},
     }
 
@@ -69,6 +71,7 @@ describe('parse', () => {
     const deeplinkData = {
       legs: [],
       passengerInfo: {},
+      bookingType: BookingTypes.PREBOOK,
       meta: {},
     }
 
@@ -127,6 +130,13 @@ describe('parse', () => {
     })
   })
 
+  it('should return error if bookingType is neiter ASAP nor PRE-BOOK', () => {
+    expect(validate(getData({ bookingType: BookingTypes.CUSTOM }))).toEqual({
+      ok: false,
+      errors: [getError(codes.DP010, 'bookingType')],
+    })
+  })
+
   describe('validateLeg', () => {
     const getData = (data: any) => ({
       ...baseDeeplinkData.legs[0],
@@ -134,69 +144,94 @@ describe('parse', () => {
     })
 
     it('should return empty array when there is no errors', () => {
-      expect(validateLeg(baseDeeplinkData.legs[0], 'legs.0')).toEqual([])
+      expect(validateLeg(baseDeeplinkData.legs[0], BookingTypes.PREBOOK, 'legs.0')).toEqual([])
     })
 
     it('should return errors when there is no pickup and dropoff', () => {
       expect(
-        validateLeg(getData({ pickup: undefined, dropoff: undefined, pickupTime: undefined }), 'legs.0')
+        validateLeg(
+          getData({ pickup: undefined, dropoff: undefined, pickupTime: undefined }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([expectedError(codes.DP001, 'legs.0')])
     })
 
     it('should return errors when pickup is the same as dropoff', () => {
       const pickup = 'place'
 
-      expect(validateLeg(getData({ pickup, dropoff: pickup }), 'legs.0')).toEqual([
+      expect(validateLeg(getData({ pickup, dropoff: pickup }), BookingTypes.PREBOOK, 'legs.0')).toEqual([
         expectedError(codes.DP006, 'legs.0'),
       ])
     })
 
     it('should return errors when there is pickup but it is empty string', () => {
-      expect(validateLeg(getData({ pickup: '', dropoff: undefined }), 'legs.0')).toEqual([
-        expectedError(codes.DP005, 'legs.0.pickup'),
-      ])
+      expect(
+        validateLeg(getData({ pickup: '', dropoff: undefined }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([expectedError(codes.DP005, 'legs.0.pickup')])
     })
 
     it('should return errors when there is dropoff but it is empty string', () => {
       expect(
-        validateLeg(getData({ pickup: undefined, dropoff: '', pickupTime: undefined }), 'legs.0')
+        validateLeg(
+          getData({ pickup: undefined, dropoff: '', pickupTime: undefined }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([expectedError(codes.DP005, 'legs.0.dropoff')])
     })
 
     it('should return errors when multiple pickups are provided', () => {
-      expect(validateLeg(getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId' }), 'legs.0')).toEqual([
-        expectedError(codes.DP002, 'legs.0.pickup'),
-      ])
+      expect(
+        validateLeg(
+          getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId' }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
     })
 
     it('should return errors when multiple dropoffs are provided', () => {
       expect(
-        validateLeg(getData({ dropoff: 'dropoff', dropoffPlaceId: 'dropoffPlaceId' }), 'legs.0')
+        validateLeg(
+          getData({ dropoff: 'dropoff', dropoffPlaceId: 'dropoffPlaceId' }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([expectedError(codes.DP002, 'legs.0.dropoff')])
     })
 
     it('should return errors when multiple pickups with pickupKpoi are provided', () => {
       expect(
-        validateLeg(getData({ pickupKpoi: 'pickupKpoi', pickupPlaceId: 'pickupPlaceId' }), 'legs.0')
+        validateLeg(
+          getData({ pickupKpoi: 'pickupKpoi', pickupPlaceId: 'pickupPlaceId' }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
     })
 
     it('should return errors when pickupTime is provided and pickup not', () => {
       expect(
-        validateLeg(getData({ pickup: undefined, pickupTime: '2020-08-09T18:31:42' }), 'legs.0')
+        validateLeg(
+          getData({ pickup: undefined, pickupTime: '2020-08-09T18:31:42' }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([expectedError(codes.DP009, 'legs.0.pickup')])
     })
 
     it('should return errors if pickup is provided and pickupTime not', () => {
-      expect(validateLeg(getData({ pickup: 'pickup', pickupTime: undefined }), 'legs.0')).toEqual([
-        expectedError(codes.DP001, 'legs.0.pickupTime'),
-      ])
+      expect(
+        validateLeg(getData({ pickup: 'pickup', pickupTime: undefined }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([expectedError(codes.DP001, 'legs.0.pickupTime')])
     })
 
     it('should return multiple errors if multiple pickup is provided and pickupTime not', () => {
       expect(
         validateLeg(
           getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId', pickupTime: undefined }),
+          BookingTypes.PREBOOK,
           'legs.0'
         )
       ).toEqual([
@@ -206,20 +241,24 @@ describe('parse', () => {
     })
 
     it('should return errors if pickupTime has no timezone', () => {
-      expect(validateLeg(getData({ pickupTime: '2020-08-09T18:31:42' }), 'legs.0')).toEqual([
+      expect(
+        validateLeg(getData({ pickupTime: '2020-08-09T18:31:42' }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([
         expectedError(codes.DP003, 'legs.0.pickupTime'),
         expectedError(codes.DP004, 'legs.0.pickupTime'),
       ])
     })
 
     it('should return errors if pickupTime has wrong format', () => {
-      expect(validateLeg(getData({ pickupTime: '2020-08-09T18+01:00' }), 'legs.0')).toEqual([
-        expectedError(codes.DP003, 'legs.0.pickupTime'),
-      ])
+      expect(
+        validateLeg(getData({ pickupTime: '2020-08-09T18+01:00' }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([expectedError(codes.DP003, 'legs.0.pickupTime')])
     })
 
     it('should return empty array if pickupTime has default timezone', () => {
-      expect(validateLeg(getData({ pickupTime: '2020-08-09T18:31:42Z' }), 'legs.0')).toEqual([])
+      expect(
+        validateLeg(getData({ pickupTime: '2020-08-09T18:31:42Z' }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([])
     })
 
     it('should return empty array when legs contain valid meta', () => {
@@ -230,6 +269,7 @@ describe('parse', () => {
             pickupMeta: expectedFirstJourneyLegPickupMeta,
             dropoffMeta: expectedFirstJourneyLegDropoffMeta,
           }),
+          BookingTypes.PREBOOK,
           'legs.0'
         )
       ).toEqual([])
@@ -237,13 +277,21 @@ describe('parse', () => {
 
     it('should return errors if train-time has wrong format', () => {
       expect(
-        validateLeg(getData({ meta: { [trainTimeParameter]: '2020-08-09T18+01:00' } }), 'legs.0')
+        validateLeg(
+          getData({ meta: { [trainTimeParameter]: '2020-08-09T18+01:00' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([expectedError(codes.DP003, 'legs.0.meta.train-time')])
     })
 
     it('should return meta errors with train-time error if other meta fields are wrong format', () => {
       expect(
-        validateLeg(getData({ meta: { train: 4312, [trainTimeParameter]: '2020-08-09T18+01:00' } }), 'legs.0')
+        validateLeg(
+          getData({ meta: { train: 4312, [trainTimeParameter]: '2020-08-09T18+01:00' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
       ).toEqual([
         expectedError(codes.DP005, 'legs.0.meta.train'),
         expectedError(codes.DP003, 'legs.0.meta.train-time'),
@@ -251,7 +299,39 @@ describe('parse', () => {
     })
 
     it('should not return train-time errors if train-time is undefined', () => {
-      expect(validateLeg(getData({ meta: { train: '4312' } }), 'legs.0')).toEqual([])
+      expect(validateLeg(getData({ meta: { train: '4312' } }), BookingTypes.PREBOOK, 'legs.0')).toEqual([])
+    })
+
+    it('should return error if bookingType is neiter ASAP nor PRE-BOOK', () => {
+      expect(validateLeg(getData({ pickupTime: undefined }), BookingTypes.ASAP, 'legs.0')).toEqual([])
+    })
+
+    it('should not return error if defaultBookingType is ASAP and pickupTime is undefined', () => {
+      expect(
+        validateLeg(getData({ bookingType: BookingTypes.CUSTOM }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([expectedError(codes.DP010, 'legs.0.bookingType')])
+    })
+
+    it('should return error if defaultBookingType is ASAP and pickupTime is specified', () => {
+      expect(validateLeg(getData({}), BookingTypes.ASAP, 'legs.0')).toEqual([
+        expectedError(codes.DP011, 'legs.0.pickupTime'),
+      ])
+    })
+
+    it('should not return error if bookingType of the leg is ASAP and pickupTime is undefined', () => {
+      expect(
+        validateLeg(
+          getData({ bookingType: BookingTypes.ASAP, pickupTime: undefined }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([])
+    })
+
+    it('should return error if defaultBookingType is ASAP and pickupTime is specified', () => {
+      expect(
+        validateLeg(getData({ bookingType: BookingTypes.ASAP }), BookingTypes.PREBOOK, 'legs.0')
+      ).toEqual([expectedError(codes.DP011, 'legs.0.pickupTime')])
     })
   })
 })
