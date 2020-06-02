@@ -3,7 +3,7 @@ import { Quote } from '../quotes/types'
 import { VehicleAttributes } from '../sharedTypes'
 import { HttpResponse } from '../http/types'
 
-type PassengerDetails = {
+export type PassengerDetails = {
   first_name?: string
   last_name: string
   email?: string

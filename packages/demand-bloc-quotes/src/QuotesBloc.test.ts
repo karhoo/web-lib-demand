@@ -64,7 +64,6 @@ describe('QuotesBloc', () => {
   const mockedQuotesSerchByIdResponse = getMockedQuotesSerchByIdResponse({ quote_items: testQuoteItems })
 
   const quotesMock = {
-    checkAvailability: jest.fn(),
     quotesSearch: jest.fn(
       (): Promise<HttpResponse<QuotesResponse>> => Promise.resolve(mockedQuotesSearchResponse)
     ),
