@@ -1,1 +1,2 @@
-export { TrackTripBloc } from './TrackTripBloc'
+export { TripBloc } from './TripBloc'
+export * from './statuses'

@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v4.1.0) (2020-06-01)
+
+
+* ET-997 Add method patch to Http Service. Delete User Service (#62) ([1e53fbe](https://github.com/karhoo/web-lib-demand/commit/1e53fbeb07d05b5cbc2118294b6eadc583f4cf88)), closes [#62](https://github.com/karhoo/web-lib-demand/issues/62)
+
+
+### Features
+
+* add logic for trip bloc ([5b673f2](https://github.com/karhoo/web-lib-demand/commit/5b673f27b2eaa9210da03979c116734835d6ff7c))
+* add tests, fix and update types ([af6b699](https://github.com/karhoo/web-lib-demand/commit/af6b6997b23a0a4c2bf71d5a919293a4ccffa7ea))
+* bootstrap demand-bloc-track-trip module ([f1ccea5](https://github.com/karhoo/web-lib-demand/commit/f1ccea5fb6b331a74dd37b17e6263ce0f72a2c83))
+* export trip module types ([1512c5f](https://github.com/karhoo/web-lib-demand/commit/1512c5f8133c029fca66411ba46b61453e0cfe91))
+* import types from demand-api ([e5d08c7](https://github.com/karhoo/web-lib-demand/commit/e5d08c7453394a07d2f19625c250720725a6274d))
+
+
+### BREAKING CHANGES
+
+* Delete UserService
+
+* fix: Fix unit tests
+
+* v4.0.0
+
+
+
+
+
 # [4.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v4.0.0) (2020-06-01)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-track-trip
