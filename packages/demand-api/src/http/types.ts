@@ -36,6 +36,8 @@ export type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'si
 
 export type DefaultRequestOptionsGetter = () => DefaultRequestOptions | Promise<DefaultRequestOptions>
 
+export type AuthServiceDefaultOptionsGetter = () => {}
+
 export interface Http {
   get<T>(url: string, query?: Query, options?: MethodRequestOptions): Promise<HttpResponse<T>>
   post<T>(url: string, body: object, options?: MethodRequestOptions, query?: Query): Promise<HttpResponse<T>>

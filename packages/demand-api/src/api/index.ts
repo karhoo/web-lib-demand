@@ -18,6 +18,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     defaultRequestOptionsGetter,
     responseMiddleware,
     correlationIdPrefix = '',
+    authServiceDefaultOptionsGetter = () => ({}),
   } = apiOptions
 
   const v1 = `${url}/${apiV1}`
@@ -25,6 +26,9 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
 
   const httpV1 = new HttpService(v1).setCorrelationIdPrefix(correlationIdPrefix)
   const httpV2 = new HttpService(v2).setCorrelationIdPrefix(correlationIdPrefix)
+  const httpForAuthService = new HttpService(v1)
+    .setCorrelationIdPrefix(correlationIdPrefix)
+    .setDefaultRequestOptionsGetter(authServiceDefaultOptionsGetter)
 
   if (defaultRequestOptionsGetter) {
     httpV1.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
@@ -34,6 +38,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
   if (responseMiddleware) {
     httpV1.setResponseMiddleware(responseMiddleware)
     httpV2.setResponseMiddleware(responseMiddleware)
+    httpForAuthService.setResponseMiddleware(responseMiddleware)
   }
 
   return {
@@ -45,6 +50,6 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     paymentService: new PaymentService(httpV2),
     flagsService: new FlagsService(httpV1),
     userService: new UserService(httpV1),
-    authService: new AuthService(httpV1),
+    authService: new AuthService(httpForAuthService),
   }
 }

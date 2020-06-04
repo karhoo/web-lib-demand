@@ -6,6 +6,8 @@ import { QuotesService } from '../quotes/QuotesService'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
+import { UserService } from '../user/UserService'
+import { AuthService } from '../auth/AuthService'
 
 import { defaultUrl, apiV1, apiV2 } from './constants'
 import { getApi } from './index'
@@ -29,6 +31,8 @@ jest.mock('../quotes/QuotesService')
 jest.mock('../trip/TripService')
 jest.mock('../fare/FareService')
 jest.mock('../payment/PaymentService')
+jest.mock('../user/UserService')
+jest.mock('../auth/AuthService')
 
 describe('getApi', () => {
   const params = {
@@ -36,6 +40,7 @@ describe('getApi', () => {
     defaultRequestOptionsGetter: jest.fn(),
     responseMiddleware: jest.fn(),
     correlationIdPrefix: 'correlationIdPrefix',
+    authServiceDefaultOptionsGetter: jest.fn,
   }
 
   beforeEach(() => {
@@ -46,6 +51,8 @@ describe('getApi', () => {
     mocked(TripService).mockClear()
     mocked(FareService).mockClear()
     mocked(PaymentService).mockClear()
+    mocked(UserService).mockClear()
+    mocked(AuthService).mockClear()
     setDefaultRequestOptionsGetter.mockClear()
     setCorrelationIdPrefix.mockClear()
     setResponseMiddleware.mockClear()
@@ -54,29 +61,31 @@ describe('getApi', () => {
   it('should create new instance of HttpService', () => {
     getApi(params)
 
-    expect(HttpService).toHaveBeenCalledTimes(2)
+    expect(HttpService).toHaveBeenCalledTimes(3)
     expect(HttpService).toHaveBeenCalledWith(`${params.url}/${apiV1}`)
     expect(HttpService).toHaveBeenCalledWith(`${params.url}/${apiV2}`)
+    expect(HttpService).toHaveBeenCalledWith(`${params.url}/${apiV1}`)
   })
 
   it('should set correlationIdPrefix', () => {
     getApi(params)
 
-    expect(setCorrelationIdPrefix).toHaveBeenCalledTimes(2)
+    expect(setCorrelationIdPrefix).toHaveBeenCalledTimes(3)
     expect(setCorrelationIdPrefix).toHaveBeenCalledWith(params.correlationIdPrefix)
   })
 
   it('should set defaultRequestOptionsGetter', () => {
     getApi(params)
 
-    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledTimes(2)
+    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledTimes(3)
     expect(setDefaultRequestOptionsGetter).toHaveBeenCalledWith(params.defaultRequestOptionsGetter)
+    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledWith(params.authServiceDefaultOptionsGetter)
   })
 
   it('should set responseMiddleware', () => {
     getApi(params)
 
-    expect(setResponseMiddleware).toHaveBeenCalledTimes(2)
+    expect(setResponseMiddleware).toHaveBeenCalledTimes(3)
     expect(setResponseMiddleware).toHaveBeenCalledWith(params.responseMiddleware)
   })
 
@@ -102,5 +111,9 @@ describe('getApi', () => {
     expect(FareService).toHaveBeenCalledWith(httpService)
     expect(PaymentService).toHaveBeenCalledTimes(1)
     expect(PaymentService).toHaveBeenCalledWith(httpService)
+    expect(UserService).toHaveBeenCalledTimes(1)
+    expect(UserService).toHaveBeenCalledWith(httpService)
+    expect(AuthService).toHaveBeenCalledTimes(1)
+    expect(AuthService).toHaveBeenCalledWith(httpService)
   })
 })
