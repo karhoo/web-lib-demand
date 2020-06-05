@@ -40,7 +40,7 @@ describe('getApi', () => {
     defaultRequestOptionsGetter: jest.fn(),
     responseMiddleware: jest.fn(),
     correlationIdPrefix: 'correlationIdPrefix',
-    authServiceDefaultOptionsGetter: jest.fn,
+    authServiceDefaultOptionsGetter: jest.fn(),
   }
 
   beforeEach(() => {

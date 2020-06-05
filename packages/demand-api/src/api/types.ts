@@ -1,8 +1,4 @@
-import {
-  DefaultRequestOptionsGetter,
-  HttpResponseMiddleware,
-  AuthServiceDefaultOptionsGetter,
-} from '../http/types'
+import { DefaultRequestOptionsGetter, HttpResponseMiddleware } from '../http/types'
 import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
@@ -16,7 +12,7 @@ import { AuthService } from '../auth/AuthService'
 export type ApiOptions = Partial<{
   url: string
   defaultRequestOptionsGetter: DefaultRequestOptionsGetter
-  authServiceDefaultOptionsGetter: AuthServiceDefaultOptionsGetter
+  authServiceDefaultOptionsGetter: DefaultRequestOptionsGetter
   responseMiddleware: HttpResponseMiddleware
   correlationIdPrefix: string
 }>

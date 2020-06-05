@@ -112,9 +112,14 @@ export class HttpService implements Http {
       ...(options.headers || {}),
     })
 
-    const response = await this.responseMiddleware(
-      await request<T>(this.createFullUrl(url, query), { ...defaultRequestOptions, ...options, headers })
-    )
+    const fullUrl = this.createFullUrl(url, query)
+    const requestOptions = { ...defaultRequestOptions, ...options, headers }
+
+    const response = await this.responseMiddleware(await request<T>(fullUrl, requestOptions), {
+      url: fullUrl,
+      timestamp: new Date().toISOString(),
+      options: requestOptions,
+    })
 
     return response
   }

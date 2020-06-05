@@ -315,17 +315,36 @@ describe('HttpService', () => {
     })
 
     it('should call middleware', async () => {
+      const timestamp = '2020-06-05T08:22:29.224Z'
+
+      jest.spyOn(Date.prototype, 'toISOString').mockReturnValueOnce(timestamp)
+
       const middlewareStub = jest.fn()
       const http = new HttpService(url).setResponseMiddleware(middlewareStub)
+
+      const expectedResponse = {
+        ok: true,
+        status: 200,
+        body,
+      }
+
+      const expectedRequestInfo = {
+        url: `${url}/${path}`,
+        options: {
+          method: 'GET',
+          credentials: 'include',
+          mode: 'cors',
+          headers: new Headers({
+            correlation_id: uuidValue,
+          }),
+        },
+        timestamp,
+      }
 
       await http.get(path)
 
       expect(middlewareStub).toHaveBeenCalledTimes(1)
-      expect(middlewareStub).toHaveBeenCalledWith({
-        ok: true,
-        status: 200,
-        body,
-      })
+      expect(middlewareStub).toHaveBeenCalledWith(expectedResponse, expectedRequestInfo)
     })
 
     it('should use correlation id prefix', async () => {

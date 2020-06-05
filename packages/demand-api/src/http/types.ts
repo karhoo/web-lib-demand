@@ -21,10 +21,6 @@ export type HttpResponse<T, TError = ApiError> = HttpResponseOk<T> | HttpRespons
 
 export type Query = Record<string, string | number>
 
-export type HttpResponseMiddleware = <T>(
-  response: HttpResponse<T>
-) => HttpResponse<T> | Promise<HttpResponse<T>>
-
 export type RequestOptions = Omit<RequestInit, 'window' | 'headers'> & {
   method: string
   headers?: Record<string, string>
@@ -36,7 +32,16 @@ export type DefaultRequestOptions = Omit<RequestOptions, 'body' | 'method' | 'si
 
 export type DefaultRequestOptionsGetter = () => DefaultRequestOptions | Promise<DefaultRequestOptions>
 
-export type AuthServiceDefaultOptionsGetter = () => {}
+export type MiddlewareRequestInfo = {
+  url: string
+  timestamp: string
+  options: Omit<RequestOptions, 'headers'> & { headers: Headers }
+}
+
+export type HttpResponseMiddleware = <T>(
+  response: HttpResponse<T>,
+  requestInfo: MiddlewareRequestInfo
+) => HttpResponse<T> | Promise<HttpResponse<T>>
 
 export interface Http {
   get<T>(url: string, query?: Query, options?: MethodRequestOptions): Promise<HttpResponse<T>>
