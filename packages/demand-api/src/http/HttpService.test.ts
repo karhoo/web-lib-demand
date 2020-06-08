@@ -1,7 +1,7 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
 import { errorCodes } from '../responseCodes'
 
-import { HttpService, request, toJsonBody } from './HttpService'
+import { HttpService, request, toJsonBody, getJsonBody } from './HttpService'
 
 const uuidValue = 'uuidValue'
 
@@ -108,6 +108,28 @@ describe('HttpService', () => {
         status: 0,
         error: { code: errorCodes.ERR_UNKNOWN, message: '' },
       })
+    })
+  })
+
+  describe('getJsonBody', () => {
+    const data = { test: 'test' }
+
+    const response: any = { text: jest.fn(() => JSON.stringify(data)) }
+
+    it('should call text', async () => {
+      await getJsonBody(response)
+
+      expect(response.text).toBeCalledTimes(1)
+    })
+
+    it('should return json body', async () => {
+      expect(await getJsonBody(response)).toEqual(data)
+    })
+
+    it('should return empty object in case of empty body', async () => {
+      response.text.mockReturnValueOnce('')
+
+      expect(await getJsonBody(response)).toEqual({})
     })
   })
 
@@ -315,17 +337,36 @@ describe('HttpService', () => {
     })
 
     it('should call middleware', async () => {
+      const timestamp = '2020-06-05T08:22:29.224Z'
+
+      jest.spyOn(Date.prototype, 'toISOString').mockReturnValueOnce(timestamp)
+
       const middlewareStub = jest.fn()
       const http = new HttpService(url).setResponseMiddleware(middlewareStub)
+
+      const expectedResponse = {
+        ok: true,
+        status: 200,
+        body,
+      }
+
+      const expectedRequestInfo = {
+        url: `${url}/${path}`,
+        options: {
+          method: 'GET',
+          credentials: 'include',
+          mode: 'cors',
+          headers: new Headers({
+            correlation_id: uuidValue,
+          }),
+        },
+        timestamp,
+      }
 
       await http.get(path)
 
       expect(middlewareStub).toHaveBeenCalledTimes(1)
-      expect(middlewareStub).toHaveBeenCalledWith({
-        ok: true,
-        status: 200,
-        body,
-      })
+      expect(middlewareStub).toHaveBeenCalledWith(expectedResponse, expectedRequestInfo)
     })
 
     it('should use correlation id prefix', async () => {

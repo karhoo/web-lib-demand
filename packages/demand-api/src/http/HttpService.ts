@@ -12,12 +12,22 @@ import { errorCodes } from '../responseCodes'
 
 const isOffline = (message: string) => message === 'Failed to fetch' || message.indexOf('offline') !== -1
 
+/**
+ * We do not use directly response.json() due to the fact that some endpoints might return
+ * 'content-type: application/json' header with empty body
+ */
+export async function getJsonBody(response: Response) {
+  const body = await response.text()
+
+  return body ? JSON.parse(body) : {}
+}
+
 export async function request<T>(url: string, options: RequestInit): Promise<HttpResponse<T>> {
   try {
     const response = await fetch(url, options)
     const isJsonResponse = (response.headers?.get('content-type') ?? '').indexOf('application/json') !== -1
 
-    const body = isJsonResponse ? await response.json() : {}
+    const body = isJsonResponse ? await getJsonBody(response) : {}
     const { ok, status } = response
 
     return ok ? { ok, status, body } : { ok, status, error: body }
@@ -112,9 +122,14 @@ export class HttpService implements Http {
       ...(options.headers || {}),
     })
 
-    const response = await this.responseMiddleware(
-      await request<T>(this.createFullUrl(url, query), { ...defaultRequestOptions, ...options, headers })
-    )
+    const fullUrl = this.createFullUrl(url, query)
+    const requestOptions = { ...defaultRequestOptions, ...options, headers }
+
+    const response = await this.responseMiddleware(await request<T>(fullUrl, requestOptions), {
+      url: fullUrl,
+      timestamp: new Date().toISOString(),
+      options: requestOptions,
+    })
 
     return response
   }

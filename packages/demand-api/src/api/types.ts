@@ -12,6 +12,7 @@ import { AuthService } from '../auth/AuthService'
 export type ApiOptions = Partial<{
   url: string
   defaultRequestOptionsGetter: DefaultRequestOptionsGetter
+  authServiceDefaultOptionsGetter: DefaultRequestOptionsGetter
   responseMiddleware: HttpResponseMiddleware
   correlationIdPrefix: string
 }>
