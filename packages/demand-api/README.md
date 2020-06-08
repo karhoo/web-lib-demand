@@ -74,10 +74,13 @@ All config fields are optional, default value for `url` - `https://public-api.ka
 
 Default value for `correlationIdPrefix` - `''`.
 
+Default value for `authServiceDefaultOptionsGetter` - `() => ({})`.
+
 ```js
 const options = {
   url,
   defaultRequestOptionsGetter: requestOptionsGetter,
+  authServiceDefaultOptionsGetter,
   responseMiddleware: middleware,
   correlationIdPrefix,
 }
