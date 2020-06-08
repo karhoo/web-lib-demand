@@ -1,7 +1,7 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
 import { errorCodes } from '../responseCodes'
 
-import { HttpService, request, toJsonBody } from './HttpService'
+import { HttpService, request, toJsonBody, getJsonBody } from './HttpService'
 
 const uuidValue = 'uuidValue'
 
@@ -108,6 +108,28 @@ describe('HttpService', () => {
         status: 0,
         error: { code: errorCodes.ERR_UNKNOWN, message: '' },
       })
+    })
+  })
+
+  describe('getJsonBody', () => {
+    const data = { test: 'test' }
+
+    const response: any = { text: jest.fn(() => JSON.stringify(data)) }
+
+    it('should call text', async () => {
+      await getJsonBody(response)
+
+      expect(response.text).toBeCalledTimes(1)
+    })
+
+    it('should return json body', async () => {
+      expect(await getJsonBody(response)).toEqual(data)
+    })
+
+    it('should return empty object in case of empty body', async () => {
+      response.text.mockReturnValueOnce('')
+
+      expect(await getJsonBody(response)).toEqual({})
     })
   })
 
