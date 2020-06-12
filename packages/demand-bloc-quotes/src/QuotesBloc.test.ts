@@ -290,6 +290,7 @@ describe('QuotesBloc', () => {
   describe('refreshQuotes', () => {
     const that = {
       _searchParams: searchParams,
+      _locale: 'en-GB',
       requestQuotes: jest.fn(),
       timerSubscription: {
         unsubscribe: jest.fn(),
@@ -306,7 +307,7 @@ describe('QuotesBloc', () => {
       QuotesBloc.prototype.refreshQuotes.call(that)
 
       expect(that.requestQuotes).toBeCalledTimes(1)
-      expect(that.requestQuotes).toBeCalledWith(searchParams)
+      expect(that.requestQuotes).toBeCalledWith(searchParams, that._locale)
     })
 
     it('should throw error if searchParams is null', () => {

@@ -47,7 +47,8 @@ export class QuotesService implements Quotes {
     return this.http.post<QuotesResponse>(this.url, toSnakeCase(params))
   }
 
-  quotesSearchById(id: string) {
-    return this.http.get<QuotesByIdResponse>(`${this.url}/${id}`)
+  quotesSearchById(id: string, locale?: string) {
+    const localeParam = locale ? `?locale=${locale}` : ''
+    return this.http.get<QuotesByIdResponse>(`${this.url}/${id}${localeParam}`)
   }
 }

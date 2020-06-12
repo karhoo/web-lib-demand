@@ -36,6 +36,7 @@ export class QuotesBloc {
   private quotesService: QuotesService
   private _filters: QuoteFilters
   private _searchParams: QuotesSearchParams | null
+  private _locale?: string
 
   private quotes$ = new Subject<QuoteItem[]>()
   private quotesExpired$ = new Subject()
@@ -165,15 +166,17 @@ export class QuotesBloc {
     }
 
     this.timerSubscription.unsubscribe()
-    this.requestQuotes(this._searchParams)
+    this.requestQuotes(this._searchParams, this._locale)
   }
 
   /**
    * Requests quotes with given search params
    * @param params {QuotesSearchParams} search params for quotes
+   * @param locale {string} user locale in xx-XX format e.g. en-GB or fr-FR
    */
-  async requestQuotes(params: QuotesSearchParams) {
+  async requestQuotes(params: QuotesSearchParams, locale?: string) {
     this.searchParams = params
+    this._locale = locale
 
     this.startLoading()
 
@@ -191,7 +194,7 @@ export class QuotesBloc {
         this.quotes$.next(transformQuotesFromResponse(requestQuotesResponse))
         this.scheduleExpiredEvent(body.validity)
 
-        const poller = poll(() => this.quotesService.quotesSearchById(body.id))
+        const poller = poll(() => this.quotesService.quotesSearchById(body.id, locale))
 
         this.pollingSubscription = poller.subscribe({
           next: handleQuotesLoaded,
