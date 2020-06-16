@@ -1,11 +1,4 @@
-import {
-  Quotes,
-  QuotesSearchParams,
-  errorCodes,
-  HttpResponseOk,
-  QuotesResponse,
-  HttpResponse,
-} from '@karhoo/demand-api'
+import { Quotes, QuotesSearchParams, errorCodes, QuotesResponse, HttpResponse } from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
 import { publishReplay, refCount, map } from 'rxjs/operators'
 import { poll } from './polling'
@@ -17,15 +10,7 @@ type QuoteFilters = {
 }
 
 const NO_QUOTES_AVAILABLE = errorCodes.K3002
-const defaultValidity = 600
-
-export const transformQuotesFromResponse = (response: HttpResponseOk<QuotesResponse>): QuoteItem[] => {
-  if (response.body?.quote_items) {
-    return response.body.quote_items.map(quote => transformer(quote))
-  }
-
-  return []
-}
+export const defaultValidity = 600
 
 function createStream<T>(stream: Subject<T>) {
   return stream.pipe(publishReplay(1), refCount())
@@ -33,7 +18,7 @@ function createStream<T>(stream: Subject<T>) {
 
 export type QuotesService = Pick<Quotes, 'quotesSearch' | 'quotesSearchById'>
 
-type QuotesState = {
+export type QuotesState = {
   items: QuoteItem[]
   validity: number
 }
@@ -197,6 +182,9 @@ export class QuotesBloc {
     this._locale = locale
 
     this.startLoading()
+
+    this.timerSubscription.unsubscribe()
+    this.pollingSubscription.unsubscribe()
 
     const handleQuotesLoaded = (res: HttpResponse<QuotesResponse>) => {
       if (res.ok) {
