@@ -1,6 +1,6 @@
 import { Quotes, QuotesSearchParams, errorCodes, QuotesResponse, HttpResponse } from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
-import { publishReplay, refCount, map } from 'rxjs/operators'
+import { publishReplay, refCount, map, distinctUntilChanged } from 'rxjs/operators'
 import { poll } from './polling'
 import { transformer, QuoteItem } from './transformer'
 
@@ -81,7 +81,7 @@ export class QuotesBloc {
    * Emits true/false when all quotes started/finished to load
    */
   get loading() {
-    return createStream(this.loading$)
+    return createStream(this.loading$).pipe(distinctUntilChanged())
   }
 
   /**
@@ -156,6 +156,7 @@ export class QuotesBloc {
    * Stops requesting quotes
    */
   stopRequestingQuotes() {
+    this.stopLoading()
     this.pollingSubscription.unsubscribe()
   }
 
