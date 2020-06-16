@@ -205,7 +205,7 @@ export class QuotesBloc {
         handleQuotesLoaded(requestQuotesResponse)
         this.scheduleExpiredEvent(body.validity)
 
-        const poller = poll(() => this.quotesService.quotesSearchById(body.id))
+        const poller = poll(() => this.quotesService.quotesSearchById(body.id, locale))
 
         this.pollingSubscription = poller.subscribe({
           next: handleQuotesLoaded,
