@@ -14,8 +14,6 @@
     "dist/*.js",
     "dist/*.js.map",
     "dist/typings.d.ts",
-    "dist/mocks/**/*.js",
-    "dist/mocks/**/*.d.ts",
     "src"
   ],
   "module": "dist/demand-bloc-payment.esm.js",
