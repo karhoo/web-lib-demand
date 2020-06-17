@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.1.0) (2020-06-17)
+
+
+### Bug Fixes
+
+* add "main" into package.json ([#51](https://github.com/karhoo/web-lib-demand/issues/51)) ([045755b](https://github.com/karhoo/web-lib-demand/commit/045755b8045d406a685575577f0627b8d50a383c))
+* change polling subscription complete handler ([#56](https://github.com/karhoo/web-lib-demand/issues/56)) ([180c113](https://github.com/karhoo/web-lib-demand/commit/180c1138be70702921711a246b1101f9d54ac9fb))
+
+
+* ET-997 Add method patch to Http Service. Delete User Service (#62) ([1e53fbe](https://github.com/karhoo/web-lib-demand/commit/1e53fbeb07d05b5cbc2118294b6eadc583f4cf88)), closes [#62](https://github.com/karhoo/web-lib-demand/issues/62)
+* demand-api: getApi - update api url creation  (#45) ([b172204](https://github.com/karhoo/web-lib-demand/commit/b17220434f794b628f57f8888eed95fc4967ed9f)), closes [#45](https://github.com/karhoo/web-lib-demand/issues/45)
+
+
+### Features
+
+* add logic for trip bloc ([#59](https://github.com/karhoo/web-lib-demand/issues/59)) ([986bf41](https://github.com/karhoo/web-lib-demand/commit/986bf41f16b73d2d6ae2b8cebeb337464b082c03))
+
+
+### BREAKING CHANGES
+
+* Delete UserService
+
+* fix: Fix unit tests
+
+* v4.0.0
+* Update api url creation in getApi of demand-api package
+
+* v1.0.0
+
+
+
+
+
 # [6.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.0.0) (2020-06-08)
 
 

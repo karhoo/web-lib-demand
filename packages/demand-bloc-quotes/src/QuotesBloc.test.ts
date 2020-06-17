@@ -1,6 +1,13 @@
 import { Observable } from 'rxjs'
 import { mocked } from 'ts-jest/utils'
-import { errorCodes, QuoteItem, HttpResponse, QuotesResponse, QuotesByIdResponse } from '@karhoo/demand-api'
+import {
+  errorCodes,
+  QuoteItem,
+  HttpResponse,
+  QuotesResponse,
+  QuotesByIdResponse,
+  HttpResponseOk,
+} from '@karhoo/demand-api'
 import {
   getMockedQuotesSearchResponse,
   getMockedQuotesSerchByIdResponse,
@@ -11,7 +18,17 @@ import {
 import { poll } from './polling'
 import * as transformer from './transformer'
 
-import { QuotesBloc, transformQuotesFromResponse } from './QuotesBloc'
+import { QuotesBloc, defaultValidity, QuotesState } from './QuotesBloc'
+
+export const transformQuotesFromResponse = (
+  response: HttpResponseOk<QuotesResponse>
+): transformer.QuoteItem[] => {
+  if (response.body?.quote_items) {
+    return response.body.quote_items.map(quote => transformer.transformer(quote))
+  }
+
+  return []
+}
 
 jest.mock('./polling', () => ({ poll: jest.fn() }))
 
@@ -185,13 +202,18 @@ describe('QuotesBloc', () => {
     })
 
     it('should emit quotes', async () => {
-      const quotes: transformer.QuoteItem[][] = []
-      const expectedQuotes = [
-        transformQuotesFromResponse(mockedQuotesSearchResponse),
-        transformQuotesFromResponse(mockedQuotesSerchByIdResponse),
-      ]
+      let quotes: QuotesState = { items: [], validity: defaultValidity }
+      const expectedQuotes = {
+        items: [
+          ...transformQuotesFromResponse(mockedQuotesSearchResponse),
+          ...transformQuotesFromResponse(mockedQuotesSerchByIdResponse),
+        ],
+        validity: defaultValidity,
+      }
 
-      bloc.quotes.subscribe(data => quotes.push(data))
+      bloc.quotes.subscribe(data => {
+        quotes = data
+      })
       bloc.requestQuotes(searchParams)
 
       await promise
@@ -239,15 +261,17 @@ describe('QuotesBloc', () => {
     })
 
     it('should not emit quotes if quotesSearchById response is not ok', done => {
-      const quotes: transformer.QuoteItem[][] = []
+      let quotes: QuotesState = { items: [], validity: defaultValidity }
       quotesMock.quotesSearchById.mockReturnValueOnce(
         Promise.resolve(getMockedErrorQuotesSerchByIdResponse())
       )
 
-      bloc.quotes.subscribe(data => quotes.push(data))
+      bloc.quotes.subscribe(data => {
+        quotes = data
+      })
       bloc.loading.subscribe(isLoading => {
         if (!isLoading) {
-          expect(quotes).toEqual([[]])
+          expect(quotes).toEqual({ items: [], validity: 599 })
           done()
         }
       })
@@ -290,8 +314,12 @@ describe('QuotesBloc', () => {
   describe('refreshQuotes', () => {
     const that = {
       _searchParams: searchParams,
+      _locale: 'en-GB',
       requestQuotes: jest.fn(),
       timerSubscription: {
+        unsubscribe: jest.fn(),
+      },
+      pollingSubscription: {
         unsubscribe: jest.fn(),
       },
     }
@@ -302,11 +330,17 @@ describe('QuotesBloc', () => {
       expect(that.timerSubscription.unsubscribe).toBeCalledTimes(1)
     })
 
+    it('should call unsubscribe of pollingSubscription', () => {
+      QuotesBloc.prototype.refreshQuotes.call(that)
+
+      expect(that.pollingSubscription.unsubscribe).toBeCalledTimes(1)
+    })
+
     it('should call requestQuotes', () => {
       QuotesBloc.prototype.refreshQuotes.call(that)
 
       expect(that.requestQuotes).toBeCalledTimes(1)
-      expect(that.requestQuotes).toBeCalledWith(searchParams)
+      expect(that.requestQuotes).toBeCalledWith(searchParams, that._locale)
     })
 
     it('should throw error if searchParams is null', () => {

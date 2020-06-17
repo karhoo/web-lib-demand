@@ -98,5 +98,5 @@ export interface Quotes {
   checkAvailability(params: QuotesAvailabilityParams): Promise<HttpResponse<QuotesAvailabilityResponse>>
 
   quotesSearch(params: QuotesSearchParams): Promise<HttpResponse<QuotesResponse>>
-  quotesSearchById(id: string): Promise<HttpResponse<QuotesByIdResponse>>
+  quotesSearchById(id: string, locale?: string): Promise<HttpResponse<QuotesByIdResponse>>
 }

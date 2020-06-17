@@ -95,7 +95,14 @@ describe('QuotesService', () => {
       new QuotesService(http).quotesSearchById(id)
 
       expect(http.get).toHaveBeenCalledTimes(1)
-      expect(http.get).toHaveBeenCalledWith(`quotes/${id}`)
+      expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, undefined)
+    })
+
+    it('should call get of http with locale in query params', () => {
+      new QuotesService(http).quotesSearchById(id, 'en-GB')
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, { locale: 'en-GB' })
     })
   })
 

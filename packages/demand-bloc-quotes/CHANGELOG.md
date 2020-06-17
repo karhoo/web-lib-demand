@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.1.0) (2020-06-17)
+
+
+### Bug Fixes
+
+* change polling subscription complete handler ([#56](https://github.com/karhoo/web-lib-demand/issues/56)) ([180c113](https://github.com/karhoo/web-lib-demand/commit/180c1138be70702921711a246b1101f9d54ac9fb))
+
+
+* ET-997 Add method patch to Http Service. Delete User Service (#62) ([1e53fbe](https://github.com/karhoo/web-lib-demand/commit/1e53fbeb07d05b5cbc2118294b6eadc583f4cf88)), closes [#62](https://github.com/karhoo/web-lib-demand/issues/62)
+
+
+### Features
+
+* add locale to quotes API and quotes BLoC ([6296eb2](https://github.com/karhoo/web-lib-demand/commit/6296eb28bdde30e96569a6bea1e55f7ac3fd6b91))
+* add logic for trip bloc ([#59](https://github.com/karhoo/web-lib-demand/issues/59)) ([986bf41](https://github.com/karhoo/web-lib-demand/commit/986bf41f16b73d2d6ae2b8cebeb337464b082c03))
+* emit only different values in loading$ stream ([1c1233b](https://github.com/karhoo/web-lib-demand/commit/1c1233b6154a22c66631a1923ebee5502e1bd60c))
+* pass locale to quotes search ([eb6ccba](https://github.com/karhoo/web-lib-demand/commit/eb6ccbae5effc53aefb169b3312386a16a6bb261))
+* publish validity to quotes event ([194b5ae](https://github.com/karhoo/web-lib-demand/commit/194b5aede24829df675db6b1038e3962d873c87e))
+
+
+### BREAKING CHANGES
+
+* Delete UserService
+
+* fix: Fix unit tests
+
+* v4.0.0
+
+
+
+
+
 # [6.0.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.0.0) (2020-06-08)
 
 

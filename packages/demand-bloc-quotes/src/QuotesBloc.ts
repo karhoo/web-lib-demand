@@ -1,13 +1,6 @@
-import {
-  Quotes,
-  QuotesSearchParams,
-  errorCodes,
-  HttpResponseOk,
-  QuotesResponse,
-  HttpResponse,
-} from '@karhoo/demand-api'
+import { Quotes, QuotesSearchParams, errorCodes, QuotesResponse, HttpResponse } from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
-import { publishReplay, refCount, map } from 'rxjs/operators'
+import { publishReplay, refCount, map, distinctUntilChanged } from 'rxjs/operators'
 import { poll } from './polling'
 import { transformer, QuoteItem } from './transformer'
 
@@ -17,14 +10,7 @@ type QuoteFilters = {
 }
 
 const NO_QUOTES_AVAILABLE = errorCodes.K3002
-
-export const transformQuotesFromResponse = (response: HttpResponseOk<QuotesResponse>): QuoteItem[] => {
-  if (response.body?.quote_items) {
-    return response.body.quote_items.map(quote => transformer(quote))
-  }
-
-  return []
-}
+export const defaultValidity = 600
 
 function createStream<T>(stream: Subject<T>) {
   return stream.pipe(publishReplay(1), refCount())
@@ -32,12 +18,18 @@ function createStream<T>(stream: Subject<T>) {
 
 export type QuotesService = Pick<Quotes, 'quotesSearch' | 'quotesSearchById'>
 
+export type QuotesState = {
+  items: QuoteItem[]
+  validity: number
+}
+
 export class QuotesBloc {
   private quotesService: QuotesService
   private _filters: QuoteFilters
   private _searchParams: QuotesSearchParams | null
+  private _locale?: string
 
-  private quotes$ = new Subject<QuoteItem[]>()
+  private quotes$ = new Subject<QuotesState>()
   private quotesExpired$ = new Subject()
   private noQuotesFound$ = new Subject()
   private quotesLoadingError$ = new Subject()
@@ -68,14 +60,14 @@ export class QuotesBloc {
    * Returns matching quotes stream (by number of passengers and number of luggage filters)
    */
   get matchingQuotes() {
-    return this.quotes.pipe(map(quotes => quotes.filter(this.isMatchingQuote)))
+    return this.quotes.pipe(map(({ items }) => items.filter(this.isMatchingQuote)))
   }
 
   /**
    * Returns non-matching quotes stream (by number of passengers and number of luggage filters)
    */
   get otherAvailibleQuotes() {
-    return this.quotes.pipe(map(quotes => quotes.filter(q => !this.isMatchingQuote(q))))
+    return this.quotes.pipe(map(({ items }) => items.filter(q => !this.isMatchingQuote(q))))
   }
 
   /**
@@ -89,7 +81,7 @@ export class QuotesBloc {
    * Emits true/false when all quotes started/finished to load
    */
   get loading() {
-    return createStream(this.loading$)
+    return createStream(this.loading$).pipe(distinctUntilChanged())
   }
 
   /**
@@ -97,6 +89,13 @@ export class QuotesBloc {
    */
   get quotesExpired() {
     return createStream(this.quotesExpired$)
+  }
+
+  /**
+   * Emits a value with an error if loading of quotes failed
+   */
+  get quotesLoadingErrors() {
+    return createStream(this.quotesLoadingError$)
   }
 
   /**
@@ -139,8 +138,12 @@ export class QuotesBloc {
     quote.vehiclePassengerCapacity >= this._filters.numOfPassengers &&
     quote.vehicleLuggageCapacity >= this._filters.numOfLuggage
 
-  private scheduleExpiredEvent(validity = 0) {
-    const ms = validity * 1000
+  /**
+   * Schedules an `quotes expired` event
+   * @param expiresAt {number} number of seconds after which `quotes expired` event is emitted
+   */
+  scheduleExpiredEvent(expiresAt = 0) {
+    const ms = expiresAt * 1000
 
     const expired = timer(ms)
 
@@ -153,6 +156,7 @@ export class QuotesBloc {
    * Stops requesting quotes
    */
   stopRequestingQuotes() {
+    this.stopLoading()
     this.pollingSubscription.unsubscribe()
   }
 
@@ -165,21 +169,32 @@ export class QuotesBloc {
     }
 
     this.timerSubscription.unsubscribe()
-    this.requestQuotes(this._searchParams)
+    this.pollingSubscription.unsubscribe()
+    this.requestQuotes(this._searchParams, this._locale)
   }
 
   /**
    * Requests quotes with given search params
    * @param params {QuotesSearchParams} search params for quotes
+   * @param locale {string} user locale in xx-XX format e.g. en-GB or fr-FR
    */
-  async requestQuotes(params: QuotesSearchParams) {
+  async requestQuotes(params: QuotesSearchParams, locale?: string) {
     this.searchParams = params
+    this._locale = locale
 
     this.startLoading()
 
+    this.timerSubscription.unsubscribe()
+    this.pollingSubscription.unsubscribe()
+
     const handleQuotesLoaded = (res: HttpResponse<QuotesResponse>) => {
       if (res.ok) {
-        this.quotes$.next(transformQuotesFromResponse(res))
+        const items = res.body?.quote_items || []
+
+        this.quotes$.next({
+          items: items.map(quote => transformer(quote)),
+          validity: res.body.validity || defaultValidity,
+        })
       }
     }
 
@@ -188,10 +203,10 @@ export class QuotesBloc {
       if (requestQuotesResponse.ok) {
         const { body } = requestQuotesResponse
 
-        this.quotes$.next(transformQuotesFromResponse(requestQuotesResponse))
+        handleQuotesLoaded(requestQuotesResponse)
         this.scheduleExpiredEvent(body.validity)
 
-        const poller = poll(() => this.quotesService.quotesSearchById(body.id))
+        const poller = poll(() => this.quotesService.quotesSearchById(body.id, locale))
 
         this.pollingSubscription = poller.subscribe({
           next: handleQuotesLoaded,
