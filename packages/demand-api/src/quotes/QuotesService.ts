@@ -48,7 +48,7 @@ export class QuotesService implements Quotes {
   }
 
   quotesSearchById(id: string, locale?: string) {
-    const localeParam = locale ? `?locale=${locale}` : ''
-    return this.http.get<QuotesByIdResponse>(`${this.url}/${id}${localeParam}`)
+    const query = locale ? { locale } : undefined
+    return this.http.get<QuotesByIdResponse>(`${this.url}/${id}`, query)
   }
 }
