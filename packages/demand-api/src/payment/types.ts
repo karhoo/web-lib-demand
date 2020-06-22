@@ -1,3 +1,5 @@
+import { HttpResponse } from '../http/types'
+
 export type CreateTokenParams = {
   organisation_id: string
   currency: string
@@ -25,4 +27,10 @@ export type ClientNonceResponse = {
 
 export interface AddPaymentCardParams extends ClientNonceParams {
   nonce: string
+}
+
+export interface Payment {
+  createClientToken(params: CreateTokenParams): Promise<HttpResponse<CreateTokenResponse>>
+  getClientNonce(params: ClientNonceParams): Promise<HttpResponse<ClientNonceResponse>>
+  addPaymentCard(params: AddPaymentCardParams): Promise<HttpResponse<ClientNonceResponse>>
 }

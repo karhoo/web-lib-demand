@@ -11,6 +11,7 @@ import {
 } from './quotes/types'
 import { TripFollowResponse, TripStatuses } from './trip/types'
 import { FinalFareResponse, FinalFareStatuses } from './fare/types'
+import { CreateTokenResponse, ClientNonceResponse } from './payment/types'
 import { PlaceDetailTypes, MeetingPointTypes } from './sharedTypes'
 
 import { errorCodes } from './responseCodes'
@@ -247,6 +248,76 @@ export const getMockedErrorFinalFareResponse = (code = errorCodes.K0001): HttpRe
   error: {
     code,
     message: `Track trip: Something went wrong`,
+  },
+})
+
+export const getMockedPaymentCreateClientTokenResponse = (
+  partialBody: Partial<CreateTokenResponse> = {}
+): HttpResponse<CreateTokenResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    token: 'token',
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorPaymentCreateClientTokenResponse = (
+  code = errorCodes.K0001
+): HttpResponse<CreateTokenResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Create client token: Something went wrong`,
+  },
+})
+
+export const getMockedAddPaymentCardResponse = (
+  partialBody: Partial<ClientNonceResponse> = {}
+): HttpResponse<ClientNonceResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    card_type: 'cardType',
+    last_four: 'lastFour',
+    nonce: 'nonce',
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorAddPaymentCardResponse = (
+  code = errorCodes.K0001
+): HttpResponse<CreateTokenResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Add payment card: Something went wrong`,
+  },
+})
+
+export const getMockedPaymentGetClientNonceResponse = (
+  partialBody: Partial<ClientNonceResponse> = {}
+): HttpResponse<ClientNonceResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    card_type: 'cardType',
+    last_four: 'lastFour',
+    nonce: 'nonce',
+    ...partialBody,
+  },
+})
+
+export const getMockedErrorPaymentGetClientNonceResponse = (
+  code = errorCodes.K0001
+): HttpResponse<CreateTokenResponse> => ({
+  ok: false,
+  status: 500,
+  error: {
+    code,
+    message: `Get client nonce: Something went wrong`,
   },
 })
 
