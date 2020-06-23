@@ -1,9 +1,10 @@
 import braintree from 'braintree-web'
 import {
-  getMockedPaymentCreateClientTokenResponse,
   getMockedErrorPaymentCreateClientTokenResponse,
-  getMockedPaymentGetClientNonceResponse,
-  getMockedAddPaymentCardResponse,
+  getMockedErrorPaymentGetClientNonceResponse,
+  getAddPaymentCardMock,
+  getPaymentCreateClientTokenMock,
+  getPaymentGetClientNonceMock,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import {
@@ -23,10 +24,21 @@ describe('PaymentBloc', () => {
   const lastFour = 'lastFour'
   const nonce = 'nonce'
 
+  const payer = {
+    id: 'id',
+    email: 'email@of.user',
+    first_name: 'firstName',
+    last_name: 'lastName',
+  }
+
+  const logger = {
+    error: jest.fn(),
+  }
+
   const paymentService = {
-    createClientToken: jest.fn(),
-    getClientNonce: jest.fn(),
-    addPaymentCard: jest.fn(),
+    createClientToken: getPaymentCreateClientTokenMock({ token }),
+    getClientNonce: getPaymentGetClientNonceMock({ card_type: cardType, last_four: lastFour, nonce }),
+    addPaymentCard: getAddPaymentCardMock(),
   }
 
   const client = {
@@ -51,20 +63,6 @@ describe('PaymentBloc', () => {
     jest.spyOn(braintree.client, 'create').mockImplementation(() => client)
     jest.spyOn(braintree.threeDSecure, 'create').mockImplementation(() => threeDSecure)
     jest.spyOn(braintree.hostedFields, 'create').mockImplementation(() => hostedFields)
-
-    paymentService.createClientToken.mockImplementationOnce(() =>
-      Promise.resolve(getMockedPaymentCreateClientTokenResponse({ token }))
-    )
-
-    paymentService.addPaymentCard.mockImplementationOnce(() =>
-      Promise.resolve(getMockedAddPaymentCardResponse)
-    )
-
-    paymentService.getClientNonce.mockImplementationOnce(() =>
-      Promise.resolve(
-        getMockedPaymentGetClientNonceResponse({ card_type: cardType, last_four: lastFour, nonce })
-      )
-    )
   })
 
   describe('initialize', () => {
@@ -85,7 +83,9 @@ describe('PaymentBloc', () => {
     })
 
     it('should throw error if createClientToken of paymentService returns error', done => {
-      paymentService.createClientToken.mockReturnValueOnce(getMockedErrorPaymentCreateClientTokenResponse())
+      paymentService.createClientToken.mockReturnValueOnce(
+        Promise.resolve(getMockedErrorPaymentCreateClientTokenResponse())
+      )
 
       provider.initialize().catch(error => {
         expect(error.message).toBe(errors.authorizationToken)
@@ -201,10 +201,6 @@ describe('PaymentBloc', () => {
   describe('dispose', () => {
     let provider: BraintreeProvider
 
-    const logger = {
-      error: jest.fn(),
-    }
-
     beforeEach(async () => {
       provider = new BraintreeProvider(paymentService, { organisationId, currencyCode, logger })
 
@@ -299,13 +295,6 @@ describe('PaymentBloc', () => {
   })
 
   describe('saveCard', () => {
-    const payer = {
-      id: 'id',
-      email: 'email@of.user',
-      first_name: 'firstName',
-      last_name: 'lastName',
-    }
-
     let provider: BraintreeProvider
 
     beforeEach(async () => {
@@ -327,13 +316,6 @@ describe('PaymentBloc', () => {
   })
 
   describe('getSavedCards', () => {
-    const payer = {
-      id: 'id',
-      email: 'email@of.user',
-      first_name: 'firstName',
-      last_name: 'lastName',
-    }
-
     let provider: BraintreeProvider
 
     beforeEach(async () => {
@@ -367,7 +349,7 @@ describe('PaymentBloc', () => {
 
     it('should return empty array', async () => {
       paymentService.getClientNonce.mockReturnValueOnce(
-        Promise.resolve({ ok: false, status: 500, error: {} })
+        Promise.resolve(getMockedErrorPaymentGetClientNonceResponse())
       )
 
       const data = await provider.getSavedCards(payer)
@@ -379,10 +361,6 @@ describe('PaymentBloc', () => {
   describe('verifyWithThreeDSecure', () => {
     const amount = 10
     let provider: BraintreeProvider
-
-    const logger = {
-      error: jest.fn(),
-    }
 
     beforeEach(async () => {
       provider = new BraintreeProvider(paymentService, { organisationId, currencyCode, logger })

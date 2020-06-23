@@ -28,11 +28,18 @@ npm i @karhoo/demand-bloc-payment
 
 ```js
 
-import { QuotesBloc } from '@karhoo/demand-bloc-payment'
+import { getApi } from '@karhoo/demand-api'
+import { PaymentBloc, BraintreeProvider } from '@karhoo/demand-bloc-payment'
 
-const provider = {} //TBD
+const organisationId = '1a12345d-e111-1da1-111f-a1111e1e11f1'
+const currencyCode = 'GBP'
 
-const bloc = new QuotesBloc(provider)
+const provider = new BraintreeProvider(getApi().paymentService, {
+  organisationId,
+  currencyCode
+})
+
+const bloc = new PaymentBloc(provider)
 
 await bloc.initPayment()
 

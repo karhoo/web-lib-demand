@@ -1,4 +1,6 @@
-import { PaymentBloc, creditCardType } from './PaymentBloc'
+import { creditCardType, errors } from './constants'
+
+import { PaymentBloc } from './PaymentBloc'
 
 describe('PaymentBloc', () => {
   const tokenizeHostedFieldsResponse = {
@@ -120,7 +122,10 @@ describe('PaymentBloc', () => {
         })
       )
 
-      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: false, error: expect.any(Error) })
+      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
+        ok: false,
+        error: new Error(errors.verifyCardError),
+      })
     })
 
     it('should return error when verifyWithThreeDSecure emits error', async () => {

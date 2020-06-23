@@ -1,325 +1,26 @@
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from './http/types'
-import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from './location/types'
-import { PoiSearchResponse } from './poi/types'
 import {
-  QuotesAvailabilityResponse,
-  QuotesResponse,
-  QuotesByIdResponse,
-  QuoteResponseStatuses,
-  QuotePriceTypes,
-} from './quotes/types'
-import { TripFollowResponse, TripStatuses } from './trip/types'
-import { FinalFareResponse, FinalFareStatuses } from './fare/types'
-import { CreateTokenResponse, ClientNonceResponse } from './payment/types'
-import { PlaceDetailTypes, MeetingPointTypes } from './sharedTypes'
+  getQuotesSearchMock,
+  getQuotesSearchByIdMock,
+  getQuotesCheckAvailabilityMock,
+} from './quotes/testMocks'
+import { getPoiSearchMock } from './poi/testMocks'
+import {
+  getLocationGetAddressDetailsMock,
+  getLocationGetAddressAutocompleteDataMock,
+} from './location/testMocks'
+import {
+  getAddPaymentCardMock,
+  getPaymentCreateClientTokenMock,
+  getPaymentGetClientNonceMock,
+} from './payment/testMocks'
+import { getFinalFareMock } from './fare/testMocks'
 
-import { errorCodes } from './responseCodes'
-
-export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    pois: [
-      {
-        id: `k_poi_placeId:${data?.searchKey ?? ''}`,
-        address: {
-          display_address: `k_poi_display_address:${data?.searchKey ?? ''}`,
-        },
-        details: {
-          type: PlaceDetailTypes.TRAIN_STATION,
-        },
-        geojson: 'geojson',
-        name: 'name',
-        meeting_points: [
-          {
-            position: {
-              latitude: 90,
-              longitude: 90,
-            },
-            type: MeetingPointTypes.DEFAULT,
-          },
-        ],
-        position: {
-          latitude: 90,
-          longitude: 90,
-        },
-      },
-    ],
-  },
-})
-
-export const getMockedErrorPoiSearchResponse = (): HttpResponse<PoiSearchResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K001',
-    message: `Poi: Something went wrong`,
-  },
-})
-
-export const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    availabilities: [{ availability_id: 'availability_id' }],
-    categories: ['test'],
-  },
-})
-
-export const getMockedErrorQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K001',
-    message: `Availability: Something went wrong`,
-  },
-})
-
-export const getMockedLocationAddressDetailsResponse = (
-  data: any
-): HttpResponse<LocationAddressDetailsResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    place_id: `location_placeId:${data?.placeId ?? ''}`,
-    address: {
-      display_address: `location_display_address:${data?.placeId ?? ''}`,
-      line_1: 'line_1',
-      city: 'city',
-    },
-  },
-})
-
-export const getMockedErrorLocationAddressDetailsResponse = (): HttpResponse<LocationAddressDetailsResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K001',
-    message: `Location: Something went wrong`,
-  },
-})
-
-export const getMockedLocationAddressAutocompleteResponse = (
-  data: any
-): HttpResponse<LocationAddressAutocompleteResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    locations: [
-      {
-        place_id: `autocomplete_placeId:${data?.query ?? ''}`,
-        display_address: `autocomplete_display_address:${data?.query ?? ''}`,
-        type: 'TRAIN_STATION',
-      },
-    ],
-  },
-})
-
-export const getMockedErrorLocationAddressAutocompleteResponse = (): HttpResponse<LocationAddressAutocompleteResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code: 'K005',
-    message: `Location autocomplete: Something went wrong`,
-  },
-})
-
-export const getMockedQuotesSearchResponse = (
-  partialBody: Partial<QuotesResponse> = {}
-): HttpResponseOk<QuotesResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
-    quote_items: [],
-    status: QuoteResponseStatuses.PROGRESSING,
-    validity: 599,
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorQuotesSearchResponse = (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Quotes search: Something went wrong`,
-  },
-})
-
-export const getMockedQuotesSerchByIdResponse = (
-  partialBody: Partial<QuotesByIdResponse> = {}
-): HttpResponseOk<QuotesByIdResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
-    quote_items: [
-      {
-        availability_id: 'ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
-        category_name: 'MPV',
-        currency_code: 'GBP',
-        fleet_description:
-          'Robot PHV Fleet operating globally. Example description: Regional Private Hire Company operating in London and surroundings.',
-        fleet_id: 'd5905a3d-da80-45dc-bdf2-903ea9ea2235',
-        fleet_name: 'Global PHV (Robot Fleet WWW)',
-        high_price: 3000,
-        low_price: 3000,
-        phone_number: '+448000000000',
-        pick_up_type: 'DEFAULT',
-        qta_high_minutes: 0,
-        qta_low_minutes: 0,
-        quote_id:
-          '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e:ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
-        quote_type: QuotePriceTypes.FIXED,
-        source: 'FLEET',
-        supplier_logo_url: '',
-        terms_conditions_url: '',
-        vehicle_attributes: {
-          child_seat: false,
-          electric: false,
-          hybrid: false,
-          luggage_capacity: 2,
-          passenger_capacity: 4,
-        },
-        vehicle_class: 'mpv',
-      },
-    ],
-    status: QuoteResponseStatuses.COMPLETED,
-    validity: 600,
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorQuotesSerchByIdResponse = (
-  code = errorCodes.K0001
-): HttpResponseError<ApiError> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Quotes search by id: Something went wrong`,
-  },
-})
-
-export const getMockedTrackTripResponse = (
-  partialBody: Partial<TripFollowResponse> = {}
-): HttpResponseOk<TripFollowResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    trip_id: 'trip_id',
-    date_scheduled: '2020-05-28T08:17:07Z',
-    status: TripStatuses.COMPLETED,
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorTrackTripResponse = (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Track trip: Something went wrong`,
-  },
-})
-
-export const getMockedCancelByFollowCodeResponse = (): HttpResponseOk<object> => ({
-  ok: true,
-  status: 200,
-  body: {},
-})
-
-export const getMockedFinalFareResponse = (
-  partialBody: Partial<FinalFareResponse> = {}
-): HttpResponseOk<FinalFareResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    state: FinalFareStatuses.FINAL,
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorFinalFareResponse = (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Track trip: Something went wrong`,
-  },
-})
-
-export const getMockedPaymentCreateClientTokenResponse = (
-  partialBody: Partial<CreateTokenResponse> = {}
-): HttpResponse<CreateTokenResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    token: 'token',
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorPaymentCreateClientTokenResponse = (
-  code = errorCodes.K0001
-): HttpResponse<CreateTokenResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Create client token: Something went wrong`,
-  },
-})
-
-export const getMockedAddPaymentCardResponse = (
-  partialBody: Partial<ClientNonceResponse> = {}
-): HttpResponse<ClientNonceResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    card_type: 'cardType',
-    last_four: 'lastFour',
-    nonce: 'nonce',
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorAddPaymentCardResponse = (
-  code = errorCodes.K0001
-): HttpResponse<CreateTokenResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Add payment card: Something went wrong`,
-  },
-})
-
-export const getMockedPaymentGetClientNonceResponse = (
-  partialBody: Partial<ClientNonceResponse> = {}
-): HttpResponse<ClientNonceResponse> => ({
-  ok: true,
-  status: 200,
-  body: {
-    card_type: 'cardType',
-    last_four: 'lastFour',
-    nonce: 'nonce',
-    ...partialBody,
-  },
-})
-
-export const getMockedErrorPaymentGetClientNonceResponse = (
-  code = errorCodes.K0001
-): HttpResponse<CreateTokenResponse> => ({
-  ok: false,
-  status: 500,
-  error: {
-    code,
-    message: `Get client nonce: Something went wrong`,
-  },
-})
+export * from './payment/testMocks'
+export * from './quotes/testMocks'
+export * from './poi/testMocks'
+export * from './location/testMocks'
+export * from './trip/testMocks'
+export * from './fare/testMocks'
 
 export const mockHttpGet = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { get: true } }))
 export const mockHttpPost = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { post: true } }))
@@ -328,39 +29,17 @@ export const mockHttpRemove = jest.fn(() =>
   Promise.resolve({ ok: true, status: 200, body: { remove: true } })
 )
 
-export const getLocationGetAddressDetailsMock = () =>
-  jest.fn((data: any) => {
-    return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
-  })
-
-export const getLocationGetAddressAutocompleteDataMock = () =>
-  jest.fn((data: any) => {
-    return Promise.resolve(getMockedLocationAddressAutocompleteResponse(data))
-  })
-
-export const getPoiSearchMock = () =>
-  jest.fn((data: any) => {
-    return Promise.resolve(getMockedPoiSearchResponse(data))
-  })
-
-export const getQuotesCheckAvailabilityMock = () =>
-  jest.fn(() => Promise.resolve(getMockedQuotesAvailabilityResponse()))
-
-export const getQuotesSearchMock = () =>
-  jest.fn(() => {
-    return Promise.resolve(getMockedQuotesSearchResponse())
-  })
-
-export const getQuotesSearchByIdMock = () =>
-  jest.fn(() => Promise.resolve(getMockedQuotesSerchByIdResponse()))
-
 export const getApiMock = () => {
   const mockLocationGetAddressDetails = getLocationGetAddressDetailsMock()
   const mockLocationGetAddressAutocompleteData = getLocationGetAddressAutocompleteDataMock()
   const mockPoiSearch = getPoiSearchMock()
   const mockQuotesCheckAvailability = getQuotesCheckAvailabilityMock()
-  const mockQuoteSearch = getQuotesSearchByIdMock()
+  const mockQuoteSearch = getQuotesSearchMock()
   const mockQuoteSearchById = getQuotesSearchByIdMock()
+  const mockAddPaymentCard = getAddPaymentCardMock()
+  const mockPaymentCreateClientToken = getPaymentCreateClientTokenMock()
+  const mockPaymentGetClientNonce = getPaymentGetClientNonceMock()
+  const mockFinalFare = getFinalFareMock()
 
   return {
     locationService: {
@@ -375,6 +54,14 @@ export const getApiMock = () => {
       quotesSearch: mockQuoteSearch,
       quotesSearchById: mockQuoteSearchById,
     },
+    paymentService: {
+      createClientToken: mockPaymentCreateClientToken,
+      getClientNonce: mockPaymentGetClientNonce,
+      addPaymentCard: mockAddPaymentCard,
+    },
+    fareService: {
+      status: mockFinalFare,
+    },
     mockClear: () => {
       ;[
         mockLocationGetAddressDetails,
@@ -383,6 +70,10 @@ export const getApiMock = () => {
         mockQuotesCheckAvailability,
         mockQuoteSearch,
         mockQuoteSearchById,
+        mockAddPaymentCard,
+        mockPaymentGetClientNonce,
+        mockPaymentCreateClientToken,
+        mockFinalFare,
       ].forEach(m => m.mockClear())
     },
   }
