@@ -5,9 +5,10 @@ import {
   ClientNonceParams,
   ClientNonceResponse,
   AddPaymentCardParams,
+  Payment,
 } from './types'
 
-export class PaymentService {
+export class PaymentService implements Payment {
   private url = 'payments'
 
   private http: Http

@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.2.0) (2020-06-25)
+
+
+### Features
+
+* add logic for trip bloc ([#59](https://github.com/karhoo/web-lib-demand/issues/59)) ([986bf41](https://github.com/karhoo/web-lib-demand/commit/986bf41f16b73d2d6ae2b8cebeb337464b082c03))
+
+
+* ET-997 Add method patch to Http Service. Delete User Service (#62) ([1e53fbe](https://github.com/karhoo/web-lib-demand/commit/1e53fbeb07d05b5cbc2118294b6eadc583f4cf88)), closes [#62](https://github.com/karhoo/web-lib-demand/issues/62)
+
+
+### Bug Fixes
+
+* change polling subscription complete handler ([#56](https://github.com/karhoo/web-lib-demand/issues/56)) ([180c113](https://github.com/karhoo/web-lib-demand/commit/180c1138be70702921711a246b1101f9d54ac9fb))
+
+
+### BREAKING CHANGES
+
+* Delete UserService
+
+* fix: Fix unit tests
+
+* v4.0.0
+
+
+
+
+
 # [6.1.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.1.0) (2020-06-17)
 
 

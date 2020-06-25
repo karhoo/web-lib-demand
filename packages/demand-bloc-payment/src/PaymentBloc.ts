@@ -1,10 +1,5 @@
 import { Provider, PaymentOptions, VerifyCardResponse } from './types'
-
-export const creditCardType = 'CreditCard'
-
-export const defaultPaymentOptions = {
-  paymentCardsEnabled: false,
-}
+import { creditCardType, defaultPaymentOptions, errors } from './constants'
 
 export class PaymentBloc {
   private provider: Provider
@@ -30,7 +25,7 @@ export class PaymentBloc {
 
       return response.liabilityShifted || response.type !== creditCardType
         ? { ok: true, nonce: response.nonce }
-        : { ok: false, error: new Error('Verify card response does not meet requirements') }
+        : { ok: false, error: new Error(errors.verifyCardError) }
     } catch (error) {
       return { ok: false, error }
     }

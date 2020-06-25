@@ -1,6 +1,6 @@
 module.exports = {
   collectCoverage: true,
-  coveragePathIgnorePatterns: ['/node_modules/', 'src/testMocks*', 'src/index.ts'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'testMocks*', 'src/index.ts'],
   coverageThreshold: {
     global: {
       branches: 90,

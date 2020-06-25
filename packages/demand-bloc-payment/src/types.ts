@@ -1,4 +1,9 @@
-import { HostedFieldsTokenizePayload, ThreeDSecureVerifyPayload } from 'braintree-web'
+import {
+  HostedFieldsTokenizePayload,
+  ThreeDSecureVerifyPayload,
+  HostedFieldFieldOptions,
+  BraintreeError,
+} from 'braintree-web'
 
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
@@ -33,3 +38,34 @@ export type VerifyCardResponse =
       ok: false
       error: VerifyCardError
     }
+
+type Logger = {
+  error(error: Error | BraintreeError, info?: Record<string, string>): void
+}
+
+export type BraintreeProviderOptions = {
+  organisationId: string
+  currencyCode: string
+  logger?: Logger
+  invalidFieldClass?: string
+  hostedFields?: {
+    hostedFieldsConfig: HostedFieldFieldOptions
+    hostedFieldsStyles: Record<string, Record<string, string>>
+  }
+  threeDSecureFields?: {
+    iframeContainerId: string
+    loadingId?: string
+    processingId?: string
+  }
+}
+
+export type FullBraintreeProviderOptions = Omit<Required<BraintreeProviderOptions>, 'logger'> & {
+  logger?: Logger
+}
+
+export type Payer = {
+  id: string
+  email: string
+  first_name: string
+  last_name: string
+}
