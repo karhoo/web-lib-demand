@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.3.0) (2020-06-26)
+
+
+### Features
+
+* add logic for trip bloc ([#59](https://github.com/karhoo/web-lib-demand/issues/59)) ([986bf41](https://github.com/karhoo/web-lib-demand/commit/986bf41f16b73d2d6ae2b8cebeb337464b082c03))
+* braintree provider for payment Bloc ([#68](https://github.com/karhoo/web-lib-demand/issues/68)) ([9f4d611](https://github.com/karhoo/web-lib-demand/commit/9f4d6119d1d676bcc3dde3098b1e06c4d5ac4a48))
+
+
+* ET-997 Add method patch to Http Service. Delete User Service (#62) ([1e53fbe](https://github.com/karhoo/web-lib-demand/commit/1e53fbeb07d05b5cbc2118294b6eadc583f4cf88)), closes [#62](https://github.com/karhoo/web-lib-demand/issues/62)
+
+
+### Bug Fixes
+
+* add "main" into package.json ([#51](https://github.com/karhoo/web-lib-demand/issues/51)) ([045755b](https://github.com/karhoo/web-lib-demand/commit/045755b8045d406a685575577f0627b8d50a383c))
+* change polling subscription complete handler ([#56](https://github.com/karhoo/web-lib-demand/issues/56)) ([180c113](https://github.com/karhoo/web-lib-demand/commit/180c1138be70702921711a246b1101f9d54ac9fb))
+
+
+### BREAKING CHANGES
+
+* Delete UserService
+
+* fix: Fix unit tests
+
+* v4.0.0
+
+
+
+
+
 # [6.2.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.2.0) (2020-06-25)
 
 
