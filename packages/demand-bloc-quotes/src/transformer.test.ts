@@ -14,8 +14,8 @@ describe('transformer', () => {
     low_price: 2000,
     phone_number: '+44800000000',
     pick_up_type: 'DEFAULT',
-    qta_high_minutes: 0,
-    qta_low_minutes: 0,
+    qta_high_minutes: 6,
+    qta_low_minutes: 2,
     quote_id:
       'ff773de1-9e6f-11ea-a984-cee7b28f559b:ODJjZGMzNTktYmVlZC00NWNiLTg3NDMtYmFlYzg0ZTU4YjU3O2V4ZWN1dGl2ZQ==',
     quote_type: 'FIXED',
@@ -34,7 +34,11 @@ describe('transformer', () => {
 
   const expectedQuote = {
     currencyCode: 'GBP',
-    eta: null,
+    eta: 6,
+    etaBreakdown: {
+      from: 2,
+      to: 6,
+    },
     finalPrice: null,
     fleetId: '82cdc359-beed-45cb-8743-baec84e58b57',
     fleetLogo: '69279eb83537f0471137a72184f31edb.png',
@@ -67,6 +71,10 @@ describe('transformer', () => {
     const expected = {
       currencyCode: '',
       eta: null,
+      etaBreakdown: {
+        from: null,
+        to: null,
+      },
       finalPrice: null,
       fleetId: '',
       fleetLogo: '',

@@ -3,7 +3,10 @@ import { QuoteItem as OriginalQuoteItem, QuotePriceTypes } from '@karhoo/demand-
 export interface QuoteItem {
   currencyCode: string
   eta?: number | null
-
+  etaBreakdown: {
+    from?: number | null
+    to?: number | null
+  }
   finalPrice?: null
   fleetId: string
   fleetLogo: string
@@ -27,6 +30,7 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
     fleet_name,
     high_price,
     qta_high_minutes,
+    qta_low_minutes,
     quote_id,
     quote_type,
     supplier_logo_url,
@@ -40,6 +44,10 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
   return {
     currencyCode: currency_code || '',
     eta: qta_high_minutes || null,
+    etaBreakdown: {
+      from: qta_low_minutes || null,
+      to: qta_high_minutes || null,
+    },
     finalPrice: null,
     fleetId: fleet_id || '',
     fleetLogo: supplier_logo_url || '',
