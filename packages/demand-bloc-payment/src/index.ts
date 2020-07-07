@@ -3,6 +3,7 @@ import {
   defaultHostedFieldsStyles,
   defaultInvalidFieldClass,
   defaultThreeDSecureFields,
+  default3DSecureStatus,
 } from './providers/braintreeConstants'
 
 export { PaymentBloc } from './PaymentBloc'
@@ -15,6 +16,7 @@ export const braintreeDefaultValues = {
   defaultHostedFieldsStyles,
   defaultInvalidFieldClass,
   defaultThreeDSecureFields,
+  default3DSecureStatus,
 }
 
 export * from './types'

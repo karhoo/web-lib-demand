@@ -39,6 +39,16 @@ export type VerifyCardResponse =
       error: VerifyCardError
     }
 
+export type PaymentNonceResponse =
+  | {
+      ok: true
+      nonce: string
+    }
+  | {
+      ok: false
+      error: Error
+    }
+
 type Logger = {
   error(error: Error | BraintreeError, info?: Record<string, string>): void
 }
@@ -52,6 +62,7 @@ export type BraintreeProviderOptions = {
     hostedFieldsConfig: HostedFieldFieldOptions
     hostedFieldsStyles: Record<string, Record<string, string>>
   }
+  withThreeDSecure?: boolean
   threeDSecureFields?: {
     iframeContainerId: string
     loadingId?: string

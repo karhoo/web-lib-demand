@@ -7,6 +7,7 @@ import {
   defaultHostedFieldsStyles,
   defaultThreeDSecureFields,
   defaultInvalidFieldClass,
+  default3DSecureStatus,
   errors,
 } from './braintreeConstants'
 
@@ -33,6 +34,7 @@ export class BraintreeProvider implements Provider {
       },
       threeDSecureFields: defaultThreeDSecureFields,
       invalidFieldClass: defaultInvalidFieldClass,
+      withThreeDSecure: default3DSecureStatus,
       ...options,
     }
   }
@@ -53,16 +55,22 @@ export class BraintreeProvider implements Provider {
   }
 
   async initialize() {
-    const { hostedFieldsConfig, hostedFieldsStyles } = this.options.hostedFields
+    const {
+      hostedFields: { hostedFieldsConfig, hostedFieldsStyles },
+      withThreeDSecure,
+    } = this.options
+
     const authorization = await this.getAuthorizationToken()
 
     this.client = await braintree.client.create({
       authorization,
     })
 
-    this.threeDSecure = await braintree.threeDSecure.create({
-      client: this.client,
-    })
+    if (withThreeDSecure) {
+      this.threeDSecure = await braintree.threeDSecure.create({
+        client: this.client,
+      })
+    }
 
     this.hostedFields = await braintree.hostedFields.create({
       client: this.client,
@@ -127,11 +135,13 @@ export class BraintreeProvider implements Provider {
   verifyWithThreeDSecure(amount: number, nonce: string) {
     const {
       threeDSecure,
-      options: { threeDSecureFields, logger },
+      options: { withThreeDSecure, threeDSecureFields, logger },
     } = this
 
-    if (!threeDSecure) {
-      return Promise.reject(new Error(errors.threeDSecureNotInitialized))
+    if (!threeDSecure || !withThreeDSecure) {
+      return Promise.reject(
+        new Error(withThreeDSecure ? errors.threeDSecureNotInitialized : errors.threeDSecureOptionNotEnabled)
+      )
     }
 
     const { iframeContainerId, loadingId, processingId } = threeDSecureFields
