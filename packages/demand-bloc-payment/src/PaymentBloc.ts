@@ -1,4 +1,4 @@
-import { Provider, PaymentOptions, VerifyCardResponse } from './types'
+import { Provider, PaymentOptions, VerifyCardResponse, PaymentNonceResponse } from './types'
 import { creditCardType, defaultPaymentOptions, errors } from './constants'
 
 export class PaymentBloc {
@@ -20,7 +20,7 @@ export class PaymentBloc {
 
   async verifyCardWithThreeDSecure(amount: number): Promise<VerifyCardResponse> {
     try {
-      const nonce = await this.getThreeDSecurePaymentDetails()
+      const nonce = await this.getPaymentDetails()
       const response = await this.provider.verifyWithThreeDSecure(amount, nonce)
 
       return response.liabilityShifted || response.type !== creditCardType
@@ -39,11 +39,21 @@ export class PaymentBloc {
     return this.provider.validatePaymentForm()
   }
 
+  async getPaymentNonce(): Promise<PaymentNonceResponse> {
+    try {
+      const nonce = await this.getPaymentDetails()
+
+      return { ok: true, nonce }
+    } catch (error) {
+      return { ok: false, error }
+    }
+  }
+
   private initPaymentProvider() {
     return this.provider.initialize()
   }
 
-  private async getThreeDSecurePaymentDetails() {
+  private async getPaymentDetails() {
     const tokenizeResponse = await this.provider.tokenizeHostedFields()
 
     return tokenizeResponse.nonce

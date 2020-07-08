@@ -1,5 +1,7 @@
 export const defaultInvalidFieldClass = 'krhInvalid'
 
+export const default3DSecureStatus = true
+
 export const defaultHostedFieldsConfig = {
   number: {
     selector: '#number',
@@ -29,6 +31,7 @@ export const defaultThreeDSecureFields = {
 export const errors = {
   authorizationToken: 'Failed to get braintree authorization token',
   hostedFieldsNotInitialized: 'Hosted fields are not initialized',
+  threeDSecureOptionNotEnabled: 'withThreeDSecure options is not enabled',
   threeDSecureNotInitialized: 'ThreeDSecure is not initialized',
   unableToAddPaymentForm: 'Error - Unable to add payment form',
   noIframeContainerElement: 'addFrame: There is no iframe container element',

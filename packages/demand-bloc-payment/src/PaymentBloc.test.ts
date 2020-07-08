@@ -15,7 +15,7 @@ describe('PaymentBloc', () => {
   }
 
   const verifyCardWithThreeDSecureResponse = {
-    nonce: 'nonce',
+    nonce: 'veryfied nonce',
     details: {
       cardType: 'cardType',
       lastTwo: 'lastTwo',
@@ -28,7 +28,7 @@ describe('PaymentBloc', () => {
   const providerMock = {
     initialize: jest.fn(),
     dispose: jest.fn(),
-    tokenizeHostedFields: jest.fn(() => Promise.resolve(tokenizeHostedFieldsResponse)),
+    tokenizeHostedFields: jest.fn(() => Promise.resolve(tokenizeHostedFieldsResponse)) as jest.Mock,
     validatePaymentForm: jest.fn(() => true),
     verifyWithThreeDSecure: jest.fn(() => Promise.resolve(verifyCardWithThreeDSecureResponse)),
   }
@@ -142,6 +142,30 @@ describe('PaymentBloc', () => {
       providerMock.tokenizeHostedFields.mockReturnValueOnce(Promise.reject(error))
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: false, error })
+    })
+  })
+
+  describe('getPaymentNonce', () => {
+    it('should call tokenizeHostedFields of provider', async () => {
+      await payment.getPaymentNonce()
+
+      expect(providerMock.tokenizeHostedFields).toBeCalledTimes(1)
+    })
+
+    it('should return nonce', async () => {
+      const result = await payment.getPaymentNonce()
+
+      expect(result).toEqual({ ok: true, nonce: tokenizeHostedFieldsResponse.nonce })
+    })
+
+    it('should return error', async () => {
+      const error = new Error('test')
+
+      providerMock.tokenizeHostedFields.mockReturnValueOnce(Promise.reject(error))
+
+      const result = await payment.getPaymentNonce()
+
+      expect(result).toEqual({ ok: false, error })
     })
   })
 })

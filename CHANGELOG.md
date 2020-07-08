@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/karhoo/web-lib-demand/compare/v6.3.0...v6.4.0) (2020-07-08)
+
+
+### Features
+
+* Add ability to book without 3d secure ([b1ccaa0](https://github.com/karhoo/web-lib-demand/commit/b1ccaa081730e629d1a249662d4e0775d65d3852))
+
+
+
+
+
 # [6.3.0](https://github.com/karhoo/web-lib-demand/compare/v0.10.2...v6.3.0) (2020-06-26)
 
 

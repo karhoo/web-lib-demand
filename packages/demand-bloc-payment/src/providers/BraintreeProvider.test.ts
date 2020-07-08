@@ -112,6 +112,16 @@ describe('PaymentBloc', () => {
       })
     })
 
+    it('should not call create of braintree.threeDSecure if withThreeDSecure is false', async () => {
+      await new BraintreeProvider(paymentService, {
+        organisationId,
+        currencyCode,
+        withThreeDSecure: false,
+      }).initialize()
+
+      expect(braintree.threeDSecure.create).toBeCalledTimes(0)
+    })
+
     it('should call create of braintree.hostedFields', async () => {
       await provider.initialize()
 
@@ -537,6 +547,16 @@ describe('PaymentBloc', () => {
         .verifyWithThreeDSecure(amount, nonce)
         .catch(error => {
           expect(error.message).toBe(errors.threeDSecureNotInitialized)
+
+          done()
+        })
+    })
+
+    it('should return rejected threeDSecureOptionNotEnabled error', done => {
+      new BraintreeProvider(paymentService, { organisationId, currencyCode, withThreeDSecure: false })
+        .verifyWithThreeDSecure(amount, nonce)
+        .catch(error => {
+          expect(error.message).toBe(errors.threeDSecureOptionNotEnabled)
 
           done()
         })
