@@ -138,14 +138,16 @@ export class QuotesBloc {
     quote.vehiclePassengerCapacity >= this._filters.numOfPassengers &&
     quote.vehicleLuggageCapacity >= this._filters.numOfLuggage
 
+  private convertValidityToMS(validity = 0) {
+    return Date.now() + validity * 1000
+  }
+
   /**
    * Schedules an `quotes expired` event
-   * @param expiresAt {number} number of seconds after which `quotes expired` event is emitted
+   * @param expiresAt {number} Date in miliseconds after which `quotes expired` event is emitted
    */
   scheduleExpiredEvent(expiresAt = 0) {
-    const ms = expiresAt * 1000
-
-    const expired = timer(ms)
+    const expired = timer(expiresAt - Date.now())
 
     this.timerSubscription = expired.subscribe(() => {
       this.quotesExpired$.next()
@@ -193,7 +195,7 @@ export class QuotesBloc {
 
         this.quotes$.next({
           items: items.map(quote => transformer(quote)),
-          validity: res.body.validity || defaultValidity,
+          validity: this.convertValidityToMS(res.body.validity || defaultValidity),
         })
       }
     }
@@ -204,7 +206,7 @@ export class QuotesBloc {
         const { body } = requestQuotesResponse
 
         handleQuotesLoaded(requestQuotesResponse)
-        this.scheduleExpiredEvent(body.validity)
+        this.scheduleExpiredEvent(this.convertValidityToMS(body.validity))
 
         const poller = poll(() => this.quotesService.quotesSearchById(body.id, locale))
 
