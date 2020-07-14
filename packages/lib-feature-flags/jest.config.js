@@ -1,21 +1,13 @@
 module.exports = {
-  testURL: 'http://localhost:9999/test',
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
-  collectCoverageFrom: ['src/**/*.js'],
-  projects: ['<rootDir>'],
+  collectCoverage: true,
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      branches: 40,
+      functions: 50,
+      lines: 65,
+      statements: 60,
     },
   },
-  transform: {
-    '^.+\\.js$': 'babel-jest',
-  },
-  moduleFileExtensions: ['js'],
-  testMatch: ['**/*.test.js'],
-  setupFilesAfterEnv: ['<rootDir>.jest/setupTests.js'],
+  setupFiles: ['./src/setupTest.ts'],
+  snapshotSerializers: ['enzyme-to-json/serializer'],
 }

@@ -1,6 +1,7 @@
-import { FeatureFlags, defaultOptions } from './FeatureFlags'
+import { FeatureFlags } from './FeatureFlags'
+import { Config } from './types'
 
-let MockConfig
+let MockConfig: Config
 const name = 'feature_name'
 
 describe('FeatureFlags', () => {
@@ -9,27 +10,6 @@ describe('FeatureFlags', () => {
       fetch: jest.fn(() => Promise.resolve({})),
       getValue: jest.fn(() => true),
     }
-  })
-
-  describe('constructor', () => {
-    test('should accept config', () => {
-      const actual = new FeatureFlags(MockConfig)
-      expect(actual.config).toEqual(MockConfig)
-    })
-
-    test('should accept additional configuration options', () => {
-      const actual = new FeatureFlags(MockConfig, {
-        defaultValueForMissingKeys: true,
-      })
-
-      expect(actual.defaultValueForMissingKeys).toEqual(true)
-    })
-
-    test('should fallback to default option if additional configuration options are not passed', () => {
-      const actual = new FeatureFlags(MockConfig)
-
-      expect(actual.defaultValueForMissingKeys).toEqual(defaultOptions.defaultValueForMissingKeys)
-    })
   })
 
   describe('toggle', () => {
@@ -58,14 +38,12 @@ describe('FeatureFlags', () => {
       flags.toggle(name, false)
 
       expect(onChange).toHaveBeenCalled()
-      expect(onChange).toHaveBeenCalledWith(flags.features)
     })
   })
 
   describe('enable', () => {
-    let flags
-    let onChange
-
+    let flags: any
+    let onChange: Function
     beforeEach(async () => {
       onChange = jest.fn()
       flags = new FeatureFlags({
@@ -112,7 +90,6 @@ describe('FeatureFlags', () => {
       flags.disable(name)
 
       expect(onChange).toHaveBeenCalled()
-      expect(onChange).toHaveBeenCalledWith(flags.features)
     })
   })
 
@@ -158,39 +135,6 @@ describe('FeatureFlags', () => {
       const instance = await flags.init()
 
       expect(instance).toBeInstanceOf(FeatureFlags)
-    })
-  })
-
-  describe('listen', () => {
-    test('should accept onChange listener', async () => {
-      const onChange = jest.fn()
-      const flags = new FeatureFlags(MockConfig)
-      await flags.init()
-      flags.listen(onChange)
-
-      expect(flags.onChange).toEqual(onChange)
-    })
-
-    test('should use an empty function if onChange listener is not passed', async () => {
-      const flags = new FeatureFlags(MockConfig)
-      await flags.init()
-      flags.listen()
-
-      expect(typeof flags.onChange).toEqual('function')
-    })
-  })
-
-  describe('updateFeatures', () => {
-    test('should update feature list and call onChange', async () => {
-      const flags = new FeatureFlags(MockConfig)
-      const onChange = jest.fn()
-      const testFeature = { testFeature: true }
-      await flags.init()
-      flags.listen(onChange)
-      flags.updateFeatures(testFeature)
-
-      expect(flags.isEnabled('testFeature')).toEqual(true)
-      expect(onChange).toHaveBeenLastCalledWith(testFeature)
     })
   })
 })

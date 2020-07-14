@@ -9,36 +9,48 @@
   ],
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/lib-feature-flags#readme",
   "license": "BSD-2-Clause",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "typings": "dist/typings.d.ts",
   "directories": {
-    "lib": "src"
+    "src": "src"
   },
   "files": [
+    "dist/*.js",
+    "dist/*.js.map",
+    "dist/typings.d.ts",
     "src"
   ],
+  "module": "dist/lib-feature-flags.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
   },
   "scripts": {
-    "test": "jest"
+    "start": "npx tsdx watch --tsconfig ./tsconfig.json",
+    "build": "npx tsdx build --tsconfig ./tsconfig.json && npx api-extractor run",
+    "test": "npx tsdx test"
   },
   "bugs": {
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "devDependencies": {
-    "@babel/core": "7.6.0",
-    "@babel/plugin-proposal-class-properties": "7.7.0",
-    "@babel/plugin-transform-runtime": "7.6.0",
-    "@babel/preset-env": "7.6.0",
-    "@babel/preset-react": "7.7.0",
-    "@babel/runtime": "7.6.0",
+    "@microsoft/api-extractor": "7.7.13",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "24.0.18",
-    "babel-jest": "24.9.0",
-    "jest": "24.9.0",
-    "react": "16.12.0"
+    "@types/react": "^16.9.35",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.5.0",
+    "jest": "26.0.0",
+    "react": "16.12.0",
+    "react-dom": "^16.13.1",
+    "ts-jest": "^26.0.0",
+    "tsdx": "^0.13.2",
+    "typescript": "^3.8.3"
   },
   "peerDependencies": {
     "react": "16.12.0"
-  }
+  },
+  "dependencies": {}
 }

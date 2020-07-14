@@ -1,19 +1,21 @@
-import { Features } from './Features'
-import { ObjectConfig } from './ObjectConfig'
-
-export type FeatureConfig = ObjectConfig
-
-export type DefaultOptions = {
-  defaultValueForMissingKeys?: boolean
+export type Features = {
+  [key: string]: boolean
 }
 
-export class FeatureFlags {
-  config: FeatureConfig
+export interface Config {
+  fetch(): Promise<Features>
+  getValue(key: string): boolean | null
+}
+
+export type DefaultOptions = {
+  defaultValueForMissingKeys: boolean
+}
+
+export interface FeatureFlagsInterface {
+  config: Config
   defaultValueForMissingKeys: boolean
   features: Features
   onChange: Function
-
-  private constructor(appConfig: FeatureConfig, options: DefaultOptions)
 
   init(): Promise<Features>
 

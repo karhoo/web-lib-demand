@@ -12,20 +12,6 @@ const initialConfig = {
 }
 
 describe('ObjectConfig', () => {
-  describe('constructor', () => {
-    test('should return an empty object if env is not passed', async () => {
-      const config = new ObjectConfig(initialConfig)
-
-      expect(await config.fetch()).toEqual({})
-    })
-
-    test('should set a config based on a passed enviroment', () => {
-      const actual = new ObjectConfig(initialConfig, env)
-
-      expect(actual.config).toEqual(envConfig)
-    })
-  })
-
   describe('fetch', () => {
     test('should return a config', async () => {
       const config = new ObjectConfig(initialConfig, env)
