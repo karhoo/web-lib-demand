@@ -91,10 +91,13 @@ describe('QuotesBloc', () => {
 
   let bloc: QuotesBloc
 
+  const now = 1466424490000
+
   beforeEach(() => {
     jest.clearAllMocks()
 
     bloc = new QuotesBloc(quotesMock)
+    jest.spyOn(global.Date, 'now').mockImplementation(() => now)
   })
 
   afterEach(() => {
@@ -208,7 +211,7 @@ describe('QuotesBloc', () => {
           ...transformQuotesFromResponse(mockedQuotesSearchResponse),
           ...transformQuotesFromResponse(mockedQuotesSerchByIdResponse),
         ],
-        validity: defaultValidity,
+        validity: now + defaultValidity * 1000,
       }
 
       bloc.quotes.subscribe(data => {
@@ -271,7 +274,7 @@ describe('QuotesBloc', () => {
       })
       bloc.loading.subscribe(isLoading => {
         if (!isLoading) {
-          expect(quotes).toEqual({ items: [], validity: 599 })
+          expect(quotes).toEqual({ items: [], validity: now + 599 * 1000 })
           done()
         }
       })
@@ -301,6 +304,26 @@ describe('QuotesBloc', () => {
       bloc.requestQuotes(searchParams)
     })
 
+    it('should emit false in case of unexpected error', done => {
+      const error = {
+        message: 'someerror',
+      }
+      quotesMock.quotesSearch.mockReturnValueOnce(
+        Promise.resolve({
+          ok: false,
+          status: 0,
+          error,
+        })
+      )
+
+      bloc.quotesLoadingErrors.subscribe(actualError => {
+        expect(actualError).toEqual(error)
+        done()
+      })
+
+      bloc.requestQuotes(searchParams)
+    })
+
     it('should emit quotesExpired', done => {
       quotesMock.quotesSearch.mockReturnValueOnce(
         Promise.resolve(getMockedQuotesSearchResponse({ validity: 0 }))
@@ -308,6 +331,14 @@ describe('QuotesBloc', () => {
 
       bloc.quotesExpired.subscribe(() => done())
       bloc.requestQuotes(searchParams)
+    })
+  })
+
+  describe('scheduleExpiredEvent', () => {
+    it('should emit quotesExpired after negative time', done => {
+      bloc.scheduleExpiredEvent(now)
+
+      bloc.quotesExpired.subscribe(() => done())
     })
   })
 

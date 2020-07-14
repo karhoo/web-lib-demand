@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/karhoo/web-lib-demand/compare/v6.4.0...v7.0.0) (2020-07-14)
+
+
+### Features
+
+* refactor lib-feature-flags to typescript ([#60](https://github.com/karhoo/web-lib-demand/issues/60)) ([efde85b](https://github.com/karhoo/web-lib-demand/commit/efde85bd2b39c3a4f74de0671df9de8ddcb70fe2))
+
+
+
+
+
 # [6.4.0](https://github.com/karhoo/web-lib-demand/compare/v6.3.0...v6.4.0) (2020-07-08)
 
 **Note:** Version bump only for package @karhoo/lib-feature-flags
