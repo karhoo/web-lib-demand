@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeatureProvider should render child component if feature is enabled 1`] = `
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
+`;
