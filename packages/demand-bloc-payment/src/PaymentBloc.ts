@@ -1,20 +1,32 @@
-import { Provider, PaymentOptions, VerifyCardResponse, PaymentNonceResponse } from './types'
+import { Provider, PaymentOptions, VerifyCardResponse, PaymentNonceResponse, Payer, CardsInfo } from './types'
 import { creditCardType, defaultPaymentOptions, errors } from './constants'
 
 export class PaymentBloc {
   private provider: Provider
 
+  private cardsInfo?: CardsInfo
+
   private options: PaymentOptions
 
-  constructor(provider: Provider, options: PaymentOptions = defaultPaymentOptions) {
+  constructor(provider: Provider, options: PaymentOptions = defaultPaymentOptions, cardsInfo?: CardsInfo) {
     this.provider = provider
     this.options = options
+    this.cardsInfo = cardsInfo
   }
 
-  async initPayment() {
+  async initPayment(payer?: Payer) {
+    const {
+      options: { paymentCardsEnabled },
+      cardsInfo,
+    } = this
+
+    if (paymentCardsEnabled && !cardsInfo) {
+      throw new Error(errors.noCardsInfo)
+    }
+
     await Promise.all([
       this.initPaymentProvider(),
-      this.options.paymentCardsEnabled ? this.initPaymentCards() : null,
+      paymentCardsEnabled && payer ? this.initPaymentCards(payer) : null,
     ])
   }
 
@@ -33,10 +45,11 @@ export class PaymentBloc {
 
   async dispose() {
     await this.provider.dispose()
+    await this.cardsInfo?.clear()
   }
 
   validatePaymentDetails() {
-    return this.provider.validatePaymentForm()
+    return !!this.cardsInfo?.getSelectedPaymentCard() || this.provider.validatePaymentForm()
   }
 
   async getPaymentNonce(): Promise<PaymentNonceResponse> {
@@ -54,12 +67,31 @@ export class PaymentBloc {
   }
 
   private async getPaymentDetails() {
+    const selectedCard = this.cardsInfo?.getSelectedPaymentCard()
+
+    if (selectedCard?.nonce) {
+      return selectedCard.nonce
+    }
+
     const tokenizeResponse = await this.provider.tokenizeHostedFields()
 
     return tokenizeResponse.nonce
   }
 
-  private initPaymentCards() {
-    // TBD
+  private async initPaymentCards(payer: Payer) {
+    const cards = await this.provider.getSavedCards(payer)
+
+    this.cardsInfo?.setPaymentCards(cards)
+  }
+
+  async savePaymentCard(payer: Payer) {
+    try {
+      const { nonce } = await this.provider.tokenizeHostedFields()
+      const response = await this.provider.saveCard(nonce, payer)
+
+      return response.ok ? { ok: true } : { ok: false, error: new Error(response.error.message) }
+    } catch (error) {
+      return { ok: false, error }
+    }
   }
 }
