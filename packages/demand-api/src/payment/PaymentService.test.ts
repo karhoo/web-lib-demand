@@ -47,7 +47,7 @@ describe('PaymentService', () => {
       new PaymentService(http).getClientNonce(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('payments/payment-methods/braintree/get-nonce', params)
+      expect(http.post).toHaveBeenCalledWith('payments/payment-methods/braintree/get-payment-method', params)
     })
   })
 

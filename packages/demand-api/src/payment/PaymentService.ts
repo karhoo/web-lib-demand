@@ -27,7 +27,10 @@ export class PaymentService implements Payment {
   }
 
   getClientNonce(params: ClientNonceParams) {
-    return this.http.post<ClientNonceResponse>(`${this.url}/payment-methods/braintree/get-nonce`, params)
+    return this.http.post<ClientNonceResponse>(
+      `${this.url}/payment-methods/braintree/get-payment-method`,
+      params
+    )
   }
 
   addPaymentCard(params: AddPaymentCardParams) {
