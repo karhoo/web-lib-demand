@@ -86,7 +86,7 @@ describe('PaymentBloc', () => {
       await new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock).initPayment(payer)
 
       expect(cardsInfoMock.setPaymentCards).toBeCalledTimes(1)
-      expect(cardsInfoMock.setPaymentCards).toBeCalledWith(cards)
+      expect(cardsInfoMock.setPaymentCards).toBeCalledWith(cards, payer)
     })
 
     it('should throw error if paymentCardsEnabled is true and cardsInfo is not provided', done => {

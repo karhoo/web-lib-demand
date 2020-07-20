@@ -36,7 +36,7 @@ export type Provider = {
 }
 
 export type CardsInfo = {
-  setPaymentCards(cards: CardInfo[]): void
+  setPaymentCards(cards: CardInfo[], payer: Payer): void
   getSelectedPaymentCard(): CardInfo | undefined
   clear(): Promise<void> | void
 }
@@ -53,25 +53,20 @@ export type VerifyCardError = {
   message: string
 }
 
-export type VerifyCardResponse =
+type DefaultPaymentResponse<T = Error> =
   | {
       ok: true
       nonce: string
     }
   | {
       ok: false
-      error: VerifyCardError
+      error: T
     }
 
-export type PaymentNonceResponse =
-  | {
-      ok: true
-      nonce: string
-    }
-  | {
-      ok: false
-      error: Error
-    }
+export type VerifyCardResponse = DefaultPaymentResponse<VerifyCardError>
+export type PaymentNonceResponse = DefaultPaymentResponse
+
+export type SaveCardResponse = { ok: true } | { ok: false; error: Error | BraintreeError }
 
 type Logger = {
   error(error: Error | BraintreeError, info?: Record<string, string>): void

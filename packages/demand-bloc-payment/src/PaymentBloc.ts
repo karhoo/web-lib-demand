@@ -1,4 +1,12 @@
-import { Provider, PaymentOptions, VerifyCardResponse, PaymentNonceResponse, Payer, CardsInfo } from './types'
+import {
+  Provider,
+  PaymentOptions,
+  VerifyCardResponse,
+  PaymentNonceResponse,
+  SaveCardResponse,
+  Payer,
+  CardsInfo,
+} from './types'
 import { creditCardType, defaultPaymentOptions, errors } from './constants'
 
 export class PaymentBloc {
@@ -11,7 +19,10 @@ export class PaymentBloc {
   constructor(provider: Provider, options: PaymentOptions = defaultPaymentOptions, cardsInfo?: CardsInfo) {
     this.provider = provider
     this.options = options
-    this.cardsInfo = cardsInfo
+
+    if (this.options.paymentCardsEnabled) {
+      this.cardsInfo = cardsInfo
+    }
   }
 
   async initPayment(payer?: Payer) {
@@ -81,10 +92,10 @@ export class PaymentBloc {
   private async initPaymentCards(payer: Payer) {
     const cards = await this.provider.getSavedCards(payer)
 
-    this.cardsInfo?.setPaymentCards(cards)
+    this.cardsInfo?.setPaymentCards(cards, payer)
   }
 
-  async savePaymentCard(payer: Payer) {
+  async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {
     try {
       const { nonce } = await this.provider.tokenizeHostedFields()
       const response = await this.provider.saveCard(nonce, payer)
