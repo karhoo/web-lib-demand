@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/karhoo/web-lib-demand/compare/v7.1.0...v7.2.0) (2020-07-21)
+
+
+### Features
+
+* Add ability to save and use payment cards ([2cfe6ef](https://github.com/karhoo/web-lib-demand/commit/2cfe6ef46c3c909e045e3402251c7c6d06a33ca4))
+* Provide payer in setPaymentCards of cardsInfo ([f5351b8](https://github.com/karhoo/web-lib-demand/commit/f5351b8368c5c8d3cf9d2d8dcd18fa65d42b372f))
+
+
+
+
+
 # [7.1.0](https://github.com/karhoo/web-lib-demand/compare/v7.0.0...v7.1.0) (2020-07-16)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-payment

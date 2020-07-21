@@ -1,3 +1,8 @@
+import {
+  getAddPaymentCardMock,
+  getMockedErrorAddPaymentCardResponse,
+} from '@karhoo/demand-api/dist/mocks/testMocks'
+
 import { creditCardType, errors } from './constants'
 
 import { PaymentBloc } from './PaymentBloc'
@@ -25,12 +30,36 @@ describe('PaymentBloc', () => {
     liabilityShifted: false,
   }
 
+  const payer = {
+    id: 'id',
+    email: 'email@of.user',
+    first_name: 'firstName',
+    last_name: 'lastName',
+  }
+
+  const cards = [
+    {
+      id: 'id',
+      type: 'type',
+      lastFour: 'lastFour',
+      nonce: 'cardNonce',
+    },
+  ]
+
   const providerMock = {
     initialize: jest.fn(),
     dispose: jest.fn(),
-    tokenizeHostedFields: jest.fn(() => Promise.resolve(tokenizeHostedFieldsResponse)) as jest.Mock,
+    tokenizeHostedFields: jest.fn(() => Promise.resolve(tokenizeHostedFieldsResponse)),
     validatePaymentForm: jest.fn(() => true),
     verifyWithThreeDSecure: jest.fn(() => Promise.resolve(verifyCardWithThreeDSecureResponse)),
+    getSavedCards: jest.fn(() => Promise.resolve(cards)),
+    saveCard: getAddPaymentCardMock(),
+  }
+
+  const cardsInfoMock = {
+    setPaymentCards: jest.fn(),
+    getSelectedPaymentCard: jest.fn(() => cards[0]),
+    clear: jest.fn(),
   }
 
   const payment = new PaymentBloc(providerMock)
@@ -45,6 +74,28 @@ describe('PaymentBloc', () => {
 
       expect(providerMock.initialize).toBeCalledTimes(1)
     })
+
+    it('should call getSavedCards of provider', async () => {
+      await new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock).initPayment(payer)
+
+      expect(providerMock.getSavedCards).toBeCalledTimes(1)
+      expect(providerMock.getSavedCards).toBeCalledWith(payer)
+    })
+
+    it('should call setPaymentCards of cardsInfo', async () => {
+      await new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock).initPayment(payer)
+
+      expect(cardsInfoMock.setPaymentCards).toBeCalledTimes(1)
+      expect(cardsInfoMock.setPaymentCards).toBeCalledWith(cards, payer)
+    })
+
+    it('should throw error if paymentCardsEnabled is true and cardsInfo is not provided', done => {
+      new PaymentBloc(providerMock, { paymentCardsEnabled: true }).initPayment(payer).catch(error => {
+        expect(error.message).toBe(errors.noCardsInfo)
+
+        done()
+      })
+    })
   })
 
   describe('dispose', () => {
@@ -52,6 +103,12 @@ describe('PaymentBloc', () => {
       await payment.dispose()
 
       expect(providerMock.dispose).toBeCalledTimes(1)
+    })
+
+    it('should call clear of cardsInfo', async () => {
+      await new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock).dispose()
+
+      expect(cardsInfoMock.clear).toBeCalledTimes(1)
     })
   })
 
@@ -66,6 +123,30 @@ describe('PaymentBloc', () => {
       providerMock.validatePaymentForm.mockReturnValueOnce(true)
 
       expect(payment.validatePaymentDetails()).toBe(true)
+    })
+
+    it('should call getSelectedPaymentCard of cardsInfo', async () => {
+      await new PaymentBloc(
+        providerMock,
+        { paymentCardsEnabled: true },
+        cardsInfoMock
+      ).validatePaymentDetails()
+
+      expect(cardsInfoMock.getSelectedPaymentCard).toBeCalledTimes(1)
+      expect(providerMock.validatePaymentForm).toBeCalledTimes(0)
+    })
+
+    it('should call validatePaymentForm of provider if getSelectedPaymentCard of cardsInfo returns empty array', async () => {
+      cardsInfoMock.getSelectedPaymentCard.mockImplementationOnce(() => undefined as any)
+
+      await new PaymentBloc(
+        providerMock,
+        { paymentCardsEnabled: true },
+        cardsInfoMock
+      ).validatePaymentDetails()
+
+      expect(cardsInfoMock.getSelectedPaymentCard).toBeCalledTimes(1)
+      expect(providerMock.validatePaymentForm).toBeCalledTimes(1)
     })
   })
 
@@ -166,6 +247,74 @@ describe('PaymentBloc', () => {
       const result = await payment.getPaymentNonce()
 
       expect(result).toEqual({ ok: false, error })
+    })
+
+    it('should return nonce of selected card', async () => {
+      const data = await new PaymentBloc(
+        providerMock,
+        { paymentCardsEnabled: true },
+        cardsInfoMock
+      ).getPaymentNonce()
+
+      expect(cardsInfoMock.getSelectedPaymentCard).toHaveBeenCalledTimes(1)
+      expect(data).toEqual({ ok: true, nonce: cards[0].nonce })
+    })
+
+    it('should call tokenizeHostedFields of provider if getSelectedPaymentCard of cardsInfoMock returns undefined', async () => {
+      cardsInfoMock.getSelectedPaymentCard.mockImplementationOnce(() => undefined as any)
+
+      await new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock).getPaymentNonce()
+
+      expect(providerMock.tokenizeHostedFields).toBeCalledTimes(1)
+    })
+
+    it('should call tokenizeHostedFields of provider if getSelectedPaymentCard of cardsInfoMock returns card without nonce', async () => {
+      cardsInfoMock.getSelectedPaymentCard.mockImplementationOnce(() => ({} as any))
+
+      await new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock).getPaymentNonce()
+
+      expect(providerMock.tokenizeHostedFields).toBeCalledTimes(1)
+    })
+  })
+
+  describe('savePaymentCard', () => {
+    it('should call tokenizeHostedFields of provider', async () => {
+      await payment.savePaymentCard(payer)
+
+      expect(providerMock.tokenizeHostedFields).toBeCalledTimes(1)
+    })
+
+    it('should call saveCard of provider', async () => {
+      await payment.savePaymentCard(payer)
+
+      expect(providerMock.saveCard).toBeCalledTimes(1)
+      expect(providerMock.saveCard).toBeCalledWith(tokenizeHostedFieldsResponse.nonce, payer)
+    })
+
+    it('should return status', async () => {
+      const result = await payment.savePaymentCard(payer)
+
+      expect(result).toEqual({ ok: true })
+    })
+
+    it('should return tokenizeHostedFields error', async () => {
+      const error = new Error('test')
+
+      providerMock.tokenizeHostedFields.mockImplementationOnce(() => Promise.reject(error))
+
+      const result = await payment.savePaymentCard(payer)
+
+      expect(result).toEqual({ ok: false, error })
+    })
+
+    it('should return saveCard error', async () => {
+      const response = getMockedErrorAddPaymentCardResponse()
+
+      providerMock.saveCard.mockImplementationOnce(() => Promise.resolve(response))
+
+      const result = await payment.savePaymentCard(payer)
+
+      expect(result).toEqual({ ok: false, error: new Error(response.error.message) })
     })
   })
 })

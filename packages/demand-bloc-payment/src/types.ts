@@ -5,6 +5,22 @@ import {
   BraintreeError,
 } from 'braintree-web'
 
+import { HttpResponse, ClientNonceResponse } from '@karhoo/demand-api'
+
+export type CardInfo = Partial<{
+  id: string
+  type: string
+  lastFour: string
+  nonce: string
+}>
+
+export type Payer = {
+  id: string
+  email: string
+  first_name: string
+  last_name: string
+}
+
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
   initialize(): Promise<void> | void
@@ -15,6 +31,14 @@ export type Provider = {
     amount: number,
     nonce: string
   ): Promise<ThreeDSecureVerifyPayload & { type?: string }>
+  getSavedCards(payer: Payer): Promise<CardInfo[]>
+  saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>>
+}
+
+export type CardsInfo = {
+  setPaymentCards(cards: CardInfo[], payer: Payer): void
+  getSelectedPaymentCard(): CardInfo | undefined
+  clear(): Promise<void> | void
 }
 
 export type PaymentOptions = {
@@ -29,25 +53,20 @@ export type VerifyCardError = {
   message: string
 }
 
-export type VerifyCardResponse =
+type DefaultPaymentResponse<T = Error> =
   | {
       ok: true
       nonce: string
     }
   | {
       ok: false
-      error: VerifyCardError
+      error: T
     }
 
-export type PaymentNonceResponse =
-  | {
-      ok: true
-      nonce: string
-    }
-  | {
-      ok: false
-      error: Error
-    }
+export type VerifyCardResponse = DefaultPaymentResponse<VerifyCardError>
+export type PaymentNonceResponse = DefaultPaymentResponse
+
+export type SaveCardResponse = { ok: true } | { ok: false; error: Error | BraintreeError }
 
 type Logger = {
   error(error: Error | BraintreeError, info?: Record<string, string>): void
@@ -72,11 +91,4 @@ export type BraintreeProviderOptions = {
 
 export type FullBraintreeProviderOptions = Omit<Required<BraintreeProviderOptions>, 'logger'> & {
   logger?: Logger
-}
-
-export type Payer = {
-  id: string
-  email: string
-  first_name: string
-  last_name: string
 }

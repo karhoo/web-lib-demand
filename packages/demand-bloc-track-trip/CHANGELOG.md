@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/karhoo/web-lib-demand/compare/v7.1.0...v7.2.0) (2020-07-21)
+
+**Note:** Version bump only for package @karhoo/demand-bloc-track-trip
+
+
+
+
+
 # [7.1.0](https://github.com/karhoo/web-lib-demand/compare/v7.0.0...v7.1.0) (2020-07-16)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-track-trip
