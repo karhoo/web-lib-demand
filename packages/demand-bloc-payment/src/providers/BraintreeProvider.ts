@@ -10,6 +10,13 @@ import {
   default3DSecureStatus,
   errors,
 } from './braintreeConstants'
+import { getCancellablePromise, CancellablePromise } from '../utils'
+
+type PendingInitialisation =
+  | CancellablePromise<string>
+  | CancellablePromise<Client>
+  | CancellablePromise<ThreeDSecure>
+  | CancellablePromise<HostedFields>
 
 export const toogleClass = (fieldName: string, isValid: boolean, className: string) =>
   document.querySelector(`#${fieldName}`)?.classList[isValid ? 'remove' : 'add'](className)
@@ -24,6 +31,8 @@ export class BraintreeProvider implements Provider {
   private paymentService: Payment
 
   private options: FullBraintreeProviderOptions
+
+  private pendingInitialisation?: PendingInitialisation
 
   constructor(paymentService: Payment, options: BraintreeProviderOptions) {
     this.paymentService = paymentService
@@ -60,23 +69,34 @@ export class BraintreeProvider implements Provider {
       withThreeDSecure,
     } = this.options
 
-    const authorization = await this.getAuthorizationToken()
+    this.pendingInitialisation = getCancellablePromise(this.getAuthorizationToken())
 
-    this.client = await braintree.client.create({
-      authorization,
-    })
+    const authorization = await this.pendingInitialisation.promise
+
+    this.pendingInitialisation = getCancellablePromise(
+      braintree.client.create({
+        authorization,
+      })
+    )
+    this.client = await this.pendingInitialisation.promise
 
     if (withThreeDSecure) {
-      this.threeDSecure = await braintree.threeDSecure.create({
-        client: this.client,
-      })
+      this.pendingInitialisation = getCancellablePromise(
+        braintree.threeDSecure.create({
+          client: this.client,
+        })
+      )
+      this.threeDSecure = await this.pendingInitialisation.promise
     }
 
-    this.hostedFields = await braintree.hostedFields.create({
-      client: this.client,
-      fields: hostedFieldsConfig,
-      styles: hostedFieldsStyles,
-    })
+    this.pendingInitialisation = getCancellablePromise(
+      braintree.hostedFields.create({
+        client: this.client,
+        fields: hostedFieldsConfig,
+        styles: hostedFieldsStyles,
+      })
+    )
+    this.hostedFields = await this.pendingInitialisation.promise
 
     this.hostedFields.on('blur', event => {
       const fieldName = event.emittedBy
@@ -100,6 +120,9 @@ export class BraintreeProvider implements Provider {
   }
 
   async dispose() {
+    this.pendingInitialisation?.cancel()
+    this.pendingInitialisation = undefined
+
     await Promise.all([
       this.teardownBraintreeInstance(this.hostedFields),
       this.teardownBraintreeInstance(this.threeDSecure),
