@@ -41,6 +41,13 @@ const organisationId = '1a12345d-e111-1da1-111f-a1111e1e11f1'
 const currencyCode = 'GBP'
 const amount = 10
 
+const payer = {
+  id: 'id',
+  email: 'email@of.user',
+  first_name: 'firstName',
+  last_name: 'lastName',
+}
+
 const provider = new BraintreeProvider(getApi().paymentService, {
   organisationId,
   currencyCode
@@ -59,6 +66,51 @@ if (bloc.validatePaymentDetails()) {
 await bloc.dispose()
 
 ```
+
+For payment without 3d secure verification:
+
+```js
+if (bloc.validatePaymentDetails()) {
+  const result = await bloc.getPaymentNonce()
+
+  console.log(result)
+}
+```
+
+Cards support:
+
+```js
+const cardsInfo = {
+  cards: [],
+  payer: undefined,
+  setPaymentCards(cards, payer) {
+    this.cards = cards
+    this.payer = payer
+  },
+  getSelectedPaymentCard() {
+    return this.cards[0]
+  },
+  clear() {
+    this.cards = []
+    this.payer = undefined
+  }
+}
+
+const bloc = new PaymentBloc(provider, { paymentCardsEnabled: true }, cardsInfo)
+
+await bloc.initPayment()
+```
+
+Save card:
+
+```js
+const result = await bloc.savePaymentCard(payer)
+
+console.log(result)
+```
+
+All bloc methods, except for `dispose`, should be called only after initialization is complete otherwise it may lead to unexpected behavior.
+If `dispose` is called before initialization is complete initialization will be cancelled and `errors.operationCancelled` will be thrown.
 
 ### Providers
 
@@ -94,6 +146,7 @@ if `hostedFields` is not provided following defaults will be used:
 
 if `invalidFieldClass` is not provided `braintreeDefaultValues.defaultInvalidFieldClass` will be used.
 if `threeDSecureFields` is not provided `braintreeDefaultValues.defaultThreeDSecureFields` will be used.
+if `withThreeDSecure` is not provided `braintreeDefaultValues.default3DSecureStatus` will be used.
 
 Initialize provider:
 
@@ -125,13 +178,6 @@ const result: ThreeDSecureVerifyPayload = await provider.verifyWithThreeDSecure(
 Save card:
 
 ```js
-const payer = {
-  id: 'id',
-  email: 'email@of.user',
-  first_name: 'firstName',
-  last_name: 'lastName',
-}
-
 await provider.saveCard('nonce', payer)
 ```
 
@@ -147,3 +193,5 @@ Dispose:
 await provider.dispose()
 ```
 
+All provider methods, except for `dispose`, should be called only after initialization is complete otherwise it may lead to unexpected behavior.
+If `dispose` is called before initialization is complete initialization will be cancelled and `errors.operationCancelled` will be thrown. 
