@@ -7,6 +7,8 @@ import {
   getPaymentGetClientNonceMock,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
+import { errors as baseErrors } from '../constants'
+
 import {
   defaultHostedFieldsConfig,
   defaultHostedFieldsStyles,
@@ -183,6 +185,16 @@ describe('PaymentBloc', () => {
       expect(document.querySelector).toBeCalledTimes(1)
       expect(document.querySelector).toBeCalledWith(`#${event.emittedBy}`)
       expect(classList.remove).toBeCalledWith(defaultInvalidFieldClass)
+    })
+
+    it('should throw operationCancelled error if dispose has been called', done => {
+      provider.initialize().catch(error => {
+        expect(error.message).toBe(baseErrors.operationCancelled)
+
+        done()
+      })
+
+      provider.dispose()
     })
   })
 
