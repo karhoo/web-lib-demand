@@ -18,8 +18,6 @@ BLoC to work with Karhoo Payment API
 
 </div>
 
-> ⚠️ This package is work in progress and can not be used as an independent package.
-
 ## Installation
 
 ```sh

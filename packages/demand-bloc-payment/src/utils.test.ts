@@ -18,7 +18,7 @@ describe('utils', () => {
       expect(result).toEqual(value)
     })
 
-    it('should throw operationCancelled error if dispose has been called', done => {
+    it('should throw operationCancelled error if cancel has been called', done => {
       const cancellablePromise = getCancellablePromise(
         new Promise(resolve => {
           setTimeout(() => resolve(value), 0)
