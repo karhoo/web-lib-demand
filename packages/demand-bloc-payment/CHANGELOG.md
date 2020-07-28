@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/karhoo/web-lib-demand/compare/v7.2.0...v8.0.0) (2020-07-28)
+
+
+### Features
+
+* finalize README ([97abc41](https://github.com/karhoo/web-lib-demand/commit/97abc41924193e82f274a9e42e6b95786fe699dd))
+
+
+### BREAKING CHANGES
+
+* finalize @karhoo/demand-bloc-payment package
+
+
+
+
+
 # [7.2.0](https://github.com/karhoo/web-lib-demand/compare/v7.1.0...v7.2.0) (2020-07-21)
 
 

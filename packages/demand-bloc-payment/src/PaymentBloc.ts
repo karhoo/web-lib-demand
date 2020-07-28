@@ -6,8 +6,10 @@ import {
   SaveCardResponse,
   Payer,
   CardsInfo,
+  CardInfo,
 } from './types'
 import { creditCardType, defaultPaymentOptions, errors } from './constants'
+import { getCancellablePromise, CancellablePromise } from './utils'
 
 export class PaymentBloc {
   private provider: Provider
@@ -15,6 +17,8 @@ export class PaymentBloc {
   private cardsInfo?: CardsInfo
 
   private options: PaymentOptions
+
+  private pendingInitialisation?: CancellablePromise<[void, CardInfo[] | null]>
 
   constructor(provider: Provider, options: PaymentOptions = defaultPaymentOptions, cardsInfo?: CardsInfo) {
     this.provider = provider
@@ -35,10 +39,18 @@ export class PaymentBloc {
       throw new Error(errors.noCardsInfo)
     }
 
-    await Promise.all([
-      this.initPaymentProvider(),
-      paymentCardsEnabled && payer ? this.initPaymentCards(payer) : null,
-    ])
+    this.pendingInitialisation = getCancellablePromise(
+      Promise.all([
+        this.provider.initialize(),
+        paymentCardsEnabled && payer ? this.provider.getSavedCards(payer) : null,
+      ])
+    )
+
+    const [, cards] = await this.pendingInitialisation.promise
+
+    if (payer && cards) {
+      this.cardsInfo?.setPaymentCards(cards, payer)
+    }
   }
 
   async verifyCardWithThreeDSecure(amount: number): Promise<VerifyCardResponse> {
@@ -55,8 +67,11 @@ export class PaymentBloc {
   }
 
   async dispose() {
-    await this.provider.dispose()
+    this.pendingInitialisation?.cancel()
+    this.pendingInitialisation = undefined
+
     await this.cardsInfo?.clear()
+    await this.provider.dispose()
   }
 
   validatePaymentDetails() {
@@ -73,10 +88,6 @@ export class PaymentBloc {
     }
   }
 
-  private initPaymentProvider() {
-    return this.provider.initialize()
-  }
-
   private async getPaymentDetails() {
     const selectedCard = this.cardsInfo?.getSelectedPaymentCard()
 
@@ -87,12 +98,6 @@ export class PaymentBloc {
     const tokenizeResponse = await this.provider.tokenizeHostedFields()
 
     return tokenizeResponse.nonce
-  }
-
-  private async initPaymentCards(payer: Payer) {
-    const cards = await this.provider.getSavedCards(payer)
-
-    this.cardsInfo?.setPaymentCards(cards, payer)
   }
 
   async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {

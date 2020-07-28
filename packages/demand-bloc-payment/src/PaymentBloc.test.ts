@@ -96,6 +96,18 @@ describe('PaymentBloc', () => {
         done()
       })
     })
+
+    it('should throw operationCancelled error if dispose has been called', done => {
+      const payment = new PaymentBloc(providerMock, { paymentCardsEnabled: true }, cardsInfoMock)
+
+      payment.initPayment(payer).catch(error => {
+        expect(error.message).toBe(errors.operationCancelled)
+
+        done()
+      })
+
+      payment.dispose()
+    })
   })
 
   describe('dispose', () => {
