@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/karhoo/web-lib-demand/compare/v8.1.0...v8.2.0) (2020-07-31)
+
+
+### Features
+
+* add onAddThreeDSecureFrame and onRemoveThreeDSecureFrame options to BraintreeProviderOptions ([c24d5eb](https://github.com/karhoo/web-lib-demand/commit/c24d5eb1c85c81207a0b4dddcc416c5c94f645a1))
+
+
+
+
+
 # [8.1.0](https://github.com/karhoo/web-lib-demand/compare/v8.0.0...v8.1.0) (2020-07-31)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-payment

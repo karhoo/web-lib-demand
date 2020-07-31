@@ -554,6 +554,48 @@ describe('PaymentBloc', () => {
       expect(loadingStyle).toEqual({ display: 'none' })
     })
 
+    it('should call onAddThreeDSecureFrame', async () => {
+      const iframe = { iframe: 'iframe' }
+      const onAddThreeDSecureFrame = jest.fn()
+
+      const braintreeProvider = new BraintreeProvider(paymentService, {
+        organisationId,
+        currencyCode,
+        onAddThreeDSecureFrame,
+      })
+
+      await braintreeProvider.initialize()
+
+      const { addFrame } = (await braintreeProvider.verifyWithThreeDSecure(amount, nonce)) as any
+
+      jest.spyOn(document, 'getElementById').mockReturnValueOnce({
+        appendChild: jest.fn(),
+        style: {},
+      } as any)
+
+      addFrame(undefined, iframe)
+
+      expect(onAddThreeDSecureFrame).toBeCalledTimes(1)
+    })
+
+    it('should call onRemoveThreeDSecureFrame', async () => {
+      const onRemoveThreeDSecureFrame = jest.fn()
+
+      const braintreeProvider = new BraintreeProvider(paymentService, {
+        organisationId,
+        currencyCode,
+        onRemoveThreeDSecureFrame,
+      })
+
+      await braintreeProvider.initialize()
+
+      const { removeFrame } = (await braintreeProvider.verifyWithThreeDSecure(amount, nonce)) as any
+
+      removeFrame()
+
+      expect(onRemoveThreeDSecureFrame).toBeCalledTimes(1)
+    })
+
     it('should return rejected threeDSecureNotInitialized error', done => {
       new BraintreeProvider(paymentService, { organisationId, currencyCode })
         .verifyWithThreeDSecure(amount, nonce)

@@ -87,8 +87,15 @@ export type BraintreeProviderOptions = {
     loadingId?: string
     processingId?: string
   }
+  onAddThreeDSecureFrame?: () => void
+  onRemoveThreeDSecureFrame?: () => void
 }
 
-export type FullBraintreeProviderOptions = Omit<Required<BraintreeProviderOptions>, 'logger'> & {
+export type FullBraintreeProviderOptions = Omit<
+  Required<BraintreeProviderOptions>,
+  'logger' | 'onAddThreeDSecureFrame' | 'onRemoveThreeDSecureFrame'
+> & {
   logger?: Logger
+  onAddThreeDSecureFrame?: () => void
+  onRemoveThreeDSecureFrame?: () => void
 }
