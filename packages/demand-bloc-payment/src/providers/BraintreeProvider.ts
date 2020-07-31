@@ -158,7 +158,13 @@ export class BraintreeProvider implements Provider {
   verifyWithThreeDSecure(amount: number, nonce: string) {
     const {
       threeDSecure,
-      options: { withThreeDSecure, threeDSecureFields, logger },
+      options: {
+        withThreeDSecure,
+        threeDSecureFields,
+        logger,
+        onAddThreeDSecureFrame,
+        onRemoveThreeDSecureFrame,
+      },
     } = this
 
     if (!threeDSecure || !withThreeDSecure) {
@@ -192,6 +198,8 @@ export class BraintreeProvider implements Provider {
 
         iframeContainerElement.appendChild(iframe)
         iframeContainerElement.style.display = 'block'
+
+        onAddThreeDSecureFrame?.()
       },
       removeFrame() {
         const iframeContainerElement = document.getElementById(iframeContainerId)
@@ -207,6 +215,8 @@ export class BraintreeProvider implements Provider {
         if (processingElement) {
           processingElement.style.display = 'block'
         }
+
+        onRemoveThreeDSecureFrame?.()
       },
     })
   }
