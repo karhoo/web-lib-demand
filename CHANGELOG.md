@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/karhoo/web-lib-demand/compare/v8.0.0...v8.1.0) (2020-07-31)
+
+
+### Features
+
+* stopPolling method in TripBloc ([34f55c4](https://github.com/karhoo/web-lib-demand/commit/34f55c4387c16d7121efd3ddaddd68c0577d0ff4))
+
+
+
+
+
 # [8.0.0](https://github.com/karhoo/web-lib-demand/compare/v7.2.0...v8.0.0) (2020-07-28)
 
 

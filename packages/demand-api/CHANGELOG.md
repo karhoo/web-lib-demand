@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/karhoo/web-lib-demand/compare/v8.0.0...v8.1.0) (2020-07-31)
+
+**Note:** Version bump only for package @karhoo/demand-api
+
+
+
+
+
 # [8.0.0](https://github.com/karhoo/web-lib-demand/compare/v7.2.0...v8.0.0) (2020-07-28)
 
 **Note:** Version bump only for package @karhoo/demand-api
