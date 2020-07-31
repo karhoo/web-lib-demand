@@ -257,4 +257,19 @@ describe('TripBloc', () => {
       bloc.track(id)
     })
   })
+
+  it('should call unsubscribe of trackSubscription and fareSubscription', () => {
+    const that = {
+      trackSubscription: {
+        unsubscribe: jest.fn(),
+      },
+      fareSubscription: {
+        unsubscribe: jest.fn(),
+      },
+    }
+
+    bloc.cancelPolling.call(that)
+
+    expect(that.trackSubscription.unsubscribe).toBeCalledTimes(1)
+  })
 })
