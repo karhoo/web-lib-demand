@@ -157,4 +157,9 @@ export class TripBloc {
       }
     })
   }
+
+  cancelPolling() {
+    this.trackSubscription.unsubscribe()
+    this.fareSubscription.unsubscribe()
+  }
 }
