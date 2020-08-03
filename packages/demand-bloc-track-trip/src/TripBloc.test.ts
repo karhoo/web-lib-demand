@@ -7,12 +7,12 @@ import {
   getMockedFinalFareResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
-import { poll } from './polling'
+import polling from './polling'
 import * as transformer from './tripTransformer'
 
 import { TripBloc } from './TripBloc'
 
-jest.mock('./polling', () => ({ poll: jest.fn() }))
+jest.mock('./polling')
 
 describe('TripBloc', () => {
   const defaultTrackTripResponse = getMockedTrackTripResponse()
@@ -71,27 +71,24 @@ describe('TripBloc', () => {
         resolve = r
       })
 
-      mocked(poll).mockImplementation((fn: () => any) => {
+      mocked(polling).mockImplementation((fn: () => any) => {
         return new Observable(observer => {
-          fn()
-            .then((response: any) => {
-              observer.next(response)
-              observer.complete()
-            })
-            .then(() => {
-              resolve()
-            })
+          fn().then((response: any) => {
+            observer.next(response)
+            observer.complete()
+            resolve()
+          })
         })
       })
     })
 
     it('should call poll', () => {
-      mocked(poll).mockReset()
-      mocked(poll).mockImplementationOnce(() => new Observable(observer => {})) //eslint-disable-line
+      mocked(polling).mockReset()
+      mocked(polling).mockImplementationOnce(() => new Observable(observer => {})) //eslint-disable-line
 
       bloc.track(id)
 
-      expect(poll).toBeCalledTimes(1)
+      expect(polling).toBeCalledTimes(1)
     })
 
     it('should call tripTransformer', async () => {
@@ -218,7 +215,7 @@ describe('TripBloc', () => {
 
       await promise
 
-      expect(poll).toBeCalledTimes(2)
+      expect(polling).toBeCalledTimes(2)
     })
 
     it('should call poll once when status is not in FinalFareStatuses', async () => {
@@ -230,7 +227,7 @@ describe('TripBloc', () => {
 
       await promise
 
-      expect(poll).toBeCalledTimes(1)
+      expect(polling).toBeCalledTimes(1)
     })
 
     it('should call poll once when status is COMPLETED and there is no trip_id', async () => {
@@ -242,7 +239,7 @@ describe('TripBloc', () => {
 
       await promise
 
-      expect(poll).toBeCalledTimes(1)
+      expect(polling).toBeCalledTimes(1)
     })
 
     it('should emit finalFare', done => {

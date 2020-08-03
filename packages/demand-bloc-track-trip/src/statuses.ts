@@ -1,4 +1,6 @@
-import { TripStatuses, TripStatus } from '@karhoo/demand-api'
+import { TripStatuses, TripStatus, FinalFareStatuses } from '@karhoo/demand-api'
+
+export { TripStatuses, FinalFareStatuses }
 
 export const FinalTripStatuses: TripStatus[] = [
   TripStatuses.COMPLETED,

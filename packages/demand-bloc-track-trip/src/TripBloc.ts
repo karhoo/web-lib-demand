@@ -5,15 +5,15 @@ import {
   Fare,
   FinalFareResponse,
   CancellationParams,
-  FinalFareStatuses,
 } from '@karhoo/demand-api'
 import { Subject, Subscription } from 'rxjs'
+import polling from './polling'
+
 import { publishReplay, refCount } from 'rxjs/operators'
-import { poll } from './polling'
-import { FinalTripStatuses } from './statuses'
+import { FinalTripStatuses, FinalFareStatuses } from './statuses'
 import { tripTransformer, TripFollowResponse } from './tripTransformer'
 
-const POLLING_INTERVAL_TRACK = 5000
+const POLLING_INTERVAL_TRACK = 10000
 const POLLING_FINAL_FARE = 20000
 
 function createStream<T>(stream: Subject<T>) {
@@ -102,16 +102,21 @@ export class TripBloc {
    * @param id trip follow code
    */
   private trackFinalFare(id: string) {
-    this.fareSubscription = poll<HttpResponse<FinalFareResponse>>(
-      () => this.fareService.status(id),
-      d => d.ok && d.body.state === FinalFareStatuses.FINAL,
-      [POLLING_FINAL_FARE]
-    ).subscribe(response => {
+    this.fareSubscription = polling<HttpResponse<FinalFareResponse>>(() => this.fareService.status(id), {
+      interval: POLLING_FINAL_FARE,
+    }).subscribe(response => {
       if (!response.ok) {
         return
       }
 
       this.finalFare$.next(response.body)
+
+      if (
+        response.body.state === FinalFareStatuses.FINAL ||
+        response.body.state === FinalFareStatuses.CANCELLED
+      ) {
+        this.fareSubscription.unsubscribe()
+      }
     })
   }
 
@@ -126,11 +131,9 @@ export class TripBloc {
     const isFinalStatus = (response: HttpResponse<OriginalTripFollowResponse>) =>
       response.ok && FinalTripStatuses.includes(response.body.status)
 
-    const poller = poll<HttpResponse<OriginalTripFollowResponse>>(
-      () => this.tripService.trackTrip(id),
-      isFinalStatus,
-      [POLLING_INTERVAL_TRACK]
-    )
+    const poller = polling<HttpResponse<OriginalTripFollowResponse>>(() => this.tripService.trackTrip(id), {
+      interval: POLLING_INTERVAL_TRACK,
+    })
 
     this.trackSubscription = poller.subscribe(data => {
       if (!data.ok) {
@@ -152,8 +155,14 @@ export class TripBloc {
         this.pickUpTimeUpdates$.next()
       }
 
+      const isFinal = isFinalStatus(data)
+
       if (isFinalStatus(data) && body.trip_id) {
         this.trackFinalFare(body.trip_id)
+      }
+
+      if (isFinal) {
+        this.trackSubscription.unsubscribe()
       }
     })
   }
