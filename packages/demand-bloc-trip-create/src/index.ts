@@ -1,1 +1,2 @@
-export { SampleBloc } from './SampleBloc'
+export { TripCreateBloC } from './TripCreateBloC'
+export * from './types'
