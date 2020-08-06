@@ -1,7 +1,7 @@
 {
   "name": "@karhoo/demand-bloc-payment",
   "version": "8.3.0",
-  "description": "",
+  "description": "BLoC to work with Karhoo Payment API",
   "keywords": [
     "bloc",
     "pattern"

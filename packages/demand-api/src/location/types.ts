@@ -1,4 +1,5 @@
 import { LatLng, MeetingPointType, CommonDetailsType, CommonPoiType } from '../sharedTypes'
+import { HttpResponse } from '../http/types'
 
 export type LocationAddressDetailsParameters = {
   placeId: string
@@ -15,8 +16,8 @@ export type LocationAddressAutocompleteParams = {
   sessionToken?: string
 }
 
-type LocationPoiType = 'NOT_SET_POI_TYPE' | CommonPoiType
-type LocationDetailsType = 'NOT_SET_DETAILS_TYPE' | CommonDetailsType
+export type LocationPoiType = 'NOT_SET_POI_TYPE' | CommonPoiType
+export type LocationDetailsType = 'NOT_SET_DETAILS_TYPE' | CommonDetailsType
 
 export type LocationAddressDetailsResponse = {
   place_id: string
@@ -56,4 +57,13 @@ export type LocationAddressAutocompleteResponseItem = {
 
 export type LocationAddressAutocompleteResponse = {
   locations: LocationAddressAutocompleteResponseItem[]
+}
+
+export interface Locations {
+  getAddressDetails(
+    params: LocationAddressDetailsParameters
+  ): Promise<HttpResponse<LocationAddressDetailsResponse>>
+  getAddressAutocompleteData(
+    params: LocationAddressAutocompleteParams
+  ): Promise<HttpResponse<LocationAddressAutocompleteResponse>>
 }
