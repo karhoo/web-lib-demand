@@ -70,10 +70,14 @@ export class AutocompleteBloc implements TripCreateAutocompleteField {
     const data = await this.locationService.getAddressDetails({ placeId, sessionToken: this.sessionToken })
 
     if (data.ok) {
-      this.regenerateSessionToken()
-
       this.selectedAddress$.next(placeDetailsTransformer(data.body))
+      this.regenerateSessionToken()
     }
+  }
+
+  dispose() {
+    this.query$.complete()
+    this.selectedAddress$.complete()
   }
 
   private regenerateSessionToken() {

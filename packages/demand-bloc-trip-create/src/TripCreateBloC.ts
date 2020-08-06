@@ -17,13 +17,13 @@ const defaultOptions = {
   autocompleteLocationRadius: 1100000,
 }
 
-export class TripCreateBloC implements TripCreateModule {
+export class TripCreateBloc implements TripCreateModule {
   private locationService: Locations
   private options: TripCreateModuleOptions
 
   private fields: TripCreateModuleFields = {}
 
-  constructor(locationService: Locations, options: TripCreateBlocOptions) {
+  constructor(locationService: Locations, options?: TripCreateBlocOptions) {
     this.locationService = locationService
 
     this.options = Object.assign({}, options, defaultOptions)
@@ -39,11 +39,21 @@ export class TripCreateBloC implements TripCreateModule {
     return new FieldBloc()
   }
 
-  getStream(fieldName: string, type: TripCreateFieldTypes) {
+  createStream(fieldName: string, type?: TripCreateFieldTypes) {
     if (!this.fields[fieldName]) {
       this.fields[fieldName] = this.getFieldInstance(type)
     }
 
     return this.fields[fieldName]
+  }
+
+  getStream(fieldName: string) {
+    return this.fields[fieldName]
+  }
+
+  dispose() {
+    Object.values(this.fields).forEach(item => {
+      item.dispose()
+    })
   }
 }

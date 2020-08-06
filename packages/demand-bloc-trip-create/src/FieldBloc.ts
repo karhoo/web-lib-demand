@@ -12,4 +12,8 @@ export class FieldBloc implements TripCreateField {
   onChange(value: string) {
     this.query$.next(value)
   }
+
+  dispose() {
+    this.query$.complete()
+  }
 }

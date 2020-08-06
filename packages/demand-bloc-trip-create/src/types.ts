@@ -58,12 +58,14 @@ export interface TripCreateAutocompleteField {
 
   onChange(value: string): void
   onSelect(value: string): void
+  dispose(): void
 }
 
 export interface TripCreateField {
   query: Observable<string>
 
   onChange(value: string): void
+  dispose(): void
 }
 
 export type TripCreateModuleFields = {
@@ -76,5 +78,8 @@ export enum TripCreateFieldTypes {
 }
 
 export interface TripCreateModule {
-  getStream(fieldName: string, type: TripCreateFieldTypes): TripCreateAutocompleteField | TripCreateField
+  dispose(): void
+
+  createStream(fieldName: string, type?: TripCreateFieldTypes): TripCreateAutocompleteField | TripCreateField
+  getStream(fieldName: string): TripCreateAutocompleteField | TripCreateField
 }
