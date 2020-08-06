@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-trip-create",
-  "version": "8.1.0",
+  "version": "8.3.0",
   "description": "BLoC to work with Karhoo Autocomplete and Place APIs",
   "keywords": [
     "bloc",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@karhoo/demand-api": "^8.0.0",
-    "rx-polling": "^1.1.0",
+    "camelcase-keys": "^6.2.2",
     "rxjs": "6.5.5"
   },
   "devDependencies": {
@@ -33,6 +33,7 @@
     "@types/lodash": "4.14.149",
     "@types/uuid": "7.0.2",
     "jest-fetch-mock": "3.0.3",
+    "rxjs-marbles": "^6.0.1",
     "ts-jest": "25.2.1",
     "tsdx": "0.12.3",
     "typescript": "3.8.3"
