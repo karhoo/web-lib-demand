@@ -25,7 +25,6 @@ export class TripCreateBloc implements TripCreateModule {
 
   constructor(locationService: Locations, options?: TripCreateBlocOptions) {
     this.locationService = locationService
-
     this.options = Object.assign({}, options, defaultOptions)
   }
 
