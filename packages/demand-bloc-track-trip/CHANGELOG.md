@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.4.0](https://github.com/karhoo/web-lib-demand/compare/v8.3.0...v8.4.0) (2020-08-07)
+
+
+### Features
+
+* add etaBreakdown to trip transformer ([41efd3a](https://github.com/karhoo/web-lib-demand/commit/41efd3a1db857d98d94281eded5bf1f1972b5600))
+
+
+
+
+
 # [8.3.0](https://github.com/karhoo/web-lib-demand/compare/v8.2.0...v8.3.0) (2020-08-04)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-track-trip

@@ -23,6 +23,10 @@ describe('tripTransformer', () => {
         additionalPassengers: 0,
         passengersDetails: [],
       },
+      etaBreakdown: {
+        from: '',
+        to: '',
+      },
       dateScheduled: '',
       dateBooked: '',
       originalDateScheduled: '',
@@ -214,6 +218,10 @@ describe('tripTransformer', () => {
         numberOfLuggage: tripInfo.passengers?.luggage?.total,
         additionalPassengers: tripInfo.passengers?.additional_passengers,
         passengersDetails: tripInfo.passengers?.passenger_details,
+      },
+      etaBreakdown: {
+        from: '0',
+        to: '0',
       },
       dateScheduled: tripInfo.date_scheduled,
       dateBooked: tripInfo.date_booked,

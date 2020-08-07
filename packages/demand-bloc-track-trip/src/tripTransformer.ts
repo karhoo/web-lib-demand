@@ -24,6 +24,10 @@ export type TripFollowResponse = {
     fleetId: string
     vehicleClass: string
   }
+  etaBreakdown: {
+    from: string
+    to: string
+  }
   priceInfo: {
     currencyCode: string
     price?: number
@@ -121,6 +125,11 @@ export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowRes
 
   const originEta = status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta
 
+  const etaBreakdown = {
+    from: dv(quote?.qta_low_minutes?.toString()),
+    to: dv(quote?.qta_high_minutes?.toString()),
+  }
+
   return {
     driver,
     fleet,
@@ -134,6 +143,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowRes
     originPosition: origin?.position || {},
     originTimezone: dv(origin?.timezone),
     originEta,
+    etaBreakdown,
     destinationDisplayName: dv(destination?.display_address),
     destinationPlaceId: dv(destination?.place_id),
     destinationPosition: destination?.position || {},
