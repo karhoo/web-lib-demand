@@ -90,6 +90,7 @@ export type TripFollowResponse = {
   train_time?: string
   flight_number?: string
   trip_id?: string
+  id?: string
   meeting_point?: {
     position?: LatLng
     type?: 'NOT_SET' | MeetingPointType
