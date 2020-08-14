@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.5.0](https://github.com/karhoo/web-lib-demand/compare/v8.4.0...v8.5.0) (2020-08-14)
+
+
+### Features
+
+* move flight_number to TripFollowResponse ([dc6b5c1](https://github.com/karhoo/web-lib-demand/commit/dc6b5c191b7c8d4971bd5da20fd98191e70c79ba))
+
+
+
+
+
 # [8.4.0](https://github.com/karhoo/web-lib-demand/compare/v8.3.0...v8.4.0) (2020-08-07)
 
 **Note:** Version bump only for package @karhoo/demand-api
