@@ -88,6 +88,7 @@ export type TripFollowResponse = {
   }
   train_number?: string
   train_time?: string
+  flight_number?: string
   trip_id?: string
   meeting_point?: {
     position?: LatLng
@@ -144,7 +145,6 @@ export interface BookATripResponse extends TripFollowResponse {
   origin: Address
   destination: Address
   external_trip_id?: string
-  flight_number?: string
   follow_code?: string
   id: string
   partner_trip_id?: string
