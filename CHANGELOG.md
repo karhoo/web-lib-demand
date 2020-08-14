@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.6.0](https://github.com/karhoo/web-lib-demand/compare/v8.5.0...v8.6.0) (2020-08-14)
+
+
+### Features
+
+* add optional id to TripFollowResponse ([0adb5c8](https://github.com/karhoo/web-lib-demand/commit/0adb5c83605cfab0287df1e29caff4940614e5f6))
+
+
+
+
+
 # [8.5.0](https://github.com/karhoo/web-lib-demand/compare/v8.4.0...v8.5.0) (2020-08-14)
 
 
