@@ -1,5 +1,6 @@
 import {
   TripFollowResponse as OriginalTripFollowResponse,
+  BookATripResponse,
   PassengerDetails,
   LatLng,
   TripStatus,
@@ -64,7 +65,7 @@ export type TripFollowResponse = {
   } | null
 }
 
-export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowResponse => {
+export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResponse): TripFollowResponse => {
   const {
     fleet_info = {},
     vehicle,
@@ -80,6 +81,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowRes
     train_time,
     trip_id,
     display_trip_id,
+    id,
     passengers,
     meeting_point,
     meta,
@@ -156,7 +158,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse): TripFollowRes
     trainNumber: train_number || null,
     trainTime: train_time || null,
     tripId: display_trip_id || null,
-    internalTripId: trip_id || null,
+    internalTripId: trip_id || id || null,
     meta: meta || null,
   }
 }
