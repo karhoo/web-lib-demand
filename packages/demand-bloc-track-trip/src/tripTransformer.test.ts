@@ -171,7 +171,7 @@ describe('tripTransformer', () => {
       },
       train_number: 'train_number',
       train_time: 'train_time',
-      trip_id: 'trip_id',
+      id: 'id',
       vehicle: {
         attributes: {
           child_seat: false,
@@ -242,7 +242,7 @@ describe('tripTransformer', () => {
       trainNumber: tripInfo.train_number,
       trainTime: tripInfo.train_time,
       tripId: tripInfo.display_trip_id,
-      internalTripId: tripInfo.trip_id,
+      internalTripId: tripInfo.id,
       meta: tripInfo.meta,
       status: tripInfo.status,
     })

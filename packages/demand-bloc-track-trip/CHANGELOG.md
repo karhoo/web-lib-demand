@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.7.0](https://github.com/karhoo/web-lib-demand/compare/v8.6.0...v8.7.0) (2020-08-14)
+
+
+### Features
+
+* add id to tripTransformer result ([6755042](https://github.com/karhoo/web-lib-demand/commit/67550421d23399a4d84f4d7179002d6fd9508a94))
+
+
+
+
+
 # [8.6.0](https://github.com/karhoo/web-lib-demand/compare/v8.5.0...v8.6.0) (2020-08-14)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-track-trip
