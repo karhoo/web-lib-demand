@@ -43,6 +43,29 @@ describe('LocationService', () => {
     })
   })
 
+  describe('getReverseGeocode', () => {
+    const params = {
+      latitude: 56.06,
+      longitude: -0.07,
+    }
+
+    const expectedBody = {
+      latitude: params.latitude,
+      longitude: params.longitude,
+    }
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should call post of http', () => {
+      new LocationService(http).getReverseGeocode(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('locations/reverse-geocode', expectedBody)
+    })
+  })
+
   describe('getAddressAutocompleteData', () => {
     const params = {
       query: 'query',

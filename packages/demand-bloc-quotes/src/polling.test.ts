@@ -1,6 +1,6 @@
-import { HttpResponse, QuotesByIdResponse, QuoteResponseStatuses } from '@karhoo/demand-api'
+import { HttpResponse, QuotesV2ByIdResponse, QuoteResponseStatuses } from '@karhoo/demand-api'
 import {
-  getMockedQuotesSerchByIdResponse,
+  getMockedQuotesV2SerchByIdResponse,
   getMockedErrorQuotesSerchByIdResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
@@ -12,8 +12,8 @@ describe('polling', () => {
   })
 
   it('should poll quotes once', done => {
-    const responses: HttpResponse<QuotesByIdResponse>[] = []
-    const expectedResponses = [getMockedQuotesSerchByIdResponse()]
+    const responses: HttpResponse<QuotesV2ByIdResponse>[] = []
+    const expectedResponses = [getMockedQuotesV2SerchByIdResponse()]
 
     const fn = jest.fn(() => Promise.resolve(expectedResponses[0]))
 
@@ -33,7 +33,7 @@ describe('polling', () => {
   })
 
   it('should poll quotes once when response is not ok', done => {
-    const responses: HttpResponse<QuotesByIdResponse>[] = []
+    const responses: HttpResponse<QuotesV2ByIdResponse>[] = []
     const expectedResponses = [getMockedErrorQuotesSerchByIdResponse()]
 
     const fn = jest.fn(() => Promise.resolve(expectedResponses[0]))
@@ -54,10 +54,10 @@ describe('polling', () => {
   })
 
   it('should poll quotes twice', done => {
-    const responses: HttpResponse<QuotesByIdResponse>[] = []
+    const responses: HttpResponse<QuotesV2ByIdResponse>[] = []
     const expectedResponses = [
-      getMockedQuotesSerchByIdResponse({ status: QuoteResponseStatuses.PROGRESSING }),
-      getMockedQuotesSerchByIdResponse(),
+      getMockedQuotesV2SerchByIdResponse({ status: QuoteResponseStatuses.PROGRESSING }),
+      getMockedQuotesV2SerchByIdResponse(),
     ]
 
     const fn = jest
@@ -99,10 +99,10 @@ describe('polling', () => {
   })
 
   it('should schedule expected timers', done => {
-    const progressingResponse = getMockedQuotesSerchByIdResponse({
+    const progressingResponse = getMockedQuotesV2SerchByIdResponse({
       status: QuoteResponseStatuses.PROGRESSING,
     })
-    const completedResponse = getMockedQuotesSerchByIdResponse()
+    const completedResponse = getMockedQuotesV2SerchByIdResponse()
 
     const fn = jest
       .fn(() => Promise.resolve(completedResponse))

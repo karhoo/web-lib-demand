@@ -2,6 +2,7 @@ import { DefaultRequestOptionsGetter, HttpResponseMiddleware } from '../http/typ
 import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
+import { QuotesV2Service } from '../quotes/QuotesV2Service'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
@@ -21,6 +22,7 @@ export type Api = {
   locationService: LocationService
   poiService: PoiService
   quotesService: QuotesService
+  quotesV2Service: QuotesV2Service
   tripService: TripService
   fareService: FareService
   paymentService: PaymentService

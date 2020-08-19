@@ -1,4 +1,10 @@
-import { Quotes, QuotesSearchParams, errorCodes, QuotesResponse, HttpResponse } from '@karhoo/demand-api'
+import {
+  QuotesV2,
+  QuotesV2SearchParams,
+  errorCodes,
+  QuotesV2Response,
+  HttpResponse,
+} from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
 import { publishReplay, refCount, map, distinctUntilChanged } from 'rxjs/operators'
 import { poll } from './polling'
@@ -16,7 +22,7 @@ function createStream<T>(stream: Subject<T>) {
   return stream.pipe(publishReplay(1), refCount())
 }
 
-export type QuotesService = Pick<Quotes, 'quotesSearch' | 'quotesSearchById'>
+export type QuotesService = Pick<QuotesV2, 'quotesSearch' | 'quotesSearchById'>
 
 export type QuotesState = {
   items: QuoteItem[]
@@ -26,7 +32,7 @@ export type QuotesState = {
 export class QuotesBloc {
   private quotesService: QuotesService
   private _filters: QuoteFilters
-  private _searchParams: QuotesSearchParams | null
+  private _searchParams: QuotesV2SearchParams | null
   private _locale?: string
 
   private quotes$ = new Subject<QuotesState>()
@@ -115,14 +121,14 @@ export class QuotesBloc {
   /**
    * Gets quote search params
    */
-  get searchParams(): QuotesSearchParams | null {
+  get searchParams(): QuotesV2SearchParams | null {
     return this._searchParams
   }
 
   /**
    * Sets quote search params
    */
-  set searchParams(params: QuotesSearchParams | null) {
+  set searchParams(params: QuotesV2SearchParams | null) {
     this._searchParams = params
   }
 
@@ -180,7 +186,7 @@ export class QuotesBloc {
    * @param params {QuotesSearchParams} search params for quotes
    * @param locale {string} user locale in xx-XX format e.g. en-GB or fr-FR
    */
-  async requestQuotes(params: QuotesSearchParams, locale?: string) {
+  async requestQuotes(params: QuotesV2SearchParams, locale?: string) {
     this.searchParams = params
     this._locale = locale
 
@@ -189,9 +195,9 @@ export class QuotesBloc {
     this.timerSubscription.unsubscribe()
     this.pollingSubscription.unsubscribe()
 
-    const handleQuotesLoaded = (res: HttpResponse<QuotesResponse>) => {
+    const handleQuotesLoaded = (res: HttpResponse<QuotesV2Response>) => {
       if (res.ok) {
-        const items = res.body?.quote_items || []
+        const items = res.body?.quotes || []
 
         this.quotes$.next({
           items: items.map(quote => transformer(quote)),

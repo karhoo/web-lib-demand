@@ -27,11 +27,42 @@ export enum PoiTypes {
   NEAREST = 'NEAREST',
 }
 
+export enum QuoteResponseStatuses {
+  PROGRESSING = 'PROGRESSING',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum QuotePriceTypes {
+  FIXED = 'FIXED',
+  ESTIMATED = 'ESTIMATED',
+  METERED = 'METERED',
+}
+
+export enum QuotePickUpTypes {
+  DEFAULT = 'DEFAULT',
+  STAND_BY = 'STAND_BY',
+  CURB_SIDE = 'CURB_SIDE',
+  MEET_AND_GREET = 'MEET_AND_GREET',
+}
+
+export enum QuoteSources {
+  FLEET = 'FLEET',
+  MARKET = 'MARKET',
+}
+
 export type MeetingPointType = keyof typeof MeetingPointTypes
 
 export type CommonDetailsType = keyof typeof PlaceDetailTypes
 
 export type CommonPoiType = keyof typeof PoiTypes
+
+export type QuoteResponseStatuse = keyof typeof QuoteResponseStatuses
+
+export type QuotePriceType = keyof typeof QuotePriceTypes
+
+export type QuotePickUpType = keyof typeof QuotePickUpTypes
+
+export type QuoteSource = keyof typeof QuoteSources
 
 export type VehicleAttributes = Partial<{
   child_seat: boolean

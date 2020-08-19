@@ -2,15 +2,15 @@ import { Observable } from 'rxjs'
 import { mocked } from 'ts-jest/utils'
 import {
   errorCodes,
-  QuoteItem,
+  QuoteV2Item,
   HttpResponse,
-  QuotesResponse,
-  QuotesByIdResponse,
+  QuotesV2Response,
+  QuotesV2ByIdResponse,
   HttpResponseOk,
 } from '@karhoo/demand-api'
 import {
-  getMockedQuotesSearchResponse,
-  getMockedQuotesSerchByIdResponse,
+  getMockedQuotesV2SearchResponse,
+  getMockedQuotesV2SerchByIdResponse,
   getMockedErrorQuotesSearchResponse,
   getMockedErrorQuotesSerchByIdResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
@@ -21,10 +21,10 @@ import * as transformer from './transformer'
 import { QuotesBloc, defaultValidity, QuotesState } from './QuotesBloc'
 
 export const transformQuotesFromResponse = (
-  response: HttpResponseOk<QuotesResponse>
+  response: HttpResponseOk<QuotesV2Response>
 ): transformer.QuoteItem[] => {
-  if (response.body?.quote_items) {
-    return response.body.quote_items.map(quote => transformer.transformer(quote))
+  if (response.body?.quotes) {
+    return response.body.quotes.map(quote => transformer.transformer(quote))
   }
 
   return []
@@ -33,36 +33,60 @@ export const transformQuotesFromResponse = (
 jest.mock('./polling', () => ({ poll: jest.fn() }))
 
 describe('QuotesBloc', () => {
-  const testQuoteItems: QuoteItem[] = [
+  const testQuoteItems: QuoteV2Item[] = [
     {
-      fleet_name: 'Fleet One',
-      quote_id: '1',
+      id: '1',
+      price: {
+        currency_code: 'GBP',
+        high: 2000,
+        low: 2000,
+      },
       quote_type: 'FIXED',
-      vehicle_attributes: {
-        luggage_capacity: 2,
+      fleet: {
+        id: '1',
+        name: 'Fleet One',
+      },
+      vehicle: {
+        class: 'executive',
         passenger_capacity: 3,
-      },
-      vehicle_class: 'executive',
-    },
-    {
-      fleet_name: 'Fleet Two',
-      quote_id: '2',
-      quote_type: 'FIXED',
-      vehicle_attributes: {
         luggage_capacity: 2,
-        passenger_capacity: 5,
       },
-      vehicle_class: 'executive',
     },
     {
-      fleet_name: 'Fleet Three',
-      quote_id: '3',
-      quote_type: 'FIXED',
-      vehicle_attributes: {
-        luggage_capacity: 1,
-        passenger_capacity: 1,
+      id: '2',
+      price: {
+        currency_code: 'GBP',
+        high: 2000,
+        low: 2000,
       },
-      vehicle_class: 'executive',
+      quote_type: 'FIXED',
+      fleet: {
+        id: '2',
+        name: 'Fleet Two',
+      },
+      vehicle: {
+        class: 'executive',
+        passenger_capacity: 5,
+        luggage_capacity: 1,
+      },
+    },
+    {
+      id: '3',
+      price: {
+        currency_code: 'GBP',
+        high: 2000,
+        low: 2000,
+      },
+      quote_type: 'FIXED',
+      fleet: {
+        id: '3',
+        name: 'Fleet Three',
+      },
+      vehicle: {
+        class: 'executive',
+        passenger_capacity: 1,
+        luggage_capacity: 1,
+      },
     },
   ]
 
@@ -72,20 +96,28 @@ describe('QuotesBloc', () => {
   }
 
   const searchParams = {
-    originPlaceId: 'originPlaceId',
-    destinationPlaceId: 'destinationPlaceId',
+    origin: {
+      latitude: 'latitude',
+      longitude: 'longitude',
+      displayAddress: 'displayAddress',
+    },
+    destination: {
+      latitude: 'latitude',
+      longitude: 'longitude',
+      displayAddress: 'displayAddress',
+    },
     localTimeOfPickup: 'localTimeOfPickup',
   }
 
-  const mockedQuotesSearchResponse = getMockedQuotesSearchResponse()
-  const mockedQuotesSerchByIdResponse = getMockedQuotesSerchByIdResponse({ quote_items: testQuoteItems })
+  const mockedQuotesSearchResponse = getMockedQuotesV2SearchResponse()
+  const mockedQuotesSerchByIdResponse = getMockedQuotesV2SerchByIdResponse({ quotes: testQuoteItems })
 
   const quotesMock = {
     quotesSearch: jest.fn(
-      (): Promise<HttpResponse<QuotesResponse>> => Promise.resolve(mockedQuotesSearchResponse)
+      (): Promise<HttpResponse<QuotesV2Response>> => Promise.resolve(mockedQuotesSearchResponse)
     ),
     quotesSearchById: jest.fn(
-      (): Promise<HttpResponse<QuotesByIdResponse>> => Promise.resolve(mockedQuotesSerchByIdResponse)
+      (): Promise<HttpResponse<QuotesV2ByIdResponse>> => Promise.resolve(mockedQuotesSerchByIdResponse)
     ),
   }
 
@@ -111,10 +143,10 @@ describe('QuotesBloc', () => {
       )
     })
 
-    it('should return empty array if quote_items does not exist', () => {
-      expect(
-        transformQuotesFromResponse(getMockedQuotesSerchByIdResponse({ quote_items: undefined }))
-      ).toEqual([])
+    it('should return empty array if quotes does not exist', () => {
+      expect(transformQuotesFromResponse(getMockedQuotesV2SerchByIdResponse({ quotes: undefined }))).toEqual(
+        []
+      )
     })
   })
 
@@ -326,7 +358,7 @@ describe('QuotesBloc', () => {
 
     it('should emit quotesExpired', done => {
       quotesMock.quotesSearch.mockReturnValueOnce(
-        Promise.resolve(getMockedQuotesSearchResponse({ validity: 0 }))
+        Promise.resolve(getMockedQuotesV2SearchResponse({ validity: 0 }))
       )
 
       bloc.quotesExpired.subscribe(() => done())
