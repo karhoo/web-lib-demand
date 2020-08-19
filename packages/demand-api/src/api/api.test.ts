@@ -3,6 +3,7 @@ import { HttpService } from '../http/HttpService'
 import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
+import { QuotesV2Service } from '../quotes/QuotesV2Service'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
@@ -28,6 +29,7 @@ jest.mock('../http/HttpService', () => ({
 jest.mock('../location/LocationService')
 jest.mock('../poi/PoiService')
 jest.mock('../quotes/QuotesService')
+jest.mock('../quotes/QuotesV2Service')
 jest.mock('../trip/TripService')
 jest.mock('../fare/FareService')
 jest.mock('../payment/PaymentService')
@@ -47,6 +49,7 @@ describe('getApi', () => {
     mocked(HttpService).mockClear()
     mocked(LocationService).mockClear()
     mocked(QuotesService).mockClear()
+    mocked(QuotesV2Service).mockClear()
     mocked(PoiService).mockClear()
     mocked(TripService).mockClear()
     mocked(FareService).mockClear()
@@ -103,6 +106,8 @@ describe('getApi', () => {
     expect(LocationService).toHaveBeenCalledWith(httpService)
     expect(QuotesService).toHaveBeenCalledTimes(1)
     expect(QuotesService).toHaveBeenCalledWith(httpService)
+    expect(QuotesV2Service).toHaveBeenCalledTimes(1)
+    expect(QuotesV2Service).toHaveBeenCalledWith(httpService)
     expect(PoiService).toHaveBeenCalledTimes(1)
     expect(PoiService).toHaveBeenCalledWith(httpService)
     expect(TripService).toHaveBeenCalledTimes(1)

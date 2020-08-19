@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/karhoo/web-lib-demand/compare/v8.7.0...v9.0.0) (2020-08-19)
+
+**Note:** Version bump only for package @karhoo/demand-deeplink
+
+
+
+
+
 # [8.7.0](https://github.com/karhoo/web-lib-demand/compare/v8.6.0...v8.7.0) (2020-08-14)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink

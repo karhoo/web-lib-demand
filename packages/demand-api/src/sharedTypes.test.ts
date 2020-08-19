@@ -1,4 +1,10 @@
-import { MeetingPointTypes, PlaceDetailTypes, PoiTypes } from './sharedTypes'
+import {
+  MeetingPointTypes,
+  PlaceDetailTypes,
+  PoiTypes,
+  QuoteResponseStatuses,
+  QuotePriceTypes,
+} from './sharedTypes'
 
 describe('sharedTypes', () => {
   it('should export correct MeetingPointTypes', () => {
@@ -23,5 +29,16 @@ describe('sharedTypes', () => {
     expect(PoiTypes.ENRICHED).toBe('ENRICHED')
     expect(PoiTypes.REGULATED).toBe('REGULATED')
     expect(PoiTypes.NEAREST).toBe('NEAREST')
+  })
+
+  it('should create correct QuoteResponseStatuses', () => {
+    expect(QuoteResponseStatuses.PROGRESSING).toBe('PROGRESSING')
+    expect(QuoteResponseStatuses.COMPLETED).toBe('COMPLETED')
+  })
+
+  it('should create correct QuotePriceTypes', () => {
+    expect(QuotePriceTypes.FIXED).toBe('FIXED')
+    expect(QuotePriceTypes.METERED).toBe('METERED')
+    expect(QuotePriceTypes.ESTIMATED).toBe('ESTIMATED')
   })
 })

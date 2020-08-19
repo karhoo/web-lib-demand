@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid'
 import { Http } from '../http/types'
+import { LatLng } from '../sharedTypes'
 import {
   Locations,
   LocationAddressDetailsParameters,
@@ -7,6 +8,7 @@ import {
   LocationAddressDetailsResponse,
   LocationAddressAutocompleteResponse,
 } from './types'
+
 import { toSnakeCase } from '../utils'
 
 export class LocationService implements Locations {
@@ -18,6 +20,7 @@ export class LocationService implements Locations {
     this.http = http
   }
 
+  /** @deprecated use getReverseGeocode method instead */
   getAddressDetails({ placeId, sessionToken }: LocationAddressDetailsParameters) {
     const body = {
       place_id: placeId,
@@ -25,6 +28,15 @@ export class LocationService implements Locations {
     }
 
     return this.http.post<LocationAddressDetailsResponse>(`${this.url}/place-details`, body)
+  }
+
+  getReverseGeocode({ latitude, longitude }: LatLng) {
+    const body = {
+      latitude,
+      longitude,
+    }
+
+    return this.http.post<LocationAddressDetailsResponse>(`${this.url}/reverse-geocode`, body)
   }
 
   getAddressAutocompleteData(data: LocationAddressAutocompleteParams) {

@@ -2,6 +2,7 @@ import { HttpService } from '../http/HttpService'
 import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'
 import { QuotesService } from '../quotes/QuotesService'
+import { QuotesV2Service } from '../quotes/QuotesV2Service'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
@@ -45,6 +46,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     locationService: new LocationService(httpV1),
     poiService: new PoiService(httpV1),
     quotesService: new QuotesService(httpV1),
+    quotesV2Service: new QuotesV2Service(httpV2),
     tripService: new TripService(httpV1),
     fareService: new FareService(httpV1),
     paymentService: new PaymentService(httpV2),

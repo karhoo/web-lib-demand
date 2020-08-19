@@ -1,5 +1,4 @@
 import { QuotesService } from './QuotesService'
-import { QuoteResponseStatuses, QuotePriceTypes } from './types'
 
 describe('QuotesService', () => {
   const http = {
@@ -103,19 +102,6 @@ describe('QuotesService', () => {
 
       expect(http.get).toHaveBeenCalledTimes(1)
       expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, { locale: 'en-GB' })
-    })
-  })
-
-  describe('enums', () => {
-    it('should create correct QuoteResponseStatuses', () => {
-      expect(QuoteResponseStatuses.PROGRESSING).toBe('PROGRESSING')
-      expect(QuoteResponseStatuses.COMPLETED).toBe('COMPLETED')
-    })
-
-    it('should create correct QuotePriceTypes', () => {
-      expect(QuotePriceTypes.FIXED).toBe('FIXED')
-      expect(QuotePriceTypes.METERED).toBe('METERED')
-      expect(QuotePriceTypes.ESTIMATED).toBe('ESTIMATED')
     })
   })
 })

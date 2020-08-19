@@ -10,6 +10,7 @@ import {
 } from './types'
 import { toSnakeCase } from '../utils'
 
+/** @deprecated use QuotesV2Service instead */
 export class QuotesService implements Quotes {
   private url = 'quotes'
 
