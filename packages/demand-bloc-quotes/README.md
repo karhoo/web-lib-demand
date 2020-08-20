@@ -41,13 +41,28 @@ const api = getApi({
   })
 })
 
+/*
+* The latitude in degrees. It must be in the range [-90.0, +90.0], with at least 4  decimal digits of precision.
+* The longitude in degrees. It must be in the range [-180.0, +180.0], with at least 4  decimal digits of precision.
+*/
 const quotesSearchParams = {
-  originPlaceId: "ChIJpwBVsLIadkgRE767cq0HnXQ",
-  destinationPlaceId: "ChIJmdRFlbIadkgRhYudNQm2yOc",
+  origin: {
+    latitude: '51.501364',
+    longitude: '-0.14189',
+    displayAddress: 'Buckingham Palace, London SW1A 1AA',
+  },
+  destination: {
+    latitude: '41.78650',
+    longitude: '1.78954',
+    displayAddress: 'Big Ben, Westminster, London SW1A 0AA, UK',
+  },
   localTimeOfPickup: "2020-05-20T12:00"
 }
 
-const quotesBloc = new QuotesBloc(api.quotesService)
+/*
+* quotesService use quotes V1 API which is depricated. Use quotesV2Service instead
+*/
+const quotesBloc = new QuotesBloc(api.quotesV2Service)
 
 quotesBloc.filters = {
   numOfLuggage: 2,

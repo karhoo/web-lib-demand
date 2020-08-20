@@ -36,7 +36,7 @@ import {
   HttpService,
   LocationService,
   PoiService,
-  QuotesService,
+  QuotesV2Service,
   errorCodes,
 } from '@karhoo/demand-api'
 
@@ -115,8 +115,9 @@ const poiService = new PoiService(httpService)
 
 # Quotes service:
 
+:warning: **QuotesService is deprecated. Please use QuotesV2Service instead**
 ```js
-const quotesService = new QuotesService(httpService)
+const quotesService = new QuotesV2Service(httpService)
 ```
 
 # Trip service:
@@ -163,8 +164,16 @@ For example, you need to get a list of quotes for trip from one location to anot
 
 ```js
 const quotesSearchParams = {
-  origin_place_id: '123456778qwertyu',
-  destination_place_id: '0988765poiuyt',
+  origin: {
+    latitude: '51.501364',
+    longitude: '-0.14189',
+    displayAddress: 'Buckingham Palace, London SW1A 1AA',
+  },
+  destination: {
+    latitude: '41.78650',
+    longitude: '1.78954',
+    displayAddress: 'Big Ben, Westminster, London SW1A 0AA, UK',
+  },
   local_time_of_pickup: '2020-05-12T10:00',
 }
 
