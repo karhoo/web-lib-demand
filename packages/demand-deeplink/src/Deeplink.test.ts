@@ -9,7 +9,7 @@ import {
 } from '@karhoo/demand-api'
 import {
   getApiMock,
-  getMockedQuotesAvailabilityResponse,
+  getMockedQuotesV2SearchResponse,
   getMockedPoiSearchResponse,
   getMockedLocationAddressDetailsResponse,
   getMockedErrorLocationAddressDetailsResponse,
@@ -78,7 +78,10 @@ describe('Deeplink', () => {
         ? {
             ok: true,
             data: {
-              placeId: response.body.pois?.[0]?.id,
+              placePosition: {
+                latitude: response.body.pois?.[0].position.latitude,
+                longitude: response.body.pois?.[0].position.longitude,
+              },
               displayAddress: response.body.pois?.[0]?.address.display_address,
               poiInfo: response.body.pois?.[0],
             },
@@ -137,7 +140,10 @@ describe('Deeplink', () => {
         ? {
             ok: true,
             data: {
-              placeId: response.body.place_id,
+              placePosition: {
+                latitude: response.body.position?.latitude,
+                longitude: response.body.position?.longitude,
+              },
               displayAddress: response.body.address?.display_address,
               placeInfo: response.body,
             },
@@ -290,8 +296,8 @@ describe('Deeplink', () => {
 
     it('should call checkAvailability of QuotesService once', done => {
       resolve(() => {
-        expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
-        expect(api.quotesService.checkAvailability).toBeCalledWith({
+        expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(1)
+        expect(api.quotesV2Service.quotesSearch).toBeCalledWith({
           originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
           destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
           dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
@@ -321,8 +327,8 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
-          expect(api.quotesService.checkAvailability).toBeCalledWith({
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(1)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledWith({
             originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
             dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
           })
@@ -339,8 +345,8 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
-          expect(api.quotesService.checkAvailability).toBeCalledWith({
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(1)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledWith({
             originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
           })
         },
@@ -363,7 +369,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(2)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(2)
         },
         done,
         legs
@@ -377,7 +383,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(0)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(0)
         },
         done,
         legs
@@ -389,7 +395,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(1)
         },
         done,
         legs
@@ -537,8 +543,8 @@ describe('Deeplink', () => {
     })
 
     it('should call subscriber 2 times', async () => {
-      api.quotesService.checkAvailability.mockReturnValueOnce(
-        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesAvailabilityResponse()), 20))
+      api.quotesV2Service.quotesSearch.mockReturnValueOnce(
+        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesV2SearchResponse()), 20))
       )
 
       const subscriber = jest.fn()

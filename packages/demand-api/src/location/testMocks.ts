@@ -25,6 +25,10 @@ export const getMockedLocationAddressDetailsResponse = (
       line_1: 'line_1',
       city: 'city',
     },
+    position: {
+      latitude: 51.56,
+      longitude: -0.46,
+    },
   },
 })
 
