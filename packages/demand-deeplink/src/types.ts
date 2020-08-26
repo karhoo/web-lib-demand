@@ -7,8 +7,9 @@ import {
   PoiSearchParams,
   PoiSearchResponse,
   PoiResponse,
-  QuotesAvailabilityParams,
-  QuotesAvailabilityResponse,
+  QuotesV2SearchParams,
+  QuotesV2Response,
+  LatLng,
 } from '@karhoo/demand-api'
 
 export type Api = {
@@ -23,8 +24,8 @@ export type Api = {
   poiService: {
     search: (params: PoiSearchParams) => Promise<HttpResponse<PoiSearchResponse>>
   }
-  quotesService: {
-    checkAvailability: (params: QuotesAvailabilityParams) => Promise<HttpResponse<QuotesAvailabilityResponse>>
+  quotesV2Service: {
+    quotesSearch: (params: QuotesV2SearchParams) => Promise<HttpResponse<QuotesV2Response>>
   }
 }
 
@@ -91,7 +92,7 @@ type ResolveError = {
 type ResolvePlace = {
   ok: true
   data: {
-    placeId: string
+    placePosition: LatLng
     displayAddress: string
     placeInfo?: LocationAddressDetailsResponse
     poiInfo?: PoiResponse
@@ -103,8 +104,14 @@ export type ResolvePlaceResult = ResolvePlace | ResolveError
 type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
 
 export type ResolveAvailabilityParams = {
-  originPlaceId: string
-  destinationPlaceId?: string
+  origin: {
+    latitude: string
+    longitude: string
+  }
+  destination: {
+    latitude: string
+    longitude: string
+  }
   dateRequired?: string
 }
 

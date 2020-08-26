@@ -104,7 +104,9 @@ export const getMockedQuotesV2SerchByIdResponse = (
     quotes: [quoteV2],
     status: QuoteResponseStatuses.COMPLETED,
     availability: {
-      classes: ['Saloon'],
+      vehicles: {
+        classes: ['Saloon'],
+      },
     },
     validity: 600,
     ...partialBody,
@@ -137,7 +139,9 @@ export const getMockedQuotesV2SearchResponse = (
     quotes: [],
     status: QuoteResponseStatuses.PROGRESSING,
     availability: {
-      classes: ['Saloon'],
+      vehicles: {
+        classes: ['Saloon'],
+      },
     },
     validity: 599,
     ...partialBody,
