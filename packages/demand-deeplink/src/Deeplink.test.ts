@@ -9,11 +9,10 @@ import {
 } from '@karhoo/demand-api'
 import {
   getApiMock,
-  getMockedQuotesAvailabilityResponse,
+  getMockedQuotesV2SearchResponse,
   getMockedPoiSearchResponse,
   getMockedLocationAddressDetailsResponse,
   getMockedErrorLocationAddressDetailsResponse,
-  getMockedLocationAddressAutocompleteResponse,
   getMockedErrorLocationAddressAutocompleteResponse,
   getMockedErrorPoiSearchResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
@@ -78,7 +77,10 @@ describe('Deeplink', () => {
         ? {
             ok: true,
             data: {
-              placeId: response.body.pois?.[0]?.id,
+              placePosition: {
+                latitude: response.body.pois?.[0].position.latitude,
+                longitude: response.body.pois?.[0].position.longitude,
+              },
               displayAddress: response.body.pois?.[0]?.address.display_address,
               poiInfo: response.body.pois?.[0],
             },
@@ -100,31 +102,52 @@ describe('Deeplink', () => {
     }
 
     const getLocationGetAddressAutocompleteData = (
-      response: HttpResponse<LocationAddressAutocompleteResponse>,
+      autocompleteResponse: HttpResponse<LocationAddressAutocompleteResponse>,
+      placeIdResponse: HttpResponse<LocationAddressDetailsResponse>,
       isPickup: boolean,
-      searchValue: string
+      searchAutocompleteValue: string,
+      searchPlaceIdValue: string
     ) => {
-      const result = response.ok
-        ? {
-            ok: true,
-            data: {
-              placeId: response.body.locations[0].place_id,
-              displayAddress: response.body.locations[0].display_address,
-            },
-          }
-        : {
-            ok: false,
-            error: response.error,
-          }
+      if (autocompleteResponse.ok) {
+        const result = placeIdResponse.ok
+          ? {
+              ok: true,
+              data: {
+                placePosition: {
+                  latitude: placeIdResponse.body.position?.latitude,
+                  longitude: placeIdResponse.body.position?.longitude,
+                },
+                displayAddress: placeIdResponse.body.address?.display_address,
+                placeInfo: placeIdResponse.body,
+              },
+            }
+          : {
+              ok: false,
+              error: placeIdResponse.error,
+            }
 
-      return {
-        done: false,
-        leg: 0,
-        place: {
-          ...result,
-          isPickup,
-          searchValue,
-        },
+        return {
+          done: false,
+          leg: 0,
+          place: {
+            ...result,
+            isPickup,
+            searchValue: searchPlaceIdValue,
+          },
+        }
+      } else {
+        return {
+          done: false,
+          leg: 0,
+          place: {
+            ...{
+              ok: false,
+              error: autocompleteResponse.error,
+            },
+            isPickup,
+            searchValue: searchAutocompleteValue,
+          },
+        }
       }
     }
 
@@ -137,7 +160,10 @@ describe('Deeplink', () => {
         ? {
             ok: true,
             data: {
-              placeId: response.body.place_id,
+              placePosition: {
+                latitude: response.body.position?.latitude,
+                longitude: response.body.position?.longitude,
+              },
               displayAddress: response.body.address?.display_address,
               placeInfo: response.body,
             },
@@ -178,29 +204,6 @@ describe('Deeplink', () => {
       }, done)
     })
 
-    it('should call subscriber with address autocomplete data when pickup and dropoff are provided', done => {
-      resolve((result, subscriber) => {
-        expect(subscriber).toBeCalledWith(
-          getLocationGetAddressAutocompleteData(
-            getMockedLocationAddressAutocompleteResponse({
-              query: firstJourneyLegWithPlaceOnly['leg-1-pickup'],
-            }),
-            true,
-            firstJourneyLegWithPlaceOnly['leg-1-pickup']
-          )
-        )
-        expect(subscriber).toBeCalledWith(
-          getLocationGetAddressAutocompleteData(
-            getMockedLocationAddressAutocompleteResponse({
-              query: firstJourneyLegWithPlaceOnly['leg-1-dropoff'],
-            }),
-            false,
-            firstJourneyLegWithPlaceOnly['leg-1-dropoff']
-          )
-        )
-      }, done)
-    })
-
     it('should call subscriber with address autocomplete error', done => {
       api.locationService.getAddressAutocompleteData.mockReturnValueOnce(
         Promise.resolve(getMockedErrorLocationAddressAutocompleteResponse())
@@ -210,8 +213,12 @@ describe('Deeplink', () => {
         expect(subscriber).toBeCalledWith(
           getLocationGetAddressAutocompleteData(
             getMockedErrorLocationAddressAutocompleteResponse(),
+            getMockedLocationAddressDetailsResponse({
+              placeId: firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id'],
+            }),
             true,
-            firstJourneyLegWithPlaceOnly['leg-1-pickup']
+            firstJourneyLegWithPlaceOnly['leg-1-pickup'],
+            firstJourneyLegWithPlaceIdOnly['leg-1-pickup-place_id']
           )
         )
       }, done)
@@ -288,67 +295,6 @@ describe('Deeplink', () => {
       )
     })
 
-    it('should call checkAvailability of QuotesService once', done => {
-      resolve(() => {
-        expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
-        expect(api.quotesService.checkAvailability).toBeCalledWith({
-          originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
-          destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
-          dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
-        })
-      }, done)
-    })
-
-    it('should call subscriber with availability response', done => {
-      resolve((result, subscriber) => {
-        expect(subscriber).toBeCalledWith({
-          done: false,
-          leg: 0,
-          availability: {
-            ok: true,
-            searchedParams: {
-              originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
-              destinationPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
-              dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
-            },
-          },
-        })
-      }, done)
-    })
-
-    it('should call checkAvailability of QuotesService once with empty destinationPlaceId when dropoff does not exists', done => {
-      const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-dropoff': undefined }]
-
-      resolve(
-        () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
-          expect(api.quotesService.checkAvailability).toBeCalledWith({
-            originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-pickup']}`,
-            dateRequired: firstJourneyLegWithPlaceOnly['leg-1-pickup-time'],
-          })
-        },
-        done,
-        legs
-      )
-    })
-
-    it('should call checkAvailability of QuotesService once with only originPlaceId when pickup does not exists', done => {
-      const legs = [
-        { ...firstJourneyLegWithPlaceOnly, 'leg-1-pickup': undefined, 'leg-1-pickup-time': undefined },
-      ]
-
-      resolve(
-        () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
-          expect(api.quotesService.checkAvailability).toBeCalledWith({
-            originPlaceId: `autocomplete_placeId:${firstJourneyLegWithPlaceOnly['leg-1-dropoff']}`,
-          })
-        },
-        done,
-        legs
-      )
-    })
-
     it('should call checkAvailability of QuotesService twice', done => {
       const legs = [
         firstJourneyLegWithPlaceOnly,
@@ -363,7 +309,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(2)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(2)
         },
         done,
         legs
@@ -377,7 +323,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(0)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(0)
         },
         done,
         legs
@@ -389,7 +335,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesService.checkAvailability).toBeCalledTimes(1)
+          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(1)
         },
         done,
         legs
@@ -537,8 +483,8 @@ describe('Deeplink', () => {
     })
 
     it('should call subscriber 2 times', async () => {
-      api.quotesService.checkAvailability.mockReturnValueOnce(
-        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesAvailabilityResponse()), 20))
+      api.quotesV2Service.quotesSearch.mockReturnValueOnce(
+        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesV2SearchResponse()), 20))
       )
 
       const subscriber = jest.fn()
@@ -565,7 +511,6 @@ describe('Deeplink', () => {
       }
     })
   })
-
   describe('isValid', () => {
     it('should return error when deeplink is not valid', () => {
       const legs = [{ ...firstJourneyLegWithPlaceOnly, 'leg-1-pickup-time': undefined }]

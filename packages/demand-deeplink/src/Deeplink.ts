@@ -25,17 +25,17 @@ type PlacePromisesList = {
 }[]
 
 type AvailabilityPromisesList = {
-  originPlaceId: string
-  destinationPlaceId?: string
+  origin: {
+    latitude: string
+    longitude: string
+  }
+  destination: {
+    latitude: string
+    longitude: string
+  }
   dateRequired?: string
   promise: Promise<ResolveAvailabilityResult>
 }[]
-
-const configurePlaceId = (id: string) => {
-  const placeIdPrefix = 'k_'
-
-  return id.indexOf(placeIdPrefix) === 0 ? id : `${placeIdPrefix}${id}`
-}
 
 function getActivePlace(leg: JourneyLeg, keys: PlaceField[]) {
   const key = keys.filter(k => leg[k])[0]
@@ -146,12 +146,20 @@ export class Deeplink {
         }
 
         const availabilityParams: ResolveAvailabilityParams = {
-          originPlaceId: pickupData?.ok
-            ? pickupData.data.placeId
-            : dropoffData?.ok
-            ? dropoffData.data.placeId
-            : '',
-          destinationPlaceId: pickupData?.ok && dropoffData?.ok ? dropoffData.data.placeId : undefined,
+          origin: {
+            latitude: (pickupData?.ok ? pickupData.data.placePosition.latitude : '').toString(),
+            longitude: (pickupData?.ok ? pickupData.data.placePosition.longitude : '').toString(),
+          },
+          destination: {
+            latitude: (pickupData?.ok && dropoffData?.ok
+              ? dropoffData.data.placePosition.latitude
+              : ''
+            ).toString(),
+            longitude: (pickupData?.ok && dropoffData?.ok
+              ? dropoffData.data.placePosition.longitude
+              : ''
+            ).toString(),
+          },
           dateRequired: leg.pickupTime,
         }
 
@@ -194,7 +202,10 @@ export class Deeplink {
     return {
       ok: true,
       data: {
-        placeId: body.place_id,
+        placePosition: {
+          latitude: body.position?.latitude ?? 0,
+          longitude: body.position?.longitude ?? 0,
+        },
         displayAddress: body.address?.display_address ?? '',
         placeInfo: body,
       },
@@ -219,7 +230,10 @@ export class Deeplink {
       : {
           ok: true,
           data: {
-            placeId: configurePlaceId(poi.id),
+            placePosition: {
+              latitude: poi.position.latitude,
+              longitude: poi.position.longitude,
+            },
             displayAddress: poi.address.display_address,
             poiInfo: poi,
           },
@@ -235,15 +249,17 @@ export class Deeplink {
       return { ok: false, error: response.error }
     }
 
-    const location = response.body.locations?.[0]
+    const { place_id } = response.body.locations?.[0]
 
-    return location
-      ? { ok: true, data: { placeId: location.place_id, displayAddress: location.display_address } }
-      : { ok: false, error: { message: errorMessageByCode[codes.DP007] } }
+    if (place_id) {
+      return await this.resolveByPlaceId({ key: item.key, value: place_id })
+    }
+
+    return { ok: false, error: { message: errorMessageByCode[codes.DP007] } }
   }
 
   private async checkAvailability(data: ResolveAvailabilityParams): Promise<ResolveAvailabilityResult> {
-    const response = await this.api.quotesService.checkAvailability(data)
+    const response = await this.api.quotesV2Service.quotesSearch(data)
 
     if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 

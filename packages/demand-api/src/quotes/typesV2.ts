@@ -63,7 +63,9 @@ export type QuotesV2Response = {
   status: QuoteResponseStatuse
   quotes: QuoteV2Item[]
   availability: {
-    classes: string[]
+    vehicles?: {
+      classes?: string[]
+    }
   }
   validity?: number
 }
