@@ -11,12 +11,14 @@ import {
 import { parse } from './parse'
 import { validate } from './validate'
 import { codes, errorMessageByCode } from './errors'
+import { LatLng } from '@karhoo/demand-api'
 
 const pickupPlaceFields = ['pickup' as const, 'pickupKpoi' as const, 'pickupPlaceId' as const]
 const dropoffPlaceFields = ['dropoff' as const, 'dropoffKpoi' as const, 'dropoffPlaceId' as const]
 
 type PlaceField = typeof pickupPlaceFields[0] | typeof dropoffPlaceFields[0]
 type SearchPlaceData = { key: PlaceField; value: string }
+type PositionPlaceData = LatLng
 
 type PlacePromisesList = {
   key: string
@@ -183,21 +185,15 @@ export class Deeplink {
   }
 
   private resolvePlace(data: SearchPlaceData) {
-    if (data.key.indexOf('PlaceId') !== -1) {
-      return this.resolveByPlaceId(data)
+    if (data.key.indexOf('Position') !== -1) {
+      return this.resolveByPosition(data)
     }
 
     return data.key.indexOf('Kpoi') !== -1 ? this.resolveByPoi(data) : this.resolveByAddressAutocoplete(data)
   }
 
-  private async resolveByPlaceId(item: SearchPlaceData): Promise<ResolvePlaceResult> {
-    const response = await this.api.locationService.getAddressDetails({ placeId: item.value })
-
-    if (!response.ok) {
-      return { ok: false, error: response.error }
-    }
-
-    const { body } = response
+  private async resolveByPosition(data: PositionPlaceData): Promise<ResolvePlaceResult> {
+    const { body } = await this.api.locationService.getReverseGeocode(data)
 
     return {
       ok: true,
@@ -249,10 +245,10 @@ export class Deeplink {
       return { ok: false, error: response.error }
     }
 
-    const { place_id } = response.body.locations?.[0]
+    const { position } = response.body.locations?.[0]
 
-    if (place_id) {
-      return await this.resolveByPlaceId({ key: item.key, value: place_id })
+    if (position) {
+      return await this.resolveByPosition(position)
     }
 
     return { ok: false, error: { message: errorMessageByCode[codes.DP007] } }

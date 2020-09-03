@@ -20,6 +20,9 @@ export type Api = {
     getAddressAutocompleteData: (
       params: LocationAddressAutocompleteParams
     ) => Promise<HttpResponse<LocationAddressAutocompleteResponse>>
+    getReverseGeocode: (
+      position: LatLng
+    ) => Promise<HttpResponse<LocationAddressDetailsResponse>>
   }
   poiService: {
     search: (params: PoiSearchParams) => Promise<HttpResponse<PoiSearchResponse>>

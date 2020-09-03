@@ -66,4 +66,7 @@ export interface Locations {
   getAddressAutocompleteData(
     params: LocationAddressAutocompleteParams
   ): Promise<HttpResponse<LocationAddressAutocompleteResponse>>
+  getReverseGeocode(
+    position: LatLng
+  ): Promise<HttpResponse<LocationAddressDetailsResponse>>
 }

@@ -49,7 +49,7 @@ describe('LocationService', () => {
       longitude: -0.07,
     }
 
-    const expectedBody = {
+    const expectedQuery = {
       latitude: params.latitude,
       longitude: params.longitude,
     }
@@ -61,8 +61,8 @@ describe('LocationService', () => {
     it('should call post of http', () => {
       new LocationService(http).getReverseGeocode(params)
 
-      expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('locations/reverse-geocode', expectedBody)
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith('locations/reverse-geocode', expectedQuery)
     })
   })
 
