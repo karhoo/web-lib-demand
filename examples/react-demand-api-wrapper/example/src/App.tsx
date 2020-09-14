@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
-import { withApi } from 'web-omio'
+import { withApi } from 'react-demand-api-wrapper'
 import routes from './routes'
 import logo from './logo.svg'
 
@@ -48,5 +48,7 @@ const App = () => {
     </Router>
   )
 }
+
+App.whyDidYouRender = true
 
 export default withApi(App)

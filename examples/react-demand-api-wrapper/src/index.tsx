@@ -25,7 +25,12 @@ export const withApi = (WrappedComponent: React.ComponentType<StateProps>) => {
       if (!state.api) return
       dispatchedActions.trip.setInstance(state.api.locationService)
     }, [loading])
-
+    
+    // create an isLoading=true in state and set to false
+    if (!state.trip) {
+      return null
+    }
+    
     return (
       <APIContext.Provider value={{ state, actions: dispatchedActions }}>
         <WrappedComponent authorization={authorization} referer={referer} endpoint={endpoint} />

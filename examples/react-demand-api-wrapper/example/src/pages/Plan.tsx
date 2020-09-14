@@ -1,5 +1,5 @@
 import React from 'react'
-import { useApi } from 'web-omio'
+import { useApi } from 'react-demand-api-wrapper'
 import { Form } from '../components/Form'
 import { Input } from '../components/Input'
 import { Select } from '../components/Select'
@@ -20,7 +20,6 @@ export const Plan = () => {
 
   React.useEffect(() => {
     if (state.api?.locationService) {
-      console.log(state.api)
       setForm((form) => {
         const pickup = state.trip.createStream(
           'pickup',
@@ -40,7 +39,7 @@ export const Plan = () => {
         return form
       })
     }
-  }, [state.api, state.trip, setForm])
+  }, [state, setForm])
 
   // React.useEffect(() => {
   //   if (pickupInput) {
@@ -108,7 +107,7 @@ export const Plan = () => {
         id='luggage'
         onChange={handleChange}
       >
-        {Array.from(Array(7).keys()).map((key) => (
+        {Array.from({ length: 7 }, (_, i) => i).map((key) => (
           <option key={key} value={key}>
             {key}
           </option>

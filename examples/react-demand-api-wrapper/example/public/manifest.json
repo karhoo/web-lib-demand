@@ -1,6 +1,6 @@
 {
-  "short_name": "web-omio",
-  "name": "web-omio",
+  "short_name": "react-demand-api-wrapper",
+  "name": "react-demand-api-wrapper",
   "icons": [
     {
       "src": "favicon.ico",
