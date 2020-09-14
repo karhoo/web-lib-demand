@@ -64,7 +64,6 @@
     "@karhoo/demand-bloc-payment": "^10.0.0",
     "@karhoo/demand-bloc-quotes": "^10.0.0",
     "@karhoo/demand-bloc-track-trip": "^10.0.0",
-    "@karhoo/demand-bloc-trip-create": "^10.0.0",
-    "lodash.isequal": "^4.5.0"
+    "@karhoo/demand-bloc-trip-create": "^10.0.0"
   }
 }
