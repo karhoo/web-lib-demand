@@ -1,3 +1,4 @@
+import { LatLng } from '@karhoo/demand-api'
 import {
   DeeplinkData,
   ValidationResponse,
@@ -6,7 +7,9 @@ import {
   ResolvePlaceResult,
   ResolveAvailabilityParams,
   ResolveAvailabilityResult,
+  ResolveAvailabilityParam,
   Api,
+  ResolvePlace,
 } from './types'
 import { parse } from './parse'
 import { validate } from './validate'
@@ -26,12 +29,14 @@ type PlacePromisesList = {
 
 type AvailabilityPromisesList = {
   origin: {
-    latitude: string
-    longitude: string
+    latitude: number
+    longitude: number
+    displayAddress: string
   }
   destination: {
-    latitude: string
-    longitude: string
+    latitude: number
+    longitude: number
+    displayAddress: string
   }
   dateRequired?: string
   promise: Promise<ResolveAvailabilityResult>
@@ -135,7 +140,11 @@ export class Deeplink {
           getPromise(activeDropoff),
         ])
 
-        if (!(pickupData || dropoffData) || pickupData?.ok === false || dropoffData?.ok === false) {
+        if (
+          !(pickupData || dropoffData)
+          || pickupData?.ok === false
+          || dropoffData?.ok === false
+        ) {
           handle({
             done: false,
             leg: index,
@@ -145,21 +154,33 @@ export class Deeplink {
           return
         }
 
+        const mapAvailabilityParams = (details: ResolvePlace) => ({
+          ...details.data.placePosition,
+          displayAddress: details.data.displayAddress,
+        })
+
+        const getAvailabilityParams = (details1?: ResolvePlaceResult, details2?: ResolvePlaceResult): ResolveAvailabilityParam => {
+          if (details1 && details1?.ok) {
+            return mapAvailabilityParams(details1)
+          }
+
+          if (details2 && details2?.ok) {
+            return mapAvailabilityParams(details2)
+          }
+
+          return {
+            latitude: 0,
+            longitude: 0,
+            displayAddress: ''
+          }
+        }
+
+        console.log(getAvailabilityParams(pickupData, dropoffData))
+        console.log(getAvailabilityParams(dropoffData))
+
         const availabilityParams: ResolveAvailabilityParams = {
-          origin: {
-            latitude: (pickupData?.ok ? pickupData.data.placePosition.latitude : '').toString(),
-            longitude: (pickupData?.ok ? pickupData.data.placePosition.longitude : '').toString(),
-          },
-          destination: {
-            latitude: (pickupData?.ok && dropoffData?.ok
-              ? dropoffData.data.placePosition.latitude
-              : ''
-            ).toString(),
-            longitude: (pickupData?.ok && dropoffData?.ok
-              ? dropoffData.data.placePosition.longitude
-              : ''
-            ).toString(),
-          },
+          origin: getAvailabilityParams(pickupData, dropoffData),
+          destination: getAvailabilityParams(dropoffData),
           dateRequired: leg.pickupTime,
         }
 
@@ -259,7 +280,21 @@ export class Deeplink {
   }
 
   private async checkAvailability(data: ResolveAvailabilityParams): Promise<ResolveAvailabilityResult> {
-    const response = await this.api.quotesV2Service.quotesSearch(data)
+    console.log("Test", data)
+
+    const response = await this.api.quotesV2Service.quotesSearch({
+      ...data,
+      origin: {
+        ...data.origin,
+        latitude: data.origin.latitude.toString(),
+        longitude: data.origin.longitude.toString(),
+      },
+      destination: {
+        ...data.destination,
+        latitude: data.destination.latitude.toString(),
+        longitude: data.destination.longitude.toString(),
+      }
+    })
 
     if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 

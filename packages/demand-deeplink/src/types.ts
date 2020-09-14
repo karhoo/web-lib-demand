@@ -89,7 +89,7 @@ type ResolveError = {
   }
 }
 
-type ResolvePlace = {
+export type ResolvePlace = {
   ok: true
   data: {
     placePosition: LatLng
@@ -103,15 +103,11 @@ export type ResolvePlaceResult = ResolvePlace | ResolveError
 
 type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
 
+export type ResolveAvailabilityParam = LatLng & { displayAddress: string }
+
 export type ResolveAvailabilityParams = {
-  origin: {
-    latitude: string
-    longitude: string
-  }
-  destination: {
-    latitude: string
-    longitude: string
-  }
+  origin: ResolveAvailabilityParam
+  destination: ResolveAvailabilityParam
   dateRequired?: string
 }
 
