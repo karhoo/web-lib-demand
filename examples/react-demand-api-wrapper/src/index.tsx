@@ -19,10 +19,10 @@ export const withApi = (WrappedComponent: React.ComponentType<StateProps>) => {
     React.useEffect(() => {
       dispatchedActions.api.setInstance(authorization, referer, endpoint)
       setLoading(false)
-    }, [authorization, referer])
+    }, [authorization, referer, endpoint])
 
     React.useEffect(() => {
-      if (!state.api) return
+      if (!state.api || loading) return
       dispatchedActions.trip.setInstance(state.api.locationService)
     }, [loading])
     

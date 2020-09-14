@@ -14,7 +14,7 @@ export interface DispatchActions {
 
 // define constants
 export enum Constants {
-  SET_INSTANCE = "SET_INSTANCE",
+  SET_INSTANCE = "TRIP_SET_INSTANCE",
 }
 
 // define payload
