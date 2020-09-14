@@ -15,13 +15,13 @@ const Container = styled.div`
 
 const Header = styled.header`
   height: 70px;
-  background: #5272a8;
+  background: #191948;
   display: flex;
   align-items: center;
   padding: 1rem;
 
   img {
-    height: calc(70px - 2rem);
+    height: auto;
   }
 `
 
@@ -35,7 +35,7 @@ const App = () => {
     <Router>
       <Container>
         <Header>
-          <img src={logo} alt='Omio' />
+          <img src={logo} alt='Karhoo' />
         </Header>
         <Main>
           <Switch>

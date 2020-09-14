@@ -1,6 +1,6 @@
 # react-demand-api-wrapper
 
-> Web booker for Omio
+> Web booker for Karhoo
 
 [![NPM](https://img.shields.io/npm/v/react-demand-api-wrapper.svg)](https://www.npmjs.com/package/react-demand-api-wrapper) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 

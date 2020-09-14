@@ -14,8 +14,8 @@ export const Button = styled.button`
   z-index: 2;
   align-items: center;
   justify-content: center;
-  color: rgb(255, 255, 255);
-  background-color: rgb(250, 107, 107);
+  color: #FFFFFF;
+  background-color: #FF0082;
   height: 48px;
   font-size: 16px;
   padding: 0px 16px;
