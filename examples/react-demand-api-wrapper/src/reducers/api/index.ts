@@ -7,6 +7,7 @@ export const reducer = (state: State, action: Actions) => {
       return getApi({
         url: action.payload.endpoint,
         defaultRequestOptionsGetter: () => ({
+          credentials: 'omit',
           headers: {
             identifier: action.payload.authorization,
             referer: action.payload.referer,

@@ -7,7 +7,7 @@ export const Form = styled.form`
   position: relative;
   padding-bottom: calc(48px + 1rem);
 
-  button {
+  > button[type="submit"] {
     position: absolute;
     bottom: 0;
   }

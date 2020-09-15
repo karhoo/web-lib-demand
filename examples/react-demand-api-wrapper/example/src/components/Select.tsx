@@ -1,8 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import { TripCreateField, TripCreateFieldTypes } from '@karhoo/demand-bloc-trip-create'
+import React from 'react'
+import styled from 'styled-components'
+import { useApi } from 'react-demand-api-wrapper'
 
 interface Props extends React.HTMLProps<HTMLSelectElement> {
-  label?: string;
+  label?: string
+  name: string
+  onSelectChange: (name: string, value: string) => void
 }
 
 const Container = styled.div`
@@ -24,19 +28,33 @@ const Container = styled.div`
     transition: border 0.15s;
     cursor: pointer;
   }
-  
+
   select:hover,
   select:focus {
     border: 1px solid #a1a9c3;
     outline: 0;
   }
-`;
+`
 
-export const Select = ({ label, ...props }: Props) => {
+export const Select = ({ label, onSelectChange, ...props }: Props) => {
+  const { state } = useApi()
+
+  const [userInput, setUserInput] = React.useState('')
+  const input = state.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+
+  React.useEffect(() => {
+    input.query.subscribe(setUserInput)
+  }, [input])
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    input.onChange(e.target.value)
+    onSelectChange(e.target.name, e.target.value)
+  }
+
   return (
     <Container>
       {label && <label htmlFor={props.id}>{label}:</label>}
-      <select {...props} />
+      <select {...props} value={userInput} onChange={handleChange} />
     </Container>
-  );
-};
+  )
+}

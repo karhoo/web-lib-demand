@@ -1,119 +1,85 @@
 import React from 'react'
-import { useApi } from 'react-demand-api-wrapper'
 import { Form } from '../components/Form'
 import { Input } from '../components/Input'
 import { Select } from '../components/Select'
 import { Button } from '../components/Button'
-import {
-  TripCreateAutocompleteField,
-  TripCreateFieldTypes,
-  TripCreateField
-} from '@karhoo/demand-bloc-trip-create'
+import { AutocompleteDetails } from '@karhoo/demand-bloc-trip-create'
+import { Autocomplete } from '../components/Autocomplete'
 
 interface FormData {
-  [key: string]: TripCreateAutocompleteField | TripCreateField
+  pickup: AutocompleteDetails
+  dropoff: AutocompleteDetails
+  date: ''
+  time: ''
+  passengers: ''
+  luggage: ''
 }
 
 export const Plan = () => {
-  const { state } = useApi()
-  const [form, setForm] = React.useState<FormData>({})
+  const [form, setForm] = React.useState<FormData>({
+    pickup: {} as AutocompleteDetails,
+    dropoff: {} as AutocompleteDetails,
+    date: '',
+    time: '',
+    passengers: '',
+    luggage: '',
+  })
 
-  React.useEffect(() => {
-    if (state.api?.locationService) {
-      setForm((form) => {
-        const pickup = state.trip.createStream(
-          'pickup',
-          TripCreateFieldTypes.AUTOCOMPLETE
-        ) as TripCreateAutocompleteField
-        pickup.query.subscribe((e: any) => console.log('query', e))
-        pickup.results.subscribe((e: any) => console.log('results', e))
-        pickup.selectedAddress.subscribe((e: any) =>
-          console.log('selected', e)
-        )
-        form = {
-          ...form,
-          pickup
-        }
-        // if (Object.entries(form).length === 0) {
-        // }
-        return form
-      })
-    }
-  }, [state, setForm])
+  const handleChange = React.useCallback(
+    (name: string, value: string) => {
+      setForm((form) => ({
+        ...form,
+        [name]: value,
+      }))
+    },
+    [setForm]
+  )
 
-  // React.useEffect(() => {
-  //   if (pickupInput) {
-  //     console.log({ pickupInput })
-  //     pickupInput.query.subscribe((e: any) => console.log(e))
-  //   }
-  // }, [pickupInput])
-
-  const handleChange = (e: any) => {
-    console.log(e.target.name, e.target.value)
-    form[e.target.name].onChange(e.target.value)
-  }
+  const handleAutocompleteChange = React.useCallback(
+    (name: string, item: AutocompleteDetails) => {
+      setForm((form) => ({
+        ...form,
+        [name]: item,
+      }))
+    },
+    [setForm]
+  )
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(form)
+    console.log({ form })
   }
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Autocomplete label="From" name="pickup" onAutocompleteChange={handleAutocompleteChange} />
+      <Autocomplete label="To" name="dropoff" onAutocompleteChange={handleAutocompleteChange} />
       <Input
-        label='From'
-        type='text'
-        name='pickup'
-        id='pickup'
-        onChange={handleChange}
-      />
-      <Input
-        label='To'
-        type='text'
-        name='dropoff'
-        id='dropoff'
-        onChange={handleChange}
-      />
-      <Input
-        label='Date'
-        type='date'
-        name='date'
-        id='date'
+        label="Date"
+        type="date"
+        name="date"
         min={new Date().toISOString().split('T')[0]}
-        onChange={handleChange}
+        onInputChange={handleChange}
       />
-      <Input
-        label='Time'
-        type='time'
-        name='time'
-        id='time'
-        onChange={handleChange}
-      />
-      <Select
-        label='Passengers'
-        name='passengers'
-        id='passengers'
-        onChange={handleChange}
-      >
+      <Input label="Time" type="time" name="time" onInputChange={handleChange} />
+      <Select label="Passengers" name="passengers" onSelectChange={handleChange}>
         {Array.from({ length: 6 }, (_, i) => i + 1).map((key) => (
           <option key={key} value={key}>
             {key}
           </option>
         ))}
       </Select>
-      <Select
-        label='Luggage'
-        name='luggage'
-        id='luggage'
-        onChange={handleChange}
-      >
+      <Select label="Luggage" name="luggage" onSelectChange={handleChange}>
         {Array.from({ length: 7 }, (_, i) => i).map((key) => (
           <option key={key} value={key}>
             {key}
           </option>
         ))}
       </Select>
-      <Button>Get Quotes</Button>
+      <pre>
+        <code>{JSON.stringify(form, null, 2)}</code>
+      </pre>
+      <Button type="submit">Get Quotes</Button>
     </Form>
   )
 }
