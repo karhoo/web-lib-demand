@@ -34,6 +34,7 @@ export const mockHttpRemove = jest.fn(() =>
 export const getApiMock = () => {
   const mockLocationGetAddressDetails = getLocationGetAddressDetailsMock()
   const mockLocationGetAddressAutocompleteData = getLocationGetAddressAutocompleteDataMock()
+  const mockLocationGetReverseGeocode = getLocationGetAddressDetailsMock()
   const mockPoiSearch = getPoiSearchMock()
   const mockQuotesCheckAvailability = getQuotesCheckAvailabilityMock()
   const mockQuoteSearch = getQuotesSearchMock()
@@ -48,6 +49,7 @@ export const getApiMock = () => {
   return {
     locationService: {
       getAddressDetails: mockLocationGetAddressDetails,
+      getReverseGeocode: mockLocationGetReverseGeocode,
       getAddressAutocompleteData: mockLocationGetAddressAutocompleteData,
     },
     poiService: {
@@ -74,6 +76,7 @@ export const getApiMock = () => {
       ;[
         mockLocationGetAddressDetails,
         mockLocationGetAddressAutocompleteData,
+        mockLocationGetReverseGeocode,
         mockPoiSearch,
         mockQuotesCheckAvailability,
         mockQuoteSearch,

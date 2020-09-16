@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.1](https://github.com/karhoo/web-lib-demand/compare/v10.0.0...v10.0.1) (2020-09-16)
+
+
+### Bug Fixes
+
+* change getReverseGeocode params ([ace1d2c](https://github.com/karhoo/web-lib-demand/commit/ace1d2c83b73374c4ab362fb35a5d4a9b8577b7b))
+
+
+
+
+
 # [10.0.0](https://github.com/karhoo/web-lib-demand/compare/v9.1.0...v10.0.0) (2020-08-27)
 
 **Note:** Version bump only for package @karhoo/demand-api

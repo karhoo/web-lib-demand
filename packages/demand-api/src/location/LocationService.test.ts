@@ -62,7 +62,7 @@ describe('LocationService', () => {
       new LocationService(http).getReverseGeocode(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('locations/reverse-geocode', expectedBody)
+      expect(http.post).toHaveBeenCalledWith('locations/reverse-geocode', {}, {}, expectedBody)
     })
   })
 

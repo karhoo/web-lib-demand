@@ -36,7 +36,7 @@ export class LocationService implements Locations {
       longitude,
     }
 
-    return this.http.post<LocationAddressDetailsResponse>(`${this.url}/reverse-geocode`, body)
+    return this.http.post<LocationAddressDetailsResponse>(`${this.url}/reverse-geocode`, {}, {}, body)
   }
 
   getAddressAutocompleteData(data: LocationAddressAutocompleteParams) {
