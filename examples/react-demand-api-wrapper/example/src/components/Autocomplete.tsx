@@ -118,7 +118,7 @@ export const Autocomplete = ({
   return (
     <Container>
       {label && <label htmlFor={props.id}>{label}:</label>}
-      <input {...props} type="search" value={userInput} onChange={handleChange} />
+      <input {...props} type="search" value={userInput} onChange={handleChange} autoComplete="off" />
       <Results>
         {results.map((result: any) => (
           <li key={result.placeId}>
