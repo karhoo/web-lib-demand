@@ -56,7 +56,16 @@ export const getMockedErrorLocationAddressAutocompleteResponse = getErrorRespons
   LocationAddressAutocompleteResponse
 >('Location autocomplete')
 
+export const getMockedErrorReverseGeocodeResponse = getErrorResponse<LocationAddressDetailsResponse>(
+  'Location Reverse Geocode'
+)
+
 export const getLocationGetAddressDetailsMock = () =>
+  jest.fn((data: any) => {
+    return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
+  })
+
+export const getLocationGetReverseGeocodeMock = () =>
   jest.fn((data: any) => {
     return Promise.resolve(getMockedLocationAddressDetailsResponse(data))
   })

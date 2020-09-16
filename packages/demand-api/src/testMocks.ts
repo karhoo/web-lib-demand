@@ -4,6 +4,7 @@ import {
   getQuotesSearchByIdMock,
   getQuotesV2SearchByIdMock,
   getQuotesCheckAvailabilityMock,
+  getQuotesV2CheckCoverageMock,
 } from './quotes/testMocks'
 import { getPoiSearchMock } from './poi/testMocks'
 import {
@@ -41,6 +42,7 @@ export const getApiMock = () => {
   const mockQuoteV2Search = getQuotesV2SearchMock()
   const mockQuoteSearchById = getQuotesSearchByIdMock()
   const mockQuoteV2SearchById = getQuotesV2SearchByIdMock()
+  const mockQuotesV2Coverage = getQuotesV2CheckCoverageMock()
   const mockAddPaymentCard = getAddPaymentCardMock()
   const mockPaymentCreateClientToken = getPaymentCreateClientTokenMock()
   const mockPaymentGetClientNonce = getPaymentGetClientNonceMock()
@@ -63,6 +65,7 @@ export const getApiMock = () => {
     quotesV2Service: {
       quotesSearch: mockQuoteV2Search,
       quotesSearchById: mockQuoteV2SearchById,
+      checkCoverage: mockQuotesV2Coverage,
     },
     paymentService: {
       createClientToken: mockPaymentCreateClientToken,
@@ -83,6 +86,7 @@ export const getApiMock = () => {
         mockQuoteV2Search,
         mockQuoteSearchById,
         mockQuoteV2SearchById,
+        mockQuotesV2Coverage,
         mockAddPaymentCard,
         mockPaymentGetClientNonce,
         mockPaymentCreateClientToken,

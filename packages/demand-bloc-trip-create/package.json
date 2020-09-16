@@ -22,7 +22,7 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^10.0.1",
+    "@karhoo/demand-api": "^10.0.0",
     "camelcase-keys": "^6.2.2",
     "rxjs": "6.5.5"
   },

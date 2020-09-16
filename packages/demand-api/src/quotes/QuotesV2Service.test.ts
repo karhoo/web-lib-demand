@@ -64,6 +64,51 @@ describe('QuotesV2Service', () => {
     })
   })
 
+  describe('checkCoverage', () => {
+    const query = {
+      latitude: '56.06',
+      longitude: '-0.07',
+    }
+
+    it('should call get of http without local_time_of_pickup', () => {
+      new QuotesV2Service(http).checkCoverage(query)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith('quotes/coverage', {
+        latitude: query.latitude,
+        longitude: query.longitude,
+        local_time_of_pickup: undefined,
+      })
+    })
+
+    it('should call get of http with local_time_of_pickup in correct format', () => {
+      new QuotesV2Service(http).checkCoverage({ ...query, localTimeOfPickup: '2018-02-02T14:14:00+01:00' })
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith('quotes/coverage', {
+        latitude: query.latitude,
+        longitude: query.longitude,
+        local_time_of_pickup: '2018-02-02T14:14',
+      })
+    })
+
+    it('should not call get of http if local_time_of_pickup in wrong format', () => {
+      const result = new QuotesV2Service(http).checkCoverage({
+        ...query,
+        localTimeOfPickup: '2018/02/02T14:14:00+01:00',
+      })
+
+      expect(result).toEqual(
+        Promise.reject({
+          code: 'K0002',
+          message: 'Pickup local time wrong format',
+        })
+      )
+
+      expect(http.get).not.toHaveBeenCalled()
+    })
+  })
+
   describe('quotesSearchById', () => {
     const id = '123asd'
 

@@ -2,6 +2,8 @@ export const journeyLegFieldsRegexp = /^leg-(\d+)-(.+)/i
 export const expectedTimeFormatRegexp = /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
 export const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
 export const travellerLocaleRegexp = /^[a-z]{2}-[a-z]{2}$/i
+export const latitudeRegexp = /^(\+|-)?(?:90(?:(?:\.0{4,})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{4,})?))$/
+export const longitudeRegexp = /^(\+|-)?(?:180(?:(?:\.0{4,})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{4,})?))$/
 
 export const travellerLocaleParameter = 'traveller-locale'
 export const bookingTypeParameter = 'booking-type'
@@ -14,10 +16,14 @@ export const luggageParameter = 'luggage'
 export const pickupParameter = 'pickup'
 export const pickupKpoiParameter = 'pickup-kpoi'
 export const pickupPlaceIdParameter = 'pickup-place_id'
+export const pickupLatitudeParameter = 'pickup-lat'
+export const pickupLongitudeParameter = 'pickup-lng'
 export const pickupTimeParameter = 'pickup-time'
 export const dropoffParameter = 'dropoff'
 export const dropoffKpoiParameter = 'dropoff-kpoi'
 export const dropoffPlaceIdParameter = 'dropoff-place_id'
+export const dropoffLatitudeParameter = 'dropoff-lat'
+export const dropoffLongitudeParameter = 'dropoff-lng'
 export const trainTimeParameter = 'train-time'
 
 export const passengerInfoFields = [
@@ -33,10 +39,14 @@ export const journeyLegMainFields = [
   pickupParameter,
   pickupKpoiParameter,
   pickupPlaceIdParameter,
+  pickupLatitudeParameter,
+  pickupLongitudeParameter,
   pickupTimeParameter,
   dropoffParameter,
   dropoffKpoiParameter,
   dropoffPlaceIdParameter,
+  dropoffLatitudeParameter,
+  dropoffLongitudeParameter,
   bookingTypeParameter,
 ]
 

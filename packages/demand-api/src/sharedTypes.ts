@@ -1,6 +1,6 @@
 export type LatLng = {
-  latitude: number
-  longitude: number
+  latitude: number | string
+  longitude: number | string
 }
 
 export enum MeetingPointTypes {

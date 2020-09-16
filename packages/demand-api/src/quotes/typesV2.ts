@@ -1,4 +1,4 @@
-import { QuoteResponseStatuse, QuotePriceType, QuotePickUpType, QuoteSource } from '../sharedTypes'
+import { QuoteResponseStatuse, QuotePriceType, QuotePickUpType, QuoteSource, LatLng } from '../sharedTypes'
 import { HttpResponse } from '../http/types'
 
 export type QuotePrice = {
@@ -11,15 +11,17 @@ export type QuotePrice = {
   }
 }
 
-export type QuoteLocationParam = {
-  latitude: string
-  longitude: string
+export interface QuoteLocationParams extends LatLng {
   displayAddress?: string
 }
 
+export type QuoteCoverageParams = LatLng & {
+  localTimeOfPickup?: string
+}
+
 export type QuotesV2SearchParams = {
-  origin: QuoteLocationParam
-  destination: QuoteLocationParam
+  origin: QuoteLocationParams
+  destination?: QuoteLocationParams
   localTimeOfPickup?: string
 }
 
@@ -70,11 +72,16 @@ export type QuotesV2Response = {
   validity?: number
 }
 
+export type QuotesV2CoverageResponse = {
+  coverage: boolean
+}
+
 export interface QuotesV2ByIdResponse extends QuotesV2Response {
   quotes: QuoteV2Item[]
 }
 
 export interface QuotesV2 {
+  checkCoverage(params: QuoteCoverageParams): Promise<HttpResponse<QuotesV2CoverageResponse>>
   quotesSearch(params: QuotesV2SearchParams): Promise<HttpResponse<QuotesV2Response>>
   quotesSearchById(id: string, locale?: string): Promise<HttpResponse<QuotesV2ByIdResponse>>
 }

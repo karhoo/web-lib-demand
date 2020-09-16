@@ -100,6 +100,8 @@ describe('parse', () => {
       legs: [
         {
           dropoff: fields['leg-1-dropoff'],
+          pickupPosition: undefined,
+          dropoffPosition: undefined,
         },
       ],
       customFields: {

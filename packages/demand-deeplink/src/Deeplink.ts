@@ -7,16 +7,28 @@ import {
   ResolveAvailabilityParams,
   ResolveAvailabilityResult,
   Api,
+  Position,
+  ResolvePlace,
 } from './types'
 import { parse } from './parse'
 import { validate } from './validate'
 import { codes, errorMessageByCode } from './errors'
 
-const pickupPlaceFields = ['pickup' as const, 'pickupKpoi' as const, 'pickupPlaceId' as const]
-const dropoffPlaceFields = ['dropoff' as const, 'dropoffKpoi' as const, 'dropoffPlaceId' as const]
+const pickupPlaceFields = [
+  'pickup' as const,
+  'pickupKpoi' as const,
+  'pickupPlaceId' as const,
+  'pickupPosition' as const,
+]
+const dropoffPlaceFields = [
+  'dropoff' as const,
+  'dropoffKpoi' as const,
+  'dropoffPlaceId' as const,
+  'dropoffPosition' as const,
+]
 
 type PlaceField = typeof pickupPlaceFields[0] | typeof dropoffPlaceFields[0]
-type SearchPlaceData = { key: PlaceField; value: string }
+type SearchPlaceData = { key: PlaceField; value: string | Position }
 
 type PlacePromisesList = {
   key: string
@@ -25,17 +37,17 @@ type PlacePromisesList = {
 }[]
 
 type AvailabilityPromisesList = {
-  origin: {
-    latitude: string
-    longitude: string
-  }
-  destination: {
-    latitude: string
-    longitude: string
-  }
-  dateRequired?: string
+  latitude: string
+  longitude: string
+  localTimeOfPickup?: string
   promise: Promise<ResolveAvailabilityResult>
 }[]
+
+const configurePlaceId = (id: string) => {
+  const placeIdPrefix = 'k_'
+
+  return id.indexOf(placeIdPrefix) === 0 ? id : `${placeIdPrefix}${id}`
+}
 
 function getActivePlace(leg: JourneyLeg, keys: PlaceField[]) {
   const key = keys.filter(k => leg[k])[0]
@@ -101,7 +113,9 @@ export class Deeplink {
     const availabilityPromises: AvailabilityPromisesList = []
     let activeSubscriber: typeof subscriber | null = subscriber
 
-    const handle = (info: ResolveResponse) => activeSubscriber && activeSubscriber(info)
+    const handle = (info: ResolveResponse) => {
+      return activeSubscriber && activeSubscriber(info)
+    }
     const unsubscribe = () => {
       activeSubscriber = null
     }
@@ -124,7 +138,7 @@ export class Deeplink {
           handle({
             done: false,
             leg: index,
-            place: { ...result, isPickup: isPickupPlace(key), searchValue: value },
+            place: { ...result, isPickup: isPickupPlace(key), searchValue: value as string },
           })
 
           return result
@@ -145,23 +159,27 @@ export class Deeplink {
           return
         }
 
-        const availabilityParams: ResolveAvailabilityParams = {
-          origin: {
-            latitude: (pickupData?.ok ? pickupData.data.placePosition.latitude : '').toString(),
-            longitude: (pickupData?.ok ? pickupData.data.placePosition.longitude : '').toString(),
-          },
-          destination: {
-            latitude: (pickupData?.ok && dropoffData?.ok
-              ? dropoffData.data.placePosition.latitude
-              : ''
-            ).toString(),
-            longitude: (pickupData?.ok && dropoffData?.ok
-              ? dropoffData.data.placePosition.longitude
-              : ''
-            ).toString(),
-          },
-          dateRequired: leg.pickupTime,
+        const mapDirectionParams = (placeDetails?: ResolvePlace) => ({
+          latitude: placeDetails ? placeDetails.data.placePosition.latitude.toString() : '0',
+          longitude: placeDetails ? placeDetails.data.placePosition.longitude.toString() : '0',
+          ...(leg.pickupTime && { localTimeOfPickup: leg.pickupTime }),
+        })
+
+        const getAvailabilityParams = (
+          firstPlace?: ResolvePlace,
+          secondPlace?: ResolvePlace
+        ): ResolveAvailabilityParams => {
+          if (firstPlace && secondPlace) {
+            return mapDirectionParams(firstPlace)
+          }
+
+          return firstPlace ? mapDirectionParams(firstPlace) : mapDirectionParams(secondPlace)
         }
+
+        const availabilityParams = getAvailabilityParams(
+          pickupData as ResolvePlace,
+          dropoffData as ResolvePlace
+        )
 
         const availability = await resolvePromise(availabilityParams, availabilityPromises, () =>
           this.checkAvailability(availabilityParams)
@@ -187,11 +205,19 @@ export class Deeplink {
       return this.resolveByPlaceId(data)
     }
 
-    return data.key.indexOf('Kpoi') !== -1 ? this.resolveByPoi(data) : this.resolveByAddressAutocoplete(data)
+    if (data.key.indexOf('Kpoi') !== -1) {
+      return this.resolveByPoi(data)
+    }
+
+    if (data.key.indexOf('Position') !== -1) {
+      return this.resolveByGeocode(data)
+    }
+
+    return this.resolveByAddressAutocoplete(data)
   }
 
   private async resolveByPlaceId(item: SearchPlaceData): Promise<ResolvePlaceResult> {
-    const response = await this.api.locationService.getAddressDetails({ placeId: item.value })
+    const response = await this.api.locationService.getAddressDetails({ placeId: item.value as string })
 
     if (!response.ok) {
       return { ok: false, error: response.error }
@@ -207,6 +233,7 @@ export class Deeplink {
           longitude: body.position?.longitude ?? 0,
         },
         displayAddress: body.address?.display_address ?? '',
+        placeId: body.place_id,
         placeInfo: body,
       },
     }
@@ -216,7 +243,7 @@ export class Deeplink {
     const response = await this.api.poiService.search({
       paginationRowCount: 1,
       paginationOffset: 0,
-      searchKey: item.value,
+      searchKey: item.value as string,
     })
 
     if (!response.ok) {
@@ -230,6 +257,7 @@ export class Deeplink {
       : {
           ok: true,
           data: {
+            placeId: configurePlaceId(poi.id),
             placePosition: {
               latitude: poi.position.latitude,
               longitude: poi.position.longitude,
@@ -242,7 +270,7 @@ export class Deeplink {
 
   private async resolveByAddressAutocoplete(item: SearchPlaceData): Promise<ResolvePlaceResult> {
     const response = await this.api.locationService.getAddressAutocompleteData({
-      query: item.value,
+      query: item.value as string,
     })
 
     if (!response.ok) {
@@ -258,8 +286,35 @@ export class Deeplink {
     return { ok: false, error: { message: errorMessageByCode[codes.DP007] } }
   }
 
+  private async resolveByGeocode(item: SearchPlaceData): Promise<ResolvePlaceResult> {
+    const params = item.value as Position
+    const payload = {
+      latitude: params.lat as number,
+      longitude: params.lng as number,
+    }
+    const response = await this.api.locationService.getReverseGeocode(payload)
+    if (!response.ok) {
+      return { ok: false, error: response.error }
+    }
+
+    const { body } = response
+
+    return {
+      ok: true,
+      data: {
+        placeId: body.place_id,
+        placePosition: {
+          latitude: body.position?.latitude ?? 0,
+          longitude: body.position?.longitude ?? 0,
+        },
+        displayAddress: body.address?.display_address ?? '',
+        placeInfo: body,
+      },
+    }
+  }
+
   private async checkAvailability(data: ResolveAvailabilityParams): Promise<ResolveAvailabilityResult> {
-    const response = await this.api.quotesV2Service.quotesSearch(data)
+    const response = await this.api.quotesV2Service.checkCoverage(data)
 
     if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 

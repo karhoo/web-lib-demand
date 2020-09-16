@@ -12,7 +12,7 @@ import {
 } from './constants'
 
 function getAvailableParams(
-  data: Dictionary<string> | PassengerInfo,
+  data: Dictionary<string> | PassengerInfo | Dictionary<number | undefined>,
   prefix = '',
   transform = (a: string) => a
 ): KeyValueList {
@@ -28,6 +28,8 @@ function getAvailableParams(
 function getJorneyLegsParams(data: Array<JourneyLeg>) {
   const result = data.reduce((value, leg: JourneyLeg, index) => {
     const legPrefix = `${journeyLegPrefix}${index + 1}-`
+    let formattedPosition: KeyValueList = []
+    let formattedMeta: KeyValueList = []
     let formattedLeg: KeyValueList = []
     ;(Object.keys(leg) as Array<keyof JourneyLeg>).forEach(key => {
       const value = leg[key]
@@ -46,8 +48,22 @@ function getJorneyLegsParams(data: Array<JourneyLeg>) {
         return
       }
 
-      const prefix = legPrefix + (journeyLegMetaPrefixes[key] || '')
-      const formattedMeta = getAvailableParams(value, prefix)
+      if (isString(key) && key.includes('Position')) {
+        const positionPrefix = key.substring(0, key.length - 8)
+        const prefix = `${legPrefix}${positionPrefix}-`
+        const transformPositionKeys = (key: string) => {
+          return key.includes('lat') ? 'lat' : 'lng'
+        }
+        formattedPosition = getAvailableParams(value, prefix, transformPositionKeys)
+
+        formattedLeg.push(...formattedPosition)
+      }
+
+      if (!isString(value) && !key.includes('Position')) {
+        const prefix = legPrefix + (journeyLegMetaPrefixes[key] || '')
+        formattedMeta = getAvailableParams(value, prefix)
+      }
+
       formattedLeg = [...formattedLeg, ...formattedMeta]
     })
 

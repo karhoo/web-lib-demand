@@ -8,10 +8,7 @@ export type LocationAddressDetailsParameters = {
 
 export type LocationAddressAutocompleteParams = {
   query: string
-  position?: {
-    latitude: number
-    longitude: number
-  }
+  position?: LatLng
   radius?: number
   sessionToken?: string
 }
@@ -66,4 +63,5 @@ export interface Locations {
   getAddressAutocompleteData(
     params: LocationAddressAutocompleteParams
   ): Promise<HttpResponse<LocationAddressAutocompleteResponse>>
+  getReverseGeocode(params: LatLng): Promise<HttpResponse<LocationAddressDetailsResponse>>
 }

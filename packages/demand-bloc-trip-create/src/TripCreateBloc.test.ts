@@ -10,6 +10,7 @@ describe('TripCreateBloC', () => {
   const locationServiceMock = {
     getAddressDetails: jest.fn(),
     getAddressAutocompleteData: jest.fn(),
+    getReverseGeocode: jest.fn(),
   }
 
   let tripCreate: TripCreateBloc
