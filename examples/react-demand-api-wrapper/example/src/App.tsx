@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
 import { withApi } from 'react-demand-api-wrapper'
+import { withData } from './state'
 import routes from './routes'
 import logo from './logo.svg'
 
@@ -35,7 +36,7 @@ const App = () => {
     <Router>
       <Container>
         <Header>
-          <img src={logo} alt='Karhoo' />
+          <img src={logo} alt="Karhoo" />
         </Header>
         <Main>
           <Switch>
@@ -49,6 +50,5 @@ const App = () => {
   )
 }
 
-App.whyDidYouRender = true
-
-export default withApi(App)
+const AppWithData = withData(App)
+export default withApi(AppWithData)

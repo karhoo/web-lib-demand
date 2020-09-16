@@ -36,11 +36,10 @@ const Container = styled.div`
 `
 
 export const Input = ({ label, onInputChange, ...props }: Props) => {
-  const { state } = useApi()
-
+  const { api } = useApi()
   const [userInput, setUserInput] = React.useState('')
-  const input = state.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
-  
+  const input = api.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+
   React.useEffect(() => {
     input.query.subscribe(setUserInput)
   }, [input])
@@ -49,7 +48,7 @@ export const Input = ({ label, onInputChange, ...props }: Props) => {
     input.onChange(e.target.value)
     onInputChange(e.target.name, e.target.value)
   }
-  
+
   return (
     <Container>
       {label && <label htmlFor={props.id}>{label}:</label>}

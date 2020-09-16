@@ -1,8 +1,13 @@
-import { Plan } from "./pages/Plan";
+import { Plan } from './pages/Plan'
+import { Quotes } from './pages/Quotes'
 
 export default [
   {
-    path: "/",
+    path: '/quotes',
+    component: Quotes,
+  },
+  {
+    path: '/',
     component: Plan,
   },
-];
+]

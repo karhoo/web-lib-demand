@@ -17,7 +17,6 @@
     "@types/node": "link:../node_modules/@types/node",
     "@types/react": "link:../node_modules/@types/react",
     "@types/react-dom": "link:../node_modules/@types/react-dom",
-    "@welldone-software/why-did-you-render": "^5.0.0-alpha.2",
     "react": "link:../node_modules/react",
     "react-demand-api-wrapper": "link:..",
     "react-dom": "link:../node_modules/react-dom",

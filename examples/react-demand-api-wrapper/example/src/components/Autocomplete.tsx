@@ -68,13 +68,13 @@ const Results = styled.div`
 `
 
 export const Autocomplete = ({ label, options, selectedOption, onAutocompleteChange, ...props }: Props) => {
-  const { state } = useApi()
+  const { api } = useApi()
 
   const [userInput, setUserInput] = React.useState('')
   const [selected, setSelected] = React.useState<AutocompleteDetails>({} as AutocompleteDetails)
   const [results, setResults] = React.useState<AutocompleteItem[]>([])
 
-  const input = state.trip.createStream(
+  const input = api.trip.createStream(
     props.name,
     TripCreateFieldTypes.AUTOCOMPLETE
   ) as TripCreateAutocompleteField

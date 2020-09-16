@@ -37,10 +37,10 @@ const Container = styled.div`
 `
 
 export const Select = ({ label, onSelectChange, ...props }: Props) => {
-  const { state } = useApi()
+  const { api } = useApi()
 
   const [userInput, setUserInput] = React.useState('')
-  const input = state.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+  const input = api.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
 
   React.useEffect(() => {
     input.query.subscribe(setUserInput)

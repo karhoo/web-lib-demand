@@ -12,23 +12,31 @@ export type ActionMap<M extends { [index: string]: any }> = {
 import {
   State as ApiState,
   Actions as ApiActions,
-  DispatchActions as ApiDispatchActions
+  DispatchActions as ApiDispatchActions,
 } from '../reducers/api/types'
 
 import {
   State as TripState,
   Actions as TripActions,
-  DispatchActions as TripDispatchActions
+  DispatchActions as TripDispatchActions,
 } from '../reducers/trip/types'
+
+import {
+  State as QuotesState,
+  Actions as QuotesActions,
+  DispatchActions as QuotesDispatchActions,
+} from '../reducers/quotes/types'
 
 export interface APIState {
   api: ApiState
   trip: TripState
+  quotes: QuotesState
 }
 
 export interface APIDispatchActions {
   api: ApiDispatchActions
   trip: TripDispatchActions
+  quotes: QuotesDispatchActions
 }
 
 export interface APIContext {
@@ -36,7 +44,7 @@ export interface APIContext {
   actions: APIDispatchActions
 }
 
-export type APIActions = ApiActions | TripActions
+export type APIActions = ApiActions | TripActions | QuotesActions
 
 export interface StateProps {
   authorization: string

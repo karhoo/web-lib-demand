@@ -6,12 +6,12 @@ import actions from './actions'
 const initialState = {} as APIState
 
 const APIContext = React.createContext<{
-  state: APIState
+  api: APIState
   actions: APIDispatchActions
-}>({ state: initialState, actions: {} as APIDispatchActions })
+}>({ api: initialState, actions: {} as APIDispatchActions })
 
 export const withApi = (WrappedComponent: React.ComponentType<StateProps>) => {
-  const TableContextProvider = ({ authorization, referer, endpoint }: StateProps) => {
+  const DemandApiContextProvider = ({ authorization, referer, endpoint }: StateProps) => {
     const [state, dispatch] = React.useReducer(mainReducer, initialState)
     const [loading, setLoading] = React.useState(true)
     const dispatchedActions = actions(dispatch)
@@ -24,6 +24,7 @@ export const withApi = (WrappedComponent: React.ComponentType<StateProps>) => {
     React.useEffect(() => {
       if (!state.api || loading) return
       dispatchedActions.trip.setInstance(state.api.locationService)
+      dispatchedActions.quotes.setInstance(state.api.quotesV2Service)
     }, [loading])
     
     // create an isLoading=true in state and set to false
@@ -32,12 +33,12 @@ export const withApi = (WrappedComponent: React.ComponentType<StateProps>) => {
     }
     
     return (
-      <APIContext.Provider value={{ state, actions: dispatchedActions }}>
+      <APIContext.Provider value={{ api: state, actions: dispatchedActions }}>
         <WrappedComponent authorization={authorization} referer={referer} endpoint={endpoint} />
       </APIContext.Provider>
     )
   }
-  return TableContextProvider
+  return DemandApiContextProvider
 }
 
 export const useApi = () => React.useContext(APIContext)
