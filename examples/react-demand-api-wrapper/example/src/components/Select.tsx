@@ -7,6 +7,7 @@ interface Props extends React.HTMLProps<HTMLSelectElement> {
   label?: string
   name: string
   onSelectChange: (name: string, value: string) => void
+  initialValue?: string
 }
 
 const Container = styled.div`
@@ -36,20 +37,25 @@ const Container = styled.div`
   }
 `
 
-export const Select = ({ label, onSelectChange, ...props }: Props) => {
+export const Select = ({ label, onSelectChange, initialValue = '', ...props }: Props) => {
   const { api } = useApi()
 
-  const [userInput, setUserInput] = React.useState('')
-  const input = api.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+  const [userInput, setUserInput] = React.useState(initialValue)
+  const input = React.useRef(
+    api.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+  )
 
   React.useEffect(() => {
-    input.query.subscribe(setUserInput)
+    input.current.query.subscribe(setUserInput)
   }, [input])
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    input.onChange(e.target.value)
-    onSelectChange(e.target.name, e.target.value)
-  }
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      input.current.onChange(e.target.value)
+      onSelectChange(e.target.name, e.target.value)
+    },
+    [input, onSelectChange]
+  )
 
   return (
     <Container>

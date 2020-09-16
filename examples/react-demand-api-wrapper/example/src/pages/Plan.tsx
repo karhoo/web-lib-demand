@@ -21,13 +21,15 @@ export interface FormData {
 export const Plan = () => {
   const history = useHistory()
   const { actions } = useData()
+  
+  const initDate = new Date().toISOString().split('T')
   const [form, setForm] = React.useState<FormData>({
-    date: new Date().toISOString().split('T')[0],
-    time: new Date().toISOString().split('T')[1],
+    date: initDate[0],
+    time: initDate[1].substring(0, 5),
   })
 
   const handleChange = React.useCallback(
-    (name: string, value: string) =>
+    (name: string, value: AutocompleteDetails | string) =>
       setForm((form) => ({
         ...form,
         [name]: value,
@@ -35,18 +37,11 @@ export const Plan = () => {
     [setForm]
   )
 
-  const handleAutocompleteChange = React.useCallback(
-    (name: string, item: AutocompleteDetails) =>
-      setForm((form) => ({
-        ...form,
-        [name]: item,
-      })),
-    [setForm]
-  )
-
   const handleSubmit = React.useCallback(
     (e: React.ChangeEvent<HTMLFormElement>) => {
       e.preventDefault()
+      console.log({ form })
+
       if (e.target.checkValidity()) {
         actions.trip.setInstance(form as State)
         history.push('/quotes')
@@ -57,17 +52,25 @@ export const Plan = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Autocomplete label="From" name="origin" onAutocompleteChange={handleAutocompleteChange} required />
-      <Autocomplete label="To" name="destination" onAutocompleteChange={handleAutocompleteChange} required />
+      <Autocomplete label="From" name="origin" onAutocompleteChange={handleChange} required />
+      <Autocomplete label="To" name="destination" onAutocompleteChange={handleChange} required />
       <Input
         label="Date"
         type="date"
         name="date"
         min={new Date().toISOString().split('T')[0]}
         onInputChange={handleChange}
+        initialValue={form.date}
         required
       />
-      <Input label="Time" type="time" name="time" onInputChange={handleChange} required />
+      <Input
+        label="Time"
+        type="time"
+        name="time"
+        onInputChange={handleChange}
+        initialValue={form.time}
+        required
+      />
       <Select label="Passengers" name="passengers" onSelectChange={handleChange} required>
         {Array.from({ length: 6 }, (_, i) => i + 1).map((key) => (
           <option key={key} value={key}>

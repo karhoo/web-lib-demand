@@ -14,6 +14,7 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
   selectedOption?: {}
   name: string
   onAutocompleteChange: (name: string, item: AutocompleteDetails) => void
+  initialValue?: string
 }
 
 const Container = styled.div`
@@ -67,32 +68,44 @@ const Results = styled.div`
   }
 `
 
-export const Autocomplete = ({ label, options, selectedOption, onAutocompleteChange, ...props }: Props) => {
+export const Autocomplete = ({
+  label,
+  initialValue = '',
+  options,
+  selectedOption,
+  onAutocompleteChange,
+  ...props
+}: Props) => {
   const { api } = useApi()
 
-  const [userInput, setUserInput] = React.useState('')
+  const [userInput, setUserInput] = React.useState(initialValue)
   const [selected, setSelected] = React.useState<AutocompleteDetails>({} as AutocompleteDetails)
   const [results, setResults] = React.useState<AutocompleteItem[]>([])
 
-  const input = api.trip.createStream(
-    props.name,
-    TripCreateFieldTypes.AUTOCOMPLETE
-  ) as TripCreateAutocompleteField
+  const input = React.useRef(
+    api.trip.createStream(props.name, TripCreateFieldTypes.AUTOCOMPLETE) as TripCreateAutocompleteField
+  )
 
   React.useEffect(() => {
-    input.query.subscribe(setUserInput)
-    input.results.subscribe((results: AutocompleteItem[]) => setResults(results))
-    input.selectedAddress.subscribe((selected: AutocompleteDetails) => setSelected(selected))
+    input.current.query.subscribe(setUserInput)
+    input.current.results.subscribe((results: AutocompleteItem[]) => setResults(results))
+    input.current.selectedAddress.subscribe((selected: AutocompleteDetails) => setSelected(selected))
   }, [input])
 
-  const handleChange = (e: any) => {
-    input.onChange(e.target.value)
-  }
+  const handleChange = React.useCallback(
+    (e: any) => {
+      input.current.onChange(e.target.value)
+    },
+    [input]
+  )
 
-  const handleClick = (e: any, item: any) => {
-    e.preventDefault()
-    input.onSelect(item.placeId)
-  }
+  const handleClick = React.useCallback(
+    (e: any, item: any) => {
+      e.preventDefault()
+      input.current.onSelect(item.placeId)
+    },
+    [input]
+  )
 
   React.useEffect(() => {
     if (selected.address) {

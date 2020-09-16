@@ -7,6 +7,7 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
   label?: string
   name: string
   onInputChange: (name: string, value: string) => void
+  initialValue?: string
 }
 
 const Container = styled.div`
@@ -35,19 +36,25 @@ const Container = styled.div`
   }
 `
 
-export const Input = ({ label, onInputChange, ...props }: Props) => {
+export const Input = ({ label, onInputChange, initialValue = '', ...props }: Props) => {
   const { api } = useApi()
   const [userInput, setUserInput] = React.useState('')
-  const input = api.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+  const input = React.useRef(
+    api.trip.createStream(props.name, TripCreateFieldTypes.GENERIC) as TripCreateField
+  )
 
   React.useEffect(() => {
-    input.query.subscribe(setUserInput)
-  }, [input])
+    input.current.query.subscribe((value: string) => setUserInput(value || initialValue))
+  }, [input, initialValue])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    input.onChange(e.target.value)
-    onInputChange(e.target.name, e.target.value)
-  }
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('change')
+      input.current.onChange(e.target.value)
+      onInputChange(e.target.name, e.target.value)
+    },
+    [input, onInputChange]
+  )
 
   return (
     <Container>
