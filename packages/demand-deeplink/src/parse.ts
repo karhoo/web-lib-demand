@@ -20,12 +20,16 @@ import {
   pickupParameter,
   pickupKpoiParameter,
   pickupPlaceIdParameter,
+  pickupLatitudeParameter,
+  pickupLongitudeParameter,
   pickupTimeParameter,
   firstNameParameter,
   lastNameParameter,
   dropoffParameter,
   dropoffKpoiParameter,
   dropoffPlaceIdParameter,
+  dropoffLatitudeParameter,
+  dropoffLongitudeParameter,
   bookingTypeParameter,
   BookingTypes,
 } from './constants'
@@ -110,14 +114,32 @@ function getJourneyLeg(data: Dictionary<string>): JourneyLeg {
     key => isLegMeta(key) && !isLegPickupMeta(key) && !isLegDropoffMeta(key) && !isLegPassengerInfoMeta(key)
   )
 
+  const pickupPosition =
+    data[pickupLatitudeParameter] || data[pickupLongitudeParameter]
+      ? {
+          lat: Number(data[pickupLatitudeParameter]) || undefined,
+          lng: Number(data[pickupLongitudeParameter]) || undefined,
+        }
+      : undefined
+
+  const dropoffPosition =
+    data[dropoffLatitudeParameter] || data[dropoffLongitudeParameter]
+      ? {
+          lat: Number(data[dropoffLatitudeParameter]) || undefined,
+          lng: Number(data[dropoffLongitudeParameter]) || undefined,
+        }
+      : undefined
+
   return {
     pickup: data[pickupParameter],
     pickupKpoi: data[pickupKpoiParameter],
     pickupPlaceId: data[pickupPlaceIdParameter],
+    pickupPosition,
     pickupTime: data[pickupTimeParameter],
     dropoff: data[dropoffParameter],
     dropoffKpoi: data[dropoffKpoiParameter],
     dropoffPlaceId: data[dropoffPlaceIdParameter],
+    dropoffPosition,
     bookingType,
     ...(hasData(pickupMeta) ? { pickupMeta } : {}),
     ...(hasData(dropoffMeta) ? { dropoffMeta } : {}),

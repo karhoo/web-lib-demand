@@ -3,7 +3,7 @@ import { errorCodes } from '../responseCodes'
 import { QuotePickUpTypes, QuoteSources, QuoteResponseStatuses, QuotePriceTypes } from '../sharedTypes'
 
 import { QuotesResponse, QuotesByIdResponse, QuotesAvailabilityResponse } from './types'
-import { QuotesV2Response, QuotesV2ByIdResponse } from './typesV2'
+import { QuotesV2Response, QuotesV2ByIdResponse, QuotesV2CoverageResponse } from './typesV2'
 
 const quote = {
   availability_id: 'ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
@@ -159,6 +159,14 @@ export const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvaila
   },
 })
 
+export const getMockedQuotesV2CheckCoverageResponse = (): HttpResponse<QuotesV2CoverageResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    coverage: true,
+  },
+})
+
 export const getMockedErrorQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
   ok: false,
   status: 500,
@@ -170,6 +178,9 @@ export const getMockedErrorQuotesAvailabilityResponse = (): HttpResponse<QuotesA
 
 export const getQuotesCheckAvailabilityMock = () =>
   jest.fn(() => Promise.resolve(getMockedQuotesAvailabilityResponse()))
+
+export const getQuotesV2CheckCoverageMock = () =>
+  jest.fn(() => Promise.resolve(getMockedQuotesV2CheckCoverageResponse()))
 
 export const getQuotesSearchMock = () =>
   jest.fn(() => {

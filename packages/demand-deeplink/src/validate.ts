@@ -7,6 +7,8 @@ import {
   luggageParameter,
   trainTimeParameter,
   BookingTypes,
+  latitudeRegexp,
+  longitudeRegexp,
 } from './constants'
 import { isNotEmptyString, isObject, isPositiveInteger, excludeUndefined } from './utils'
 import { codes, getError } from './errors'
@@ -18,6 +20,7 @@ import {
   ValidationError,
   Dictionary,
   BookingType,
+  Position,
 } from './types'
 
 const devIsObjectCheck = (data: object, fieldName: string) => {
@@ -109,10 +112,23 @@ function validatePickupTime(time: string | undefined, bookingType: BookingType) 
   return errors
 }
 
+function validatePosition(position: Position, path: string) {
+  const { lat, lng } = position
+
+  return (lat && !latitudeRegexp.test(lat.toString())) ||
+    (lng && !longitudeRegexp.test(lng.toString())) ||
+    !lat ||
+    !lng
+    ? [getError(codes.DP012, path)]
+    : []
+}
+
 export function validateLeg(leg: JourneyLeg, defaultBookingType: BookingType, path: string) {
   const errors = []
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
+  const pickupPosition = leg.pickupPosition
+  const dropoffPosition = leg.dropoffPosition
 
   const collectErrors = (currentErrors: ValidationError[]) =>
     errors.push(
@@ -122,9 +138,9 @@ export function validateLeg(leg: JourneyLeg, defaultBookingType: BookingType, pa
       })
     )
 
-  if (!pickUpFields.length && !dropoffFields.length) {
+  if (!pickUpFields.length && !dropoffFields.length && !pickupPosition && !dropoffPosition) {
     errors.push(getError(codes.DP001, path))
-  } else if (pickUpFields[0] === dropoffFields[0]) {
+  } else if (pickUpFields.length && dropoffFields.length && pickUpFields[0] === dropoffFields[0]) {
     errors.push(getError(codes.DP006, path))
   }
 
@@ -137,11 +153,27 @@ export function validateLeg(leg: JourneyLeg, defaultBookingType: BookingType, pa
   if (pickUpFields.length) {
     collectErrors(validateRoute(pickUpFields, 'pickup'))
     collectErrors(validatePickupTime(leg.pickupTime, activeBookingType))
-  } else if (!isUndefined(leg.pickupTime)) {
+    pickupPosition && collectErrors([getError(codes.DP002, 'pickup')])
+  }
+
+  if (!pickUpFields.length && !pickupPosition && !isUndefined(leg.pickupTime)) {
     collectErrors([getError(codes.DP009, 'pickup')])
   }
 
-  dropoffFields.length && collectErrors(validateRoute(dropoffFields, 'dropoff'))
+  if (!pickUpFields.length && pickupPosition) {
+    collectErrors(validatePosition(pickupPosition, 'pickupPosition'))
+    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType))
+  }
+
+  if (dropoffFields.length) {
+    collectErrors(validateRoute(dropoffFields, 'dropoff'))
+    dropoffPosition && collectErrors([getError(codes.DP002, 'dropoff')])
+  }
+
+  if (!dropoffFields.length && dropoffPosition) {
+    collectErrors(validatePosition(dropoffPosition, 'dropoffPosition'))
+  }
+
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
 
   !isUndefined(leg.meta) &&

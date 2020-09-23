@@ -9,20 +9,22 @@ import {
 } from '@karhoo/demand-api'
 import {
   getApiMock,
-  getMockedQuotesV2SearchResponse,
+  getMockedQuotesV2CheckCoverageResponse,
   getMockedPoiSearchResponse,
   getMockedLocationAddressDetailsResponse,
   getMockedErrorLocationAddressDetailsResponse,
   getMockedErrorLocationAddressAutocompleteResponse,
   getMockedErrorPoiSearchResponse,
+  getMockedErrorReverseGeocodeResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
-import { ResolveResponse } from './types'
+import { ResolveResponse, Position } from './types'
 import { codes, getError } from './errors'
 import {
   firstJourneyLegWithPlaceOnly,
   firstJourneyLegWithKpoiOnly,
   firstJourneyLegWithPlaceIdOnly,
+  firstJourneyLegWithCoordinatesOnly,
   secondJourneyLeg,
   passengerInfo,
 } from './testData'
@@ -77,6 +79,7 @@ describe('Deeplink', () => {
         ? {
             ok: true,
             data: {
+              placeId: response.body.pois?.[0].id,
               placePosition: {
                 latitude: response.body.pois?.[0].position.latitude,
                 longitude: response.body.pois?.[0].position.longitude,
@@ -154,7 +157,7 @@ describe('Deeplink', () => {
     const getAddressDetailsSubscriberResult = (
       response: HttpResponse<LocationAddressDetailsResponse>,
       isPickup: boolean,
-      searchValue: string
+      searchValue: string | Position
     ) => {
       const result = response.ok
         ? {
@@ -165,6 +168,7 @@ describe('Deeplink', () => {
                 longitude: response.body.position?.longitude,
               },
               displayAddress: response.body.address?.display_address,
+              placeId: response.body.place_id,
               placeInfo: response.body,
             },
           }
@@ -302,14 +306,18 @@ describe('Deeplink', () => {
           ...secondJourneyLeg,
           'leg-2-pickup-kpoi': undefined,
           'leg-2-pickup-place_id': undefined,
+          'leg-2-pickup-lat': undefined,
+          'leg-2-pickup-lng': undefined,
           'leg-2-dropoff-kpoi': undefined,
           'leg-2-dropoff-place_id': undefined,
+          'leg-2-dropoff-lat': undefined,
+          'leg-2-dropoff-lng': undefined,
         },
       ]
 
       resolve(
         () => {
-          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(2)
+          expect(api.quotesV2Service.checkCoverage).toBeCalledTimes(2)
         },
         done,
         legs
@@ -323,7 +331,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(0)
+          expect(api.quotesV2Service.checkCoverage).toBeCalledTimes(0)
         },
         done,
         legs
@@ -335,7 +343,7 @@ describe('Deeplink', () => {
 
       resolve(
         () => {
-          expect(api.quotesV2Service.quotesSearch).toBeCalledTimes(1)
+          expect(api.quotesV2Service.checkCoverage).toBeCalledTimes(1)
         },
         done,
         legs
@@ -430,10 +438,14 @@ describe('Deeplink', () => {
           ...secondJourneyLeg,
           'leg-2-pickup': undefined,
           'leg-2-pickup-place_id': undefined,
+          'leg-2-pickup-lat': undefined,
+          'leg-2-pickup-lng': undefined,
           'leg-2-dropoff': undefined,
           'leg-2-dropoff-place_id': undefined,
           'leg-2-pickup-kpoi': firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
           'leg-2-dropoff-kpoi': 'Some random place',
+          'leg-2-dropoff-lat': undefined,
+          'leg-2-dropoff-lng': undefined,
         },
       ]
 
@@ -453,8 +465,12 @@ describe('Deeplink', () => {
           ...secondJourneyLeg,
           'leg-2-pickup': undefined,
           'leg-2-pickup-place_id': undefined,
+          'leg-2-pickup-lat': undefined,
+          'leg-2-pickup-lng': undefined,
           'leg-2-dropoff': undefined,
           'leg-2-dropoff-place_id': undefined,
+          'leg-2-dropoff-lat': undefined,
+          'leg-2-dropoff-lng': undefined,
           'leg-2-pickup-kpoi': firstJourneyLegWithKpoiOnly['leg-1-dropoff-kpoi'],
           'leg-2-dropoff-kpoi': firstJourneyLegWithKpoiOnly['leg-1-pickup-kpoi'],
         },
@@ -463,6 +479,86 @@ describe('Deeplink', () => {
       resolve(
         () => {
           expect(api.poiService.search).toBeCalledTimes(2)
+        },
+        done,
+        legs
+      )
+    })
+
+    it('should call getReverseGeocode of LocationService twice when coordinates is provided', done => {
+      const legs = [firstJourneyLegWithCoordinatesOnly]
+
+      const pickupPosition = {
+        latitude: Number(firstJourneyLegWithCoordinatesOnly['leg-1-pickup-lat']),
+        longitude: Number(firstJourneyLegWithCoordinatesOnly['leg-1-pickup-lng']),
+      }
+
+      const dropoffPosition = {
+        latitude: Number(firstJourneyLegWithCoordinatesOnly['leg-1-dropoff-lat']),
+        longitude: Number(firstJourneyLegWithCoordinatesOnly['leg-1-dropoff-lng']),
+      }
+
+      resolve(
+        () => {
+          expect(api.locationService.getReverseGeocode).toBeCalledTimes(2)
+          expect(api.locationService.getReverseGeocode).toBeCalledWith(pickupPosition)
+          expect(api.locationService.getReverseGeocode).toBeCalledWith(dropoffPosition)
+        },
+        done,
+        legs
+      )
+    })
+
+    it('should call getReverseGeocode of LocationService once when coordinates is provided only for one location', done => {
+      const leg = {
+        ...firstJourneyLegWithCoordinatesOnly,
+        'leg-1-dropoff-lat': undefined,
+        'leg-1-dropoff-lng': undefined,
+        'leg-1-dropoff-place_id': 'id123425',
+      }
+      const legs = [leg]
+
+      const pickupPosition = {
+        latitude: Number(leg['leg-1-pickup-lat']),
+        longitude: Number(leg['leg-1-pickup-lng']),
+      }
+
+      resolve(
+        () => {
+          expect(api.locationService.getReverseGeocode).toBeCalledTimes(1)
+          expect(api.locationService.getReverseGeocode).toBeCalledWith(pickupPosition)
+        },
+        done,
+        legs
+      )
+    })
+
+    it('should call subscriber with get reverse-geocode error response', done => {
+      const leg = {
+        ...firstJourneyLegWithCoordinatesOnly,
+        'leg-1-dropoff-lat': undefined,
+        'leg-1-dropoff-lng': undefined,
+      }
+      const legs = [leg]
+
+      const position = {
+        lat: Number(leg['leg-1-pickup-lat']),
+        lng: Number(leg['leg-1-pickup-lng']),
+      }
+
+      api.locationService.getReverseGeocode.mockReturnValueOnce(
+        Promise.resolve(getMockedErrorReverseGeocodeResponse())
+      )
+
+      resolve(
+        (result, subscriber) => {
+          expect(subscriber).toBeCalledWith(
+            getAddressDetailsSubscriberResult(
+              getMockedErrorReverseGeocodeResponse(),
+              true,
+              position as Position
+            )
+          )
         },
         done,
         legs
@@ -483,8 +579,8 @@ describe('Deeplink', () => {
     })
 
     it('should call subscriber 2 times', async () => {
-      api.quotesV2Service.quotesSearch.mockReturnValueOnce(
-        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesV2SearchResponse()), 20))
+      api.quotesV2Service.checkCoverage.mockReturnValueOnce(
+        new Promise(resolve => setTimeout(() => resolve(getMockedQuotesV2CheckCoverageResponse()), 20))
       )
 
       const subscriber = jest.fn()

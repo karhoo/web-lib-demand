@@ -20,15 +20,19 @@ describe('parse', () => {
         ...expectedFirstJourneyLeg,
         pickupKpoi: undefined,
         pickupPlaceId: undefined,
+        pickupPosition: undefined,
         dropoffKpoi: undefined,
         dropoffPlaceId: undefined,
+        dropoffPosition: undefined,
       },
       {
         ...expectedSecondJourneyLeg,
         pickup: undefined,
         pickupPlaceId: undefined,
+        pickupPosition: undefined,
         dropoff: undefined,
         dropoffPlaceId: undefined,
+        dropoffPosition: undefined,
       },
     ],
     passengerInfo: expectedPassengerInfo,
@@ -150,7 +154,13 @@ describe('parse', () => {
     it('should return errors when there is no pickup and dropoff', () => {
       expect(
         validateLeg(
-          getData({ pickup: undefined, dropoff: undefined, pickupTime: undefined }),
+          getData({
+            pickup: undefined,
+            dropoff: undefined,
+            pickupTime: undefined,
+            pickupPosition: undefined,
+            dropoffPosition: undefined,
+          }),
           BookingTypes.PREBOOK,
           'legs.0'
         )
@@ -191,6 +201,16 @@ describe('parse', () => {
       ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
     })
 
+    it('should return errors when pickup and pickupPosition are provided', () => {
+      expect(
+        validateLeg(
+          getData({ pickup: 'pickup', pickupPosition: { lat: '53.1243546', lng: '-0.1743561' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
+    })
+
     it('should return errors when multiple dropoffs are provided', () => {
       expect(
         validateLeg(
@@ -199,6 +219,56 @@ describe('parse', () => {
           'legs.0'
         )
       ).toEqual([expectedError(codes.DP002, 'legs.0.dropoff')])
+    })
+
+    it('should return errors when dropoff and dropoffPosition are provided', () => {
+      expect(
+        validateLeg(
+          getData({ dropoff: 'dropoff', dropoffPosition: { lat: '53.1243546', lng: '-0.1743561' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP002, 'legs.0.dropoff')])
+    })
+
+    it('should return errors when pickupPosition has incorrect format', () => {
+      expect(
+        validateLeg(
+          getData({ pickup: undefined, pickupPosition: { lat: '90.1243546', lng: '-0.1743561' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP012, 'legs.0.pickupPosition')])
+    })
+
+    it('should return errors when dropoffPosition has incorrect format', () => {
+      expect(
+        validateLeg(
+          getData({ dropoff: undefined, dropoffPosition: { lat: '54.124re3546', lng: '-180.1743561' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP012, 'legs.0.dropoffPosition')])
+    })
+
+    it('should return errors when one coordinate of pickupPosition is undefined', () => {
+      expect(
+        validateLeg(
+          getData({ pickup: undefined, pickupPosition: { lat: undefined, lng: '-121.1743561' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP012, 'legs.0.pickupPosition')])
+    })
+
+    it('should return errors when one coordinate of dropoffPosition is undefined', () => {
+      expect(
+        validateLeg(
+          getData({ dropoff: undefined, dropoffPosition: { lat: undefined, lng: '-165.1743561' } }),
+          BookingTypes.PREBOOK,
+          'legs.0'
+        )
+      ).toEqual([expectedError(codes.DP012, 'legs.0.dropoffPosition')])
     })
 
     it('should return errors when multiple pickups with pickupKpoi are provided', () => {

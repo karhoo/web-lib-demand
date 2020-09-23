@@ -36,10 +36,12 @@ jest.mock('uuid', () => ({
 describe('AutocompleteBloc', () => {
   const getAddressAutocompleteDataMock = jest.fn()
   const getAddressDetailsMock = jest.fn()
+  const getReverseGeocodeMock = jest.fn()
 
   const locationServiceMock = {
     getAddressDetails: getAddressDetailsMock,
     getAddressAutocompleteData: getAddressAutocompleteDataMock,
+    getReverseGeocode: getReverseGeocodeMock,
   }
 
   let bloc: AutocompleteBloc

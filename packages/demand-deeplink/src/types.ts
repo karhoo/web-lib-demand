@@ -7,8 +7,8 @@ import {
   PoiSearchParams,
   PoiSearchResponse,
   PoiResponse,
-  QuotesV2SearchParams,
-  QuotesV2Response,
+  QuoteCoverageParams,
+  QuotesV2CoverageResponse,
   LatLng,
 } from '@karhoo/demand-api'
 
@@ -20,12 +20,13 @@ export type Api = {
     getAddressAutocompleteData: (
       params: LocationAddressAutocompleteParams
     ) => Promise<HttpResponse<LocationAddressAutocompleteResponse>>
+    getReverseGeocode: (params: LatLng) => Promise<HttpResponse<LocationAddressDetailsResponse>>
   }
   poiService: {
     search: (params: PoiSearchParams) => Promise<HttpResponse<PoiSearchResponse>>
   }
   quotesV2Service: {
-    quotesSearch: (params: QuotesV2SearchParams) => Promise<HttpResponse<QuotesV2Response>>
+    checkCoverage: (params: QuoteCoverageParams) => Promise<HttpResponse<QuotesV2CoverageResponse>>
   }
 }
 
@@ -46,15 +47,22 @@ export type PassengerInfo = Partial<{
 
 export type BookingType = 'ASAP' | 'PRE-BOOK' | 'CUSTOM'
 
+export type Position = {
+  lat: number | undefined
+  lng: number | undefined
+}
+
 export type JourneyLeg = Partial<{
   pickup: string
   pickupKpoi: string
   pickupPlaceId: string
+  pickupPosition: Position
   pickupTime: string
   pickupMeta: Dictionary<string>
   dropoff: string
   dropoffKpoi: string
   dropoffPlaceId: string
+  dropoffPosition: Position
   dropoffMeta: Dictionary<string>
   passengerInfo: PassengerInfo
   meta: Dictionary<string>
@@ -89,9 +97,10 @@ type ResolveError = {
   }
 }
 
-type ResolvePlace = {
+export type ResolvePlace = {
   ok: true
   data: {
+    placeId: string
     placePosition: LatLng
     displayAddress: string
     placeInfo?: LocationAddressDetailsResponse
@@ -103,17 +112,7 @@ export type ResolvePlaceResult = ResolvePlace | ResolveError
 
 type ResolvePlaceValue = ResolvePlaceResult & { isPickup: boolean; searchValue: string }
 
-export type ResolveAvailabilityParams = {
-  origin: {
-    latitude: string
-    longitude: string
-  }
-  destination: {
-    latitude: string
-    longitude: string
-  }
-  dateRequired?: string
-}
+export type ResolveAvailabilityParams = QuoteCoverageParams
 
 type ResolveAvailability = {
   ok: true

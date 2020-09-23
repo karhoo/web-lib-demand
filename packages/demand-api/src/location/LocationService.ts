@@ -31,12 +31,12 @@ export class LocationService implements Locations {
   }
 
   getReverseGeocode({ latitude, longitude }: LatLng) {
-    const body = {
+    const query = {
       latitude,
       longitude,
     }
 
-    return this.http.post<LocationAddressDetailsResponse>(`${this.url}/reverse-geocode`, {}, {}, body)
+    return this.http.get<LocationAddressDetailsResponse>(`${this.url}/reverse-geocode`, query)
   }
 
   getAddressAutocompleteData(data: LocationAddressAutocompleteParams) {
