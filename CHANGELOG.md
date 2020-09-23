@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.1.0](https://github.com/karhoo/web-lib-demand/compare/v10.0.1...v10.1.0) (2020-09-23)
+
+
+### Features
+
+* resolve Deeplink through coordinates , add checkCoverage method to QuotesV2 service ([e5356e6](https://github.com/karhoo/web-lib-demand/commit/e5356e6b9ad970132b6cba3c6a7322213bf1ff17))
+
+
+
+
+
 ## [10.0.1](https://github.com/karhoo/web-lib-demand/compare/v10.0.0...v10.0.1) (2020-09-16)
 
 
