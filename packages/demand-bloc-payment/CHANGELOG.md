@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/karhoo/web-lib-demand/compare/v10.1.0...v10.2.0) (2020-10-01)
+
+**Note:** Version bump only for package @karhoo/demand-bloc-payment
+
+
+
+
+
 # [10.1.0](https://github.com/karhoo/web-lib-demand/compare/v10.0.1...v10.1.0) (2020-09-23)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-payment
