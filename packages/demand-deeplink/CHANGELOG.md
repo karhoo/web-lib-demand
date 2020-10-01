@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/karhoo/web-lib-demand/compare/v10.1.0...v10.2.0) (2020-10-01)
+
+
+### Features
+
+* add leg validation for deeplink to quotes ([67694b1](https://github.com/karhoo/web-lib-demand/commit/67694b1d7b6dbeac460d8438d08d3edc274d24ab))
+
+
+
+
+
 # [10.1.0](https://github.com/karhoo/web-lib-demand/compare/v10.0.1...v10.1.0) (2020-09-23)
 
 

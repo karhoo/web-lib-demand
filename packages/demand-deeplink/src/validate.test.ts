@@ -1,5 +1,5 @@
 import { codes, errorMessageByCode, getError } from './errors'
-import { validate, validateLeg } from './validate'
+import { validate, validateLeg, validateLegToQuotes } from './validate'
 import {
   travellerLocale,
   expectedFirstJourneyLeg,
@@ -402,6 +402,51 @@ describe('parse', () => {
       expect(
         validateLeg(getData({ bookingType: BookingTypes.ASAP }), BookingTypes.PREBOOK, 'legs.0')
       ).toEqual([expectedError(codes.DP011, 'legs.0.pickupTime')])
+    })
+  })
+
+  describe('validateLegToQuotes', () => {
+    const getData = (data: any) => ({
+      ...baseDeeplinkData.legs[0],
+      ...data,
+    })
+
+    const expectedResult = (code: string, path: string, ok = false) => ({
+      errors: [expectedError(code, path)],
+      ok,
+    })
+
+    it('should return error if pickup is provided', () => {
+      expect(validateLegToQuotes(getData({ pickup: 'pickup' }), 'PRE-BOOK', 'legs.0')).toEqual(
+        expectedResult(codes.DP013, 'legs.0')
+      )
+    })
+
+    it('should return error if one of locations is not provided', () => {
+      expect(
+        validateLegToQuotes(
+          getData({ pickup: undefined, pickupPlaceId: 'id1234', dropoff: undefined }),
+          'PRE-BOOK',
+          'leg'
+        )
+      ).toEqual(expectedResult(codes.DP014, 'leg'))
+    })
+
+    it('should return error if booking type is PREBOOK and pickup time is not provided', () => {
+      expect(
+        validateLegToQuotes(
+          getData({
+            pickup: undefined,
+            pickupPlaceId: 'id1234',
+            dropoff: undefined,
+            dropoffPlaceId: 'id43657',
+            pickupTime: undefined,
+            bookingType: BookingTypes.PREBOOK,
+          }),
+          'PRE-BOOK',
+          'legs.0'
+        )
+      ).toEqual(expectedResult(codes.DP001, 'pickupTime'))
     })
   })
 })

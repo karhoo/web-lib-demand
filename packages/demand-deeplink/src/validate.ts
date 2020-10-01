@@ -212,3 +212,26 @@ export function validate(deeplinkData: DeeplinkData): ValidationResponse {
 
   return errors.length ? { ok: false, errors } : { ok: true }
 }
+
+export function validateLegToQuotes(leg: JourneyLeg, defaultBookingType: BookingType, path: string) {
+  const errors = []
+  const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
+  const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
+  const pickupPosition = leg.pickupPosition
+  const dropoffPosition = leg.dropoffPosition
+  const bookingType = leg.bookingType ?? defaultBookingType
+
+  if (leg.pickup || leg.dropoff) {
+    errors.push(getError(codes.DP013, path))
+  }
+
+  if ((!pickUpFields.length && !pickupPosition) || (!dropoffFields.length && !dropoffPosition)) {
+    errors.push(getError(codes.DP014, path))
+  }
+
+  if (bookingType === BookingTypes.PREBOOK && isUndefined(leg.pickupTime)) {
+    errors.push(getError(codes.DP001, 'pickupTime'))
+  }
+
+  return errors.length ? { ok: false, errors } : { ok: true }
+}
