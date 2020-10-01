@@ -1,5 +1,5 @@
 export { parse } from './parse'
-export { validate } from './validate'
+export { validate, validateLegToQuotes } from './validate'
 export { generate } from './generate'
 export { Deeplink } from './Deeplink'
 export { codes as errorCodes, errorMessageByCode } from './errors'

@@ -13,6 +13,8 @@ export const codes = {
   DP010: 'DP010',
   DP011: 'DP011',
   DP012: 'DP012',
+  DP013: 'DP013',
+  DP014: 'DP014',
 }
 
 export const errorMessageByCode = {
@@ -28,6 +30,8 @@ export const errorMessageByCode = {
   [codes.DP010]: `Unsupported booking type. Supported types are ${BookingTypes.ASAP} and ${BookingTypes.PREBOOK}`,
   [codes.DP011]: `Booking type is ${BookingTypes.ASAP} but pickup time is specified`,
   [codes.DP012]: 'Incorrect coordinates value',
+  [codes.DP013]: 'Pickup or dropoff are unacceptable parameters',
+  [codes.DP014]: 'Both pickup and dropoff information should be provided',
 }
 
 export function getError(code: string, path: string) {
