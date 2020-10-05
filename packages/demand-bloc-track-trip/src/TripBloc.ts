@@ -39,6 +39,7 @@ export class TripBloc {
   private trip$ = new Subject<TripFollowResponse>() // TODO change here to type from transformer
   private finalFare$ = new Subject<FinalFareResponse>()
   private pickUpTimeUpdates$ = new Subject()
+  private error$ = new Subject()
 
   /**
    * constructor
@@ -58,6 +59,10 @@ export class TripBloc {
    */
   get trip() {
     return createStream(this.trip$)
+  }
+
+  get error() {
+    return createStream(this.error$)
   }
 
   /**
@@ -137,6 +142,8 @@ export class TripBloc {
 
     this.trackSubscription = poller.subscribe(data => {
       if (!data.ok) {
+        this.error$.next(true)
+        this.trackSubscription.unsubscribe()
         return
       }
 
