@@ -139,6 +139,19 @@ describe('TripBloc', () => {
       expect(tripInfo).toEqual([])
     })
 
+    it('should not emit trip info', async () => {
+      tripServiceMock.trackTrip.mockReturnValueOnce(Promise.resolve(getMockedErrorTrackTripResponse()))
+
+      const tripInfo: Array<any> = []
+
+      bloc.error.subscribe(value => tripInfo.push(value))
+      bloc.track(id)
+
+      await promise
+
+      expect(tripInfo).toEqual([true])
+    })
+
     it('should call getItem twice', async () => {
       tripServiceMock.trackTrip.mockReturnValueOnce(
         Promise.resolve(getMockedTrackTripResponse({ date_scheduled: '2020-05-28T01:00:00Z' }))
