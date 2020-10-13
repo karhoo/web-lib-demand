@@ -15,6 +15,7 @@ export const codes = {
   DP012: 'DP012',
   DP013: 'DP013',
   DP014: 'DP014',
+  DP015: 'DP015',
 }
 
 export const errorMessageByCode = {
@@ -32,6 +33,7 @@ export const errorMessageByCode = {
   [codes.DP012]: 'Incorrect coordinates value',
   [codes.DP013]: 'Pickup or dropoff are unacceptable parameters',
   [codes.DP014]: 'Both pickup and dropoff information should be provided',
+  [codes.DP015]: 'No availability in the requested area',
 }
 
 export function getError(code: string, path: string) {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.3.1](https://github.com/karhoo/web-lib-demand/compare/v10.3.0...v10.3.1) (2020-10-13)
+
+
+### Bug Fixes
+
+* handle no availability covarage on deeplink ([b3ff8c4](https://github.com/karhoo/web-lib-demand/commit/b3ff8c4b5a45377c720412da382de972f46f90d2))
+
+
+
+
+
 # [10.3.0](https://github.com/karhoo/web-lib-demand/compare/v10.2.0...v10.3.0) (2020-10-05)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink
