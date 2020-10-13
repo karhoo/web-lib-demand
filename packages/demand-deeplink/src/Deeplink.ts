@@ -318,6 +318,10 @@ export class Deeplink {
 
     if (!response.ok) return { ok: false, error: response.error, searchedParams: data }
 
-    return { ok: true, searchedParams: data }
+    const isCoverageAvailable = response.body.coverage
+
+    return isCoverageAvailable
+      ? { ok: true, searchedParams: data }
+      : { ok: false, error: { message: errorMessageByCode[codes.DP015] }, searchedParams: data }
   }
 }
