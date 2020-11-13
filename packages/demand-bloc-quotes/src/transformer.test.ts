@@ -64,6 +64,17 @@ describe('transformer', () => {
     fleetDescription:
       'Robot PHV Fleet for UK. Example description: Regional Private Hire Company operating in London and surroundings.',
     originalQuote,
+    serviceLevelAgreements: null,
+  }
+
+  const sla = {
+    free_cancellation: {
+      type: 'TimeBeforePickup',
+      minutes: 30,
+    },
+    free_waiting_time: {
+      minutes: 20,
+    },
   }
 
   it('should transform original quote', () => {
@@ -99,8 +110,16 @@ describe('transformer', () => {
       vehiclePassengerCapacity: 0,
       fleetDescription: '',
       originalQuote: { id: '1', fleet: { id: '2', name: 'Robouser' }, quote_type: 'FIXED', price: {} },
+      serviceLevelAgreements: null,
     }
 
     expect(transformer(quote)).toEqual(expected)
+  })
+
+  it('should transform quote with service level agreement', () => {
+    const rawQuote = { ...originalQuote, service_level_agreements: sla }
+    const newQuote = { ...expectedQuote, originalQuote: rawQuote, serviceLevelAgreements: sla }
+
+    expect(transformer(rawQuote)).toEqual(newQuote)
   })
 })

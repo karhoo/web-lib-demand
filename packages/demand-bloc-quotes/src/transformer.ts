@@ -1,4 +1,4 @@
-import { QuoteV2Item as OriginalQuoteItem, QuotePriceType } from '@karhoo/demand-api'
+import { QuoteV2Item as OriginalQuoteItem, QuotePriceType, ServiceLevelAgreements } from '@karhoo/demand-api'
 
 export interface QuoteItem {
   currencyCode: string
@@ -21,6 +21,7 @@ export interface QuoteItem {
   vehiclePassengerCapacity: number
   fleetDescription: string
   originalQuote: OriginalQuoteItem
+  serviceLevelAgreements?: ServiceLevelAgreements | null
 }
 
 export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
@@ -42,6 +43,7 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
       luggage_capacity = 0,
       class: vehicle_class = '',
     } = {},
+    service_level_agreements = null,
   } = quote
 
   return {
@@ -65,5 +67,6 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
     vehiclePassengerCapacity: passenger_capacity,
     fleetDescription: description,
     originalQuote: quote,
+    serviceLevelAgreements: service_level_agreements,
   }
 }
