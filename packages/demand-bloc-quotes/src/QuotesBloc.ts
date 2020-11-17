@@ -199,6 +199,29 @@ export class QuotesBloc {
       if (res.ok) {
         const items = res.body?.quotes || []
 
+        // ----------------------------------------------------------------------
+        // IMPORTANT!!! - This block of code is to simulate a backend endpoint
+        // change which is not coded yet. It should NOT be merged into the master
+        // branch under any circumstances. It is to allow me to test showing SLA
+        // and Cancellation information in web-karhoo-traveller and web-sncf.
+        // ----------------------------------------------------------------------
+        items.forEach((item, index) => {
+          if (index === 0) {
+            item.service_level_agreements = undefined
+          } else if (index % 2 === 1) {
+            item.service_level_agreements = {
+              free_cancellation: { type: 'TimeBeforePickup', minutes: 20 },
+              free_waiting_time: { minutes: 10 },
+            }
+          } else {
+            item.service_level_agreements = {
+              free_cancellation: { type: 'BeforeDriverEnRoute', minutes: 40 },
+              free_waiting_time: { minutes: 20 },
+            }
+          }
+        })
+        // ----------------------------------------------------------------------
+
         this.quotes$.next({
           items: items.map(quote => transformer(quote)),
           validity: this.convertValidityToMS(res.body.validity || defaultValidity),

@@ -210,6 +210,36 @@ export type GetTripPositionResponse = {
   destination_eta?: number
 }
 
+export type GetTripCancelFeeResponse = {
+  cancellation_fee: boolean
+  fee?: {
+    currency: string
+    type: string
+    value: number
+  }
+
+  // ---------------------------
+  // Case1: cancellation fee
+  // ---------------------------
+  // {
+  //   "cancellation_fee": true,
+  //   "fee": {
+  //       "currency": "GBP",
+  //       "type": "FIXED",
+  //       "value": 1000
+  //   }
+  // }
+  // ---------------------------
+
+  // ---------------------------
+  // Case2: no cancellation fee
+  // ---------------------------
+  // {
+  // "cancellation_fee":false
+  // }
+  // ---------------------------
+}
+
 export interface Trip {
   trackTrip(id: string): Promise<HttpResponse<TripFollowResponse>>
   book(params: BookATripParams): Promise<HttpResponse<BookATripResponse>>
@@ -220,4 +250,5 @@ export interface Trip {
   cancel(id: string, params: CancellationParams): Promise<HttpResponse<object>>
   cancelByFollowCode(code: string, params: CancellationParams): Promise<HttpResponse<object>>
   search(params: SearchParams): Promise<HttpResponse<SearchResponse>>
+  getCancelFee(id: string): Promise<HttpResponse<GetTripCancelFeeResponse>>
 }
