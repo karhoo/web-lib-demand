@@ -51,6 +51,12 @@ export type AutocompleteDetails = {
   }
 }
 
+export type PrefillAutocompleteFieldValue = {
+  query?: string
+  selectedAddress?: AutocompleteDetails
+  results?: AutocompleteItem[]
+}
+
 export interface TripCreateAutocompleteField {
   query: Observable<string>
   selectedAddress: Observable<AutocompleteDetails>
@@ -58,6 +64,7 @@ export interface TripCreateAutocompleteField {
 
   onChange(value: string): void
   onSelect(value: string): void
+  prefill(value: PrefillAutocompleteFieldValue): void
   dispose(): void
 }
 
@@ -65,6 +72,7 @@ export interface TripCreateField {
   query: Observable<string>
 
   onChange(value: string): void
+  prefill(value: string): void
   dispose(): void
 }
 
