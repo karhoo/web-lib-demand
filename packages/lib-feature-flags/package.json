@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/lib-feature-flags",
-  "version": "10.3.1",
+  "version": "10.4.0",
   "description": "Feature flags 🚩 library for Karhoo web apps. It provides possibility to enable/disable certain feature per environment without redeployment 🙃",
   "keywords": [
     "feature-flags",

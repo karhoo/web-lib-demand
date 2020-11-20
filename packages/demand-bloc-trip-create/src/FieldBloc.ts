@@ -13,6 +13,8 @@ export class FieldBloc implements TripCreateField {
     this.query$.next(value)
   }
 
+  prefill = this.onChange
+
   dispose() {
     this.query$.complete()
   }
