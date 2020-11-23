@@ -1,7 +1,6 @@
-import { LatLng, MeetingPointType, CommonPoiType } from '../sharedTypes'
-import { Quote } from '../quotes/types'
-import { VehicleAttributes } from '../sharedTypes'
 import { HttpResponse } from '../http/types'
+import { Quote } from '../quotes/types'
+import { CommonPoiType, LatLng, MeetingPointType, VehicleAttributes } from '../sharedTypes'
 
 export type PassengerDetails = {
   first_name?: string
@@ -217,27 +216,6 @@ export type GetTripCancelFeeResponse = {
     type: string
     value: number
   }
-
-  // ---------------------------
-  // Case1: cancellation fee
-  // ---------------------------
-  // {
-  //   "cancellation_fee": true,
-  //   "fee": {
-  //       "currency": "GBP",
-  //       "type": "FIXED",
-  //       "value": 1000
-  //   }
-  // }
-  // ---------------------------
-
-  // ---------------------------
-  // Case2: no cancellation fee
-  // ---------------------------
-  // {
-  // "cancellation_fee":false
-  // }
-  // ---------------------------
 }
 
 export interface Trip {
