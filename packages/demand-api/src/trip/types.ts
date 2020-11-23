@@ -1,7 +1,6 @@
-import { LatLng, MeetingPointType, CommonPoiType } from '../sharedTypes'
-import { Quote } from '../quotes/types'
-import { VehicleAttributes } from '../sharedTypes'
 import { HttpResponse } from '../http/types'
+import { Quote } from '../quotes/types'
+import { CommonPoiType, LatLng, MeetingPointType, VehicleAttributes } from '../sharedTypes'
 
 export type PassengerDetails = {
   first_name?: string
@@ -210,6 +209,15 @@ export type GetTripPositionResponse = {
   destination_eta?: number
 }
 
+export type GetTripCancelFeeResponse = {
+  cancellation_fee: boolean
+  fee?: {
+    currency: string
+    type: string
+    value: number
+  }
+}
+
 export interface Trip {
   trackTrip(id: string): Promise<HttpResponse<TripFollowResponse>>
   book(params: BookATripParams): Promise<HttpResponse<BookATripResponse>>
@@ -220,4 +228,5 @@ export interface Trip {
   cancel(id: string, params: CancellationParams): Promise<HttpResponse<object>>
   cancelByFollowCode(code: string, params: CancellationParams): Promise<HttpResponse<object>>
   search(params: SearchParams): Promise<HttpResponse<SearchResponse>>
+  getCancelFee(id: string): Promise<HttpResponse<GetTripCancelFeeResponse>>
 }

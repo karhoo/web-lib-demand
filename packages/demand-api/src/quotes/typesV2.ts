@@ -50,6 +50,16 @@ export type QuotesV2Vehicle = {
   luggage_capacity?: number
 }
 
+export type ServiceLevelAgreements = {
+  free_cancellation: {
+    type: string
+    minutes: number
+  }
+  free_waiting_time: {
+    minutes: number
+  }
+}
+
 export type QuoteV2Item = {
   id: string
   price: QuotePrice
@@ -58,6 +68,7 @@ export type QuoteV2Item = {
   source?: QuoteSource
   fleet: QuotesV2Fleet
   vehicle?: QuotesV2Vehicle
+  service_level_agreements?: ServiceLevelAgreements
 }
 
 export type QuotesV2Response = {

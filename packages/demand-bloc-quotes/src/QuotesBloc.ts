@@ -1,14 +1,14 @@
 import {
-  QuotesV2,
-  QuotesV2SearchParams,
   errorCodes,
-  QuotesV2Response,
   HttpResponse,
+  QuotesV2,
+  QuotesV2Response,
+  QuotesV2SearchParams,
 } from '@karhoo/demand-api'
 import { Subject, Subscription, timer } from 'rxjs'
-import { publishReplay, refCount, map, distinctUntilChanged } from 'rxjs/operators'
+import { distinctUntilChanged, map, publishReplay, refCount } from 'rxjs/operators'
 import { poll } from './polling'
-import { transformer, QuoteItem } from './transformer'
+import { QuoteItem, transformer } from './transformer'
 
 type QuoteFilters = {
   numOfPassengers: number

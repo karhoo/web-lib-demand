@@ -10,6 +10,7 @@ import {
   CancellationParams,
   SearchParams,
   SearchResponse,
+  GetTripCancelFeeResponse,
 } from './types'
 
 export class TripService implements Trip {
@@ -55,5 +56,9 @@ export class TripService implements Trip {
 
   search(params: SearchParams) {
     return this.http.post<SearchResponse>(`${this.url}/search`, params)
+  }
+
+  getCancelFee(id: string) {
+    return this.http.get<GetTripCancelFeeResponse>(`${this.url}/${id}/cancel-fee`)
   }
 }
