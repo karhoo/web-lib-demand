@@ -5,7 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [10.5.0](https://github.com/karhoo/web-lib-demand/compare/v10.4.0...v10.5.0) (2020-11-23)
 
-**Note:** Version bump only for package web-lib-demand
+
+### Features
+
+* add cancellation options to the quote's payload ([6241573](https://github.com/karhoo/web-lib-demand/commit/62415737b1a3206166a8e05703c1bff28b2a33a2))
 
 
 
