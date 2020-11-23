@@ -198,6 +198,7 @@ export class QuotesBloc {
     const handleQuotesLoaded = (res: HttpResponse<QuotesV2Response>) => {
       if (res.ok) {
         const items = res.body?.quotes || []
+
         this.quotes$.next({
           items: items.map(quote => transformer(quote)),
           validity: this.convertValidityToMS(res.body.validity || defaultValidity),
