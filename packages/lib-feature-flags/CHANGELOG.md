@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.6.0](https://github.com/karhoo/web-lib-demand/compare/v10.5.0...v10.6.0) (2020-11-24)
+
+**Note:** Version bump only for package @karhoo/lib-feature-flags
+
+
+
+
+
 # [10.5.0](https://github.com/karhoo/web-lib-demand/compare/v10.4.0...v10.5.0) (2020-11-23)
 
 **Note:** Version bump only for package @karhoo/lib-feature-flags

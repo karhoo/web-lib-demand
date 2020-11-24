@@ -24,9 +24,12 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
 
   const v1 = `${url}/${apiV1}`
   const v2 = `${url}/${apiV2}`
+  const commonHttpPath = `${url}`
 
   const httpV1 = new HttpService(v1).setCorrelationIdPrefix(correlationIdPrefix)
   const httpV2 = new HttpService(v2).setCorrelationIdPrefix(correlationIdPrefix)
+  const httpCommon = new HttpService(commonHttpPath).setCorrelationIdPrefix(correlationIdPrefix)
+
   const httpForAuthService = new HttpService(v1)
     .setCorrelationIdPrefix(correlationIdPrefix)
     .setDefaultRequestOptionsGetter(authServiceDefaultOptionsGetter)
@@ -34,11 +37,13 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
   if (defaultRequestOptionsGetter) {
     httpV1.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
     httpV2.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
+    httpCommon.setDefaultRequestOptionsGetter(defaultRequestOptionsGetter)
   }
 
   if (responseMiddleware) {
     httpV1.setResponseMiddleware(responseMiddleware)
     httpV2.setResponseMiddleware(responseMiddleware)
+    httpCommon.setResponseMiddleware(responseMiddleware)
     httpForAuthService.setResponseMiddleware(responseMiddleware)
   }
 
@@ -49,7 +54,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     quotesV2Service: new QuotesV2Service(httpV2),
     tripService: new TripService(httpV1),
     fareService: new FareService(httpV1),
-    paymentService: new PaymentService(httpV2),
+    paymentService: new PaymentService(httpCommon),
     flagsService: new FlagsService(httpV1),
     userService: new UserService(httpV1),
     authService: new AuthService(httpForAuthService),

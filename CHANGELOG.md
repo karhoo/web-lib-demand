@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.6.0](https://github.com/karhoo/web-lib-demand/compare/v10.5.0...v10.6.0) (2020-11-24)
+
+
+### Features
+
+* add adyen endpoints to payment service ([46d9cbe](https://github.com/karhoo/web-lib-demand/commit/46d9cbe2b26774227454444a2446d2e7aa1fe4c3))
+* add adyen endpoints to payment service ([13d1735](https://github.com/karhoo/web-lib-demand/commit/13d17357cc433e0f5d4189bc145776be436e5e46))
+
+
+
+
+
 # [10.5.0](https://github.com/karhoo/web-lib-demand/compare/v10.4.0...v10.5.0) (2020-11-23)
 
 

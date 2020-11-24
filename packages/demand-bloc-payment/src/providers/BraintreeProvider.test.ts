@@ -39,8 +39,24 @@ describe('PaymentBloc', () => {
 
   const paymentService = {
     createClientToken: getPaymentCreateClientTokenMock({ token }),
-    getClientNonce: getPaymentGetClientNonceMock({ card_type: cardType, last_four: lastFour, nonce }),
+    getClientNonce: getPaymentGetClientNonceMock({
+      card_type: cardType,
+      last_four: lastFour,
+      nonce,
+    }),
     addPaymentCard: getAddPaymentCardMock(),
+    createBraintreeClientToken: getPaymentCreateClientTokenMock({ token }),
+    getBraintreeClientNonce: getPaymentGetClientNonceMock({
+      card_type: cardType,
+      last_four: lastFour,
+      nonce,
+    }),
+    addBraintreePaymentCard: getAddPaymentCardMock(),
+    getPaymentProvider: jest.fn(),
+    getAdyenOriginKey: jest.fn(),
+    getAdyenPaymentMethods: jest.fn(),
+    createAdyenPaymentAuth: jest.fn(),
+    getAdyenPaymentDetails: jest.fn(),
   }
 
   const client = {
@@ -77,15 +93,15 @@ describe('PaymentBloc', () => {
     it('should call createClientToken of paymentService', async () => {
       await provider.initialize()
 
-      expect(paymentService.createClientToken).toBeCalledTimes(1)
-      expect(paymentService.createClientToken).toBeCalledWith({
+      expect(paymentService.createBraintreeClientToken).toBeCalledTimes(1)
+      expect(paymentService.createBraintreeClientToken).toBeCalledWith({
         organisation_id: organisationId,
         currency: currencyCode,
       })
     })
 
     it('should throw error if createClientToken of paymentService returns error', done => {
-      paymentService.createClientToken.mockReturnValueOnce(
+      paymentService.createBraintreeClientToken.mockReturnValueOnce(
         Promise.resolve(getMockedErrorPaymentCreateClientTokenResponse())
       )
 
@@ -328,8 +344,8 @@ describe('PaymentBloc', () => {
     it('should call addPaymentCard of paymentService', async () => {
       await provider.saveCard(nonce, payer)
 
-      expect(paymentService.addPaymentCard).toBeCalledTimes(1)
-      expect(paymentService.addPaymentCard).toBeCalledWith({
+      expect(paymentService.addBraintreePaymentCard).toBeCalledTimes(1)
+      expect(paymentService.addBraintreePaymentCard).toBeCalledWith({
         organisation_id: organisationId,
         nonce,
         payer,
@@ -349,8 +365,8 @@ describe('PaymentBloc', () => {
     it('should call getClientNonce of paymentService', async () => {
       await provider.getSavedCards(payer)
 
-      expect(paymentService.getClientNonce).toBeCalledTimes(1)
-      expect(paymentService.getClientNonce).toBeCalledWith({
+      expect(paymentService.getBraintreeClientNonce).toBeCalledTimes(1)
+      expect(paymentService.getBraintreeClientNonce).toBeCalledWith({
         organisation_id: organisationId,
         payer,
       })
@@ -370,7 +386,7 @@ describe('PaymentBloc', () => {
     })
 
     it('should return empty array', async () => {
-      paymentService.getClientNonce.mockReturnValueOnce(
+      paymentService.getBraintreeClientNonce.mockReturnValueOnce(
         Promise.resolve(getMockedErrorPaymentGetClientNonceResponse())
       )
 
