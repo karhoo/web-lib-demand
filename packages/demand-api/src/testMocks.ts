@@ -68,9 +68,9 @@ export const getApiMock = () => {
       checkCoverage: mockQuotesV2Coverage,
     },
     paymentService: {
-      createClientToken: mockPaymentCreateClientToken,
-      getClientNonce: mockPaymentGetClientNonce,
-      addPaymentCard: mockAddPaymentCard,
+      createBraintreeClientToken: mockPaymentCreateClientToken,
+      getBraintreeClientNonce: mockPaymentGetClientNonce,
+      addBraintreePaymentCard: mockAddPaymentCard,
     },
     fareService: {
       status: mockFinalFare,
