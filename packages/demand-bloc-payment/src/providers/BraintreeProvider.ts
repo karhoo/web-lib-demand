@@ -1,5 +1,5 @@
 import braintree, { Client, ThreeDSecure, HostedFields } from 'braintree-web'
-import { Payment } from '@karhoo/demand-api'
+import { Payment } from '../../../demand-api/dist/index'
 
 import { BraintreeProviderOptions, FullBraintreeProviderOptions, Provider, Payer } from '../types'
 import {
@@ -51,7 +51,7 @@ export class BraintreeProvider implements Provider {
   private async getAuthorizationToken() {
     const { organisationId, currencyCode } = this.options
 
-    const response = await this.paymentService.createClientToken({
+    const response = await this.paymentService.createBraintreeClientToken({
       organisation_id: organisationId,
       currency: currencyCode,
     })
@@ -222,7 +222,7 @@ export class BraintreeProvider implements Provider {
   }
 
   async saveCard(nonce: string, payer: Payer) {
-    const response = await this.paymentService.addPaymentCard({
+    const response = await this.paymentService.addBraintreePaymentCard({
       organisation_id: this.options.organisationId,
       nonce,
       payer,
@@ -232,7 +232,7 @@ export class BraintreeProvider implements Provider {
   }
 
   async getSavedCards(payer: Payer) {
-    const response = await this.paymentService.getClientNonce({
+    const response = await this.paymentService.getBraintreeClientNonce({
       organisation_id: this.options.organisationId,
       payer,
     })

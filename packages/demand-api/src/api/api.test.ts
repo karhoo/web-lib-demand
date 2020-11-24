@@ -64,23 +64,24 @@ describe('getApi', () => {
   it('should create new instance of HttpService', () => {
     getApi(params)
 
-    expect(HttpService).toHaveBeenCalledTimes(3)
+    expect(HttpService).toHaveBeenCalledTimes(4)
     expect(HttpService).toHaveBeenCalledWith(`${params.url}/${apiV1}`)
     expect(HttpService).toHaveBeenCalledWith(`${params.url}/${apiV2}`)
     expect(HttpService).toHaveBeenCalledWith(`${params.url}/${apiV1}`)
+    expect(HttpService).toHaveBeenCalledWith(`${params.url}`)
   })
 
   it('should set correlationIdPrefix', () => {
     getApi(params)
 
-    expect(setCorrelationIdPrefix).toHaveBeenCalledTimes(3)
+    expect(setCorrelationIdPrefix).toHaveBeenCalledTimes(4)
     expect(setCorrelationIdPrefix).toHaveBeenCalledWith(params.correlationIdPrefix)
   })
 
   it('should set defaultRequestOptionsGetter', () => {
     getApi(params)
 
-    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledTimes(3)
+    expect(setDefaultRequestOptionsGetter).toHaveBeenCalledTimes(4)
     expect(setDefaultRequestOptionsGetter).toHaveBeenCalledWith(params.defaultRequestOptionsGetter)
     expect(setDefaultRequestOptionsGetter).toHaveBeenCalledWith(params.authServiceDefaultOptionsGetter)
   })
@@ -88,7 +89,7 @@ describe('getApi', () => {
   it('should set responseMiddleware', () => {
     getApi(params)
 
-    expect(setResponseMiddleware).toHaveBeenCalledTimes(3)
+    expect(setResponseMiddleware).toHaveBeenCalledTimes(4)
     expect(setResponseMiddleware).toHaveBeenCalledWith(params.responseMiddleware)
   })
 
