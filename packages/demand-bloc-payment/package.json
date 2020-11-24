@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-payment",
-  "version": "10.5.0",
+  "version": "10.6.0",
   "description": "BLoC to work with Karhoo Payment API",
   "keywords": [
     "bloc",
@@ -30,7 +30,7 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^10.5.0",
+    "@karhoo/demand-api": "^10.6.0",
     "@types/braintree-web": "^3.47.2",
     "braintree-web": "^3.62.2"
   },
