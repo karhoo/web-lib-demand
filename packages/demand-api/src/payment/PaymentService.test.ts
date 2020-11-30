@@ -77,6 +77,70 @@ describe('PaymentService', () => {
     })
   })
 
+  describe('createBraintreeClientToken', () => {
+    const params = {
+      organisation_id: 'organisationId',
+      currency: 'currency',
+    }
+
+    it('should call post of http', () => {
+      new PaymentService(http).createBraintreeClientToken(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith(
+        'v2/payments/payment-methods/braintree/client-tokens',
+        {},
+        {},
+        params
+      )
+    })
+  })
+
+  describe('getBraintreeClientNonce', () => {
+    const params = {
+      payer: {
+        id: 'id',
+        first_name: 'first_name',
+        last_name: 'last_name',
+        email: 'email',
+      },
+      organisation_id: 'organisation_id',
+    }
+
+    it('should call post of http', () => {
+      new PaymentService(http).getBraintreeClientNonce(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith(
+        'v2/payments/payment-methods/braintree/get-payment-method',
+        params
+      )
+    })
+  })
+
+  describe('addBraintreePaymentCard', () => {
+    const params = {
+      payer: {
+        id: 'id',
+        first_name: 'first_name',
+        last_name: 'last_name',
+        email: 'email',
+      },
+      organisation_id: 'organisation_id',
+      nonce: 'nonce',
+    }
+
+    it('should call post of http', () => {
+      new PaymentService(http).addBraintreePaymentCard(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith(
+        'v2/payments/payment-methods/braintree/add-payment-details',
+        params
+      )
+    })
+  })
+
   describe('getPaymentProvider', () => {
     it('should call get of http', () => {
       new PaymentService(http).getPaymentProvider()
