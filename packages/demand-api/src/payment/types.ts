@@ -29,8 +29,10 @@ export interface AddPaymentCardParams extends ClientNonceParams {
   nonce: string
 }
 
-type Provider = {
-  id: 'Braintree' | 'Adyen'
+export type ProviderId = 'Braintree' | 'Adyen'
+
+export type Provider = {
+  id: ProviderId
 }
 
 type LoyaltyProgrammes = {
