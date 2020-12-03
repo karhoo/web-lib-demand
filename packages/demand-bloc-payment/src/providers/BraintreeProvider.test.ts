@@ -70,7 +70,7 @@ describe('PaymentBloc', () => {
 
   const hostedFields = {
     teardown: jest.fn(),
-    tokenize: jest.fn(),
+    tokenize: jest.fn(() => Promise.resolve({ nonce: 'test_nonce' })),
     on: jest.fn(),
     getState: jest.fn(),
   }

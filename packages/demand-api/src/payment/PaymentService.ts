@@ -1,4 +1,5 @@
 import { Http } from '../http/types'
+import { PaymentMethodsResponseObject } from '@adyen/adyen-web/dist/types/core/ProcessResponse/PaymentMethodsResponse/types'
 import {
   CreateTokenParams,
   CreateTokenResponse,
@@ -9,7 +10,6 @@ import {
   PaymentProvidersResponse,
   OriginKeyResponse,
   PaymentMethodsParams,
-  PaymentMethodsResponse,
   PaymentAuthParams,
   PaymentAuthResponse,
   PaymentDetailsParams,
@@ -87,7 +87,10 @@ export class PaymentService implements Payment {
   }
 
   getAdyenPaymentMethods(params: PaymentMethodsParams) {
-    return this.http.post<PaymentMethodsResponse>(`${this.apiV3}/${this.url}/adyen/payments-methods`, params)
+    return this.http.post<PaymentMethodsResponseObject>(
+      `${this.apiV3}/${this.url}/adyen/payments-methods`,
+      params
+    )
   }
 
   createAdyenPaymentAuth(params: PaymentAuthParams) {

@@ -105,10 +105,14 @@ export class BraintreeProvider implements Provider {
     })
   }
 
-  tokenizeHostedFields() {
-    return this.hostedFields
-      ? this.hostedFields.tokenize()
-      : Promise.reject(new Error(errors.hostedFieldsNotInitialized))
+  async tokenizeHostedFields() {
+    if (!this.hostedFields) {
+      return Promise.reject(new Error(errors.hostedFieldsNotInitialized))
+    }
+
+    const { nonce } = await this.hostedFields.tokenize()
+
+    return ['payment_nonce', nonce]
   }
 
   private async teardownBraintreeInstance(instance?: Client | HostedFields | ThreeDSecure) {

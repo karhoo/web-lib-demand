@@ -49,7 +49,7 @@ describe('PaymentBloc', () => {
   const providerMock = {
     initialize: jest.fn(),
     dispose: jest.fn(),
-    tokenizeHostedFields: jest.fn(() => Promise.resolve(tokenizeHostedFieldsResponse)),
+    tokenizeHostedFields: jest.fn(() => Promise.resolve(['key1', tokenizeHostedFieldsResponse.nonce])),
     validatePaymentForm: jest.fn(() => true),
     verifyWithThreeDSecure: jest.fn(() => Promise.resolve(verifyCardWithThreeDSecureResponse)),
     getSavedCards: jest.fn(() => Promise.resolve(cards)),

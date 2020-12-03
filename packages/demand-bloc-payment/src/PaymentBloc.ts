@@ -95,15 +95,19 @@ export class PaymentBloc {
       return selectedCard.nonce
     }
 
-    const tokenizeResponse = await this.provider.tokenizeHostedFields()
+    const [_, nonce] = await this.provider.tokenizeHostedFields()
 
-    return tokenizeResponse.nonce
+    return nonce
   }
 
   async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {
     try {
-      const { nonce } = await this.provider.tokenizeHostedFields()
-      const response = await this.provider.saveCard(nonce, payer)
+      const [_, value] = await this.provider.tokenizeHostedFields()
+      const response = await this.provider.saveCard(value, payer)
+
+      if (!response) {
+        return { ok: false, error: new Error('nott possible to save a card') }
+      }
 
       return response.ok ? { ok: true } : { ok: false, error: new Error(response.error.message) }
     } catch (error) {

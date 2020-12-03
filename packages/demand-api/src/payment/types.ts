@@ -1,4 +1,5 @@
 import { HttpResponse } from '../http/types'
+import { PaymentMethodsResponseObject } from '@adyen/adyen-web/dist/types/core/ProcessResponse/PaymentMethodsResponse/types'
 
 export type CreateTokenParams = {
   organisation_id: string
@@ -131,13 +132,6 @@ type OneClickPaymentMethod = Partial<{
   }
 }>
 
-export type PaymentMethodsResponse = {
-  groups?: Group[]
-  paymentMethods?: PaymentMethod[]
-  storedPaymentMethods?: StoredPaymentMethod[]
-  oneClickPaymentMethods?: OneClickPaymentMethod[]
-}
-
 type PaymentMethodInfo = Partial<{
   type: string
   number: string
@@ -201,7 +195,7 @@ export interface Payment {
   addBraintreePaymentCard(params: AddPaymentCardParams): Promise<HttpResponse<ClientNonceResponse>>
   getPaymentProvider(): Promise<HttpResponse<PaymentProvidersResponse>>
   getAdyenOriginKey(): Promise<HttpResponse<OriginKeyResponse>>
-  getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
+  getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponseObject>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<object>>
 }

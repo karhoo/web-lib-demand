@@ -1,9 +1,4 @@
-import {
-  HostedFieldsTokenizePayload,
-  ThreeDSecureVerifyPayload,
-  HostedFieldFieldOptions,
-  BraintreeError,
-} from 'braintree-web'
+import { ThreeDSecureVerifyPayload, HostedFieldFieldOptions, BraintreeError } from 'braintree-web'
 
 import { HttpResponse, ClientNonceResponse } from '@karhoo/demand-api'
 
@@ -21,18 +16,20 @@ export type Payer = {
   last_name: string
 }
 
+type TokenizePayload = string[]
+
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
-  initialize(): Promise<void> | void
+  initialize(options?: AdyenInitializeOptions): Promise<void> | void
   dispose(): Promise<void> | void
-  tokenizeHostedFields(): Promise<HostedFieldsTokenizePayload>
+  tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
   verifyWithThreeDSecure(
     amount: number,
     nonce: string
   ): Promise<ThreeDSecureVerifyPayload & { type?: string }>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
-  saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>>
+  saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
 }
 
 export type CardsInfo = {
@@ -98,4 +95,29 @@ export type FullBraintreeProviderOptions = Omit<
   logger?: Logger
   onAddThreeDSecureFrame?: () => void
   onRemoveThreeDSecureFrame?: () => void
+}
+
+export type AdyenProviderOptions = {
+  dropinContainerId: string
+  withThreeDSecure?: boolean
+  environment?: 'test' | 'live'
+}
+
+export type AdyenInitializeOptions = {
+  clientKey: string
+  /** The currency and value of the payment, in minor units. */
+  price: number
+  currencyCode: string
+  locale?: string
+}
+
+export type AdyenCheckoutOptions = {
+  clientKey: string
+  amount: {
+    value: number
+    currency: string
+  }
+  environment?: string
+  locale?: string
+  channel: 'Web'
 }
