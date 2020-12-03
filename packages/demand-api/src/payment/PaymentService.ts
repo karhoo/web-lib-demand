@@ -57,7 +57,7 @@ export class PaymentService implements Payment {
 
   createBraintreeClientToken(params: CreateTokenParams) {
     return this.http.post<CreateTokenResponse>(
-      `${this.apiV3}/${this.url}/payment-methods/braintree/client-tokens`,
+      `${this.apiV2}/${this.url}/payment-methods/braintree/client-tokens`,
       {},
       {},
       params
@@ -66,14 +66,14 @@ export class PaymentService implements Payment {
 
   getBraintreeClientNonce(params: ClientNonceParams) {
     return this.http.post<ClientNonceResponse>(
-      `${this.apiV3}/${this.url}/payment-methods/braintree/get-payment-method`,
+      `${this.apiV2}/${this.url}/payment-methods/braintree/get-payment-method`,
       params
     )
   }
 
   addBraintreePaymentCard(params: AddPaymentCardParams) {
     return this.http.post<ClientNonceResponse>(
-      `${this.apiV3}/${this.url}/payment-methods/braintree/add-payment-details`,
+      `${this.apiV2}/${this.url}/payment-methods/braintree/add-payment-details`,
       params
     )
   }

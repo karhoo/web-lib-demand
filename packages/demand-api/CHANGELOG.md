@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.7.0](https://github.com/karhoo/web-lib-demand/compare/v10.6.1...v10.7.0) (2020-12-01)
+
+
+### Features
+
+* mupltiple providers in payment bloc ([4606d5d](https://github.com/karhoo/web-lib-demand/commit/4606d5d60067a5f906f4542aa6b134cad7e1583d))
+
+
+
+
+
+## [10.6.1](https://github.com/karhoo/web-lib-demand/compare/v10.6.0...v10.6.1) (2020-11-30)
+
+
+### Bug Fixes
+
+* api version for Braintree calls ([673168a](https://github.com/karhoo/web-lib-demand/commit/673168a477f488d7cdecce64e782a61efb1cd1e3))
+
+
+### Features
+
+* unit tests for new Braintree methods ([b2a1bc2](https://github.com/karhoo/web-lib-demand/commit/b2a1bc22fce7ea815b20e3a005c2557e0b4a8f76))
+
+
+
+
+
 # [10.6.0](https://github.com/karhoo/web-lib-demand/compare/v10.5.0...v10.6.0) (2020-11-24)
 
 
