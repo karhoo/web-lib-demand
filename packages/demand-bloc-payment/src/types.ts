@@ -20,7 +20,7 @@ type TokenizePayload = string[]
 
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
-  initialize(options?: AdyenInitializeOptions): Promise<void> | void
+  initialize(): Promise<void> | void
   dispose(): Promise<void> | void
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
@@ -101,11 +101,7 @@ export type AdyenProviderOptions = {
   dropinContainerId: string
   withThreeDSecure?: boolean
   environment?: 'test' | 'live'
-}
-
-export type AdyenInitializeOptions = {
   clientKey: string
-  /** The currency and value of the payment, in minor units. */
   price: number
   currencyCode: string
   locale?: string
@@ -117,7 +113,7 @@ export type AdyenCheckoutOptions = {
     value: number
     currency: string
   }
-  environment?: string
-  locale?: string
+  environment: string
+  locale: string
   channel: 'Web'
 }

@@ -1,5 +1,5 @@
 import braintree, { Client, ThreeDSecure, HostedFields } from 'braintree-web'
-import { Payment } from '../../../demand-api/dist/index'
+import { Payment } from '@karhoo/demand-api'
 
 import { BraintreeProviderOptions, FullBraintreeProviderOptions, Provider, Payer } from '../types'
 import {

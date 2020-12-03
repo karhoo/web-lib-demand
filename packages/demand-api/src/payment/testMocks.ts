@@ -1,4 +1,4 @@
-import { PaymentMethodsResponseObject } from '@adyen/adyen-web/dist/types/core/ProcessResponse/PaymentMethodsResponse/types'
+import { PaymentMethodsResponse } from './types'
 import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from '../http/types'
 import { errorCodes } from '../responseCodes'
 
@@ -98,7 +98,7 @@ export const getMockedAdyenOriginKeyResponse = (): HttpResponseOk<OriginKeyRespo
 
 export const getAdyenOriginKeyMock = getMock(getMockedAdyenOriginKeyResponse)
 
-export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponseObject> => ({
+export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
   ok: true,
   status: 200,
   body: {

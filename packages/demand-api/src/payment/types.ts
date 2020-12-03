@@ -115,25 +115,6 @@ type Card = {
   startYear?: string
 }
 
-type OneClickPaymentMethod = Partial<{
-  brands: string[]
-  configuration: object
-  details: InputDetail[]
-  group: {
-    name?: string
-    paymetnMethodData?: string
-    type?: string
-  }
-  name: string
-  recurringDetailReference: string
-  supportsRecurring: boolean
-  type: string
-  storedDetails: {
-    card?: Card
-    emailAddress?: string
-  }
-}>
-
 type PaymentMethodInfo = Partial<{
   type: string
   number: string
@@ -188,6 +169,7 @@ export type PaymentDetailsParams = {
   transaction_id: string
 }
 
+export type PaymentMethodsResponse = PaymentMethodsResponseObject
 export interface Payment {
   createClientToken(params: CreateTokenParams): Promise<HttpResponse<CreateTokenResponse>>
   getClientNonce(params: ClientNonceParams): Promise<HttpResponse<ClientNonceResponse>>
@@ -197,7 +179,7 @@ export interface Payment {
   addBraintreePaymentCard(params: AddPaymentCardParams): Promise<HttpResponse<ClientNonceResponse>>
   getPaymentProvider(): Promise<HttpResponse<PaymentProvidersResponse>>
   getAdyenOriginKey(): Promise<HttpResponse<OriginKeyResponse>>
-  getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponseObject>>
+  getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<object>>
 }

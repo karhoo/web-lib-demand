@@ -127,7 +127,7 @@ export class PaymentBloc {
       const response = await this.provider.saveCard(value, payer)
 
       if (!response) {
-        return { ok: false, error: new Error('nott possible to save a card') }
+        return { ok: false, error: new Error('Not possible to save a card') }
       }
 
       return response.ok ? { ok: true } : { ok: false, error: new Error(response.error.message) }

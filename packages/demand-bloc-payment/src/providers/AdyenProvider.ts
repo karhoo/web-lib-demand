@@ -1,7 +1,8 @@
 import AdyenCheckout from '@adyen/adyen-web'
-import { AdyenProviderOptions, AdyenInitializeOptions, AdyenCheckoutOptions, Provider } from '../types'
 import CardElement from '@adyen/adyen-web/dist/types/components/Card'
-import { Payment } from '../../../demand-api/dist/index'
+import { Payment } from '@karhoo/demand-api'
+
+import { AdyenProviderOptions, AdyenCheckoutOptions, Provider } from '../types'
 
 import { defaultAdyenOptions } from '../constants'
 
@@ -11,15 +12,27 @@ export class AdyenProvider implements Provider {
   private cardElement?: CardElement
 
   private options: AdyenProviderOptions
-  private checkoutOptions?: AdyenCheckoutOptions
+  private checkoutOptions: AdyenCheckoutOptions
 
   constructor(paymentService: Payment, options: AdyenProviderOptions, isTestEnv = true) {
     this.paymentService = paymentService
 
+    const environment = isTestEnv ? 'test' : 'live'
+
     this.options = {
       ...defaultAdyenOptions,
-      environment: isTestEnv ? 'test' : 'live',
       ...options,
+    }
+
+    this.checkoutOptions = {
+      clientKey: this.options.clientKey,
+      locale: this.options.locale || 'en',
+      environment,
+      amount: {
+        value: options.price,
+        currency: options.currencyCode,
+      },
+      channel: 'Web',
     }
   }
 
@@ -27,18 +40,7 @@ export class AdyenProvider implements Provider {
     this.isFormValid = isValid
   }
 
-  async initialize(options: AdyenInitializeOptions) {
-    this.checkoutOptions = {
-      clientKey: options.clientKey,
-      locale: options.locale || 'en',
-      environment: this.options.environment,
-      amount: {
-        value: options.price,
-        currency: options.currencyCode,
-      },
-      channel: 'Web',
-    }
-
+  async initialize() {
     const paymentMethodsResponse = await this.paymentService.getAdyenPaymentMethods({
       amount: this.checkoutOptions.amount,
       shopperLocale: this.checkoutOptions.locale,
