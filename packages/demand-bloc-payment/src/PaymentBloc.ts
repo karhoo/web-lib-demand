@@ -1,3 +1,5 @@
+import { Payment, PaymentProvidersResponse, ProviderId } from '@karhoo/demand-api'
+
 import {
   Provider,
   PaymentOptions,
@@ -11,22 +13,42 @@ import {
 import { creditCardType, defaultPaymentOptions, errors } from './constants'
 import { getCancellablePromise, CancellablePromise } from './utils'
 
+export type PaymentProvidersMap = {
+  [id in ProviderId]: Provider
+}
+
+type PaymentBlocProps = {
+  providers: PaymentProvidersMap
+  paymentService: Payment
+  options?: PaymentOptions
+  cardsInfo?: CardsInfo
+}
+
 export class PaymentBloc {
   private provider: Provider
-
   private cardsInfo?: CardsInfo
-
   private options: PaymentOptions
 
   private pendingInitialisation?: CancellablePromise<[void, CardInfo[] | null]>
 
-  constructor(provider: Provider, options: PaymentOptions = defaultPaymentOptions, cardsInfo?: CardsInfo) {
+  private constructor(provider: Provider, options: PaymentOptions, cardsInfo?: CardsInfo) {
     this.provider = provider
     this.options = options
 
     if (this.options.paymentCardsEnabled) {
       this.cardsInfo = cardsInfo
     }
+  }
+
+  static async create({
+    providers,
+    paymentService,
+    options = defaultPaymentOptions,
+    cardsInfo,
+  }: PaymentBlocProps) {
+    const providerResponse = await fetchPaymentProvider(paymentService)
+    const provider = getPaymentProvider(providers, providerResponse)
+    return new PaymentBloc(provider, options, cardsInfo)
   }
 
   async initPayment(payer?: Payer) {
@@ -47,7 +69,6 @@ export class PaymentBloc {
     )
 
     const [, cards] = await this.pendingInitialisation.promise
-
     if (payer && cards) {
       this.cardsInfo?.setPaymentCards(cards, payer)
     }
@@ -110,4 +131,25 @@ export class PaymentBloc {
       return { ok: false, error }
     }
   }
+}
+
+export const fetchPaymentProvider = async (paymentService: Payment) => {
+  const response = await paymentService.getPaymentProvider()
+  if (!response.ok) {
+    throw new Error('Cannot fetch payment provider')
+  }
+
+  return response.body
+}
+
+export const getPaymentProvider = (
+  providers: PaymentProvidersMap,
+  paymentProviderResponse: PaymentProvidersResponse
+) => {
+  const targetId = paymentProviderResponse.provider?.id ?? ''
+  const found = Object.entries(providers).find(([id]) => id === targetId)
+  if (!found) throw new Error('Unknown payment provider')
+
+  const [_, provider] = found
+  return provider
 }

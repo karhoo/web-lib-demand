@@ -15,6 +15,11 @@ import {
   getAddPaymentCardMock,
   getPaymentCreateClientTokenMock,
   getPaymentGetClientNonceMock,
+  getPaymentProviderMock,
+  getAdyenOriginKeyMock,
+  getAdyenPaymentMethodsMock,
+  getCreateAdyenPaymentAuthMock,
+  getAdyenPaymentDetailsMock,
 } from './payment/testMocks'
 import { getFinalFareMock } from './fare/testMocks'
 
@@ -43,9 +48,16 @@ export const getApiMock = () => {
   const mockQuoteSearchById = getQuotesSearchByIdMock()
   const mockQuoteV2SearchById = getQuotesV2SearchByIdMock()
   const mockQuotesV2Coverage = getQuotesV2CheckCoverageMock()
+
   const mockAddPaymentCard = getAddPaymentCardMock()
   const mockPaymentCreateClientToken = getPaymentCreateClientTokenMock()
   const mockPaymentGetClientNonce = getPaymentGetClientNonceMock()
+  const mockGetPaymentProvider = getPaymentProviderMock()
+  const mockGetAdyenOriginKey = getAdyenOriginKeyMock()
+  const mockGetAdyenPaymentMethods = getAdyenPaymentMethodsMock()
+  const mockCreateAdyenPaymentAuth = getCreateAdyenPaymentAuthMock()
+  const mockGetAdyenPaymentDetails = getAdyenPaymentDetailsMock()
+
   const mockFinalFare = getFinalFareMock()
 
   return {
@@ -68,9 +80,17 @@ export const getApiMock = () => {
       checkCoverage: mockQuotesV2Coverage,
     },
     paymentService: {
+      createClientToken: mockPaymentCreateClientToken,
+      getClientNonce: mockPaymentGetClientNonce,
+      addPaymentCard: mockAddPaymentCard,
       createBraintreeClientToken: mockPaymentCreateClientToken,
       getBraintreeClientNonce: mockPaymentGetClientNonce,
       addBraintreePaymentCard: mockAddPaymentCard,
+      getPaymentProvider: mockGetPaymentProvider,
+      getAdyenOriginKey: mockGetAdyenOriginKey,
+      getAdyenPaymentMethods: mockGetAdyenPaymentMethods,
+      createAdyenPaymentAuth: mockCreateAdyenPaymentAuth,
+      getAdyenPaymentDetails: mockGetAdyenPaymentDetails,
     },
     fareService: {
       status: mockFinalFare,

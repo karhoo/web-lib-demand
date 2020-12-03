@@ -1,7 +1,15 @@
 import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from '../http/types'
 import { errorCodes } from '../responseCodes'
 
-import { CreateTokenResponse, ClientNonceResponse } from './types'
+import {
+  CreateTokenResponse,
+  ClientNonceResponse,
+  PaymentProvidersResponse,
+  OriginKeyResponse,
+  PaymentMethodsResponse,
+  PaymentAuthResponse,
+  ProviderId,
+} from './types'
 
 const clientNonceResponse = {
   card_type: 'cardType',
@@ -65,3 +73,53 @@ export const getMockedPaymentGetClientNonceResponse = (
 export const getMockedErrorPaymentGetClientNonceResponse = getErrorResponse('Get client nonce')
 
 export const getPaymentGetClientNonceMock = getMock(getMockedPaymentGetClientNonceResponse)
+
+export const paymentProviderIdBeingUsed: ProviderId = 'Braintree'
+
+export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    provider: {
+      id: paymentProviderIdBeingUsed,
+    },
+  },
+})
+
+export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
+
+export const getMockedAdyenOriginKeyResponse = (): HttpResponseOk<OriginKeyResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    originKey: 'origin-key',
+  },
+})
+
+export const getAdyenOriginKeyMock = getMock(getMockedAdyenOriginKeyResponse)
+
+export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
+  ok: true,
+  status: 200,
+  body: {},
+})
+
+export const getAdyenPaymentMethodsMock = getMock(getMockedAdyenPaymentMethodsResponse)
+
+export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthResponse> => ({
+  ok: true,
+  status: 200,
+  body: {
+    transaction_id: 'transaction_id',
+  },
+})
+
+export const getCreateAdyenPaymentAuthMock = getMock(getMockedPaymentAuthResponse)
+
+export const getMockedAdyenPaymentDetailsResponse = (): HttpResponseOk<object> => ({
+  ok: true,
+  status: 200,
+  body: {},
+})
+
+export const getAdyenPaymentDetailsMock = getMock(getMockedAdyenPaymentDetailsResponse)
