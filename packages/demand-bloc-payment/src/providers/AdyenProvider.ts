@@ -1,5 +1,6 @@
 import AdyenCheckout from '@adyen/adyen-web'
 import CardElement from '@adyen/adyen-web/dist/types/components/Card'
+import '@adyen/adyen-web/dist/adyen.css'
 import { Payment } from '@karhoo/demand-api'
 
 import { AdyenProviderOptions, AdyenCheckoutOptions, Provider } from '../types'
@@ -15,6 +16,8 @@ export class AdyenProvider implements Provider {
   private checkoutOptions: AdyenCheckoutOptions
 
   constructor(paymentService: Payment, options: AdyenProviderOptions, isTestEnv = true) {
+    this.setValidationStatus = this.setValidationStatus.bind(this)
+    this.validatePaymentForm = this.validatePaymentForm.bind(this)
     this.paymentService = paymentService
 
     const environment = isTestEnv ? 'test' : 'live'
