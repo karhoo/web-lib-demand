@@ -17,6 +17,13 @@ export type Payer = {
 }
 
 type TokenizePayload = string[]
+export type ThreeDSecureVerifyResponse = ThreeDSecureVerifyPayload & { type?: string }
+
+export type CompleteThreeDSecureVerificationParams = {
+  nonce: string
+  MD: string
+  PaRes: string
+}
 
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
@@ -24,10 +31,8 @@ export type Provider = {
   dispose(): Promise<void> | void
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
-  verifyWithThreeDSecure(
-    amount: number,
-    nonce: string
-  ): Promise<ThreeDSecureVerifyPayload & { type?: string }>
+  completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
+  startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
 }
@@ -40,6 +45,7 @@ export type CardsInfo = {
 
 export type PaymentOptions = {
   paymentCardsEnabled: boolean
+  preselectProvider?: string
 }
 
 export type VerifyCardError = {

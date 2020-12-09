@@ -112,7 +112,8 @@ export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthRespon
   ok: true,
   status: 200,
   body: {
-    transaction_id: 'transaction_id',
+    trip_id: 'trip_id',
+    payload: {},
   },
 })
 

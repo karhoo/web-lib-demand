@@ -11,6 +11,7 @@ import {
   errors,
 } from './braintreeConstants'
 import { getCancellablePromise, CancellablePromise } from '../utils'
+import { creditCardType, errors as paymentErrors } from '../constants'
 
 type PendingInitialisation =
   | CancellablePromise<string>
@@ -159,7 +160,11 @@ export class BraintreeProvider implements Provider {
     return Object.keys(fields).every(fieldName => fields[fieldName].isValid)
   }
 
-  verifyWithThreeDSecure(amount: number, nonce: string) {
+  completeThreeDSecureVerification() {
+    return Promise.resolve('')
+  }
+
+  async startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error> {
     const {
       threeDSecure,
       options: {
@@ -179,7 +184,7 @@ export class BraintreeProvider implements Provider {
 
     const { iframeContainerId, loadingId, processingId } = threeDSecureFields
 
-    return threeDSecure.verifyCard({
+    const verifyPromise = threeDSecure.verifyCard({
       amount,
       nonce,
       addFrame(err, iframe) {
@@ -222,6 +227,16 @@ export class BraintreeProvider implements Provider {
 
         onRemoveThreeDSecureFrame?.()
       },
+    })
+
+    return new Promise((resolve, reject) => {
+      verifyPromise.then(response => {
+        if (response.liabilityShifted || response.type !== creditCardType) {
+          resolve(nonce)
+        } else {
+          reject(new Error(paymentErrors.verifyCardError))
+        }
+      })
     })
   }
 

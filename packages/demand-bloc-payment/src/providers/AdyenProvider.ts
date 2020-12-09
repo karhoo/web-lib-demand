@@ -3,9 +3,15 @@ import CardElement from '@adyen/adyen-web/dist/types/components/Card'
 import '@adyen/adyen-web/dist/adyen.css'
 import { Payment } from '@karhoo/demand-api'
 
-import { AdyenProviderOptions, AdyenCheckoutOptions, Provider } from '../types'
+import {
+  AdyenProviderOptions,
+  AdyenCheckoutOptions,
+  Provider,
+  CompleteThreeDSecureVerificationParams,
+} from '../types'
 
 import { defaultAdyenOptions } from '../constants'
+import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 
 export class AdyenProvider implements Provider {
   private paymentService: Payment
@@ -14,6 +20,7 @@ export class AdyenProvider implements Provider {
 
   private options: AdyenProviderOptions
   private checkoutOptions: AdyenCheckoutOptions
+  private action: PaymentAction | null = null
 
   constructor(paymentService: Payment, options: AdyenProviderOptions, isTestEnv = true) {
     this.setValidationStatus = this.setValidationStatus.bind(this)
@@ -37,6 +44,22 @@ export class AdyenProvider implements Provider {
       },
       channel: 'Web',
     }
+  }
+
+  set paymentData(value: string) {
+    sessionStorage.setItem('paymentData', value)
+  }
+
+  get paymentData() {
+    return sessionStorage.getItem('paymentData') || ''
+  }
+
+  set paymentAction(value: PaymentAction | null) {
+    this.action = value
+  }
+
+  get paymentAction() {
+    return this.action
   }
 
   private setValidationStatus({ isValid }: { isValid: boolean }) {
@@ -68,15 +91,22 @@ export class AdyenProvider implements Provider {
       payments_payload: {
         ...this.checkoutOptions,
         ...this.cardElement?.data,
+        redirectFromIssuerMethod: 'get',
       },
-      return_url_suffix: '/paymentDetails',
+      return_url_suffix: '/card-callback',
     })
 
     if (!makePaymentResponse.ok) {
       throw new Error('Failed to create a payment')
     }
 
-    return ['meta.trip_id', makePaymentResponse.body.transaction_id]
+    this.paymentData = makePaymentResponse.body.payload.action?.paymentData || ''
+
+    if (makePaymentResponse.body.payload.action) {
+      this.paymentAction = makePaymentResponse.body.payload.action
+    }
+
+    return ['meta.trip_id', makePaymentResponse.body.trip_id]
   }
 
   validatePaymentForm() {
@@ -89,18 +119,36 @@ export class AdyenProvider implements Provider {
     this.isFormValid = false
   }
 
-  verifyWithThreeDSecure() {
-    return Promise.resolve({
-      type: 'not implemented',
-      nonce: 'not implemented',
-      details: {
-        cardType: 'not implemented',
-        lastTwo: '22',
+  startThreeDSecureVerification() {
+    const { paymentAction } = this
+
+    if (paymentAction) {
+      this.paymentAction = null
+      this.cardElement?.handleAction(paymentAction)
+    }
+
+    return Promise.resolve('')
+  }
+
+  async completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams) {
+    if (!params) {
+      return new Error('Missing required params to complete 3d secure')
+    }
+
+    const { MD, PaRes, nonce } = params
+
+    await this.paymentService.getAdyenPaymentDetails({
+      payments_payload: {
+        paymentData: this.paymentData,
+        details: {
+          MD,
+          PaRes,
+        },
       },
-      description: 'not implemented',
-      liabilityShiftPossible: false,
-      liabilityShifted: false,
+      trip_id: nonce,
     })
+
+    return nonce
   }
 
   getSavedCards() {
