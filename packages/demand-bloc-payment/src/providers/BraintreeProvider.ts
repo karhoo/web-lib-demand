@@ -164,7 +164,7 @@ export class BraintreeProvider implements Provider {
     return Promise.resolve('')
   }
 
-  async startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error> {
+  verifyCard(amount: number, nonce: string) {
     const {
       threeDSecure,
       options: {
@@ -184,7 +184,7 @@ export class BraintreeProvider implements Provider {
 
     const { iframeContainerId, loadingId, processingId } = threeDSecureFields
 
-    const verifyPromise = threeDSecure.verifyCard({
+    return threeDSecure.verifyCard({
       amount,
       nonce,
       addFrame(err, iframe) {
@@ -228,6 +228,10 @@ export class BraintreeProvider implements Provider {
         onRemoveThreeDSecureFrame?.()
       },
     })
+  }
+
+  async startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error> {
+    const verifyPromise = this.verifyCard(amount, nonce)
 
     return new Promise((resolve, reject) => {
       verifyPromise.then(response => {

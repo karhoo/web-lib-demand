@@ -1,6 +1,5 @@
 import AdyenCheckout from '@adyen/adyen-web'
 import CardElement from '@adyen/adyen-web/dist/types/components/Card'
-import '@adyen/adyen-web/dist/adyen.css'
 import { Payment } from '@karhoo/demand-api'
 
 import {

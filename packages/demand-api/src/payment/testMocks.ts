@@ -10,6 +10,7 @@ import {
   PaymentAuthResponse,
   ProviderId,
 } from './types'
+import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 
 const clientNonceResponse = {
   card_type: 'cardType',
@@ -113,7 +114,12 @@ export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthRespon
   status: 200,
   body: {
     trip_id: 'trip_id',
-    payload: {},
+    payload: {
+      action: {
+        paymentData: 'paymentData',
+        type: 'redirect',
+      } as PaymentAction,
+    },
   },
 })
 
