@@ -210,6 +210,13 @@ describe('PaymentService', () => {
     it('should call post of http', () => {
       const params = {
         trip_id: 'trip_id',
+        payments_payload: {
+          paymentData: 'paymentData',
+          details: {
+            MD: 'MD',
+            PaRes: 'PaRes',
+          },
+        },
       }
 
       new PaymentService(http).getAdyenPaymentDetails(params)
