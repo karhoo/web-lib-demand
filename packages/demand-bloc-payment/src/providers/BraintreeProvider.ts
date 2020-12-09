@@ -11,7 +11,7 @@ import {
   errors,
 } from './braintreeConstants'
 import { getCancellablePromise, CancellablePromise } from '../utils'
-import { creditCardType, errors as paymentErrors } from '../constants'
+import { errors as paymentErrors } from '../constants'
 
 type PendingInitialisation =
   | CancellablePromise<string>
@@ -231,7 +231,7 @@ export class BraintreeProvider implements Provider {
 
     return new Promise((resolve, reject) => {
       verifyPromise.then(response => {
-        if (response.liabilityShifted || response.type !== creditCardType) {
+        if (response.liabilityShifted) {
           resolve(nonce)
         } else {
           reject(new Error(paymentErrors.verifyCardError))
