@@ -276,4 +276,11 @@ export class BraintreeProvider implements Provider {
       },
     ]
   }
+
+  getPaymentProviderProps() {
+    return {
+      className: 'braintreePsp',
+      usePaymentModal: true,
+    }
+  }
 }

@@ -25,6 +25,11 @@ export type CompleteThreeDSecureVerificationParams = {
   PaRes: string
 }
 
+type PaymentProviderProps = {
+  className?: string
+  usePaymentModal?: boolean
+}
+
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
   initialize(): Promise<void> | void
@@ -35,6 +40,7 @@ export type Provider = {
   startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
+  getPaymentProviderProps(): PaymentProviderProps
 }
 
 export type CardsInfo = {

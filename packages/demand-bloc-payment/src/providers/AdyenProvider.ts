@@ -157,4 +157,10 @@ export class AdyenProvider implements Provider {
   saveCard() {
     throw new Error('Not implemented')
   }
+
+  getPaymentProviderProps() {
+    return {
+      className: 'adyenPsp',
+    }
+  }
 }

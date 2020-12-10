@@ -146,6 +146,10 @@ export class PaymentBloc {
       return { ok: false, error }
     }
   }
+
+  getPaymentProviderProps() {
+    return this.provider.getPaymentProviderProps()
+  }
 }
 
 export const fetchPaymentProvider = async (paymentService: Payment) => {
