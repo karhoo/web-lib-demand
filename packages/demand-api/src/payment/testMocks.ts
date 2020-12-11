@@ -6,7 +6,7 @@ import {
   CreateTokenResponse,
   ClientNonceResponse,
   PaymentProvidersResponse,
-  OriginKeyResponse,
+  ClientKeyResponse,
   PaymentAuthResponse,
   ProviderId,
 } from './types'
@@ -89,15 +89,15 @@ export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvid
 
 export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
 
-export const getMockedAdyenOriginKeyResponse = (): HttpResponseOk<OriginKeyResponse> => ({
+export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyResponse> => ({
   ok: true,
   status: 200,
   body: {
-    originKey: 'origin-key',
+    clientKey: 'origin-key',
   },
 })
 
-export const getAdyenOriginKeyMock = getMock(getMockedAdyenOriginKeyResponse)
+export const getAdyenClientKeyMock = getMock(getMockedAdyenClientKeyResponse)
 
 export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
   ok: true,

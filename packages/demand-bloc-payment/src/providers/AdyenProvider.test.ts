@@ -3,6 +3,7 @@ import {
   getAdyenPaymentMethodsMock,
   getCreateAdyenPaymentAuthMock,
   getMockedPaymentAuthResponse,
+  getAdyenClientKeyMock,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import { AdyenProvider } from './AdyenProvider'
@@ -34,7 +35,7 @@ describe('AdyenProvider', () => {
     getBraintreeClientNonce: jest.fn(),
     addBraintreePaymentCard: getAddPaymentCardMock(),
     getPaymentProvider: jest.fn(),
-    getAdyenOriginKey: jest.fn(),
+    getAdyenClientKey: getAdyenClientKeyMock(),
     getAdyenPaymentMethods: getAdyenPaymentMethodsMock(),
     createAdyenPaymentAuth: getCreateAdyenPaymentAuthMock(),
     getAdyenPaymentDetails: jest.fn(),
@@ -43,8 +44,8 @@ describe('AdyenProvider', () => {
   let provider: AdyenProvider
 
   const checkoutOptions = {
-    clientKey: 'clientKey',
     dropinContainerId: 'card-container',
+    returnUrl: '/callback',
     price: amount,
     currencyCode,
   }
@@ -55,7 +56,6 @@ describe('AdyenProvider', () => {
       value: 1000,
     },
     channel: 'Web',
-    clientKey: 'clientKey',
     environment: 'test',
     locale: 'en',
   }
@@ -91,6 +91,18 @@ describe('AdyenProvider', () => {
         expect(error).toEqual(new Error('No payment methods received'))
       }
     })
+
+    it('should emit an error if there is no client key', async () => {
+      paymentService.getAdyenClientKey.mockImplementationOnce(() =>
+        Promise.resolve({ ok: false, status: 404, error: { message: 'Test error' } })
+      )
+
+      try {
+        await provider.initialize()
+      } catch (error) {
+        expect(error).toEqual(new Error('No client key received'))
+      }
+    })
   })
 
   describe('paymentData', () => {
@@ -110,7 +122,7 @@ describe('AdyenProvider', () => {
           ...adyenCheckoutOptions,
           ...cardElement.data,
         },
-        return_url_suffix: '/card-callback',
+        return_url_suffix: '/callback',
       })
     })
 
@@ -128,7 +140,7 @@ describe('AdyenProvider', () => {
           ...cardElement.data,
           environment: 'live',
         },
-        return_url_suffix: '/card-callback',
+        return_url_suffix: '/callback',
       })
     })
 
@@ -210,6 +222,12 @@ describe('AdyenProvider', () => {
       } catch (error) {
         expect(error).toEqual(new Error('Missing required params to complete 3d secure'))
       }
+    })
+  })
+
+  describe('getPaymentProviderProps', () => {
+    it('should return class prop', () => {
+      expect(provider.getPaymentProviderProps().class).toEqual('adyenPsp')
     })
   })
 })

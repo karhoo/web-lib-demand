@@ -53,8 +53,8 @@ export type PaymentProvidersResponse = {
   loyalty_programmes?: LoyaltyProgrammes[]
 }
 
-export type OriginKeyResponse = {
-  originKey: string
+export type ClientKeyResponse = {
+  clientKey: string
 }
 
 export type PaymentMethodsParams = {
@@ -98,7 +98,7 @@ export interface Payment {
   getBraintreeClientNonce(params: ClientNonceParams): Promise<HttpResponse<ClientNonceResponse>>
   addBraintreePaymentCard(params: AddPaymentCardParams): Promise<HttpResponse<ClientNonceResponse>>
   getPaymentProvider(): Promise<HttpResponse<PaymentProvidersResponse>>
-  getAdyenOriginKey(): Promise<HttpResponse<OriginKeyResponse>>
+  getAdyenClientKey(): Promise<HttpResponse<ClientKeyResponse>>
   getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<object>>

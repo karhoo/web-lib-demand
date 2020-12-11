@@ -55,7 +55,7 @@ describe('BraintreeProvider', () => {
     }),
     addBraintreePaymentCard: getAddPaymentCardMock(),
     getPaymentProvider: jest.fn(),
-    getAdyenOriginKey: jest.fn(),
+    getAdyenClientKey: jest.fn(),
     getAdyenPaymentMethods: jest.fn(),
     createAdyenPaymentAuth: jest.fn(),
     getAdyenPaymentDetails: jest.fn(),
@@ -395,6 +395,19 @@ describe('BraintreeProvider', () => {
       const data = await provider.getSavedCards(payer)
 
       expect(data).toEqual([])
+    })
+  })
+
+  describe('getPaymentProviderProps', () => {
+    let provider: BraintreeProvider
+
+    beforeEach(async () => {
+      provider = new BraintreeProvider(paymentService, { organisationId, currencyCode, logger })
+    })
+
+    it('should return correct props', () => {
+      expect(provider.getPaymentProviderProps().class).toEqual('braintreePsp')
+      expect(provider.getPaymentProviderProps().usePaymentModal).toEqual(true)
     })
   })
 

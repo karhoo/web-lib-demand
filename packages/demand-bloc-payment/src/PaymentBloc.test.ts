@@ -47,6 +47,7 @@ describe('PaymentBloc', () => {
     completeThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
     saveCard: getAddPaymentCardMock(),
+    getPaymentProviderProps: jest.fn(),
   }
 
   const adyenProvider = {
@@ -57,6 +58,7 @@ describe('PaymentBloc', () => {
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
     completeThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
+    getPaymentProviderProps: jest.fn(),
     saveCard: getAddPaymentCardMock(),
   }
 

@@ -152,10 +152,10 @@ describe('PaymentService', () => {
 
   describe('getOriginKey', () => {
     it('should call get of http', () => {
-      new PaymentService(http).getAdyenOriginKey()
+      new PaymentService(http).getAdyenClientKey()
 
       expect(http.get).toHaveBeenCalledTimes(1)
-      expect(http.get).toHaveBeenCalledWith('v3/payments/adyen/origin-keys')
+      expect(http.get).toHaveBeenCalledWith('v3/payments/adyen/client-key')
     })
   })
 

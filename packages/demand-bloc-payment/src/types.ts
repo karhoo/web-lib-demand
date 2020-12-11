@@ -26,7 +26,7 @@ export type CompleteThreeDSecureVerificationParams = {
 }
 
 type PaymentProviderProps = {
-  className?: string
+  class?: string
   usePaymentModal?: boolean
 }
 
@@ -113,14 +113,13 @@ export type AdyenProviderOptions = {
   dropinContainerId: string
   withThreeDSecure?: boolean
   environment?: 'test' | 'live'
-  clientKey: string
   price: number
   currencyCode: string
+  returnUrl: string
   locale?: string
 }
 
 export type AdyenCheckoutOptions = {
-  clientKey: string
   amount: {
     value: number
     currency: string

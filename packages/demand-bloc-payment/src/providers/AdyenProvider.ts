@@ -34,7 +34,6 @@ export class AdyenProvider implements Provider {
     }
 
     this.checkoutOptions = {
-      clientKey: this.options.clientKey,
       locale: this.options.locale || 'en',
       environment,
       amount: {
@@ -66,17 +65,26 @@ export class AdyenProvider implements Provider {
   }
 
   async initialize() {
-    const paymentMethodsResponse = await this.paymentService.getAdyenPaymentMethods({
+    const paymentMethodsReq = this.paymentService.getAdyenPaymentMethods({
       amount: this.checkoutOptions.amount,
       shopperLocale: this.checkoutOptions.locale,
     })
+
+    const clientKeyReq = this.paymentService.getAdyenClientKey()
+
+    const [paymentMethodsResponse, clientKeyResponse] = await Promise.all([paymentMethodsReq, clientKeyReq])
 
     if (!paymentMethodsResponse.ok) {
       throw new Error('No payment methods received')
     }
 
+    if (!clientKeyResponse.ok) {
+      throw new Error('No client key received')
+    }
+
     const checkout = new AdyenCheckout({
       ...this.checkoutOptions,
+      clientKey: clientKeyResponse.body.clientKey,
       paymentMethodsResponse: paymentMethodsResponse.body,
       onChange: this.setValidationStatus,
       showPayButton: false,
@@ -92,7 +100,7 @@ export class AdyenProvider implements Provider {
         ...this.cardElement?.data,
         redirectFromIssuerMethod: 'get',
       },
-      return_url_suffix: '/card-callback',
+      return_url_suffix: this.options.returnUrl,
     })
 
     if (!makePaymentResponse.ok) {
@@ -160,7 +168,7 @@ export class AdyenProvider implements Provider {
 
   getPaymentProviderProps() {
     return {
-      className: 'adyenPsp',
+      class: 'adyenPsp',
     }
   }
 }
