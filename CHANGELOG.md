@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.1](https://github.com/karhoo/web-lib-demand/compare/v11.0.0...v11.0.1) (2020-12-14)
+
+
+### Bug Fixes
+
+* braintree nonce after 3d secure ([8983459](https://github.com/karhoo/web-lib-demand/commit/89834590567148d79f8c7fdee2ea65020502365d))
+
+
+
+
+
 # [11.0.0](https://github.com/karhoo/web-lib-demand/compare/v10.6.1...v11.0.0) (2020-12-14)
 
 
