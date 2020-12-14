@@ -1,5 +1,5 @@
 import braintree, { Client, ThreeDSecure, HostedFields } from 'braintree-web'
-import { Payment } from '../../../demand-api/dist/index'
+import { Payment } from '@karhoo/demand-api'
 
 import { BraintreeProviderOptions, FullBraintreeProviderOptions, Provider, Payer } from '../types'
 import {
@@ -11,6 +11,7 @@ import {
   errors,
 } from './braintreeConstants'
 import { getCancellablePromise, CancellablePromise } from '../utils'
+import { errors as paymentErrors } from '../constants'
 
 type PendingInitialisation =
   | CancellablePromise<string>
@@ -105,10 +106,14 @@ export class BraintreeProvider implements Provider {
     })
   }
 
-  tokenizeHostedFields() {
-    return this.hostedFields
-      ? this.hostedFields.tokenize()
-      : Promise.reject(new Error(errors.hostedFieldsNotInitialized))
+  async tokenizeHostedFields() {
+    if (!this.hostedFields) {
+      return Promise.reject(new Error(errors.hostedFieldsNotInitialized))
+    }
+
+    const { nonce } = await this.hostedFields.tokenize()
+
+    return ['payment_nonce', nonce]
   }
 
   private async teardownBraintreeInstance(instance?: Client | HostedFields | ThreeDSecure) {
@@ -155,7 +160,11 @@ export class BraintreeProvider implements Provider {
     return Object.keys(fields).every(fieldName => fields[fieldName].isValid)
   }
 
-  verifyWithThreeDSecure(amount: number, nonce: string) {
+  completeThreeDSecureVerification() {
+    return Promise.resolve('')
+  }
+
+  verifyCard(amount: number, nonce: string) {
     const {
       threeDSecure,
       options: {
@@ -221,6 +230,20 @@ export class BraintreeProvider implements Provider {
     })
   }
 
+  async startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error> {
+    const verifyPromise = this.verifyCard(amount, nonce)
+
+    return new Promise((resolve, reject) => {
+      verifyPromise.then(response => {
+        if (response.liabilityShifted) {
+          resolve(nonce)
+        } else {
+          reject(new Error(paymentErrors.verifyCardError))
+        }
+      })
+    })
+  }
+
   async saveCard(nonce: string, payer: Payer) {
     const response = await this.paymentService.addBraintreePaymentCard({
       organisation_id: this.options.organisationId,
@@ -252,5 +275,12 @@ export class BraintreeProvider implements Provider {
         nonce,
       },
     ]
+  }
+
+  getPaymentProviderProps() {
+    return {
+      class: 'braintreePsp',
+      usePaymentModal: true,
+    }
   }
 }

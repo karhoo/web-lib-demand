@@ -18,7 +18,9 @@ import {
 
 import { BraintreeProvider, toogleClass } from './BraintreeProvider'
 
-describe('PaymentBloc', () => {
+const amount = 10
+
+describe('BraintreeProvider', () => {
   const organisationId = 'organisationId'
   const currencyCode = 'currencyCode'
   const token = 'token'
@@ -53,7 +55,7 @@ describe('PaymentBloc', () => {
     }),
     addBraintreePaymentCard: getAddPaymentCardMock(),
     getPaymentProvider: jest.fn(),
-    getAdyenOriginKey: jest.fn(),
+    getAdyenClientKey: jest.fn(),
     getAdyenPaymentMethods: jest.fn(),
     createAdyenPaymentAuth: jest.fn(),
     getAdyenPaymentDetails: jest.fn(),
@@ -70,7 +72,7 @@ describe('PaymentBloc', () => {
 
   const hostedFields = {
     teardown: jest.fn(),
-    tokenize: jest.fn(),
+    tokenize: jest.fn(() => Promise.resolve({ nonce: 'test_nonce' })),
     on: jest.fn(),
     getState: jest.fn(),
   }
@@ -396,8 +398,52 @@ describe('PaymentBloc', () => {
     })
   })
 
-  describe('verifyWithThreeDSecure', () => {
-    const amount = 10
+  describe('getPaymentProviderProps', () => {
+    let provider: BraintreeProvider
+
+    beforeEach(async () => {
+      provider = new BraintreeProvider(paymentService, { organisationId, currencyCode, logger })
+    })
+
+    it('should return correct props', () => {
+      expect(provider.getPaymentProviderProps().class).toEqual('braintreePsp')
+      expect(provider.getPaymentProviderProps().usePaymentModal).toEqual(true)
+    })
+  })
+
+  describe('startThreeDSecureVerification', () => {
+    let provider: BraintreeProvider
+
+    const verifyCardMockResponse = {
+      liabilityShifted: true,
+      nonce: '',
+      details: {},
+      description: '',
+      liabilityShiftPossible: true,
+    }
+
+    beforeEach(async () => {
+      provider = new BraintreeProvider(paymentService, { organisationId, currencyCode, logger })
+
+      threeDSecure.verifyCard.mockImplementationOnce(() => Promise.resolve(verifyCardMockResponse))
+
+      await provider.initialize()
+    })
+
+    it('should call verifyCard of threeDSecure', async () => {
+      await provider.startThreeDSecureVerification(amount, nonce)
+
+      expect(threeDSecure.verifyCard).toBeCalledTimes(1)
+      expect(threeDSecure.verifyCard).toBeCalledWith({
+        amount,
+        nonce,
+        addFrame: expect.any(Function),
+        removeFrame: expect.any(Function),
+      })
+    })
+  })
+
+  describe('verifyCard', () => {
     let provider: BraintreeProvider
 
     beforeEach(async () => {
@@ -408,25 +454,15 @@ describe('PaymentBloc', () => {
       await provider.initialize()
     })
 
-    it('should call verifyCard of threeDSecure', async () => {
-      await provider.verifyWithThreeDSecure(amount, nonce)
-
-      expect(threeDSecure.verifyCard).toBeCalledTimes(1)
-      expect(threeDSecure.verifyCard).toBeCalledWith({
-        amount,
-        nonce,
-        addFrame: expect.any(Function),
-        removeFrame: expect.any(Function),
-      })
-    })
-
     it('should update DOM when removeFrame is called', async () => {
       const removeChildSpy = jest.fn()
       const firstChild = { fisrtChild: 'firstChild' }
       const containerStyle = {}
       const processingStyle = {}
 
-      const { removeFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      threeDSecure.verifyCard.mockImplementationOnce(a => a)
+
+      const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -457,7 +493,7 @@ describe('PaymentBloc', () => {
       const removeChildSpy = jest.fn()
       const containerStyle = {}
 
-      const { removeFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       jest.spyOn(document, 'getElementById').mockImplementationOnce(
         () =>
@@ -473,7 +509,7 @@ describe('PaymentBloc', () => {
     })
 
     it('should not throw error when there is no elements and removeFrame is called', async () => {
-      const { removeFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -496,7 +532,7 @@ describe('PaymentBloc', () => {
 
       await activeProvider.initialize()
 
-      const { removeFrame } = (await activeProvider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { removeFrame } = (await activeProvider.verifyCard(amount, nonce)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -510,7 +546,7 @@ describe('PaymentBloc', () => {
 
     it('should log error when addFrame is called', async () => {
       const error = new Error('test')
-      const { addFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       addFrame(error, {})
 
@@ -519,7 +555,7 @@ describe('PaymentBloc', () => {
     })
 
     it('should log error when addFrame is called without iframe', async () => {
-      const { addFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce({} as any)
 
@@ -532,7 +568,7 @@ describe('PaymentBloc', () => {
     })
 
     it('should log error when addFrame is called and there is no iframeContainerElement', async () => {
-      const { addFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce(null)
 
@@ -550,7 +586,7 @@ describe('PaymentBloc', () => {
       const containerStyle = {}
       const loadingStyle = {}
 
-      const { addFrame } = (await provider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -582,7 +618,7 @@ describe('PaymentBloc', () => {
 
       await braintreeProvider.initialize()
 
-      const { addFrame } = (await braintreeProvider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { addFrame } = (await braintreeProvider.verifyCard(amount, nonce)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce({
         appendChild: jest.fn(),
@@ -605,7 +641,7 @@ describe('PaymentBloc', () => {
 
       await braintreeProvider.initialize()
 
-      const { removeFrame } = (await braintreeProvider.verifyWithThreeDSecure(amount, nonce)) as any
+      const { removeFrame } = (await braintreeProvider.verifyCard(amount, nonce)) as any
 
       removeFrame()
 
@@ -614,7 +650,7 @@ describe('PaymentBloc', () => {
 
     it('should return rejected threeDSecureNotInitialized error', done => {
       new BraintreeProvider(paymentService, { organisationId, currencyCode })
-        .verifyWithThreeDSecure(amount, nonce)
+        .verifyCard(amount, nonce)
         .catch(error => {
           expect(error.message).toBe(errors.threeDSecureNotInitialized)
 
@@ -624,7 +660,7 @@ describe('PaymentBloc', () => {
 
     it('should return rejected threeDSecureOptionNotEnabled error', done => {
       new BraintreeProvider(paymentService, { organisationId, currencyCode, withThreeDSecure: false })
-        .verifyWithThreeDSecure(amount, nonce)
+        .verifyCard(amount, nonce)
         .catch(error => {
           expect(error.message).toBe(errors.threeDSecureOptionNotEnabled)
 
@@ -632,54 +668,54 @@ describe('PaymentBloc', () => {
         })
     })
   })
+})
 
-  describe('toggleClass', () => {
-    const fieldName = 'fieldName'
-    const className = 'test'
+describe('toggleClass', () => {
+  const fieldName = 'fieldName'
+  const className = 'test'
 
-    it('should not emit error if there is no element', () => {
-      jest.spyOn(document, 'querySelector').mockImplementationOnce(() => null)
+  it('should not emit error if there is no element', () => {
+    jest.spyOn(document, 'querySelector').mockImplementationOnce(() => null)
 
-      toogleClass(fieldName, true, className)
+    toogleClass(fieldName, true, className)
 
-      expect(document.querySelector).toBeCalledTimes(1)
-      expect(document.querySelector).toBeCalledWith(`#${fieldName}`)
-    })
+    expect(document.querySelector).toBeCalledTimes(1)
+    expect(document.querySelector).toBeCalledWith(`#${fieldName}`)
+  })
 
-    it('should call remove of classList', () => {
-      const classList = {
-        remove: jest.fn(),
-      }
+  it('should call remove of classList', () => {
+    const classList = {
+      remove: jest.fn(),
+    }
 
-      jest.spyOn(document, 'querySelector').mockImplementationOnce(
-        () =>
-          ({
-            classList,
-          } as any)
-      )
+    jest.spyOn(document, 'querySelector').mockImplementationOnce(
+      () =>
+        ({
+          classList,
+        } as any)
+    )
 
-      toogleClass(fieldName, true, className)
+    toogleClass(fieldName, true, className)
 
-      expect(classList.remove).toBeCalledTimes(1)
-      expect(classList.remove).toBeCalledWith(className)
-    })
+    expect(classList.remove).toBeCalledTimes(1)
+    expect(classList.remove).toBeCalledWith(className)
+  })
 
-    it('should call add of classList', () => {
-      const classList = {
-        add: jest.fn(),
-      }
+  it('should call add of classList', () => {
+    const classList = {
+      add: jest.fn(),
+    }
 
-      jest.spyOn(document, 'querySelector').mockImplementationOnce(
-        () =>
-          ({
-            classList,
-          } as any)
-      )
+    jest.spyOn(document, 'querySelector').mockImplementationOnce(
+      () =>
+        ({
+          classList,
+        } as any)
+    )
 
-      toogleClass(fieldName, false, className)
+    toogleClass(fieldName, false, className)
 
-      expect(classList.add).toBeCalledTimes(1)
-      expect(classList.add).toBeCalledWith(className)
-    })
+    expect(classList.add).toBeCalledTimes(1)
+    expect(classList.add).toBeCalledWith(className)
   })
 })

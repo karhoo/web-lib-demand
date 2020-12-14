@@ -1,3 +1,4 @@
+import { PaymentMethodsResponse } from './types'
 import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from '../http/types'
 import { errorCodes } from '../responseCodes'
 
@@ -5,11 +6,11 @@ import {
   CreateTokenResponse,
   ClientNonceResponse,
   PaymentProvidersResponse,
-  OriginKeyResponse,
-  PaymentMethodsResponse,
+  ClientKeyResponse,
   PaymentAuthResponse,
   ProviderId,
 } from './types'
+import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 
 const clientNonceResponse = {
   card_type: 'cardType',
@@ -88,20 +89,22 @@ export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvid
 
 export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
 
-export const getMockedAdyenOriginKeyResponse = (): HttpResponseOk<OriginKeyResponse> => ({
+export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyResponse> => ({
   ok: true,
   status: 200,
   body: {
-    originKey: 'origin-key',
+    clientKey: 'origin-key',
   },
 })
 
-export const getAdyenOriginKeyMock = getMock(getMockedAdyenOriginKeyResponse)
+export const getAdyenClientKeyMock = getMock(getMockedAdyenClientKeyResponse)
 
 export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
   ok: true,
   status: 200,
-  body: {},
+  body: {
+    paymentMethods: [],
+  },
 })
 
 export const getAdyenPaymentMethodsMock = getMock(getMockedAdyenPaymentMethodsResponse)
@@ -110,7 +113,13 @@ export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthRespon
   ok: true,
   status: 200,
   body: {
-    transaction_id: 'transaction_id',
+    trip_id: 'trip_id',
+    payload: {
+      action: {
+        paymentData: 'paymentData',
+        type: 'redirect',
+      } as PaymentAction,
+    },
   },
 })
 
