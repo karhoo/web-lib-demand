@@ -236,7 +236,7 @@ export class BraintreeProvider implements Provider {
     return new Promise((resolve, reject) => {
       verifyPromise.then(response => {
         if (response.liabilityShifted) {
-          resolve(nonce)
+          resolve(response.nonce)
         } else {
           reject(new Error(paymentErrors.verifyCardError))
         }
