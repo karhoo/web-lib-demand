@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.0.0](https://github.com/karhoo/web-lib-demand/compare/v10.6.1...v11.0.0) (2020-12-14)
+
+
+### Features
+
+* implement adyen provider ([#107](https://github.com/karhoo/web-lib-demand/issues/107)) ([f065d80](https://github.com/karhoo/web-lib-demand/commit/f065d8003abcbf64694681388eb7960535bb9a89))
+
+
+
+
+
 # [10.7.0](https://github.com/karhoo/web-lib-demand/compare/v10.6.1...v10.7.0) (2020-12-01)
 
 
