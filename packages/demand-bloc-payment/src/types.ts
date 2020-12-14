@@ -1,9 +1,4 @@
-import {
-  HostedFieldsTokenizePayload,
-  ThreeDSecureVerifyPayload,
-  HostedFieldFieldOptions,
-  BraintreeError,
-} from 'braintree-web'
+import { ThreeDSecureVerifyPayload, HostedFieldFieldOptions, BraintreeError } from 'braintree-web'
 
 import { HttpResponse, ClientNonceResponse } from '@karhoo/demand-api'
 
@@ -21,18 +16,31 @@ export type Payer = {
   last_name: string
 }
 
+type TokenizePayload = string[]
+export type ThreeDSecureVerifyResponse = ThreeDSecureVerifyPayload & { type?: string }
+
+export type CompleteThreeDSecureVerificationParams = {
+  nonce: string
+  MD: string
+  PaRes: string
+}
+
+type PaymentProviderProps = {
+  class?: string
+  usePaymentModal?: boolean
+}
+
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
   initialize(): Promise<void> | void
   dispose(): Promise<void> | void
-  tokenizeHostedFields(): Promise<HostedFieldsTokenizePayload>
+  tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
-  verifyWithThreeDSecure(
-    amount: number,
-    nonce: string
-  ): Promise<ThreeDSecureVerifyPayload & { type?: string }>
+  completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
+  startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
-  saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>>
+  saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
+  getPaymentProviderProps(): PaymentProviderProps
 }
 
 export type CardsInfo = {
@@ -43,6 +51,7 @@ export type CardsInfo = {
 
 export type PaymentOptions = {
   paymentCardsEnabled: boolean
+  preselectProvider?: string
 }
 
 export type VerifyCardError = {
@@ -98,4 +107,24 @@ export type FullBraintreeProviderOptions = Omit<
   logger?: Logger
   onAddThreeDSecureFrame?: () => void
   onRemoveThreeDSecureFrame?: () => void
+}
+
+export type AdyenProviderOptions = {
+  dropinContainerId: string
+  withThreeDSecure?: boolean
+  environment?: 'test' | 'live'
+  price: number
+  currencyCode: string
+  returnUrl: string
+  locale?: string
+}
+
+export type AdyenCheckoutOptions = {
+  amount: {
+    value: number
+    currency: string
+  }
+  environment: string
+  locale: string
+  channel: 'Web'
 }

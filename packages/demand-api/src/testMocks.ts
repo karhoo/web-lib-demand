@@ -16,7 +16,7 @@ import {
   getPaymentCreateClientTokenMock,
   getPaymentGetClientNonceMock,
   getPaymentProviderMock,
-  getAdyenOriginKeyMock,
+  getAdyenClientKeyMock,
   getAdyenPaymentMethodsMock,
   getCreateAdyenPaymentAuthMock,
   getAdyenPaymentDetailsMock,
@@ -53,7 +53,7 @@ export const getApiMock = () => {
   const mockPaymentCreateClientToken = getPaymentCreateClientTokenMock()
   const mockPaymentGetClientNonce = getPaymentGetClientNonceMock()
   const mockGetPaymentProvider = getPaymentProviderMock()
-  const mockGetAdyenOriginKey = getAdyenOriginKeyMock()
+  const mockGetAdyenClientKey = getAdyenClientKeyMock()
   const mockGetAdyenPaymentMethods = getAdyenPaymentMethodsMock()
   const mockCreateAdyenPaymentAuth = getCreateAdyenPaymentAuthMock()
   const mockGetAdyenPaymentDetails = getAdyenPaymentDetailsMock()
@@ -87,7 +87,7 @@ export const getApiMock = () => {
       getBraintreeClientNonce: mockPaymentGetClientNonce,
       addBraintreePaymentCard: mockAddPaymentCard,
       getPaymentProvider: mockGetPaymentProvider,
-      getAdyenOriginKey: mockGetAdyenOriginKey,
+      getAdyenClientKey: mockGetAdyenClientKey,
       getAdyenPaymentMethods: mockGetAdyenPaymentMethods,
       createAdyenPaymentAuth: mockCreateAdyenPaymentAuth,
       getAdyenPaymentDetails: mockGetAdyenPaymentDetails,

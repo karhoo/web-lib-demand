@@ -1,16 +1,15 @@
-import { Payment, PaymentProvidersResponse, ProviderId } from '@karhoo/demand-api'
+import { Payment, ProviderId } from '@karhoo/demand-api'
 
 import {
   Provider,
   PaymentOptions,
-  VerifyCardResponse,
   PaymentNonceResponse,
   SaveCardResponse,
   Payer,
   CardsInfo,
   CardInfo,
 } from './types'
-import { creditCardType, defaultPaymentOptions, errors } from './constants'
+import { defaultPaymentOptions, errors } from './constants'
 import { getCancellablePromise, CancellablePromise } from './utils'
 
 export type PaymentProvidersMap = {
@@ -46,8 +45,10 @@ export class PaymentBloc {
     options = defaultPaymentOptions,
     cardsInfo,
   }: PaymentBlocProps) {
-    const providerResponse = await fetchPaymentProvider(paymentService)
-    const provider = getPaymentProvider(providers, providerResponse)
+    const targetId =
+      options.preselectProvider || ((await fetchPaymentProvider(paymentService)).provider?.id ?? '')
+    const provider = getPaymentProvider(providers, targetId)
+
     return new PaymentBloc(provider, options, cardsInfo)
   }
 
@@ -74,14 +75,24 @@ export class PaymentBloc {
     }
   }
 
-  async verifyCardWithThreeDSecure(amount: number): Promise<VerifyCardResponse> {
-    try {
-      const nonce = await this.getPaymentDetails()
-      const response = await this.provider.verifyWithThreeDSecure(amount, nonce)
+  async verifyCardWithThreeDSecure(amount: number) {
+    const params = new URLSearchParams(location.search) // eslint-disable-line no-restricted-globals
+    const nonce = params.get('krhutuuid')
 
-      return response.liabilityShifted || response.type !== creditCardType
-        ? { ok: true, nonce: response.nonce }
-        : { ok: false, error: new Error(errors.verifyCardError) }
+    try {
+      if (nonce) {
+        await this.provider.completeThreeDSecureVerification({
+          nonce,
+          MD: params.get('MD') || '',
+          PaRes: params.get('PaRes') || '',
+        })
+
+        return { ok: true, nonce }
+      }
+
+      const paymentNonce = await this.getPaymentDetails()
+      const verifiedNonce = await this.provider.startThreeDSecureVerification(amount, paymentNonce)
+      return { ok: true, nonce: verifiedNonce }
     } catch (error) {
       return { ok: false, error }
     }
@@ -116,20 +127,28 @@ export class PaymentBloc {
       return selectedCard.nonce
     }
 
-    const tokenizeResponse = await this.provider.tokenizeHostedFields()
+    const [_, nonce] = await this.provider.tokenizeHostedFields()
 
-    return tokenizeResponse.nonce
+    return nonce
   }
 
   async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {
     try {
-      const { nonce } = await this.provider.tokenizeHostedFields()
-      const response = await this.provider.saveCard(nonce, payer)
+      const [_, value] = await this.provider.tokenizeHostedFields()
+      const response = await this.provider.saveCard(value, payer)
+
+      if (!response) {
+        return { ok: false, error: new Error('Not possible to save a card') }
+      }
 
       return response.ok ? { ok: true } : { ok: false, error: new Error(response.error.message) }
     } catch (error) {
       return { ok: false, error }
     }
+  }
+
+  getPaymentProviderProps() {
+    return this.provider.getPaymentProviderProps()
   }
 }
 
@@ -142,11 +161,7 @@ export const fetchPaymentProvider = async (paymentService: Payment) => {
   return response.body
 }
 
-export const getPaymentProvider = (
-  providers: PaymentProvidersMap,
-  paymentProviderResponse: PaymentProvidersResponse
-) => {
-  const targetId = paymentProviderResponse.provider?.id ?? ''
+export const getPaymentProvider = (providers: PaymentProvidersMap, targetId: string) => {
   const found = Object.entries(providers).find(([id]) => id === targetId)
   if (!found) throw new Error('Unknown payment provider')
 

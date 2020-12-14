@@ -1,4 +1,7 @@
 import { HttpResponse } from '../http/types'
+import { PaymentMethodsResponseObject } from '@adyen/adyen-web/dist/types/core/ProcessResponse/PaymentMethodsResponse/types'
+import { CoreOptions } from '@adyen/adyen-web/dist/types/core/types'
+import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 
 export type CreateTokenParams = {
   organisation_id: string
@@ -50,8 +53,8 @@ export type PaymentProvidersResponse = {
   loyalty_programmes?: LoyaltyProgrammes[]
 }
 
-export type OriginKeyResponse = {
-  originKey: string
+export type ClientKeyResponse = {
+  clientKey: string
 }
 
 export type PaymentMethodsParams = {
@@ -63,137 +66,30 @@ export type PaymentMethodsParams = {
   amount?: Amount
 }
 
-type Group = {
-  name?: string
-  types?: string[]
-  groupType?: string
-}
-
-type InputDetail = {
-  key?: string
-  type?: string
-  optional?: boolean
-  value?: string
-  configuration?: object
-  items?: {
-    id?: string
-    name?: string
-  }[]
-}
-
-type PaymentMethod = {
-  brands?: string[]
-  configuration?: object
-  name?: string
-  type?: string
-  supportsRecurring?: boolean
-  datails?: InputDetail[]
-}
-
-type StoredPaymentMethod = Partial<{
-  brand: string
-  expiryMonth: string
-  expiryYear: string
-  holderName: string
-  id: string
-  lastFour: string
-  name: string
-  shopperEmail: string
-  supportedShopperInteractions: string[]
-  type: string
-}>
-
-type Card = {
-  cvc?: string
-  expiryMonth: string
-  expiryYear: string
-  holderName: string
-  issueNumber?: string
-  number: string
-  startMonth?: string
-  startYear?: string
-}
-
-type OneClickPaymentMethod = Partial<{
-  brands: string[]
-  configuration: object
-  details: InputDetail[]
-  group: {
-    name?: string
-    paymetnMethodData?: string
-    type?: string
-  }
-  name: string
-  recurringDetailReference: string
-  supportsRecurring: boolean
-  type: string
-  storedDetails: {
-    card?: Card
-    emailAddress?: string
-  }
-}>
-
-export type PaymentMethodsResponse = {
-  groups?: Group[]
-  paymentMethods?: PaymentMethod[]
-  storedPaymentMethods?: StoredPaymentMethod[]
-  oneClickPaymentMethods?: OneClickPaymentMethod[]
-}
-
-type PaymentMethodInfo = Partial<{
-  type: string
-  number: string
-  expiryMonth: string
-  expiryYear: string
-  holderName: string
-  cvc: string
-}>
-
 export type PaymentAuthParams = {
-  payments_payload: {
-    amount: Amount
-    merchantAccount?: string
-    reference: string
-    returnUrl: string
-    paymentMethod: PaymentMethodInfo
-    countryCode?: string
-    shopperEmail?: string
-    shopperLocale?: string
-    shopperReference?: string
-    storePaymentMethod?: boolean
-  }
+  payments_payload: CoreOptions
   return_url_suffix?: string
 }
 
-type ResultCode =
-  | 'AuthenticationFinished'
-  | 'AuthenticationNotRequired'
-  | 'Authorised'
-  | 'Cancelled'
-  | 'ChallengeShopper'
-  | 'Error'
-  | 'IdentifyShopper'
-  | 'Pending'
-  | 'PresentToShopper'
-  | 'Received'
-  | 'RedirectShopper'
-  | 'Refused'
-
 export type PaymentAuthResponse = {
-  transaction_id: string
-  payload?: {
-    merchantReference?: string
-    resultCode?: ResultCode
-    refusalReasonCode?: string
-    refusalReason?: string
-    paymentData?: string
+  trip_id: string
+  payload: {
+    action?: PaymentAction
   }
 }
 
 export type PaymentDetailsParams = {
-  transaction_id: string
+  trip_id: string
+  payments_payload: {
+    paymentData: string
+    details: {
+      MD: string
+      PaRes: string
+    }
+  }
 }
 
+export type PaymentMethodsResponse = PaymentMethodsResponseObject
 export interface Payment {
   createClientToken(params: CreateTokenParams): Promise<HttpResponse<CreateTokenResponse>>
   getClientNonce(params: ClientNonceParams): Promise<HttpResponse<ClientNonceResponse>>
@@ -202,7 +98,7 @@ export interface Payment {
   getBraintreeClientNonce(params: ClientNonceParams): Promise<HttpResponse<ClientNonceResponse>>
   addBraintreePaymentCard(params: AddPaymentCardParams): Promise<HttpResponse<ClientNonceResponse>>
   getPaymentProvider(): Promise<HttpResponse<PaymentProvidersResponse>>
-  getAdyenOriginKey(): Promise<HttpResponse<OriginKeyResponse>>
+  getAdyenClientKey(): Promise<HttpResponse<ClientKeyResponse>>
   getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<object>>
