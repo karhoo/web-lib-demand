@@ -43,7 +43,7 @@ export const refusalReasons: Record<string, string> = {
 
 export const handleRefusalResponse = (result: HttpResponseOk<PaymentAuthResponse>) => {
   if (result.ok && refusalResultCodes.includes(result.body.payload.resultCode as string)) {
-    const refusalReasonCode: string = result.body.payload.refusalReasonCode as string
+    const refusalReasonCode = result.body.payload.refusalReasonCode as string
     const errorMessage = refusalReasons[refusalReasonCode]
     throw new Error(errorMessage)
   }
