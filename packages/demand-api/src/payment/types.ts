@@ -75,6 +75,8 @@ export type PaymentAuthResponse = {
   trip_id: string
   payload: {
     action?: PaymentAction
+    resultCode?: string
+    refusalReasonCode?: string
   }
 }
 

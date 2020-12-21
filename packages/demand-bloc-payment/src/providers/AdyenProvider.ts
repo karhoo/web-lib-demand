@@ -1,5 +1,6 @@
 import AdyenCheckout from '@adyen/adyen-web'
 import CardElement from '@adyen/adyen-web/dist/types/components/Card'
+import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 import { Payment } from '@karhoo/demand-api'
 
 import {
@@ -8,10 +9,8 @@ import {
   Provider,
   CompleteThreeDSecureVerificationParams,
 } from '../types'
-
 import { defaultAdyenOptions } from '../constants'
-import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
-
+import { handleRefusalResponse, errors } from './adyenErrors'
 export class AdyenProvider implements Provider {
   private paymentService: Payment
   private isFormValid = false
@@ -75,11 +74,11 @@ export class AdyenProvider implements Provider {
     const [paymentMethodsResponse, clientKeyResponse] = await Promise.all([paymentMethodsReq, clientKeyReq])
 
     if (!paymentMethodsResponse.ok) {
-      throw new Error('No payment methods received')
+      throw new Error(errors.noPaymentsMethods)
     }
 
     if (!clientKeyResponse.ok) {
-      throw new Error('No client key received')
+      throw new Error(errors.noClientKey)
     }
 
     const checkout = new AdyenCheckout({
@@ -104,8 +103,10 @@ export class AdyenProvider implements Provider {
     })
 
     if (!makePaymentResponse.ok) {
-      throw new Error('Failed to create a payment')
+      throw new Error(errors.failedPaymentCreate)
     }
+
+    handleRefusalResponse(makePaymentResponse)
 
     this.paymentData = makePaymentResponse.body.payload.action?.paymentData || ''
 
@@ -139,7 +140,7 @@ export class AdyenProvider implements Provider {
 
   async completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams) {
     if (!params) {
-      return new Error('Missing required params to complete 3d secure')
+      return new Error(errors.missingRequiredParamsFor3dSecure)
     }
 
     const { MD, PaRes, nonce } = params

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.1.0](https://github.com/karhoo/web-lib-demand/compare/v11.0.1...v11.1.0) (2020-12-21)
+
+
+### Features
+
+* handle adyen refusals ([a3538f5](https://github.com/karhoo/web-lib-demand/commit/a3538f5bf129b9d4b7e71dbfc251aff1db384e51))
+
+
+
+
+
 ## [11.0.1](https://github.com/karhoo/web-lib-demand/compare/v11.0.0...v11.0.1) (2020-12-14)
 
 
