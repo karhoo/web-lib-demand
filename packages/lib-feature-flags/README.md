@@ -20,11 +20,56 @@ This library was created in order to have a possibility to enable/disable certai
 ```sh
 npm i @karhoo/lib-feature-flags
 ```
+
 ## Warnings
 
 This library uses `Promise`, `async/await` and other modern JS features so currently it works only in modern browsers by default. For old browsers you must run babel on it.
 
 ## Usage
+
+In order to get Feature flags config you need to make request for remoteConfig:
+
+```js
+import { FeatureFlags, RemoteConfig } from '@karhoo/lib-feature-flags'
+import { getApi } from '@karhoo/demand-api'
+
+const defaultOptions = { defaultValueForMissingKeys: false }
+
+let flagsInstance
+
+const initFlagsInstance = config => {
+  const api = getApi({
+  url: 'api',
+  defaultRequestOptionsGetter: () => ({
+    headers: {
+      identifier: 'XXXX',
+      referrer: 'https://example-referer.com/',
+    },
+  }),
+})
+
+  const { session, flags } = config
+  const organisationId = 'organisationId'
+  const remoteConfigFetcher = () =>
+    api.flagsService.getLatestVersion({ organisationId, platform: 'web' }).then(data => {
+      return data.body?flags || {}
+    })
+
+  flagsInstance = new FeatureFlags(new RemoteConfig(remoteConfigFetcher), flags || defaultOptions)
+}
+
+const getFlagsInstance = () => {
+  return flagsInstance
+}
+```
+
+After creating getFlagsInstances funtion you can use it, for example:
+
+```js
+ if (someCondition && getFlagsInstance().isEnabled(MY_FEATURE))) {
+   // do thomething...
+ }
+```
 
 ### FeatureFlags
 
@@ -36,11 +81,7 @@ FeatureProvider is a provider of FeatureFlags. Use it in your App component so t
 
 Feature component could be used for every feature that you want to have a possibility to enable/disable. Example of usage:
 
-`
-<Feature name="pageLogo">
-  <PageLogo />
-</Feature>
-`
+`<Feature name="pageLogo"> <PageLogo /> </Feature>`
 
 ### ObjectConfig
 

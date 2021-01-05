@@ -31,9 +31,8 @@ This library uses `Promise`. For old browsers, e.g. IE11 you must bring your own
 ## Usage
 
 ```js
-
 import { getApi } from '@karhoo/demand-api'
-import { PaymentBloc, BraintreeProvider } from '@karhoo/demand-bloc-payment'
+import { PaymentBloc, BraintreeProvider, AdyenProvider } from '@karhoo/demand-bloc-payment'
 
 const organisationId = '1a12345d-e111-1da1-111f-a1111e1e11f1'
 const currencyCode = 'GBP'
@@ -46,12 +45,33 @@ const payer = {
   last_name: 'lastName',
 }
 
-const provider = new BraintreeProvider(getApi().paymentService, {
-  organisationId,
-  currencyCode
-})
+const adyenProviderOptions = {
+  dropinContainerId: 'containerID',
+  price: 25,
+  currencyCode: 'GBP',
+  returnUrl: 'http://www.return-url.com',
+}
 
-const bloc = new PaymentBloc(provider)
+const braintreeOptions = {
+  organisationId,
+  currencyCode,
+}
+
+const providers = {
+  Braintree: new BraintreeProvider(paymentService, braintreeOptions),
+  Adyen: new AdyenProvider(paymentService, adyenProviderOptions),
+}
+
+const options = {
+  paymentCardsEnabled: true,
+}
+
+const block = await PaymentBloc.create({
+  providers,
+  paymentService,
+  options,
+  cardsInfo,
+})
 
 await bloc.initPayment()
 
@@ -62,7 +82,6 @@ if (bloc.validatePaymentDetails()) {
 }
 
 await bloc.dispose()
-
 ```
 
 For payment without 3d secure verification:
@@ -91,7 +110,7 @@ const cardsInfo = {
   clear() {
     this.cards = []
     this.payer = undefined
-  }
+  },
 }
 
 const bloc = new PaymentBloc(provider, { paymentCardsEnabled: true }, cardsInfo)
@@ -130,9 +149,10 @@ const options: BraintreeProviderOptions = {
 
 const provider = new BraintreeProvider(getApi().paymentService, options)
 
-`options` should have `organisationId` and `currencyCode`. Other fields are not required 
+`options` should have `organisationId` and `currencyCode`. Other fields are not required
 
 ```
+
 if `hostedFields` is not provided following defaults will be used:
 
 ```js
@@ -151,6 +171,7 @@ Initialize provider:
 ```js
 await provider.initialize()
 ```
+
 In case of failure either braintree specific error or `braintreeErrors.authorizationToken` will be thrown
 
 Validate payment form:
@@ -170,7 +191,7 @@ Verify:
 ```js
 const amount = 10
 
-const result: ThreeDSecureVerifyPayload = await provider.verifyWithThreeDSecure(amount, tokenizeResponse.nonce)
+const result: ThreeDSecureVerifyPayload = await provider.verifyCard(amount, tokenizeResponse.nonce)
 ```
 
 Save card:
@@ -191,5 +212,61 @@ Dispose:
 await provider.dispose()
 ```
 
+### Adyen
+
+```js
+import AdyenCheckout from '@adyen/adyen-web'
+import CardElement from '@adyen/adyen-web/dist/types/components/Card'
+import { getApi } from '@karhoo/demand-api'
+import { AdyenProvider, AdyenProviderOptions, AdyenCheckoutOptions } from '@karhoo/demand-bloc-payment'
+
+const options: AdyenProviderOptions = {
+  dropinContainerId: 'containerID',
+  price: 25,
+  currencyCode: 'GBP',
+  returnUrl: 'http://www.return-url.com',
+}
+
+const provider = new AdyenProvider(getApi().paymentService, options, false)
+```
+
+`options` should have `dropinContainerId`, `price`, `currencyCode`, `returnUrl`. Other fields are not required
+
+Initialize provider:
+
+```js
+await provider.initialize()
+```
+
+Validate payment form:
+
+```js
+const isValid: boolean = provider.validatePaymentForm()
+```
+
+Tokenize hosted fields:
+
+```js
+const tokenizeResponse = await provider.tokenizeHostedFields()
+```
+
+Verify:
+
+```js
+const verifiedNonce = await provider.startThreeDSecureVerification()
+
+const result = await provider.completeThreeDSecureVerification(
+  (MD: 'MD'),
+  (PaRes: 'id123'),
+  (nonce: 'verifiedNonce')
+)
+```
+
+Dispose:
+
+```js
+await provider.dispose()
+```
+
 All provider methods, except for `dispose`, should be called only after initialization is complete otherwise it may lead to unexpected behavior.
-If `dispose` is called before initialization is complete initialization will be cancelled and `errors.operationCancelled` will be thrown. 
+If `dispose` is called before initialization is complete initialization will be cancelled and `errors.operationCancelled` will be thrown.
