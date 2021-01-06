@@ -44,7 +44,7 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
-    "date-and-time": "^0.13.1",
+    "date-and-time": "^0.14.2",
     "jest": "^24.8.0",
     "lodash": "^4.17.15",
     "lodash-es": "^4.17.15",
