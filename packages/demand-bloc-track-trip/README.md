@@ -24,3 +24,50 @@ Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo A
 npm i @karhoo/demand-bloc-track-trip
 ```
 
+## Usage
+
+```js
+import { getApi } from '@karhoo/demand-api'
+import { TripBloc } from '@karhoo/demand-bloc-track-trip'
+
+const api = getApi({
+  url: 'api',
+  defaultRequestOptionsGetter: () => ({
+    headers: {
+      identifier: 'XXXX',
+      referrer: 'https://example-referer.com/',
+    },
+  }),
+})
+
+const tripBloc = new new TripBloc(api.tripService, api.fareService)()
+
+tripBloc.trip.subscribe(data => {
+  // get trip info
+  console.log('trip', data)
+})
+
+tripBloc.error.subscribe(data => {
+  // get trip fetching error
+  console.log('Error fetch trip', data)
+})
+
+tripBloc.finalFare.subscribe(data => {
+  // get final fare info
+  console.log('Final Fare', data)
+})
+
+tripBloc.pickUpTimeUpdates.subscribe(data => {
+  // get pickup time updates
+  console.log('New PickupTime', data)
+})
+
+//track trip updates
+tripBloc.track(tripId)
+
+// stop polling track and fare
+tripBloc.cancelPolling()
+
+// cancel trip by follow code
+tripBloc.cancellByFollowCode(code, cancellationParams)
+```
