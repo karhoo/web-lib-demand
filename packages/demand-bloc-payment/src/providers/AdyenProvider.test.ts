@@ -4,9 +4,13 @@ import {
   getCreateAdyenPaymentAuthMock,
   getMockedPaymentAuthResponse,
   getAdyenClientKeyMock,
+  getMockedErrorAdyenClientKeyResponse,
+  getMockedErrorAdyenPaymentMethodsResponse,
+  getMockedErrorAdyenPaymentAuthResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import { AdyenProvider } from './AdyenProvider'
+import { errors } from './adyenErrors'
 
 const cardElement = {
   data: {
@@ -15,6 +19,18 @@ const cardElement = {
   remove: jest.fn(),
   showValidation: jest.fn(),
   handleAction: jest.fn(),
+}
+
+const payer = {
+  id: 'id',
+  email: 'email@of.user',
+  first_name: 'firstName',
+  last_name: 'lastName',
+}
+
+const shopperData = {
+  shopperReference: payer.id,
+  shopperEmail: payer.email,
 }
 
 jest.mock('@adyen/adyen-web', () => () => ({
@@ -80,27 +96,45 @@ describe('AdyenProvider', () => {
       })
     })
 
+    it('should get payment methods for authorized payer and save his data', async () => {
+      jest.clearAllMocks()
+
+      provider = new AdyenProvider(paymentService, checkoutOptions, true)
+
+      await provider.initialize(payer)
+
+      expect(provider.shopperData).toEqual(shopperData)
+      expect(paymentService.getAdyenPaymentMethods).toBeCalledWith({
+        amount: {
+          value: amount,
+          currency: currencyCode,
+        },
+        shopperLocale: 'en',
+        ...shopperData,
+      })
+    })
+
     it('should emit an error if there is no payment methods', async () => {
       paymentService.getAdyenPaymentMethods.mockImplementationOnce(() =>
-        Promise.resolve({ ok: false, status: 404, error: { message: 'Test error' } })
+        Promise.resolve(getMockedErrorAdyenPaymentMethodsResponse())
       )
 
       try {
         await provider.initialize()
       } catch (error) {
-        expect(error).toEqual(new Error('No payment methods received'))
+        expect(error).toEqual(new Error(errors.noPaymentsMethods))
       }
     })
 
     it('should emit an error if there is no client key', async () => {
       paymentService.getAdyenClientKey.mockImplementationOnce(() =>
-        Promise.resolve({ ok: false, status: 404, error: { message: 'Test error' } })
+        Promise.resolve(getMockedErrorAdyenClientKeyResponse())
       )
 
       try {
         await provider.initialize()
       } catch (error) {
-        expect(error).toEqual(new Error('No client key received'))
+        expect(error).toEqual(new Error(errors.noClientKey))
       }
     })
   })
@@ -144,15 +178,31 @@ describe('AdyenProvider', () => {
       })
     })
 
+    it('should perform a payment with shopper data', async () => {
+      provider.shopperData = shopperData
+      await provider.tokenizeHostedFields()
+
+      expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
+      expect(paymentService.createAdyenPaymentAuth).toBeCalledWith({
+        payments_payload: {
+          redirectFromIssuerMethod: 'get',
+          ...adyenCheckoutOptions,
+          ...cardElement.data,
+          ...shopperData,
+        },
+        return_url_suffix: '/callback',
+      })
+    })
+
     it('should handle payment error', async () => {
       paymentService.createAdyenPaymentAuth.mockImplementationOnce(() =>
-        Promise.resolve({ ok: false, status: 404, error: { message: 'Test error' } })
+        Promise.resolve(getMockedErrorAdyenPaymentAuthResponse())
       )
 
       try {
         await provider.tokenizeHostedFields()
       } catch (error) {
-        expect(error).toEqual(new Error('Failed to create a payment'))
+        expect(error).toEqual(new Error(errors.failedPaymentCreate))
       }
     })
 
@@ -191,6 +241,7 @@ describe('AdyenProvider', () => {
       provider.dispose()
 
       expect(cardElement.remove).toHaveBeenCalledTimes(1)
+      expect((provider as any).isFormValid).toBe(false)
     })
   })
 
@@ -216,12 +267,51 @@ describe('AdyenProvider', () => {
   })
 
   describe('completeThreeDSecureVerification', () => {
+    it('should retrun nonce', async () => {
+      const params = {
+        MD: 'MD',
+        PaRes: 'PaRes',
+        nonce: 'nonce',
+      }
+
+      const nonce = await provider.completeThreeDSecureVerification(params)
+      expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
+      expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith({
+        payments_payload: {
+          paymentData: 'paymentData',
+          details: {
+            MD: params.MD,
+            PaRes: params.PaRes,
+          },
+        },
+        trip_id: params.nonce,
+      })
+      expect(nonce).toBe(params.nonce)
+    })
+
     it('should throw error if required params are missing', async () => {
       try {
         await provider.completeThreeDSecureVerification()
       } catch (error) {
-        expect(error).toEqual(new Error('Missing required params to complete 3d secure'))
+        expect(error).toEqual(new Error(errors.missingRequiredParamsFor3dSecure))
       }
+    })
+  })
+
+  describe('saveCard', () => {
+    it('should call mocked method', () => {
+      const saveCardSpy = jest.spyOn(provider, 'saveCard')
+      provider.saveCard()
+
+      expect(saveCardSpy).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('getSavedCards', () => {
+    it('should return a mocked empty data', async () => {
+      const data = await provider.getSavedCards()
+
+      expect(data).toEqual([])
     })
   })
 

@@ -64,7 +64,7 @@ export class PaymentBloc {
 
     this.pendingInitialisation = getCancellablePromise(
       Promise.all([
-        this.provider.initialize(),
+        this.provider.initialize(payer),
         paymentCardsEnabled && payer ? this.provider.getSavedCards(payer) : null,
       ])
     )

@@ -98,6 +98,7 @@ export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyRespo
 })
 
 export const getAdyenClientKeyMock = getMock(getMockedAdyenClientKeyResponse)
+export const getMockedErrorAdyenClientKeyResponse = getErrorResponse('No client key received')
 
 export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
   ok: true,
@@ -108,6 +109,7 @@ export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMe
 })
 
 export const getAdyenPaymentMethodsMock = getMock(getMockedAdyenPaymentMethodsResponse)
+export const getMockedErrorAdyenPaymentMethodsResponse = getErrorResponse('No payment methods received')
 
 export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthResponse> => ({
   ok: true,
@@ -124,6 +126,7 @@ export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthRespon
 })
 
 export const getCreateAdyenPaymentAuthMock = getMock(getMockedPaymentAuthResponse)
+export const getMockedErrorAdyenPaymentAuthResponse = getErrorResponse('Failed to create a payment')
 
 export const getMockedAdyenPaymentDetailsResponse = (): HttpResponseOk<object> => ({
   ok: true,
