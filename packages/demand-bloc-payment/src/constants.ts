@@ -6,6 +6,9 @@ export const defaultPaymentOptions = {
 
 export const defaultAdyenOptions = {
   withThreeDSecure: true,
+  showPayButton: false,
+  showStoredPaymentMethods: false,
+  enableStoreDetails: false,
 }
 
 export const errors = {

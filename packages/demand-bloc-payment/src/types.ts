@@ -32,7 +32,7 @@ type PaymentProviderProps = {
 
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
-  initialize(): Promise<void> | void
+  initialize(payer?: Payer): Promise<void> | void
   dispose(): Promise<void> | void
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
@@ -109,6 +109,17 @@ export type FullBraintreeProviderOptions = Omit<
   onRemoveThreeDSecureFrame?: () => void
 }
 
+export type AdyenPaymentMethodsConfiguration = {
+  card: {
+    enableStoreDetails?: boolean
+  }
+}
+
+export type AdyenShopperData = {
+  shopperReference?: string
+  shopperEmail?: string
+}
+
 export type AdyenProviderOptions = {
   dropinContainerId: string
   withThreeDSecure?: boolean
@@ -117,6 +128,10 @@ export type AdyenProviderOptions = {
   currencyCode: string
   returnUrl: string
   locale?: string
+  enableStoreDetails?: boolean
+  showStoredPaymentMethods?: boolean
+  paymentMethodsConfiguration?: AdyenPaymentMethodsConfiguration
+  showPayButton?: boolean
 }
 
 export type AdyenCheckoutOptions = {

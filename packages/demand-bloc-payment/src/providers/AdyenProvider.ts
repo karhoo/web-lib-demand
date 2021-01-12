@@ -1,5 +1,5 @@
 import AdyenCheckout from '@adyen/adyen-web'
-import CardElement from '@adyen/adyen-web/dist/types/components/Card'
+import CardElement from '@adyen/adyen-web/dist/types/components/Dropin'
 import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 import { Payment } from '@karhoo/demand-api'
 
@@ -8,6 +8,8 @@ import {
   AdyenCheckoutOptions,
   Provider,
   CompleteThreeDSecureVerificationParams,
+  Payer,
+  AdyenShopperData,
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
 import { handleRefusalResponse, errors } from './adyenErrors'
@@ -19,6 +21,7 @@ export class AdyenProvider implements Provider {
   private options: AdyenProviderOptions
   private checkoutOptions: AdyenCheckoutOptions
   private action: PaymentAction | null = null
+  private shopper: AdyenShopperData | object = {}
 
   constructor(paymentService: Payment, options: AdyenProviderOptions, isTestEnv = true) {
     this.setValidationStatus = this.setValidationStatus.bind(this)
@@ -59,14 +62,30 @@ export class AdyenProvider implements Provider {
     return this.action
   }
 
+  set shopperData(payer: AdyenShopperData) {
+    this.shopper = payer
+  }
+
+  get shopperData() {
+    return this.shopper
+  }
+
   private setValidationStatus({ isValid }: { isValid: boolean }) {
     this.isFormValid = isValid
   }
 
-  async initialize() {
+  async initialize(payer?: Payer) {
+    if (payer) {
+      this.shopperData = {
+        shopperReference: payer?.id,
+        shopperEmail: payer?.email,
+      }
+    }
+
     const paymentMethodsReq = this.paymentService.getAdyenPaymentMethods({
       amount: this.checkoutOptions.amount,
       shopperLocale: this.checkoutOptions.locale,
+      ...this.shopperData,
     })
 
     const clientKeyReq = this.paymentService.getAdyenClientKey()
@@ -86,10 +105,16 @@ export class AdyenProvider implements Provider {
       clientKey: clientKeyResponse.body.clientKey,
       paymentMethodsResponse: paymentMethodsResponse.body,
       onChange: this.setValidationStatus,
-      showPayButton: false,
+      showPayButton: this.options.showPayButton,
+      showStoredPaymentMethods: this.options.showStoredPaymentMethods,
+      paymentMethodsConfiguration: {
+        card: {
+          enableStoreDetails: this.options.enableStoreDetails,
+        },
+      },
     })
 
-    this.cardElement = checkout.create('card').mount(`#${this.options.dropinContainerId}`)
+    this.cardElement = checkout.create('dropin').mount(`#${this.options.dropinContainerId}`)
   }
 
   async tokenizeHostedFields() {
@@ -97,6 +122,7 @@ export class AdyenProvider implements Provider {
       payments_payload: {
         ...this.checkoutOptions,
         ...this.cardElement?.data,
+        ...this.shopperData,
         redirectFromIssuerMethod: 'get',
       },
       return_url_suffix: this.options.returnUrl,
@@ -164,7 +190,7 @@ export class AdyenProvider implements Provider {
   }
 
   saveCard() {
-    throw new Error('Not implemented')
+    // Do nothing. The method is useless for this provider type
   }
 
   getPaymentProviderProps() {
