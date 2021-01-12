@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.2.0](https://github.com/karhoo/web-lib-demand/compare/v11.1.1...v11.2.0) (2021-01-12)
+
+
+### Features
+
+* add possibility to save card details for Adyen PSP ([7be6119](https://github.com/karhoo/web-lib-demand/commit/7be6119179fa8946c35fc1d1ecd873045a8968a6))
+
+
+
+
+
 ## [11.1.1](https://github.com/karhoo/web-lib-demand/compare/v11.1.0...v11.1.1) (2021-01-06)
 
 **Note:** Version bump only for package web-lib-demand
