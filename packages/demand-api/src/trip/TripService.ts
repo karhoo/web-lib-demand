@@ -61,4 +61,8 @@ export class TripService implements Trip {
   getCancelFee(id: string) {
     return this.http.get<GetTripCancelFeeResponse>(`${this.url}/${id}/cancel-fee`)
   }
+
+  getCancelFeeByFollowCode(id: string) {
+    return this.http.get<GetTripCancelFeeResponse>(`${this.url}/follow/${id}/cancel-fee`)
+  }
 }
