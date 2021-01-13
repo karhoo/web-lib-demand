@@ -1,2 +1,2 @@
-export { TripCreateBloc } from './TripCreateBloc'
+export { TripCreateForm } from './TripCreateForm'
 export * from './types'

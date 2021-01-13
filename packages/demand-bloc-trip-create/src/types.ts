@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs'
-import { LocationDetailsType, LatLng, MeetingPointType, LocationPoiType } from '@karhoo/demand-api'
+import { Asserts } from 'yup'
+import { LocationDetailsType, LatLng, MeetingPointType, LocationPoiType, Locations } from '@karhoo/demand-api'
 
 export type TripCreateBlocOptions = {
   minLengthToSearch?: number
@@ -88,6 +89,31 @@ export enum TripCreateFieldTypes {
 export interface TripCreateModule {
   dispose(): void
 
-  createStream(fieldName: string, type?: TripCreateFieldTypes): TripCreateAutocompleteField | TripCreateField
+  values: Observable<any>
+  createStream(fieldName: string, schema: FormSchemaValue): void | Error
   getStream(fieldName: string): TripCreateAutocompleteField | TripCreateField
 }
+
+////
+
+export enum TripCreateFormFields {
+  PICKUP = 'PICKUP',
+  DROPOFF = 'DROPOFF',
+  TRAIN_NUMBER = 'TRAIN_NUMBER'
+}
+
+export type FormSchemaValue = {
+  type: keyof typeof TripCreateFieldTypes,
+  locationService?: Locations
+  options: TripCreateModuleOptions
+}
+
+export type FormSchema = {
+  [K: string]: FormSchemaValue
+}
+
+// export type FormValidationSchema = {
+//   [K: string]: Asserts
+// }
+
+

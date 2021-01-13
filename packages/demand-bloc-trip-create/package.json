@@ -24,7 +24,8 @@
   "dependencies": {
     "@karhoo/demand-api": "^11.2.0",
     "camelcase-keys": "^6.2.2",
-    "rxjs": "6.5.5"
+    "rxjs": "6.5.5",
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.7.13",
