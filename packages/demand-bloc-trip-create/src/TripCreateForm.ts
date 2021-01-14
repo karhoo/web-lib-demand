@@ -1,21 +1,12 @@
 import { Locations } from '@karhoo/demand-api'
 import yup from 'yup'
-import {
-  TripCreateBlocOptions,
-  TripCreateFieldTypes,
-} from './types'
+import { TripCreateBlocOptions, TripCreateFieldTypes, TripCreateFormFields } from './types'
 import { Form } from './Form'
 
 const defaultOptions = {
   minLengthToSearch: 3,
   autocompleteDebounceTime: 500,
   autocompleteLocationRadius: 1100000,
-}
-
-enum TripCreateFormFields {
-  PICKUP = 'PICKUP',
-  DROPOFF = 'DROPOFF',
-  TRAIN_NUMBER = 'TRAIN_NUMBER'
 }
 
 export class TripCreateForm {
@@ -42,9 +33,15 @@ export class TripCreateForm {
     }
 
     const validationSchema = yup.object({
-      [TripCreateFormFields.PICKUP]: yup.string().min(10).required(),
-      [TripCreateFormFields.DROPOFF]: yup.string().required(),
-      [TripCreateFormFields.TRAIN_NUMBER]: yup.string().required()
+      [TripCreateFormFields.PICKUP]: yup
+        .string()
+        .min(mergedOptions.minLengthToSearch)
+        .required(),
+      [TripCreateFormFields.DROPOFF]: yup
+        .string()
+        .min(mergedOptions.minLengthToSearch)
+        .required(),
+      [TripCreateFormFields.TRAIN_NUMBER]: yup.string(),
     })
 
     return new Form(formSchema, validationSchema)

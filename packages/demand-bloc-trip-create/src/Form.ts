@@ -1,14 +1,8 @@
 import { SchemaOf } from 'yup'
-import { merge, of, Subject } from 'rxjs'
+import { merge, of, Subject, Observable } from 'rxjs'
 import { scan, switchMap, distinctUntilChanged } from 'rxjs/operators'
 
-import {
-  TripCreateModule,
-  TripCreateModuleFields,
-  TripCreateFieldTypes,
-  FormSchema,
-  FormSchemaValue
-} from './types'
+import { TripCreateModuleFields, TripCreateFieldTypes, FormSchema, FormSchemaValue } from './types'
 import { AutocompleteBloc } from './AutocompleteBloc'
 import { FieldBloc } from './FieldBloc'
 import { createStream } from './createStream'
@@ -22,7 +16,7 @@ export class Form {
   constructor(schema: FormSchema, validationScheme: SchemaOf<object>) {
     this.validationSchema = validationScheme
 
-    Object.keys(schema).forEach((key) => {
+    Object.keys(schema).forEach(key => {
       this.createStream(key, schema[key])
     })
 
@@ -35,26 +29,33 @@ export class Form {
    * Gets all form fields and creates a single stream with all values
    */
   get values() {
-    const streams = Object.keys(this.fields).map(
-      key => this.fields[key].query.pipe(
-        switchMap(( value ) => of({ key, value }))
+    const streams = Object.keys(this.fields).map(key => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mapKeyToStream = (stream: Observable<any>, keyPostfix?: string) =>
+        stream.pipe(switchMap(value => of({ key: `${key}${keyPostfix ? '.' + keyPostfix : ''}`, value })))
+
+      return merge(
+        mapKeyToStream(this.fields[key].query),
+        mapKeyToStream(this.fields[key]?.selectedAddress ?? of(), 'selectedAddress'),
+        mapKeyToStream(this.fields[key]?.results ?? of(), 'results')
       )
-    )
+    })
 
     return merge(...streams).pipe(
-      scan((acc, curr) => ({
-        ...acc,
-        [curr.key]: curr.value
-      }), {})
+      scan(
+        (acc, curr) => ({
+          ...acc,
+          [curr.key]: curr.value,
+        }),
+        {}
+      )
     )
   }
   /**
    * Defines form validity
    */
   get isValid() {
-    return createStream(this.isValid$).pipe(
-      distinctUntilChanged()
-    )
+    return createStream(this.isValid$).pipe(distinctUntilChanged())
   }
 
   /**
@@ -66,14 +67,13 @@ export class Form {
     )
   }
 
-  private async handleValidation(formValues: any) {
+  private async handleValidation(formValues: object) {
     try {
       await this.validationSchema?.validate(formValues, {
         abortEarly: false,
       })
       this.isValid$.next(true)
-
-    } catch(err) {
+    } catch (err) {
       this.isValid$.next(false)
       this.errors$.next(err.errors)
     }

@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs'
-import { Asserts } from 'yup'
 import { LocationDetailsType, LatLng, MeetingPointType, LocationPoiType, Locations } from '@karhoo/demand-api'
 
 export type TripCreateBlocOptions = {
@@ -58,27 +57,19 @@ export type PrefillAutocompleteFieldValue = {
   results?: AutocompleteItem[]
 }
 
-export interface TripCreateAutocompleteField {
+export interface TripCreateFieldItem {
   query: Observable<string>
-  selectedAddress: Observable<AutocompleteDetails>
-  results: Observable<AutocompleteItem[]>
+  selectedAddress?: Observable<AutocompleteDetails>
+  results?: Observable<AutocompleteItem[]>
 
   onChange(value: string): void
-  onSelect(value: string): void
-  prefill(value: PrefillAutocompleteFieldValue): void
-  dispose(): void
-}
-
-export interface TripCreateField {
-  query: Observable<string>
-
-  onChange(value: string): void
-  prefill(value: string): void
+  onSelect?: (value: string) => void
+  prefill(value: PrefillAutocompleteFieldValue | string): void
   dispose(): void
 }
 
 export type TripCreateModuleFields = {
-  [key: string]: TripCreateAutocompleteField | TripCreateField
+  [key: string]: TripCreateFieldItem
 }
 
 export enum TripCreateFieldTypes {
@@ -89,21 +80,21 @@ export enum TripCreateFieldTypes {
 export interface TripCreateModule {
   dispose(): void
 
-  values: Observable<any>
+  values: Observable<object>
   createStream(fieldName: string, schema: FormSchemaValue): void | Error
-  getStream(fieldName: string): TripCreateAutocompleteField | TripCreateField
+  getStream(fieldName: string): TripCreateFieldItem
 }
-
-////
 
 export enum TripCreateFormFields {
   PICKUP = 'PICKUP',
   DROPOFF = 'DROPOFF',
-  TRAIN_NUMBER = 'TRAIN_NUMBER'
+  TRAIN_NUMBER = 'TRAIN_NUMBER',
+  PICKUP_DATE = 'PICKUP_DATE',
+  PICKUP_TIME = 'PICKUP_TIME',
 }
 
 export type FormSchemaValue = {
-  type: keyof typeof TripCreateFieldTypes,
+  type: keyof typeof TripCreateFieldTypes
   locationService?: Locations
   options: TripCreateModuleOptions
 }
@@ -111,9 +102,3 @@ export type FormSchemaValue = {
 export type FormSchema = {
   [K: string]: FormSchemaValue
 }
-
-// export type FormValidationSchema = {
-//   [K: string]: Asserts
-// }
-
-
