@@ -1,8 +1,8 @@
 import { BehaviorSubject } from 'rxjs'
-import { TripCreateField } from './types'
+import { TripCreateFieldItem } from './types'
 import { createStream } from './createStream'
 
-export class FieldBloc implements TripCreateField {
+export class FieldBloc implements TripCreateFieldItem {
   private query$ = new BehaviorSubject<string>('')
 
   get query() {

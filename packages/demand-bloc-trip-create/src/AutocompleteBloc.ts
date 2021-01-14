@@ -10,7 +10,7 @@ import { Subject, of, merge } from 'rxjs'
 import { debounceTime, switchMap, distinctUntilChanged, map, filter } from 'rxjs/operators'
 import {
   TripCreateModuleOptions,
-  TripCreateAutocompleteField,
+  TripCreateFieldItem,
   AutocompleteItem,
   AutocompleteDetails,
   PrefillAutocompleteFieldValue,
@@ -33,7 +33,7 @@ type QueryValueType = {
   isPrefill: boolean
 }
 
-export class AutocompleteBloc implements TripCreateAutocompleteField {
+export class AutocompleteBloc implements TripCreateFieldItem {
   private locationService: Locations
   private options: TripCreateModuleOptions
 
