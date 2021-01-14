@@ -160,4 +160,15 @@ describe('TripService', () => {
       expect(http.get).toHaveBeenCalledWith(`${url}/${id}/cancel-fee`)
     })
   })
+
+  describe('getTripCancelFeeByFollowCode', () => {
+    const id = 'id'
+
+    it('should call get of http', () => {
+      new TripService(http).getCancelFeeByFollowCode(id)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(`${url}/follow/${id}/cancel-fee`)
+    })
+  })
 })
