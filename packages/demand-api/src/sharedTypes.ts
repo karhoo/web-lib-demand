@@ -71,3 +71,13 @@ export type VehicleAttributes = Partial<{
   luggage_capacity: number
   passenger_capacity: number
 }>
+
+export type ServiceLevelAgreements = {
+  free_cancellation: {
+    type: string
+    minutes: number
+  }
+  free_waiting_time: {
+    minutes: number
+  }
+}

@@ -5,6 +5,7 @@ import {
   LatLng,
   TripStatus,
   TripStatuses,
+  ServiceLevelAgreements,
 } from '@karhoo/demand-api'
 
 const dv = (v: string | undefined) => v || ''
@@ -63,6 +64,7 @@ export type TripFollowResponse = {
   meta: {
     [k: string]: string
   } | null
+  serviceLevelAgreements?: ServiceLevelAgreements | null
 }
 
 export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResponse): TripFollowResponse => {
@@ -84,6 +86,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     id,
     passengers,
     meeting_point,
+    service_level_agreements = null,
     meta,
   } = trip
 
@@ -159,6 +162,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     trainTime: train_time || null,
     tripId: display_trip_id || null,
     internalTripId: trip_id || id || null,
+    serviceLevelAgreements: service_level_agreements,
     meta: meta || null,
   }
 }
