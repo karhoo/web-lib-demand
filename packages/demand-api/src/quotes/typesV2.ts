@@ -1,4 +1,11 @@
-import { QuoteResponseStatuse, QuotePriceType, QuotePickUpType, QuoteSource, LatLng } from '../sharedTypes'
+import {
+  QuoteResponseStatuse,
+  QuotePriceType,
+  QuotePickUpType,
+  QuoteSource,
+  LatLng,
+  ServiceLevelAgreements,
+} from '../sharedTypes'
 import { HttpResponse } from '../http/types'
 
 export type QuotePrice = {
@@ -48,16 +55,6 @@ export type QuotesV2Vehicle = {
   class: string
   passenger_capacity?: number
   luggage_capacity?: number
-}
-
-export type ServiceLevelAgreements = {
-  free_cancellation: {
-    type: string
-    minutes: number
-  }
-  free_waiting_time: {
-    minutes: number
-  }
 }
 
 export type QuoteV2Item = {

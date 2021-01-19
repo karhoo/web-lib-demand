@@ -1,6 +1,12 @@
 import { HttpResponse } from '../http/types'
 import { Quote } from '../quotes/types'
-import { CommonPoiType, LatLng, MeetingPointType, VehicleAttributes } from '../sharedTypes'
+import {
+  CommonPoiType,
+  LatLng,
+  MeetingPointType,
+  VehicleAttributes,
+  ServiceLevelAgreements,
+} from '../sharedTypes'
 
 export type PassengerDetails = {
   first_name?: string
@@ -96,6 +102,7 @@ export type TripFollowResponse = {
     instructions?: string
     note?: string
   }
+  service_level_agreements?: ServiceLevelAgreements
   meta?: {
     [k: string]: string
   }

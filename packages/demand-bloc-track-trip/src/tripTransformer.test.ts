@@ -46,11 +46,12 @@ describe('tripTransformer', () => {
       trainTime: null,
       tripId: null,
       internalTripId: null,
+      serviceLevelAgreements: null,
       meta: null,
     })
   })
 
-  it('should originEta be 0 when tatus is ARRIVED', () => {
+  it('should originEta be 0 when status is ARRIVED', () => {
     expect(tripTransformer({ status: TripStatuses.ARRIVED }).originEta).toEqual(0)
   })
 
@@ -243,8 +244,31 @@ describe('tripTransformer', () => {
       trainTime: tripInfo.train_time,
       tripId: tripInfo.display_trip_id,
       internalTripId: tripInfo.id,
+      serviceLevelAgreements: null,
       meta: tripInfo.meta,
       status: tripInfo.status,
     })
+  })
+
+  it('should transform the sla if present', () => {
+    const dateScheduled = '2020-05-29T14:00:00Z'
+    const originalDateScheduled = '2020-05-29T13:59:20Z'
+    const sla = {
+      free_cancellation: {
+        type: 'TimeBeforePickup',
+        minutes: 30,
+      },
+      free_waiting_time: {
+        minutes: 20,
+      },
+    }
+    expect(
+      tripTransformer({
+        status: TripStatuses.ARRIVED,
+        date_scheduled: dateScheduled,
+        meta: { original_date_scheduled: originalDateScheduled },
+        service_level_agreements: sla,
+      }).serviceLevelAgreements
+    ).toEqual(sla)
   })
 })
