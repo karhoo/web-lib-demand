@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.4.0](https://github.com/karhoo/web-lib-demand/compare/v11.3.0...v11.4.0) (2021-01-19)
+
+
+### Features
+
+* add form validation logic ([#116](https://github.com/karhoo/web-lib-demand/issues/116)) ([c0d7795](https://github.com/karhoo/web-lib-demand/commit/c0d7795a2b0cef02856535d86ed757e4181f0e01))
+
+
+
+
+
 # [11.3.0](https://github.com/karhoo/web-lib-demand/compare/v11.2.0...v11.3.0) (2021-01-13)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-trip-create
