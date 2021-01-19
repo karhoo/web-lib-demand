@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.5.0](https://github.com/karhoo/web-lib-demand/compare/v11.4.0...v11.5.0) (2021-01-19)
+
+
+### Features
+
+* allow booking with Adyen without 3DS ([d533bce](https://github.com/karhoo/web-lib-demand/commit/d533bce6ffc495b2695adedb5fd5b36db09417e0))
+
+
+
+
+
 # [11.4.0](https://github.com/karhoo/web-lib-demand/compare/v11.3.0...v11.4.0) (2021-01-19)
 
 

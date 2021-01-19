@@ -275,7 +275,7 @@ describe('PaymentBloc', () => {
       )
     })
 
-    it('should return nonce', async () => {
+    it('should return tokenized nonce', async () => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,
@@ -285,8 +285,26 @@ describe('PaymentBloc', () => {
       const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
       const nonce = 'testNonce'
       mocked.startThreeDSecureVerification.mockReturnValueOnce(Promise.resolve(nonce))
+      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
+        ok: true,
+        nonce: tokenizeHostedFieldsResponse.nonce,
+      })
+    })
 
-      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce })
+    it('should return empty nonce', async () => {
+      const payment = await PaymentBloc.create({
+        providers: providersMapMock,
+        paymentService: paymentServiceMock,
+      })
+
+      const providerBeingUsedMock = getPaymentProviderBeingUsed()
+      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
+      const nonce = ''
+      mocked.startThreeDSecureVerification.mockReturnValueOnce(Promise.resolve(nonce))
+      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
+        ok: true,
+        nonce,
+      })
     })
 
     it('should return error when verifyWithThreeDSecure emits error', async () => {

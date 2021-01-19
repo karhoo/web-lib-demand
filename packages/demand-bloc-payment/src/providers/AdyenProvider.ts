@@ -156,10 +156,12 @@ export class AdyenProvider implements Provider {
   startThreeDSecureVerification() {
     const { paymentAction } = this
 
-    if (paymentAction) {
-      this.paymentAction = null
-      this.cardElement?.handleAction(paymentAction)
+    if (!paymentAction) {
+      return Promise.resolve('no-payment-action')
     }
+
+    this.paymentAction = null
+    this.cardElement?.handleAction(paymentAction)
 
     return Promise.resolve('')
   }
