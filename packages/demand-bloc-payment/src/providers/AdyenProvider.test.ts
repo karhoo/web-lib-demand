@@ -264,6 +264,17 @@ describe('AdyenProvider', () => {
 
       expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
     })
+
+    it('should do nothing if no action is defined', async () => {
+      const resultMessage = 'no-payment-action'
+
+      await provider.tokenizeHostedFields()
+      provider.paymentAction = null
+      const payload = await provider.startThreeDSecureVerification()
+
+      expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+      expect(resultMessage).toBe(payload)
+    })
   })
 
   describe('completeThreeDSecureVerification', () => {
