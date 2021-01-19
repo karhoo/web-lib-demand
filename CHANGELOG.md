@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.4.0](https://github.com/karhoo/web-lib-demand/compare/v11.3.0...v11.4.0) (2021-01-19)
+
+
+### Features
+
+* add form validation logic ([#116](https://github.com/karhoo/web-lib-demand/issues/116)) ([c0d7795](https://github.com/karhoo/web-lib-demand/commit/c0d7795a2b0cef02856535d86ed757e4181f0e01))
+* MXP-1034 Expose sla summary on trip data ([de5af53](https://github.com/karhoo/web-lib-demand/commit/de5af53a3be3811642d901d3761f765d671cda68))
+* MXP-1035: Address PR comments ([41c0ddb](https://github.com/karhoo/web-lib-demand/commit/41c0ddb4e282eb5300a7dd376613a4fa97d06e3f))
+
+
+
+
+
 # [11.3.0](https://github.com/karhoo/web-lib-demand/compare/v11.2.0...v11.3.0) (2021-01-13)
 
 
