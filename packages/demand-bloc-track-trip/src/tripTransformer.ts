@@ -86,7 +86,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     id,
     passengers,
     meeting_point,
-    service_level_agreements,
+    sla,
     meta,
   } = trip
 
@@ -162,7 +162,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     trainTime: train_time || null,
     tripId: display_trip_id || null,
     internalTripId: trip_id || id || null,
-    serviceLevelAgreements: service_level_agreements || null,
+    serviceLevelAgreements: sla || null,
     meta: meta || null,
   }
 }
