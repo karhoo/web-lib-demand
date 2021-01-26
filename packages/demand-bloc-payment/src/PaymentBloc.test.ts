@@ -287,7 +287,7 @@ describe('PaymentBloc', () => {
       mocked.startThreeDSecureVerification.mockReturnValueOnce(Promise.resolve(nonce))
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
         ok: true,
-        nonce: tokenizeHostedFieldsResponse.nonce,
+        nonce,
       })
     })
 
@@ -297,13 +297,9 @@ describe('PaymentBloc', () => {
         paymentService: paymentServiceMock,
       })
 
-      const providerBeingUsedMock = getPaymentProviderBeingUsed()
-      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
-      const nonce = ''
-      mocked.startThreeDSecureVerification.mockReturnValueOnce(Promise.resolve(nonce))
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
         ok: true,
-        nonce,
+        nonce: tokenizeHostedFieldsResponse.nonce,
       })
     })
 
