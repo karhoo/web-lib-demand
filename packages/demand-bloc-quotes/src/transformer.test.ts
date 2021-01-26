@@ -117,7 +117,7 @@ describe('transformer', () => {
   })
 
   it('should transform quote with service level agreement', () => {
-    const rawQuote = { ...originalQuote, service_level_agreements: sla }
+    const rawQuote = { ...originalQuote, sla }
     const newQuote = { ...expectedQuote, originalQuote: rawQuote, serviceLevelAgreements: sla }
 
     expect(transformer(rawQuote)).toEqual(newQuote)

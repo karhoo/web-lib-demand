@@ -102,7 +102,7 @@ export type TripFollowResponse = {
     instructions?: string
     note?: string
   }
-  service_level_agreements?: ServiceLevelAgreements
+  sla?: ServiceLevelAgreements
   meta?: {
     [k: string]: string
   }
