@@ -1,7 +1,7 @@
 {
   "name": "@karhoo/create-demand-bloc-module",
   "description": "🔥 Node.js CLI tool to generate Karhoo Demand Bussness Logic Component",
-  "version": "11.5.2",
+  "version": "11.5.3",
   "homepage": "https://github.com/karhoo/web-lib-demand#readme",
   "bin": "src/create-demand-bloc-module.js",
   "license": "BSD-2-Clause",

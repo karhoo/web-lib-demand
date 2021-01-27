@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.5.3](https://github.com/karhoo/web-lib-demand/compare/v11.5.2...v11.5.3) (2021-01-27)
+
+
+### Reverts
+
+* Revert "bugfix: sla summary property on quotes and trip typo" ([668a82f](https://github.com/karhoo/web-lib-demand/commit/668a82f751d5a54854f3bb8a04243faa8c1d6156))
+
+
+
+
+
 ## [11.5.2](https://github.com/karhoo/web-lib-demand/compare/v11.5.1...v11.5.2) (2021-01-26)
 
 **Note:** Version bump only for package @karhoo/demand-api

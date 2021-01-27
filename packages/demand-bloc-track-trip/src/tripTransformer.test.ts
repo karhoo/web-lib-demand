@@ -267,7 +267,7 @@ describe('tripTransformer', () => {
         status: TripStatuses.ARRIVED,
         date_scheduled: dateScheduled,
         meta: { original_date_scheduled: originalDateScheduled },
-        sla,
+        service_level_agreements: sla,
       }).serviceLevelAgreements
     ).toEqual(sla)
   })
