@@ -43,7 +43,7 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
       luggage_capacity = 0,
       class: vehicle_class = '',
     } = {},
-    sla = null,
+    service_level_agreements = null,
   } = quote
 
   return {
@@ -67,6 +67,6 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
     vehiclePassengerCapacity: passenger_capacity,
     fleetDescription: description,
     originalQuote: quote,
-    serviceLevelAgreements: sla,
+    serviceLevelAgreements: service_level_agreements,
   }
 }

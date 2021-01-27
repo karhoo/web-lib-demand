@@ -65,7 +65,7 @@ export type QuoteV2Item = {
   source?: QuoteSource
   fleet: QuotesV2Fleet
   vehicle?: QuotesV2Vehicle
-  sla?: ServiceLevelAgreements
+  service_level_agreements?: ServiceLevelAgreements
 }
 
 export type QuotesV2Response = {
