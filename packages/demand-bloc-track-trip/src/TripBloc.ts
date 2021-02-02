@@ -1,37 +1,31 @@
 import {
-  Trip,
   TripFollowResponse as OriginalTripFollowResponse,
   HttpResponse,
-  Fare,
   FinalFareResponse,
   CancellationParams,
+  BookATripResponse,
+  SearchParams,
 } from '@karhoo/demand-api'
 import { Subject, Subscription } from 'rxjs'
 import polling from './polling'
 
 import { publishReplay, refCount } from 'rxjs/operators'
-import { FinalTripStatuses, FinalFareStatuses } from './statuses'
+import { FinalTripStatuses, FinalFareStatuses, TripStatuses } from './statuses'
 import { tripTransformer, TripFollowResponse } from './tripTransformer'
+import { makeSearchParams } from './utils'
+import { Storage, TripService, FareService, TripsOffset, CustomOptions } from './types'
 
-const POLLING_INTERVAL_TRACK = 10000
-const POLLING_FINAL_FARE = 20000
+import { POLLING_INTERVAL_TRACK, POLLING_FINAL_FARE, DEFAULT_ROW_COUNT_PER_REQUEST } from './constants'
 
 function createStream<T>(stream: Subject<T>) {
   return stream.pipe(publishReplay(1), refCount())
 }
-
-export interface Storage {
-  setItem: (key: string, value: string) => void
-  getItem: (key: string) => string | null
-}
-
-export type TripService = Pick<Trip, 'cancelByFollowCode' | 'trackTrip'>
-export type FareService = Pick<Fare, 'status'>
-
 export class TripBloc {
   private tripService: TripService
   private fareService: FareService
   private storage: Storage
+  private tripsOffset: TripsOffset
+  private options: CustomOptions
 
   private trackSubscription = new Subscription()
   private fareSubscription = new Subscription()
@@ -40,6 +34,8 @@ export class TripBloc {
   private finalFare$ = new Subject<FinalFareResponse>()
   private pickUpTimeUpdates$ = new Subject()
   private error$ = new Subject()
+  private upcomingTrips$ = new Subject<BookATripResponse[]>()
+  private pastTrips$ = new Subject<BookATripResponse[]>()
 
   /**
    * constructor
@@ -47,11 +43,24 @@ export class TripBloc {
    * @param fareService
    * @param storage to save pickup time details
    */
-  constructor(tripService: TripService, fareService: FareService, storage: Storage = localStorage) {
+  constructor(
+    tripService: TripService,
+    fareService: FareService,
+    storage: Storage = localStorage,
+    options?: CustomOptions
+  ) {
     this.tripService = tripService
     this.fareService = fareService
 
     this.storage = storage
+    this.tripsOffset = {
+      upcomingTripsOffset: 0,
+      pastTripsOffset: 0,
+    }
+
+    this.options = options || {
+      paginationRowCount: DEFAULT_ROW_COUNT_PER_REQUEST,
+    }
   }
 
   /**
@@ -73,6 +82,20 @@ export class TripBloc {
   }
 
   /**
+   * Booking upcoming trips history data stream.
+   */
+  get upcomingTrips() {
+    return createStream(this.upcomingTrips$)
+  }
+
+  /**
+   * Booking past trips history data stream.
+   */
+  get pastTrips() {
+    return createStream(this.pastTrips$)
+  }
+
+  /**
    * Pick up time updates event.
    *
    * E.g. if train is delayed, driver will update pick up time and user will get notified via this event
@@ -91,6 +114,8 @@ export class TripBloc {
     this.trip$.complete()
     this.finalFare$.complete()
     this.pickUpTimeUpdates$.complete()
+    this.upcomingTrips$.complete()
+    this.pastTrips$.complete()
   }
 
   /**
@@ -177,5 +202,104 @@ export class TripBloc {
   cancelPolling() {
     this.trackSubscription.unsubscribe()
     this.fareSubscription.unsubscribe()
+  }
+
+  /**
+   * Requests trips list
+   * @param statuses means trips with specified statuses
+   * @param paginationOptions for handle pagination
+   */
+  private async searchTrips(
+    statuses: TripStatuses[] = [],
+    paginationOptions?: Pick<SearchParams, 'pagination_offset' | 'pagination_row_count'>
+  ): Promise<BookATripResponse[]> {
+    const params = makeSearchParams(statuses, paginationOptions)
+
+    const response = await this.tripService.search(params)
+
+    if (!response.ok) return []
+
+    return response.body?.bookings || []
+  }
+
+  /**
+   * Push retrieved trips to stream
+   * @param stream means observable which pipe trips to subscribers
+   * @param tripsPagination for retrieving next bunch of trips according to the config
+   */
+  async getTrips(
+    stream: Subject<BookATripResponse[]>,
+    statuses: TripStatuses[] = [],
+    tripsPagination: keyof TripsOffset,
+    paginationOffset: number,
+    paginationRowCount: number
+  ) {
+    if (paginationOffset === 0) {
+      this.tripsOffset[tripsPagination] = 0
+    }
+
+    const trips = await this.searchTrips(statuses, {
+      pagination_offset: paginationOffset,
+      pagination_row_count: paginationRowCount || this.options.paginationRowCount,
+    })
+
+    this.tripsOffset[tripsPagination] += trips?.length || 0
+    stream.next(trips)
+  }
+
+  /**
+   * Get upcoming trips list
+   * @param statuses means trips with specified statuses
+   * @param paginationOffset means start record in data base from which trips are been requiesting
+   * @param paginationRowCount means how many trips get per one request
+   */
+  getUpcomingTrips(
+    paginationOffset = 0,
+    statuses: TripStatuses[] = [TripStatuses.CONFIRMED, TripStatuses.REQUESTED],
+    paginationRowCount: number = this.options.paginationRowCount
+  ) {
+    return this.getTrips(
+      this.upcomingTrips$,
+      statuses,
+      'upcomingTripsOffset',
+      paginationOffset,
+      paginationRowCount
+    )
+  }
+
+  /**
+   * Handle pagination in trips request
+   */
+  getNextUpcomingTrips() {
+    return this.getUpcomingTrips(this.tripsOffset.upcomingTripsOffset)
+  }
+
+  /**
+   * The same method as getUpcomingTrips but for past trips list
+   */
+  async getPastTrips(
+    paginationOffset = 0,
+    statuses: TripStatuses[] = [TripStatuses.COMPLETED],
+    paginationRowCount: number = this.options.paginationRowCount
+  ) {
+    return this.getTrips(this.pastTrips$, statuses, 'pastTripsOffset', paginationOffset, paginationRowCount)
+  }
+
+  /**
+   * The same method as getNextUpcomingTrips but for past trips list
+   */
+  getNextPastTrips() {
+    return this.getPastTrips(this.tripsOffset.pastTripsOffset)
+  }
+
+  /**
+   * Cancels a trip by id
+   * @param id trip id
+   * @param params CancellationParams
+   */
+  async cancel(id: string, params: CancellationParams) {
+    const response = await this.tripService.cancel(id, params)
+
+    if (response.status === 204) return this.getUpcomingTrips()
   }
 }

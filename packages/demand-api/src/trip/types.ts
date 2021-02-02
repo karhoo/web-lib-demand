@@ -174,6 +174,19 @@ export type CancellationParams = {
   explanation?: string
 }
 
+export type OrderOptions =
+  | 'id'
+  | 'date'
+  | 'booking_date'
+  | 'reference'
+  | 'name'
+  | 'surname'
+  | 'vehicle'
+  | 'state'
+  | 'fleet'
+  | 'origin'
+  | 'destination'
+
 export type SearchParams = {
   trip_states?: TripStatus[]
   trip_type?: 'BOTH' | 'PREBOOK' | 'ASAP'
@@ -193,7 +206,7 @@ export type SearchParams = {
   forename?: string
   lastname?: string
   display_trip_id?: string
-  order_by?: string[]
+  order_by?: OrderOptions[]
 }
 
 export type SearchResponse = {
