@@ -1,10 +1,19 @@
-import { Observable } from 'rxjs'
+import { Observable, Subject } from 'rxjs'
 import { mocked } from 'ts-jest/utils'
-import { TripStatuses, HttpResponse, TripFollowResponse } from '@karhoo/demand-api'
+import {
+  TripStatuses,
+  HttpResponse,
+  TripFollowResponse,
+  SearchResponse,
+  BookATripResponse,
+} from '@karhoo/demand-api'
 import {
   getMockedTrackTripResponse,
   getMockedErrorTrackTripResponse,
   getMockedFinalFareResponse,
+  getMockedSearchResponse,
+  getMockedCancelResponse,
+  testBookings,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import polling from './polling'
@@ -17,12 +26,16 @@ jest.mock('./polling')
 describe('TripBloc', () => {
   const defaultTrackTripResponse = getMockedTrackTripResponse()
   const defaultFinalFareResponse = getMockedFinalFareResponse()
+  const defaultSearchResponse = getMockedSearchResponse()
+  const defaultCancelResponse = getMockedCancelResponse()
 
   const tripServiceMock = {
     cancelByFollowCode: jest.fn((): Promise<any> => Promise.resolve({})),
     trackTrip: jest.fn(
       (): Promise<HttpResponse<TripFollowResponse>> => Promise.resolve(defaultTrackTripResponse)
     ),
+    search: jest.fn((): Promise<HttpResponse<SearchResponse>> => Promise.resolve(defaultSearchResponse)),
+    cancel: jest.fn((): Promise<any> => Promise.resolve(defaultCancelResponse)),
   }
 
   const fareServiceMock = {
@@ -265,6 +278,128 @@ describe('TripBloc', () => {
         done()
       })
       bloc.track(id)
+    })
+  })
+
+  describe('getTrips', () => {
+    const statuses = [TripStatuses.COMPLETED]
+    const tripsPagination = 'upcomingTripsOffset'
+    const paginationRowCount = 2
+    const paginationOffset = 2
+    const stream = new Subject<BookATripResponse[]>()
+
+    it('should call searchTrips', async () => {
+      const searchTripsSpy = jest.spyOn(TripBloc.prototype as any, 'searchTrips')
+
+      await bloc.getTrips(stream, statuses, tripsPagination, paginationOffset, paginationRowCount)
+
+      expect(searchTripsSpy).toHaveBeenCalled()
+      expect(searchTripsSpy).toHaveBeenCalledWith(statuses, {
+        pagination_offset: paginationOffset,
+        pagination_row_count: paginationRowCount,
+      })
+    })
+
+    it('should emit trips', async () => {
+      const stream = new Subject<BookATripResponse[]>()
+
+      const searchTripsSpy = jest.spyOn(TripBloc.prototype as any, 'searchTrips')
+      searchTripsSpy.mockImplementationOnce(() => {
+        return Promise.resolve(testBookings)
+      })
+
+      const trips: Array<BookATripResponse[]> = []
+      stream.subscribe(data => trips.push(data))
+      await bloc.getTrips(stream, statuses, tripsPagination, paginationOffset, paginationRowCount)
+
+      stream.subscribe(data => trips.push(data))
+
+      expect(trips).toEqual([testBookings])
+    })
+  })
+
+  describe('upcoming, past trips', () => {
+    const that = {
+      upcomingTrips$: new Subject(),
+      pastTrips$: new Subject(),
+      options: {
+        paginationRowCount: 2,
+      },
+      getTrips: jest.fn(),
+      tripsOffset: {
+        upcomingTripsOffset: 2,
+        pastTripsOffset: 3,
+      },
+      getUpcomingTrips: jest.fn(),
+      getPastTrips: jest.fn(),
+    }
+    const statuses: TripStatuses[] = [TripStatuses.CONFIRMED, TripStatuses.REQUESTED]
+    const upcomingTripsPagination = 'upcomingTripsOffset'
+    const pastTripsPagination = 'pastTripsOffset'
+    const paginationOffset = 2
+
+    describe('getUpcomingTrips', () => {
+      it('should call getTrips', () => {
+        TripBloc.prototype.getUpcomingTrips.call(that, paginationOffset, statuses)
+
+        expect(that.getTrips).toHaveBeenCalledTimes(1)
+        expect(that.getTrips).toHaveBeenCalledWith(
+          that.upcomingTrips$,
+          statuses,
+          upcomingTripsPagination,
+          paginationOffset,
+          that.options.paginationRowCount
+        )
+      })
+    })
+
+    describe('getNextUpcomingTrips', () => {
+      it('should call getUpcomintgTrips', () => {
+        TripBloc.prototype.getNextUpcomingTrips.call(that)
+
+        expect(that.getUpcomingTrips).toHaveBeenCalledTimes(1)
+        expect(that.getUpcomingTrips).toHaveBeenCalledWith(that.tripsOffset.upcomingTripsOffset)
+      })
+    })
+
+    describe('getPastTrips', () => {
+      it('should call getTrips', () => {
+        TripBloc.prototype.getPastTrips.call(that, paginationOffset, statuses)
+
+        expect(that.getTrips).toHaveBeenCalledTimes(1)
+        expect(that.getTrips).toHaveBeenCalledWith(
+          that.pastTrips$,
+          statuses,
+          pastTripsPagination,
+          paginationOffset,
+          that.options.paginationRowCount
+        )
+      })
+    })
+
+    describe('getNextPastTrips', () => {
+      it('should call getPastTrips', () => {
+        TripBloc.prototype.getNextPastTrips.call(that)
+
+        expect(that.getPastTrips).toHaveBeenCalledTimes(1)
+        expect(that.getPastTrips).toHaveBeenCalledWith(that.tripsOffset.pastTripsOffset)
+      })
+    })
+  })
+
+  describe('cancel', () => {
+    it('should call cancel', async () => {
+      const code = 'code'
+      const params = {
+        reason: 'reason',
+      }
+      const getUpcomingTripsSpy = jest.spyOn(TripBloc.prototype, 'getUpcomingTrips')
+
+      await bloc.cancel(code, params)
+
+      expect(tripServiceMock.cancel).toHaveBeenCalledTimes(1)
+      expect(tripServiceMock.cancel).toHaveBeenCalledWith(code, params)
+      expect(getUpcomingTripsSpy).toHaveBeenCalled()
     })
   })
 
