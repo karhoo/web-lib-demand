@@ -5,6 +5,7 @@ export type TripCreateBlocOptions = {
   minLengthToSearch?: number
   autocompleteDebounceTime?: number
   autocompleteLocationRadius?: number
+  maxLengthForFlightAndTrainNumber?: number
   defaultUserPosition?: LatLng
 }
 
@@ -12,6 +13,7 @@ export type TripCreateModuleOptions = {
   minLengthToSearch: number
   autocompleteDebounceTime: number
   autocompleteLocationRadius: number
+  maxLengthForFlightAndTrainNumber: number
   defaultUserPosition?: LatLng
 }
 
@@ -89,8 +91,10 @@ export enum TripCreateFormFields {
   PICKUP = 'PICKUP',
   DROPOFF = 'DROPOFF',
   TRAIN_NUMBER = 'TRAIN_NUMBER',
+  FLIGHT_NUMBER = 'FLIGHT_NUMBER',
   PICKUP_DATE = 'PICKUP_DATE',
   PICKUP_TIME = 'PICKUP_TIME',
+  IS_ASAP_BOOKING = 'IS_ASAP_BOOKING',
 }
 
 export type FormSchemaValue = {
