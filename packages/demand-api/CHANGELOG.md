@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.7.0](https://github.com/karhoo/web-lib-demand/compare/v11.5.3...v11.7.0) (2021-02-04)
+
+
+### Features
+
+* Extend TripBloc with search trips methods ([a2cc124](https://github.com/karhoo/web-lib-demand/commit/a2cc1249b0b0a76365b2400758fe74871d8bd7b5))
+
+
+
+
+
 # [11.6.0](https://github.com/karhoo/web-lib-demand/compare/v11.5.3...v11.6.0) (2021-02-03)
 
 
