@@ -7,6 +7,7 @@ const debounceTime = 400
 const options = {
   minLengthToSearch: 5,
   autocompleteDebounceTime: debounceTime,
+  maxLengthForFlightAndTrainNumber: 6,
   autocompleteLocationRadius: 10,
 }
 
