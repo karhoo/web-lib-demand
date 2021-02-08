@@ -155,8 +155,8 @@ describe('AdyenProvider', () => {
           redirectFromIssuerMethod: 'get',
           ...adyenCheckoutOptions,
           ...cardElement.data,
+          returnUrl: '/callback',
         },
-        return_url_suffix: '/callback',
       })
     })
 
@@ -173,8 +173,8 @@ describe('AdyenProvider', () => {
           ...adyenCheckoutOptions,
           ...cardElement.data,
           environment: 'live',
+          returnUrl: '/callback',
         },
-        return_url_suffix: '/callback',
       })
     })
 
@@ -189,8 +189,8 @@ describe('AdyenProvider', () => {
           ...adyenCheckoutOptions,
           ...cardElement.data,
           ...shopperData,
+          returnUrl: '/callback',
         },
-        return_url_suffix: '/callback',
       })
     })
 

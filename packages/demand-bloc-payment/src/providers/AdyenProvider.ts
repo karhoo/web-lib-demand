@@ -124,8 +124,8 @@ export class AdyenProvider implements Provider {
         ...this.cardElement?.data,
         ...this.shopperData,
         redirectFromIssuerMethod: 'get',
+        returnUrl: this.options.returnUrl,
       },
-      return_url_suffix: this.options.returnUrl,
     })
 
     if (!makePaymentResponse.ok) {
