@@ -2,10 +2,17 @@ import { SchemaOf } from 'yup'
 import { merge, of, Subject, Observable } from 'rxjs'
 import { scan, switchMap, distinctUntilChanged } from 'rxjs/operators'
 
-import { TripCreateModuleFields, TripCreateFieldTypes, FormSchema, FormSchemaValue } from './types'
+import {
+  TripCreateModuleFields,
+  TripCreateFieldTypes,
+  FormSchema,
+  FormSchemaValue,
+  ListOfFields,
+} from './types'
 import { AutocompleteBloc } from './AutocompleteBloc'
 import { FieldBloc } from './FieldBloc'
 import { createStream } from './createStream'
+import { defaultTripCreateOptions } from './constants'
 
 export class Form {
   private fields: TripCreateModuleFields = {}
@@ -96,7 +103,10 @@ export class Form {
     }
 
     if (!this.fields[fieldName]) {
-      this.fields[fieldName] = new AutocompleteBloc(schema.locationService, schema.options)
+      this.fields[fieldName] = new AutocompleteBloc(
+        schema.locationService,
+        (schema.options = defaultTripCreateOptions)
+      )
     }
   }
 
@@ -106,6 +116,17 @@ export class Form {
 
   onChange(fieldName: string, value: string) {
     this.fields[fieldName].onChange(value)
+  }
+
+  validateField(fieldName: string, values: ListOfFields) {
+    this.validationSchema
+      .validateAt(fieldName, values)
+      .then(() => this.fields[fieldName].onError(''))
+      .catch(error => this.fields[fieldName].onError(error.message))
+  }
+
+  validateForm(values: ListOfFields) {
+    Object.keys(this.validationSchema.fields).forEach((field: string) => this.validateField(field, values))
   }
 
   dispose() {

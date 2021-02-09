@@ -65,6 +65,7 @@ export interface TripCreateFieldItem {
   results?: Observable<AutocompleteItem[]>
 
   onChange(value: string): void
+  onError(value: string): void
   onSelect?: (value: string) => void
   prefill(value: PrefillAutocompleteFieldValue | string): void
   dispose(): void
@@ -97,12 +98,24 @@ export enum TripCreateFormFields {
   IS_ASAP_BOOKING = 'IS_ASAP_BOOKING',
 }
 
+export enum PassengerDetailsFormFields {
+  FIRST_NAME = 'FIRST_NAME',
+  LAST_NAME = 'LAST_NAME',
+  EMAIL = 'EMAIL',
+  PHONE_NUMBER = 'PHONE_NUMBER',
+  COMMENT = 'COMMENT',
+}
+
 export type FormSchemaValue = {
   type: keyof typeof TripCreateFieldTypes
   locationService?: Locations
-  options: TripCreateModuleOptions
+  options?: TripCreateModuleOptions
 }
 
 export type FormSchema = {
   [K: string]: FormSchemaValue
+}
+
+export type ListOfFields = {
+  [key: string]: string
 }
