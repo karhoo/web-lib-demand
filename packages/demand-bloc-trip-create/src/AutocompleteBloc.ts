@@ -6,7 +6,7 @@ import {
 import { v4 as uuid } from 'uuid'
 import camelcaseKeys from 'camelcase-keys'
 
-import { Subject, of, merge } from 'rxjs'
+import { BehaviorSubject, Subject, of, merge } from 'rxjs'
 import { debounceTime, switchMap, distinctUntilChanged, map, filter } from 'rxjs/operators'
 import {
   TripCreateModuleOptions,
@@ -40,6 +40,7 @@ export class AutocompleteBloc implements TripCreateFieldItem {
   private sessionToken = uuid()
 
   private query$ = new Subject<QueryValueType>()
+  private error$ = new BehaviorSubject<string>('')
   private selectedAddress$ = new Subject<AutocompleteDetails>()
   private prefilledResults$ = new Subject<AutocompleteItem[]>()
 
@@ -77,6 +78,10 @@ export class AutocompleteBloc implements TripCreateFieldItem {
 
   onChange(value: string) {
     this.query$.next({ value, isPrefill: false })
+  }
+
+  onError(error: string) {
+    this.error$.next(error)
   }
 
   prefill({ query, selectedAddress, results }: PrefillAutocompleteFieldValue) {

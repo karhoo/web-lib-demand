@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.8.0](https://github.com/karhoo/web-lib-demand/compare/v11.7.0...v11.8.0) (2021-02-09)
+
+
+### Features
+
+* add passanger details form creator ([cf1b954](https://github.com/karhoo/web-lib-demand/commit/cf1b954b1ef2a94a2b95afbeb04b78f257461502))
+
+
+
+
+
 # [11.7.0](https://github.com/karhoo/web-lib-demand/compare/v11.5.3...v11.7.0) (2021-02-04)
 
 
