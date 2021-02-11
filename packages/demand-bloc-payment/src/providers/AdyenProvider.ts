@@ -70,6 +70,14 @@ export class AdyenProvider implements Provider {
     return this.shopper
   }
 
+  set nonce(value: string) {
+    sessionStorage.setItem('adyenNonce', value)
+  }
+
+  getNonce() {
+    return sessionStorage.getItem('adyenNonce') || ''
+  }
+
   private setValidationStatus({ isValid }: { isValid: boolean }) {
     this.isFormValid = isValid
   }
@@ -140,6 +148,8 @@ export class AdyenProvider implements Provider {
       this.paymentAction = makePaymentResponse.body.payload.action
     }
 
+    this.nonce = makePaymentResponse.body.trip_id
+
     return ['meta.trip_id', makePaymentResponse.body.trip_id]
   }
 
@@ -183,6 +193,8 @@ export class AdyenProvider implements Provider {
       },
       trip_id: nonce,
     })
+
+    this.nonce = ''
 
     return nonce
   }

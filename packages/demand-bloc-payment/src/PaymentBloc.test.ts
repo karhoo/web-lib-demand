@@ -48,6 +48,7 @@ describe('PaymentBloc', () => {
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
     saveCard: getAddPaymentCardMock(),
     getPaymentProviderProps: jest.fn(),
+    getNonce: jest.fn(),
   }
 
   const adyenProvider = {
@@ -60,6 +61,7 @@ describe('PaymentBloc', () => {
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
     getPaymentProviderProps: jest.fn(),
     saveCard: getAddPaymentCardMock(),
+    getNonce: jest.fn(),
   }
 
   const providersMapMock: PaymentProvidersMap = {
@@ -287,7 +289,7 @@ describe('PaymentBloc', () => {
       mocked.startThreeDSecureVerification.mockReturnValueOnce(Promise.resolve(nonce))
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
         ok: true,
-        nonce,
+        nonce: tokenizeHostedFieldsResponse.nonce,
       })
     })
 
@@ -299,7 +301,7 @@ describe('PaymentBloc', () => {
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
         ok: true,
-        nonce: tokenizeHostedFieldsResponse.nonce,
+        nonce: '',
       })
     })
 
@@ -342,8 +344,12 @@ describe('PaymentBloc', () => {
 
       delete window.location
 
+      const providerBeingUsedMock = getPaymentProviderBeingUsed()
+      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
+      mocked.getNonce.mockReturnValueOnce(krhutuuid)
+
       window.location = {
-        search: `?krhutuuid=${krhutuuid}&MD=${MD}&PaRes=${PaRes}`,
+        search: `?MD=${MD}&PaRes=${PaRes}`,
       } as Location
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })

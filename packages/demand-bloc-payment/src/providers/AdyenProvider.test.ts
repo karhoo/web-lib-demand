@@ -226,6 +226,12 @@ describe('AdyenProvider', () => {
 
       expect(provider.paymentData).toEqual('')
     })
+
+    it('should save nonce', async () => {
+      await provider.tokenizeHostedFields()
+
+      expect(provider.getNonce()).toEqual(getMockedPaymentAuthResponse().body.trip_id)
+    })
   })
 
   describe('validatePaymentForm', () => {
@@ -298,6 +304,7 @@ describe('AdyenProvider', () => {
         trip_id: params.nonce,
       })
       expect(nonce).toBe(params.nonce)
+      expect(provider.getNonce()).toEqual('')
     })
 
     it('should throw error if required params are missing', async () => {
