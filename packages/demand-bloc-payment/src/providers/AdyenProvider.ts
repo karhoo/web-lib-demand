@@ -13,6 +13,7 @@ import {
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
 import { handleRefusalResponse, errors } from './adyenErrors'
+
 export class AdyenProvider implements Provider {
   private paymentService: Payment
   private isFormValid = false
@@ -164,10 +165,15 @@ export class AdyenProvider implements Provider {
   }
 
   startThreeDSecureVerification() {
-    const { paymentAction } = this
+    const { paymentAction, options } = this
+    const { withThreeDSecure } = options
 
     if (!paymentAction) {
-      return Promise.resolve('no-payment-action')
+      this.nonce = ''
+
+      return withThreeDSecure
+        ? Promise.reject(new Error(errors.missingRequiredParamsFor3dSecure))
+        : Promise.resolve('no-payment-action')
     }
 
     this.paymentAction = null

@@ -64,6 +64,7 @@ describe('AdyenProvider', () => {
     returnUrl: '/callback',
     price: amount,
     currencyCode,
+    withThreeDSecure: true,
   }
 
   const adyenCheckoutOptions = {
@@ -271,15 +272,35 @@ describe('AdyenProvider', () => {
       expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
     })
 
-    it('should do nothing if no action is defined', async () => {
-      const resultMessage = 'no-payment-action'
+    it('should emit error if no action is defined', async () => {
+      await provider.tokenizeHostedFields()
+      provider.paymentAction = null
 
+      try {
+        await provider.startThreeDSecureVerification()
+      } catch (error) {
+        expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+        expect(error).toEqual(new Error(errors.missingRequiredParamsFor3dSecure))
+      }
+    })
+
+    it('should do nothing if no action is defined', async () => {
+      jest.clearAllMocks()
+      const resultMessage = 'no-payment-action'
+      const newOptions = {
+        ...checkoutOptions,
+        withThreeDSecure: false,
+      }
+
+      provider = new AdyenProvider(paymentService, newOptions, true)
+
+      await provider.initialize()
       await provider.tokenizeHostedFields()
       provider.paymentAction = null
       const payload = await provider.startThreeDSecureVerification()
 
       expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
-      expect(resultMessage).toBe(payload)
+      expect(resultMessage).toEqual(payload)
     })
   })
 
