@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.0.0](https://github.com/karhoo/web-lib-demand/compare/v11.8.0...v12.0.0) (2021-02-15)
+
+
+### Features
+
+* remove return_url_suffix from adyen payment ([0e762ea](https://github.com/karhoo/web-lib-demand/commit/0e762ea0e5666b3bc620e716b05488a09b1ed945))
+
+
+
+
+
 # [11.8.0](https://github.com/karhoo/web-lib-demand/compare/v11.7.0...v11.8.0) (2021-02-09)
 
 **Note:** Version bump only for package @karhoo/demand-api
