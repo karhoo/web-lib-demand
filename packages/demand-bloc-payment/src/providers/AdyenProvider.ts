@@ -13,6 +13,7 @@ import {
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
 import { handleRefusalResponse, errors } from './adyenErrors'
+
 export class AdyenProvider implements Provider {
   private paymentService: Payment
   private isFormValid = false
@@ -70,6 +71,14 @@ export class AdyenProvider implements Provider {
     return this.shopper
   }
 
+  set nonce(value: string) {
+    sessionStorage.setItem('adyenNonce', value)
+  }
+
+  getNonce() {
+    return sessionStorage.getItem('adyenNonce') || ''
+  }
+
   private setValidationStatus({ isValid }: { isValid: boolean }) {
     this.isFormValid = isValid
   }
@@ -124,8 +133,8 @@ export class AdyenProvider implements Provider {
         ...this.cardElement?.data,
         ...this.shopperData,
         redirectFromIssuerMethod: 'get',
+        returnUrl: this.options.returnUrl,
       },
-      return_url_suffix: this.options.returnUrl,
     })
 
     if (!makePaymentResponse.ok) {
@@ -139,6 +148,8 @@ export class AdyenProvider implements Provider {
     if (makePaymentResponse.body.payload.action) {
       this.paymentAction = makePaymentResponse.body.payload.action
     }
+
+    this.nonce = makePaymentResponse.body.trip_id
 
     return ['meta.trip_id', makePaymentResponse.body.trip_id]
   }
@@ -154,10 +165,15 @@ export class AdyenProvider implements Provider {
   }
 
   startThreeDSecureVerification() {
-    const { paymentAction } = this
+    const { paymentAction, options } = this
+    const { withThreeDSecure } = options
 
     if (!paymentAction) {
-      return Promise.resolve('no-payment-action')
+      this.nonce = ''
+
+      return withThreeDSecure
+        ? Promise.reject(new Error(errors.missingRequiredParamsFor3dSecure))
+        : Promise.resolve('no-payment-action')
     }
 
     this.paymentAction = null
@@ -183,6 +199,8 @@ export class AdyenProvider implements Provider {
       },
       trip_id: nonce,
     })
+
+    this.nonce = ''
 
     return nonce
   }

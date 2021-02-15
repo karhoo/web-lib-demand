@@ -68,7 +68,6 @@ export type PaymentMethodsParams = {
 
 export type PaymentAuthParams = {
   payments_payload: CoreOptions
-  return_url_suffix?: string
 }
 
 export type PaymentAuthResponse = {

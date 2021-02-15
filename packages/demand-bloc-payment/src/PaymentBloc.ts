@@ -77,7 +77,7 @@ export class PaymentBloc {
 
   async verifyCardWithThreeDSecure(amount: number) {
     const params = new URLSearchParams(location.search) // eslint-disable-line no-restricted-globals
-    const nonce = params.get('krhutuuid')
+    const nonce = this.provider.getNonce()
 
     try {
       if (nonce) {
@@ -92,7 +92,7 @@ export class PaymentBloc {
 
       const paymentNonce = await this.getPaymentDetails()
       const verifiedNonce = await this.provider.startThreeDSecureVerification(amount, paymentNonce)
-      const resultNonce = verifiedNonce ? verifiedNonce : paymentNonce
+      const resultNonce = verifiedNonce ? paymentNonce : verifiedNonce
       return { ok: true, nonce: resultNonce }
     } catch (error) {
       return { ok: false, error }

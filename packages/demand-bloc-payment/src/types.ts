@@ -41,6 +41,7 @@ export type Provider = {
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
+  getNonce(): string | null
 }
 
 export type CardsInfo = {

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.0.0](https://github.com/karhoo/web-lib-demand/compare/v11.8.0...v12.0.0) (2021-02-15)
+
+
+### Features
+
+* check adyen cards for 3DS ([b72e096](https://github.com/karhoo/web-lib-demand/commit/b72e096d0ad01c30a10b65c9f4c1a219ce845ef4))
+* remove return_url_suffix from adyen payment ([0e762ea](https://github.com/karhoo/web-lib-demand/commit/0e762ea0e5666b3bc620e716b05488a09b1ed945))
+* save nonce to complete 3ds ([26242fa](https://github.com/karhoo/web-lib-demand/commit/26242faa4769d4bac3848ea9cbf515e1845bb06d))
+
+
+
+
+
 # [11.8.0](https://github.com/karhoo/web-lib-demand/compare/v11.7.0...v11.8.0) (2021-02-09)
 
 

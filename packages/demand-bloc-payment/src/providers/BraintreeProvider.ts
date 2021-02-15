@@ -49,6 +49,10 @@ export class BraintreeProvider implements Provider {
     }
   }
 
+  getNonce() {
+    return ''
+  }
+
   private async getAuthorizationToken() {
     const { organisationId, currencyCode } = this.options
 
