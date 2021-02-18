@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [13.0.0](https://github.com/karhoo/web-lib-demand/compare/v12.0.0...v13.0.0) (2021-02-18)
+
+
+### Features
+
+* export autocomplete module ([ec57fed](https://github.com/karhoo/web-lib-demand/commit/ec57fed2a373d2c9bafbaf90a5d27ab4ae75782d))
+
+
+
+
+
 # [12.0.0](https://github.com/karhoo/web-lib-demand/compare/v11.8.0...v12.0.0) (2021-02-15)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-trip-create
