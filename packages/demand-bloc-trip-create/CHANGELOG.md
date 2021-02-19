@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.1](https://github.com/karhoo/web-lib-demand/compare/v13.0.0...v13.0.1) (2021-02-19)
+
+
+### Bug Fixes
+
+* not publish empty array in case of minLengthToSearch ([161a8c8](https://github.com/karhoo/web-lib-demand/commit/161a8c8e3b9856e709c8c3bc7b1b3a767f2ea467))
+
+
+
+
+
 # [13.0.0](https://github.com/karhoo/web-lib-demand/compare/v12.0.0...v13.0.0) (2021-02-18)
 
 
