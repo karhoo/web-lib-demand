@@ -5,7 +5,7 @@ import { AutocompleteBloc } from './AutocompleteBloc'
 const debounceTime = 400
 
 const options = {
-  minLengthToSearch: 5,
+  minLengthToSearch: 1,
   autocompleteDebounceTime: debounceTime,
   maxLengthForFlightAndTrainNumber: 6,
   autocompleteLocationRadius: 10,
@@ -101,7 +101,7 @@ describe('AutocompleteBloc', () => {
 
         advance(debounceTime)
 
-        expect(spy).toBeCalledWith([])
+        expect(spy).toBeCalledTimes(0)
       })
     )
 
@@ -111,12 +111,12 @@ describe('AutocompleteBloc', () => {
         const spy = jest.fn()
         bloc.results.subscribe(spy)
 
-        bloc.onChange('ts')
-        bloc.onChange('ts')
+        bloc.onChange('search value')
+        bloc.onChange('search value')
 
         advance(debounceTime)
 
-        expect(spy).toBeCalledTimes(1)
+        expect(getAddressAutocompleteDataMock).toBeCalledTimes(1)
       })
     )
 

@@ -6,8 +6,8 @@ import {
 import { v4 as uuid } from 'uuid'
 import camelcaseKeys from 'camelcase-keys'
 
-import { BehaviorSubject, Subject, of, merge } from 'rxjs'
-import { debounceTime, switchMap, distinctUntilChanged, map, filter } from 'rxjs/operators'
+import { BehaviorSubject, Subject, merge } from 'rxjs'
+import { debounceTime, switchMap, map, filter } from 'rxjs/operators'
 import {
   TripCreateModuleOptions,
   TripCreateFieldItem,
@@ -62,17 +62,14 @@ export class AutocompleteBloc implements TripCreateFieldItem {
   }
 
   private getFeatchedResults() {
-    const { minLengthToSearch, autocompleteDebounceTime } = this.options
-    const isValidLength = (text: string) => text.length > minLengthToSearch
+    const { minLengthToSearch = 2, autocompleteDebounceTime } = this.options
 
     return this.query$.pipe(
       filter(query => !query.isPrefill),
       map(query => query.value),
+      filter(query => query.length > minLengthToSearch),
       debounceTime(autocompleteDebounceTime),
-      distinctUntilChanged(),
-      switchMap(val =>
-        isValidLength(val) ? this.getAddressAutocompleteData(val) : of(defaultAutocompleteData)
-      )
+      switchMap(val => this.getAddressAutocompleteData(val))
     )
   }
 
