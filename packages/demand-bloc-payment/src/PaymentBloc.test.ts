@@ -289,7 +289,7 @@ describe('PaymentBloc', () => {
       mocked.startThreeDSecureVerification.mockReturnValueOnce(Promise.resolve(nonce))
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({
         ok: true,
-        nonce: tokenizeHostedFieldsResponse.nonce,
+        nonce: nonce,
       })
     })
 
