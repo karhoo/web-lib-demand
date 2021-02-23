@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.2](https://github.com/karhoo/web-lib-demand/compare/v13.0.1...v13.0.2) (2021-02-23)
+
+
+### Bug Fixes
+
+* return payment nonce in another way ([698aba4](https://github.com/karhoo/web-lib-demand/commit/698aba4a3fb8992b67ca4df378a066e78f9b57bd))
+
+
+
+
+
 ## [13.0.1](https://github.com/karhoo/web-lib-demand/compare/v13.0.0...v13.0.1) (2021-02-19)
 
 
