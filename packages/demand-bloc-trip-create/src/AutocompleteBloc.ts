@@ -8,13 +8,7 @@ import camelcaseKeys from 'camelcase-keys'
 
 import { BehaviorSubject, Subject, merge } from 'rxjs'
 import { debounceTime, switchMap, map, filter } from 'rxjs/operators'
-import {
-  TripCreateModuleOptions,
-  TripCreateFieldItem,
-  AutocompleteItem,
-  AutocompleteDetails,
-  PrefillAutocompleteFieldValue,
-} from './types'
+import { AutocompleteItem, AutocompleteDetails, TripCreateModuleOptions } from './types'
 import { createStream } from './createStream'
 
 const defaultAutocompleteData: AutocompleteItem[] = []
@@ -33,7 +27,7 @@ type QueryValueType = {
   isPrefill: boolean
 }
 
-export class AutocompleteBloc implements TripCreateFieldItem {
+export class AutocompleteBloc {
   private locationService: Locations
   private options: TripCreateModuleOptions
 
@@ -79,12 +73,6 @@ export class AutocompleteBloc implements TripCreateFieldItem {
 
   onError(error: string) {
     this.error$.next(error)
-  }
-
-  prefill({ query, selectedAddress, results }: PrefillAutocompleteFieldValue) {
-    query && this.query$.next({ value: query, isPrefill: true })
-    selectedAddress && this.selectedAddress$.next(selectedAddress)
-    results && this.prefilledResults$.next(results)
   }
 
   async onSelect(placeId: string) {
