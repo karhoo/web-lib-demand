@@ -13,7 +13,7 @@ import { publishReplay, refCount } from 'rxjs/operators'
 import { FinalTripStatuses, FinalFareStatuses, TripStatuses } from './statuses'
 import { tripTransformer, TripFollowResponse } from './tripTransformer'
 import { makeSearchParams } from './utils'
-import { Storage, TripService, FareService, TripsOffset, CustomOptions } from './types'
+import { Storage, TripService, FareService, TripsOffset, TripsSearchParams, CustomOptions } from './types'
 
 import { POLLING_INTERVAL_TRACK, POLLING_FINAL_FARE, DEFAULT_ROW_COUNT_PER_REQUEST } from './constants'
 
@@ -253,11 +253,13 @@ export class TripBloc {
    * @param paginationOffset means start record in data base from which trips are been requiesting
    * @param paginationRowCount means how many trips get per one request
    */
-  getUpcomingTrips(
-    paginationOffset = 0,
-    statuses: TripStatuses[] = [TripStatuses.CONFIRMED, TripStatuses.REQUESTED],
-    paginationRowCount: number = this.options.paginationRowCount
-  ) {
+  getUpcomingTrips(searchParams: TripsSearchParams = {}) {
+    const {
+      paginationOffset = 0,
+      statuses = [TripStatuses.CONFIRMED, TripStatuses.REQUESTED],
+      paginationRowCount = this.options.paginationRowCount,
+    } = searchParams
+
     return this.getTrips(
       this.upcomingTrips$,
       statuses,
@@ -271,17 +273,19 @@ export class TripBloc {
    * Handle pagination in trips request
    */
   getNextUpcomingTrips() {
-    return this.getUpcomingTrips(this.tripsOffset.upcomingTripsOffset)
+    return this.getUpcomingTrips({ paginationOffset: this.tripsOffset.upcomingTripsOffset })
   }
 
   /**
    * The same method as getUpcomingTrips but for past trips list
    */
-  async getPastTrips(
-    paginationOffset = 0,
-    statuses: TripStatuses[] = [TripStatuses.COMPLETED],
-    paginationRowCount: number = this.options.paginationRowCount
-  ) {
+  async getPastTrips(searchParams: TripsSearchParams = {}) {
+    const {
+      paginationOffset = 0,
+      statuses = [TripStatuses.COMPLETED],
+      paginationRowCount = this.options.paginationRowCount,
+    } = searchParams
+
     return this.getTrips(this.pastTrips$, statuses, 'pastTripsOffset', paginationOffset, paginationRowCount)
   }
 
@@ -289,7 +293,7 @@ export class TripBloc {
    * The same method as getNextUpcomingTrips but for past trips list
    */
   getNextPastTrips() {
-    return this.getPastTrips(this.tripsOffset.pastTripsOffset)
+    return this.getPastTrips({ paginationOffset: this.tripsOffset.pastTripsOffset })
   }
 
   /**
@@ -297,9 +301,26 @@ export class TripBloc {
    * @param id trip id
    * @param params CancellationParams
    */
-  async cancel(id: string, params: CancellationParams) {
-    const response = await this.tripService.cancel(id, params)
+  async cancel(id: string, cancellationParams: CancellationParams): Promise<HttpResponse<object>> {
+    const response = await this.tripService.cancel(id, cancellationParams)
 
-    if (response.status === 204) return this.getUpcomingTrips()
+    return response
+  }
+
+  /**
+   * Cancels a trip by id and then fetches upcoming trips
+   * @param id trip id
+   * @param cancellationParams CancellationParams
+   * @param searchParams TripsSearchParams
+   */
+  async cancelWithTripsFetching(
+    id: string,
+    cancellationParams: CancellationParams,
+    searchParams?: TripsSearchParams
+  ) {
+    const response = await this.cancel(id, cancellationParams)
+    if (response.status === 204) {
+      return this.getUpcomingTrips(searchParams)
+    }
   }
 }
