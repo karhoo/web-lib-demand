@@ -6,15 +6,9 @@ import {
 import { v4 as uuid } from 'uuid'
 import camelcaseKeys from 'camelcase-keys'
 
-import { BehaviorSubject, Subject, merge } from 'rxjs'
+import { BehaviorSubject, Subject } from 'rxjs'
 import { debounceTime, switchMap, map, filter } from 'rxjs/operators'
-import {
-  TripCreateModuleOptions,
-  TripCreateFieldItem,
-  AutocompleteItem,
-  AutocompleteDetails,
-  PrefillAutocompleteFieldValue,
-} from './types'
+import { AutocompleteItem, AutocompleteDetails, TripCreateModuleOptions } from './types'
 import { createStream } from './createStream'
 
 const defaultAutocompleteData: AutocompleteItem[] = []
@@ -33,7 +27,7 @@ type QueryValueType = {
   isPrefill: boolean
 }
 
-export class AutocompleteBloc implements TripCreateFieldItem {
+export class AutocompleteBloc {
   private locationService: Locations
   private options: TripCreateModuleOptions
 
@@ -42,7 +36,6 @@ export class AutocompleteBloc implements TripCreateFieldItem {
   private query$ = new Subject<QueryValueType>()
   private error$ = new BehaviorSubject<string>('')
   private selectedAddress$ = new Subject<AutocompleteDetails>()
-  private prefilledResults$ = new Subject<AutocompleteItem[]>()
 
   constructor(locationService: Locations, options: TripCreateModuleOptions) {
     this.locationService = locationService
@@ -58,10 +51,10 @@ export class AutocompleteBloc implements TripCreateFieldItem {
   }
 
   get results() {
-    return merge(this.getFeatchedResults(), this.prefilledResults$)
+    return this.getFetchedResults()
   }
 
-  private getFeatchedResults() {
+  private getFetchedResults() {
     const { minLengthToSearch = 2, autocompleteDebounceTime } = this.options
 
     return this.query$.pipe(
@@ -79,12 +72,6 @@ export class AutocompleteBloc implements TripCreateFieldItem {
 
   onError(error: string) {
     this.error$.next(error)
-  }
-
-  prefill({ query, selectedAddress, results }: PrefillAutocompleteFieldValue) {
-    query && this.query$.next({ value: query, isPrefill: true })
-    selectedAddress && this.selectedAddress$.next(selectedAddress)
-    results && this.prefilledResults$.next(results)
   }
 
   async onSelect(placeId: string) {
