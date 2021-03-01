@@ -51,10 +51,10 @@ export class AutocompleteBloc {
   }
 
   get results() {
-    return this.getFeatchedResults()
+    return this.getFetchedResults()
   }
 
-  private getFeatchedResults() {
+  private getFetchedResults() {
     const { minLengthToSearch = 2, autocompleteDebounceTime } = this.options
 
     return this.query$.pipe(
