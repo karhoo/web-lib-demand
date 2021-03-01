@@ -6,7 +6,7 @@ import {
 import { v4 as uuid } from 'uuid'
 import camelcaseKeys from 'camelcase-keys'
 
-import { BehaviorSubject, Subject, merge } from 'rxjs'
+import { BehaviorSubject, Subject } from 'rxjs'
 import { debounceTime, switchMap, map, filter } from 'rxjs/operators'
 import { AutocompleteItem, AutocompleteDetails, TripCreateModuleOptions } from './types'
 import { createStream } from './createStream'
@@ -36,7 +36,6 @@ export class AutocompleteBloc {
   private query$ = new Subject<QueryValueType>()
   private error$ = new BehaviorSubject<string>('')
   private selectedAddress$ = new Subject<AutocompleteDetails>()
-  private prefilledResults$ = new Subject<AutocompleteItem[]>()
 
   constructor(locationService: Locations, options: TripCreateModuleOptions) {
     this.locationService = locationService
@@ -52,7 +51,7 @@ export class AutocompleteBloc {
   }
 
   get results() {
-    return merge(this.getFeatchedResults(), this.prefilledResults$)
+    return this.getFeatchedResults()
   }
 
   private getFeatchedResults() {
