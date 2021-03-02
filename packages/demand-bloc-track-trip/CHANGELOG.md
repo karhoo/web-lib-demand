@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.0.0](https://github.com/karhoo/web-lib-demand/compare/v13.0.2...v14.0.0) (2021-03-02)
+
+
+### Features
+
+* improve trips search pagination ([28a20da](https://github.com/karhoo/web-lib-demand/commit/28a20daa09ae2da1f15de04d5b8c83318e23da69))
+
+
+
+
+
 ## [13.0.2](https://github.com/karhoo/web-lib-demand/compare/v13.0.1...v13.0.2) (2021-02-23)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-track-trip
