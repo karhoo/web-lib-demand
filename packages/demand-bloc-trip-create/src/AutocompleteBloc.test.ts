@@ -1,4 +1,4 @@
-import camelcaseKeys from 'camelcase-keys'
+import { camelcaseKeys } from './utils'
 import { fakeSchedulers } from 'rxjs-marbles/jest'
 import { AutocompleteBloc } from './AutocompleteBloc'
 

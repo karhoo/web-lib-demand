@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.0.1](https://github.com/karhoo/web-lib-demand/compare/v13.0.2...v14.0.1) (2021-03-04)
+
+
+### Bug Fixes
+
+* add default params for radius and compatibility for IE11 ([de70cce](https://github.com/karhoo/web-lib-demand/commit/de70ccee7a4fbf57cacf664f31791640512d3e86))
+
+
+
+
+
 # [14.0.0](https://github.com/karhoo/web-lib-demand/compare/v13.0.2...v14.0.0) (2021-03-02)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-trip-create
