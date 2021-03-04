@@ -4,12 +4,12 @@ import {
   LocationAddressDetailsResponse,
 } from '@karhoo/demand-api'
 import { v4 as uuid } from 'uuid'
-import camelcaseKeys from 'camelcase-keys'
 
 import { BehaviorSubject, Subject } from 'rxjs'
 import { debounceTime, switchMap, map, filter } from 'rxjs/operators'
 import { AutocompleteItem, AutocompleteDetails, TripCreateModuleOptions } from './types'
-import { createStream } from './createStream'
+import { deepMapKeys, snakeToCamel, createStream } from './utils'
+import { defaultAutocompleteOptions } from './constants'
 
 const defaultAutocompleteData: AutocompleteItem[] = []
 
@@ -20,7 +20,7 @@ const locationItemTransformer = (item: LocationAddressAutocompleteResponseItem) 
 })
 
 const placeDetailsTransformer = (item: LocationAddressDetailsResponse) =>
-  (camelcaseKeys(item, { deep: true }) as unknown) as AutocompleteDetails
+  deepMapKeys(item, snakeToCamel) as AutocompleteDetails
 
 type QueryValueType = {
   value: string
@@ -39,7 +39,10 @@ export class AutocompleteBloc {
 
   constructor(locationService: Locations, options: TripCreateModuleOptions) {
     this.locationService = locationService
-    this.options = options
+    this.options = {
+      ...defaultAutocompleteOptions,
+      ...options,
+    }
   }
 
   get query() {
