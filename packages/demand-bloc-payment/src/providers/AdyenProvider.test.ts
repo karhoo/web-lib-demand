@@ -65,6 +65,7 @@ describe('AdyenProvider', () => {
     price: amount,
     currencyCode,
     withThreeDSecure: true,
+    fleetId: 'fleetId',
   }
 
   const adyenCheckoutOptions = {
@@ -152,6 +153,7 @@ describe('AdyenProvider', () => {
 
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith({
+        supply_partner_id: 'fleetId',
         payments_payload: {
           redirectFromIssuerMethod: 'get',
           ...adyenCheckoutOptions,
@@ -169,6 +171,7 @@ describe('AdyenProvider', () => {
 
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith({
+        supply_partner_id: 'fleetId',
         payments_payload: {
           redirectFromIssuerMethod: 'get',
           ...adyenCheckoutOptions,
@@ -185,6 +188,7 @@ describe('AdyenProvider', () => {
 
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith({
+        supply_partner_id: 'fleetId',
         payments_payload: {
           redirectFromIssuerMethod: 'get',
           ...adyenCheckoutOptions,
