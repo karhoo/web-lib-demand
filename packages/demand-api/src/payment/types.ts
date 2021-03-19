@@ -67,6 +67,7 @@ export type PaymentMethodsParams = {
 }
 
 export type PaymentAuthParams = {
+  supply_partner_id: string
   payments_payload: CoreOptions
 }
 

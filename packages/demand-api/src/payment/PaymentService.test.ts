@@ -180,6 +180,7 @@ describe('PaymentService', () => {
   describe('createPaymentAuth', () => {
     it('should call post of http', () => {
       const params = {
+        supply_partner_id: 'fleetId',
         payments_payload: {
           amount: {
             currency: 'GBR',
