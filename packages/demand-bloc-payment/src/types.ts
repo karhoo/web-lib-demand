@@ -133,6 +133,7 @@ export type AdyenProviderOptions = {
   showStoredPaymentMethods?: boolean
   paymentMethodsConfiguration?: AdyenPaymentMethodsConfiguration
   showPayButton?: boolean
+  fleetId: string
 }
 
 export type AdyenCheckoutOptions = {
