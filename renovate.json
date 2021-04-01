@@ -1,2 +1,8 @@
 {
+  "packageRules": [
+    {
+      "matchDepTypes": ["dependencies", "devDependencies", "peerDependencies"],
+      "enabled": false
+    }
+  ]
 }
