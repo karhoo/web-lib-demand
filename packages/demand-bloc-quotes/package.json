@@ -22,7 +22,7 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^15.0.0",
+    "@karhoo/demand-api": "15.0.0",
     "rxjs": "6.5.5"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@types/uuid": "7.0.2",
     "jest-fetch-mock": "3.0.3",
     "ts-jest": "25.2.1",
-    "tsdx": "0.12.3",
+    "tsdx": "0.13.1",
     "typescript": "3.8.3"
   }
 }
