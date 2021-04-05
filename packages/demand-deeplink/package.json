@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-deeplink",
-  "version": "15.0.0",
+  "version": "15.0.1",
   "description": "🔗A library to integrate with a Karhoo web app via a deep link",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-deeplink#readme",
   "license": "BSD-2-Clause",
@@ -40,7 +40,7 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
-    "@karhoo/demand-api": "15.0.0",
+    "@karhoo/demand-api": "^15.0.1",
     "date-and-time": "0.13.1",
     "lodash": "4.17.15",
     "lodash-es": "4.17.15",
