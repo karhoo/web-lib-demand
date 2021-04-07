@@ -12,7 +12,7 @@ import {
   AdyenShopperData,
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
-import { handleRefusalResponse, errors } from './adyenErrors'
+import { AdyenError, handleRefusalResponse, errors, codes } from './adyenErrors'
 
 export class AdyenProvider implements Provider {
   private paymentService: Payment
@@ -102,11 +102,11 @@ export class AdyenProvider implements Provider {
     const [paymentMethodsResponse, clientKeyResponse] = await Promise.all([paymentMethodsReq, clientKeyReq])
 
     if (!paymentMethodsResponse.ok) {
-      throw new Error(errors.noPaymentsMethods)
+      throw new AdyenError(errors[codes.AE01], codes.AE01)
     }
 
     if (!clientKeyResponse.ok) {
-      throw new Error(errors.noClientKey)
+      throw new AdyenError(errors[codes.AE02], codes.AE02)
     }
 
     const checkout = new AdyenCheckout({
@@ -139,7 +139,7 @@ export class AdyenProvider implements Provider {
     })
 
     if (!makePaymentResponse.ok) {
-      throw new Error(errors.failedPaymentCreate)
+      throw new AdyenError(errors[codes.AE03], codes.AE03)
     }
 
     handleRefusalResponse(makePaymentResponse)
@@ -173,7 +173,7 @@ export class AdyenProvider implements Provider {
       this.nonce = ''
 
       return withThreeDSecure
-        ? Promise.reject(new Error(errors.missingRequiredParamsFor3dSecure))
+        ? Promise.reject(new AdyenError(errors[codes.AE04], codes.AE04))
         : Promise.resolve('no-payment-action')
     }
 
