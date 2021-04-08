@@ -10,7 +10,7 @@ import {
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import { AdyenProvider } from './AdyenProvider'
-import { errors } from './adyenErrors'
+import { errors, AdyenError, codes } from './adyenErrors'
 
 const cardElement = {
   data: {
@@ -124,7 +124,7 @@ describe('AdyenProvider', () => {
       try {
         await provider.initialize()
       } catch (error) {
-        expect(error).toEqual(new Error(errors.noPaymentsMethods))
+        expect(error).toEqual(new AdyenError(errors[codes.AE01], codes.AE01))
       }
     })
 
@@ -136,7 +136,7 @@ describe('AdyenProvider', () => {
       try {
         await provider.initialize()
       } catch (error) {
-        expect(error).toEqual(new Error(errors.noClientKey))
+        expect(error).toEqual(new AdyenError(errors[codes.AE02], codes.AE02))
       }
     })
   })
@@ -207,7 +207,7 @@ describe('AdyenProvider', () => {
       try {
         await provider.tokenizeHostedFields()
       } catch (error) {
-        expect(error).toEqual(new Error(errors.failedPaymentCreate))
+        expect(error).toEqual(new AdyenError(errors[codes.AE03], codes.AE03))
       }
     })
 
@@ -284,7 +284,7 @@ describe('AdyenProvider', () => {
         await provider.startThreeDSecureVerification()
       } catch (error) {
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
-        expect(error).toEqual(new Error(errors.missingRequiredParamsFor3dSecure))
+        expect(error).toEqual(new AdyenError(errors[codes.AE04], codes.AE04))
       }
     })
 
@@ -336,7 +336,7 @@ describe('AdyenProvider', () => {
       try {
         await provider.completeThreeDSecureVerification()
       } catch (error) {
-        expect(error).toEqual(new Error(errors.missingRequiredParamsFor3dSecure))
+        expect(error).toEqual(new AdyenError(errors[codes.AE04], codes.AE04))
       }
     })
   })

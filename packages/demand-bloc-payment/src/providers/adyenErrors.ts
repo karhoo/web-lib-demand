@@ -1,5 +1,13 @@
 import { HttpResponseOk, PaymentAuthResponse } from '@karhoo/demand-api'
 
+export class AdyenError extends Error {
+  code?: string
+  constructor(message: string, code?: string) {
+    super(message)
+    this.code = code
+  }
+}
+
 export const refusalResultCodes = ['Refused', 'Error', 'Cancelled']
 
 export const refusalReasons: Record<string, string> = {
@@ -45,14 +53,21 @@ export const handleRefusalResponse = (result: HttpResponseOk<PaymentAuthResponse
   if (result.ok && refusalResultCodes.includes(result.body.payload.resultCode as string)) {
     const refusalReasonCode = result.body.payload.refusalReasonCode as string
     const errorMessage = refusalReasons[refusalReasonCode]
-    throw new Error(errorMessage)
+    throw new AdyenError(errorMessage, refusalReasonCode)
   }
   return
 }
 
+export const codes = {
+  AE01: 'AE01',
+  AE02: 'AE02',
+  AE03: 'AE03',
+  AE04: 'AE04',
+}
+
 export const errors = {
-  noPaymentsMethods: 'No payment methods received',
-  noClientKey: 'No client key received',
-  failedPaymentCreate: 'Failed to create a payment',
-  missingRequiredParamsFor3dSecure: 'Missing required params to complete 3d secure',
+  [codes.AE01]: 'No payment methods received',
+  [codes.AE02]: 'No client key received',
+  [codes.AE03]: 'Failed to create a payment',
+  [codes.AE04]: 'Missing required params to complete 3d secure',
 }
