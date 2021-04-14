@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@karhoo/demand-api": "^15.1.0",
-    "date-and-time": "0.13.1",
+    "date-and-time": "0.14.2",
     "lodash": "4.17.15",
     "lodash-es": "4.17.15",
     "uuid": "7.0.2"
