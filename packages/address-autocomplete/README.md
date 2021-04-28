@@ -7,7 +7,7 @@
   />
 </a>
 
-<h1>demand-bloc-trip-create</h1>
+<h1>@karhoo/address-autocomplet</h1>
 
 BLoC to work with Karhoo Autocomplete and Place APIs
 <br />
@@ -21,6 +21,6 @@ BLoC to work with Karhoo Autocomplete and Place APIs
 ## Installation
 
 ```sh
-npm i @karhoo/demand-bloc-trip-create
+npm i @karhoo/address-autocomplete
 ```
 
