@@ -1,6 +1,6 @@
 {
-  "name": "@karhoo/demand-bloc-trip-create",
-  "version": "15.1.0",
+  "name": "@karhoo/address-autocomplete",
+  "version": "1.0.0",
   "description": "BLoC to work with Karhoo Autocomplete and Place APIs",
   "keywords": [
     "bloc",

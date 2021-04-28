@@ -1,7 +1,7 @@
 {
-  "name": "@karhoo/demand-bloc-quotes",
-  "version": "15.1.0",
-  "description": "BLoC to work with Karhoo Quotes API",
+  "name": "@karhoo/quotes",
+  "version": "1.0.0",
+  "description": "Bussness Logic Component to work with Karhoo Quotes API",
   "keywords": [
     "bloc",
     "pattern"

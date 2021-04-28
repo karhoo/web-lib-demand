@@ -1,7 +1,7 @@
 {
-  "name": "@karhoo/demand-bloc-track-trip",
-  "version": "15.1.0",
-  "description": "Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo API",
+  "name": "@karhoo/track-trip",
+  "version": "1.0.0",
+  "description": "Bussness Logic Component for trip tracking functionality via Karhoo API",
   "keywords": [
     "bloc",
     "pattern"

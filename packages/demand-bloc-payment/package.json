@@ -1,7 +1,7 @@
 {
-  "name": "@karhoo/demand-bloc-payment",
-  "version": "15.1.0",
-  "description": "BLoC to work with Karhoo Payment API",
+  "name": "@karhoo/payment",
+  "version": "1.0.0",
+  "description": "Bussness Logic Component to work with Karhoo Payment API",
   "keywords": [
     "bloc",
     "pattern"
