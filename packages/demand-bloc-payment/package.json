@@ -30,9 +30,7 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@adyen/adyen-web": "3.19.0",
-    "@karhoo/demand-api": "^15.1.0",
-    "braintree-web": "3.62.2"
+    "@karhoo/demand-api": "^15.1.0"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.7.13",
