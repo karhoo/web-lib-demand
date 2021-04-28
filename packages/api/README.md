@@ -38,7 +38,7 @@ import {
   PoiService,
   QuotesV2Service,
   errorCodes,
-} from '@karhoo/demand-api'
+} from '@karhoo/api'
 
 const url = 'https://public-api.karhoo.com' // please note that there should not be a slash at the end of the url
 

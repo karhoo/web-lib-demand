@@ -1,6 +1,6 @@
-# @karhoo/demand-api demo app
+# @karhoo/api demo app
 
-NodeJS example of [@karhoo/demand-api](https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-api) package.
+NodeJS example of [@karhoo/api](https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-api) package.
 
 ![node-demo-demand-api-example](https://user-images.githubusercontent.com/6632944/82463244-3f552180-9ac5-11ea-9a8a-66252bab5c8a.png)
 

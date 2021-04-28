@@ -24,7 +24,7 @@ This library is intended to be the standard way of working with a deeplink.
 ## Installation
 
 ```
-npm i @karhoo/demand-deeplink
+npm i @karhoo/deeplink
 ```
 
 ## Warnings
@@ -36,7 +36,7 @@ This library uses `Promise`. For old browsers, e.g. IE11 you must bring your own
 ## Usage
 
 ```js
-import { parse, validate, generate, Deeplink } from '@karhoo/demand-deeplink'
+import { parse, validate, generate, Deeplink } from '@karhoo/deeplink'
 ```
 
 Parse deeplink:
@@ -59,10 +59,10 @@ const queryString = generate(deeplinkData)
 
 Resolve deeplink:
 
-To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/demand-api` can be used.
+To use `Deeplink` class `api` parameter (see `Api` type [here](https://github.com/karhoo/web-lib-demand/blob/master/packages/demand-deeplink/src/types.ts)) should be passed as a second argument of `Deeplink` constructor. For this purposes `@karhoo/api` can be used.
 
 ```js
-import { getApi } from '@karhoo/demand-api'
+import { getApi } from '@karhoo/api'
 
 const api = getApi()
 
@@ -112,7 +112,7 @@ const deeplinkData = {
 _Step 2. Validate deeplink data_
 
 ```js
-import { validate } from '@karhoo/demand-deeplink'
+import { validate } from '@karhoo/deeplink'
 
 const { ok, errors } = validate(deeplinkData)
 
@@ -124,7 +124,7 @@ if (!ok) {
 _Step 3. Generate a deeplink_
 
 ```js
-import { validate, generate } from '@karhoo/demand-deeplink'
+import { validate, generate } from '@karhoo/deeplink'
 
 const { ok, errors } = validate(deeplinkData)
 

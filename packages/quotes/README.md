@@ -21,15 +21,15 @@ BLoC to work with Karhoo Quotes API
 ## Installation
 
 ```sh
-npm i @karhoo/demand-bloc-quotes
+npm i @karhoo/quotes
 ```
 
 ## Usage
 
 ```js
 
-import { getApi } from '@karhoo/demand-api'
-import { QuotesBloc } from '@karhoo/demand-bloc-quotes'
+import { getApi } from '@karhoo/api'
+import { QuotesBloc } from '@karhoo/quotes'
 
 const api = getApi({
   url: 'api',

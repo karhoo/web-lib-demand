@@ -7,7 +7,7 @@
   />
 </a>
 
-<h1>@karhoo/demand-bloc-track-trip</h1>
+<h1>@karhoo/track-trip</h1>
 
 Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo API
 <br />
@@ -21,14 +21,14 @@ Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo A
 ## Installation
 
 ```sh
-npm i @karhoo/demand-bloc-track-trip
+npm i @karhoo/track-trip
 ```
 
 ## Usage
 
 ```js
-import { getApi } from '@karhoo/demand-api'
-import { TripBloc } from '@karhoo/demand-bloc-track-trip'
+import { getApi } from '@karhoo/api'
+import { TripBloc } from '@karhoo/track-trip'
 
 const api = getApi({
   url: 'api',

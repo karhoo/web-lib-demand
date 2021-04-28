@@ -7,9 +7,9 @@
   />
 </a>
 
-<h1>@karhoo/demand-bloc-payment</h1>
+<h1>@karhoo/payment</h1>
 
-BLoC to work with Karhoo Payment API
+Bussness Logic Component to work with Karhoo Payment API
 <br />
 
 <hr />
@@ -21,7 +21,7 @@ BLoC to work with Karhoo Payment API
 ## Installation
 
 ```sh
-npm i @karhoo/demand-bloc-payment
+npm i @karhoo/payment
 ```
 
 ## Warnings
@@ -31,8 +31,8 @@ This library uses `Promise`. For old browsers, e.g. IE11 you must bring your own
 ## Usage
 
 ```js
-import { getApi } from '@karhoo/demand-api'
-import { PaymentBloc, BraintreeProvider, AdyenProvider } from '@karhoo/demand-bloc-payment'
+import { getApi } from '@karhoo/api'
+import { PaymentBloc, BraintreeProvider, AdyenProvider } from '@karhoo/payment'
 
 const organisationId = '1a12345d-e111-1da1-111f-a1111e1e11f1'
 const currencyCode = 'GBP'
@@ -136,8 +136,8 @@ If `dispose` is called before initialization is complete initialization will be 
 ```js
 
 import { HostedFieldsTokenizePayload, ThreeDSecureVerifyPayload } from 'braintree-web'
-import { getApi } from '@karhoo/demand-api'
-import { BraintreeProvider, BraintreeProviderOptions, braintreeDefaultValues, braintreeErrors } from '@karhoo/demand-bloc-payment'
+import { getApi } from '@karhoo/api'
+import { BraintreeProvider, BraintreeProviderOptions, braintreeDefaultValues, braintreeErrors } from '@karhoo/payment'
 
 const organisationId = '1a12345d-e111-1da1-111f-a1111e1e11f1'
 const currencyCode = 'GBP'
@@ -217,8 +217,8 @@ await provider.dispose()
 ```js
 import AdyenCheckout from '@adyen/adyen-web'
 import CardElement from '@adyen/adyen-web/dist/types/components/Card'
-import { getApi } from '@karhoo/demand-api'
-import { AdyenProvider, AdyenProviderOptions, AdyenCheckoutOptions } from '@karhoo/demand-bloc-payment'
+import { getApi } from '@karhoo/api'
+import { AdyenProvider, AdyenProviderOptions, AdyenCheckoutOptions } from '@karhoo/payment'
 
 const options: AdyenProviderOptions = {
   dropinContainerId: 'containerID',

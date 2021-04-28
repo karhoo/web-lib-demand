@@ -18,7 +18,7 @@ This library was created in order to have a possibility to enable/disable certai
 ## Installation
 
 ```sh
-npm i @karhoo/lib-feature-flags
+npm i @karhoo/feature-flags
 ```
 
 ## Warnings
@@ -31,7 +31,7 @@ In order to get Feature flags config you need to make request for remoteConfig:
 
 ```js
 import { FeatureFlags, RemoteConfig } from '@karhoo/lib-feature-flags'
-import { getApi } from '@karhoo/demand-api'
+import { getApi } from '@karhoo/api'
 
 const defaultOptions = { defaultValueForMissingKeys: false }
 
