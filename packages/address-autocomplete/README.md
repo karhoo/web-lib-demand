@@ -7,7 +7,7 @@
   />
 </a>
 
-<h1>@karhoo/address-autocomplet</h1>
+<h1>@karhoo/address-autocomplete</h1>
 
 BLoC to work with Karhoo Autocomplete and Place APIs
 <br />

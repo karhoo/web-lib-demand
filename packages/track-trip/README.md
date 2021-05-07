@@ -9,7 +9,7 @@
 
 <h1>@karhoo/track-trip</h1>
 
-Bussness Logic Component (aka BLoC) for trip tracking functionality via Karhoo API
+Bussness Logic Component for trip tracking functionality via Karhoo API
 <br />
 
 <hr />
