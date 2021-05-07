@@ -1,12 +1,12 @@
 {
   "name": "@karhoo/address-autocomplete",
-  "version": "1.0.0",
-  "description": "BLoC to work with Karhoo Autocomplete and Place APIs",
+  "version": "15.1.0",
+  "description": "Bussness component to work with Karhoo Autocomplete and Place APIs",
   "keywords": [
-    "bloc",
-    "pattern"
+    "address",
+    "autocomplete"
   ],
-  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-bloc-trip-create#readme",
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/address-autocomplete#readme",
   "license": "BSD-2-Clause",
   "main": "dist/index.js",
   "repository": {
@@ -24,17 +24,5 @@
   "dependencies": {
     "@karhoo/demand-api": "^15.1.0",
     "rxjs": "^6.5.5"
-  },
-  "devDependencies": {
-    "@microsoft/api-extractor": "7.7.13",
-    "@types/date-and-time": "0.6.0",
-    "@types/jest": "25.1.3",
-    "@types/lodash": "4.14.149",
-    "@types/uuid": "7.0.2",
-    "jest-fetch-mock": "3.0.3",
-    "rxjs-marbles": "6.0.1",
-    "ts-jest": "25.2.1",
-    "tsdx": "0.13.1",
-    "typescript": "3.8.3"
   }
 }

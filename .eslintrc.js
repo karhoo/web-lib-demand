@@ -10,18 +10,16 @@ module.exports = {
   },
   settings: {
     react: {
-      version: '16'
-    }
+      version: '17',
+    },
   },
   overrides: [
     {
-      files: [
-          '**/*.{ts,tsx}'
-      ],
+      files: ['**/*.{ts,tsx}'],
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint'
+        'prettier/@typescript-eslint',
       ],
       parserOptions: {
         project: ['./packages/*/tsconfig.json'],
@@ -29,6 +27,8 @@ module.exports = {
       },
       rules: {
         '@typescript-eslint/no-explicit-any': 'error',
+        'react/jsx-uses-react': 'off',
+        'react/react-in-jsx-scope': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/no-unused-vars': [
@@ -38,18 +38,17 @@ module.exports = {
             args: 'after-used',
             ignoreRestSiblings: true,
             argsIgnorePattern: '^_',
-            varsIgnorePattern: '^_'
-          }
-        ]
-      }
+            varsIgnorePattern: '^_',
+          },
+        ],
+        '@typescript-eslint/ban-types': 'off',
+      },
     },
     {
-      files: [
-          '**/*.test.{ts,tsx}'
-      ],
+      files: ['**/*.test.{ts,tsx}'],
       rules: {
-        '@typescript-eslint/no-explicit-any': 'off'
-      }
-    }
-  ]
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
+    },
+  ],
 }

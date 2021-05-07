@@ -7,9 +7,9 @@
   />
 </a>
 
-<h1>demand-bloc-quotes</h1>
+<h1>@karhoo/quotes</h1>
 
-BLoC to work with Karhoo Quotes API
+Bussness component to work with Karhoo Quotes API
 <br />
 
 <hr />
