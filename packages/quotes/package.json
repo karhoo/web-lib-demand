@@ -1,0 +1,27 @@
+{
+  "name": "@karhoo/quotes",
+  "version": "15.1.0",
+  "description": "Bussness logic to work with Karhoo Quotes API",
+  "keywords": [
+    "Karhoo quotes API"
+  ],
+  "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/quotes#readme",
+  "license": "BSD-2-Clause",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karhoo/web-lib-demand.git"
+  },
+  "scripts": {
+    "start": "npx tsdx watch --tsconfig ./tsconfig.json",
+    "build": "npx tsdx build --tsconfig ./tsconfig.json && npx api-extractor run",
+    "test": "npx tsdx test"
+  },
+  "bugs": {
+    "url": "https://github.com/karhoo/web-lib-demand/issues"
+  },
+  "dependencies": {
+    "@karhoo/demand-api": "^15.1.0",
+    "rxjs": "^6.5.5"
+  }
+}
