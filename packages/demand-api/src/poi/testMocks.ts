@@ -4,9 +4,14 @@ import { PlaceDetailTypes, MeetingPointTypes } from '../sharedTypes'
 
 import { PoiSearchResponse } from './types'
 
+const jsonResponseHeaders = new Headers({
+  'content-type': 'application/json',
+})
+
 export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     pois: [
       {
@@ -40,6 +45,7 @@ export const getMockedPoiSearchResponse = (data: any): HttpResponse<PoiSearchRes
 export const getMockedErrorPoiSearchResponse = (): HttpResponse<PoiSearchResponse> => ({
   ok: false,
   status: 500,
+  headers: jsonResponseHeaders,
   error: {
     code: 'K001',
     message: `Poi: Something went wrong`,

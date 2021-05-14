@@ -73,9 +73,14 @@ export const testBookings: BookATripResponse[] = [
   },
 ]
 
+const jsonResponseHeaders = new Headers({
+  'content-type': 'application/json',
+})
+
 const getErrorResponse = (message: string) => (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
   ok: false,
   status: 500,
+  headers: jsonResponseHeaders,
   error: {
     code,
     message: `${message}: Something went wrong`,
@@ -87,6 +92,7 @@ export const getMockedTrackTripResponse = (
 ): HttpResponseOk<TripFollowResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     trip_id: 'trip_id',
     date_scheduled: '2020-05-28T08:17:07Z',
@@ -100,12 +106,14 @@ export const getMockedErrorTrackTripResponse = getErrorResponse('Track trip')
 export const getMockedCancelByFollowCodeResponse = (): HttpResponseOk<object> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {},
 })
 
 export const getMockedSearchResponse = (): HttpResponseOk<SearchResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     bookings: testBookings,
   },
@@ -114,5 +122,6 @@ export const getMockedSearchResponse = (): HttpResponseOk<SearchResponse> => ({
 export const getMockedCancelResponse = (): HttpResponseOk<object> => ({
   ok: true,
   status: 204,
+  headers: jsonResponseHeaders,
   body: {},
 })

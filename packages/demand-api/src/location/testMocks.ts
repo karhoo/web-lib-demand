@@ -4,9 +4,14 @@ import { errorCodes } from '../responseCodes'
 
 import { LocationAddressDetailsResponse, LocationAddressAutocompleteResponse } from './types'
 
+const jsonResponseHeaders = new Headers({
+  'content-type': 'application/json',
+})
+
 const getErrorResponse = <T>(message: string) => (code = errorCodes.K0001): HttpResponse<T> => ({
   ok: false,
   status: 500,
+  headers: jsonResponseHeaders,
   error: {
     code,
     message: `${message}: Something went wrong`,
@@ -18,6 +23,7 @@ export const getMockedLocationAddressDetailsResponse = (
 ): HttpResponse<LocationAddressDetailsResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     place_id: `location_placeId:${data?.placeId ?? ''}`,
     address: {
@@ -41,6 +47,7 @@ export const getMockedLocationAddressAutocompleteResponse = (
 ): HttpResponse<LocationAddressAutocompleteResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     locations: [
       {

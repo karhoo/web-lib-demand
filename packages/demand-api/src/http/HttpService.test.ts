@@ -17,14 +17,13 @@ describe('HttpService', () => {
   describe('request', () => {
     it('should return json response', async () => {
       const body = { data: '12345' }
+      const headers = { 'content-type': 'application/json' }
 
-      fetchMock.mockOnce(JSON.stringify(body), {
-        headers: { 'content-type': 'application/json' },
-      })
+      fetchMock.mockOnce(JSON.stringify(body), { headers })
 
       const response = await request('url', { method: 'GET' })
 
-      expect(response).toEqual({ ok: true, status: 200, body })
+      expect(response).toEqual({ ok: true, status: 200, body, headers: new Headers(headers) })
     })
 
     it('should return body as empty object when response does not contain json', async () => {
@@ -32,40 +31,44 @@ describe('HttpService', () => {
 
       const response = await request('url', { method: 'GET' })
 
-      expect(response).toEqual({ ok: true, status: 200, body: {} })
+      expect(response).toEqual({
+        ok: true,
+        status: 200,
+        body: {},
+        headers: expect.any(Headers),
+      })
     })
 
     it('should return body as empty object when content-type is not application/json', async () => {
-      fetchMock.mockOnce('123', { headers: { 'content-type': 'text/plain' } })
+      const headers = { 'content-type': 'text/plain' }
+      fetchMock.mockOnce('123', { headers })
 
       const response = await request('url', { method: 'GET' })
 
-      expect(response).toEqual({ ok: true, status: 200, body: {} })
+      expect(response).toEqual({ ok: true, status: 200, body: {}, headers: new Headers(headers) })
     })
 
     it('should return json response containing error', async () => {
       const error = { code: 'K001', message: 'something went wrong' }
+      const headers = { 'content-type': 'application/json' }
 
-      fetchMock.mockOnce(JSON.stringify(error), {
-        headers: { 'content-type': 'application/json' },
-        status: 500,
-      })
+      fetchMock.mockOnce(JSON.stringify(error), { headers, status: 500 })
 
       const response = await request('url', { method: 'GET' })
 
-      expect(response).toEqual({ ok: false, status: 500, error })
+      expect(response).toEqual({ ok: false, status: 500, error, headers: new Headers(headers) })
     })
 
     it('should return response with error in case of unexpected error', async () => {
-      fetchMock.mockOnce('1{}', {
-        headers: { 'content-type': 'application/json' },
-      })
+      const headers = { 'content-type': 'application/json' }
+      fetchMock.mockOnce('1{}', { headers })
 
       const response = await request('url', { method: 'GET' })
 
       expect(response).toEqual({
         ok: false,
         status: 0,
+        headers: new Headers(),
         error: { code: errorCodes.ERR_UNKNOWN, message: expect.any(String) },
       })
     })
@@ -80,6 +83,7 @@ describe('HttpService', () => {
       expect(response).toEqual({
         ok: false,
         status: 0,
+        headers: new Headers(),
         error: { code: errorCodes.ERR_OFFLINE, message },
       })
     })
@@ -94,6 +98,7 @@ describe('HttpService', () => {
       expect(response).toEqual({
         ok: false,
         status: 0,
+        headers: new Headers(),
         error: { code: errorCodes.ERR_OFFLINE, message },
       })
     })
@@ -106,6 +111,7 @@ describe('HttpService', () => {
       expect(response).toEqual({
         ok: false,
         status: 0,
+        headers: new Headers(),
         error: { code: errorCodes.ERR_UNKNOWN, message: '' },
       })
     })
@@ -158,11 +164,10 @@ describe('HttpService', () => {
     const path = 'test'
     const expectedPath = `${url}/${path}`
     const body = { data: '12345' }
+    const responseHeaders = { 'content-type': 'application/json' }
 
     const mock = () => {
-      fetchMock.mockOnce(JSON.stringify(body), {
-        headers: { 'content-type': 'application/json' },
-      })
+      fetchMock.mockOnce(JSON.stringify(body), { headers: responseHeaders })
     }
 
     const getExpectedFetchParams = (data: object = {}, headers = {}) => ({
@@ -184,7 +189,7 @@ describe('HttpService', () => {
       const http = new HttpService(url)
       const response = await http.get(path)
 
-      expect(response).toEqual({ ok: true, status: 200, body })
+      expect(response).toEqual({ ok: true, status: 200, body, headers: new Headers(responseHeaders) })
     })
 
     it('should call fetchMock with expected url and options', async () => {
@@ -230,7 +235,7 @@ describe('HttpService', () => {
     it('should make post request', async () => {
       const response = await new HttpService(url).post(path, { one: 'oneValue', two: 'twoValue' })
 
-      expect(response).toEqual({ ok: true, status: 200, body })
+      expect(response).toEqual({ ok: true, status: 200, body, headers: new Headers(responseHeaders) })
     })
 
     it('should call fetchMock with POST method and expected parameters', async () => {
@@ -257,7 +262,7 @@ describe('HttpService', () => {
     it('should make put request', async () => {
       const response = await new HttpService(url).put(path, { one: 'oneValue', two: 'twoValue' })
 
-      expect(response).toEqual({ ok: true, status: 200, body })
+      expect(response).toEqual({ ok: true, status: 200, body, headers: new Headers(responseHeaders) })
     })
 
     it('should call fetchMock with PUT method and expected parameters', async () => {
@@ -286,7 +291,7 @@ describe('HttpService', () => {
     it('should make delete request', async () => {
       const response = await new HttpService(url).remove(path)
 
-      expect(response).toEqual({ ok: true, status: 200, body })
+      expect(response).toEqual({ ok: true, status: 200, body, headers: new Headers(responseHeaders) })
     })
 
     it('should call fetchMock with DELETE method and expected parameters', async () => {
@@ -310,7 +315,7 @@ describe('HttpService', () => {
     it('should make patch request', async () => {
       const response = await new HttpService(url).patch(path, { one: 'oneValue', two: 'twoValue' })
 
-      expect(response).toEqual({ ok: true, status: 200, body })
+      expect(response).toEqual({ ok: true, status: 200, body, headers: new Headers(responseHeaders) })
     })
 
     it('should call fetchMock with PATCH method and expected parameters', async () => {
@@ -348,6 +353,7 @@ describe('HttpService', () => {
         ok: true,
         status: 200,
         body,
+        headers: new Headers(responseHeaders),
       }
 
       const expectedRequestInfo = {

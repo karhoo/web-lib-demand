@@ -5,6 +5,7 @@ export type ApiError = {
 
 type HttpResponsePayload = {
   status: number
+  headers: Headers
 }
 
 export type HttpResponseOk<T> = HttpResponsePayload & {
