@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.2.0](https://github.com/karhoo/web-lib-demand/compare/v15.1.0...v15.2.0) (2021-05-14)
+
+
+### Features
+
+* expose api response headers ([4d88547](https://github.com/karhoo/web-lib-demand/commit/4d88547d327df3c608dc30785e741f7dcee9e0d3))
+
+
+
+
+
 # [15.1.0](https://github.com/karhoo/web-lib-demand/compare/v15.0.1...v15.1.0) (2021-04-08)
 
 
