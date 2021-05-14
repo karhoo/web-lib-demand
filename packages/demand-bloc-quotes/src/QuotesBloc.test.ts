@@ -344,6 +344,7 @@ describe('QuotesBloc', () => {
         Promise.resolve({
           ok: false,
           status: 0,
+          headers: new Headers(),
           error,
         })
       )

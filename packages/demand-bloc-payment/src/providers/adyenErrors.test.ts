@@ -5,6 +5,7 @@ describe('handleRefusalResponse', () => {
   const refusalFakeResponse: HttpResponseOk<PaymentAuthResponse> = {
     ok: true,
     status: 200,
+    headers: new Headers(),
     body: {
       payload: {
         refusalReasonCode: '20',

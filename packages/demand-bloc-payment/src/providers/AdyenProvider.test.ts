@@ -225,7 +225,12 @@ describe('AdyenProvider', () => {
 
     it('should not crash if action is not provided', async () => {
       paymentService.createAdyenPaymentAuth.mockImplementationOnce(() =>
-        Promise.resolve({ ok: true, status: 200, body: { payload: {}, trip_id: 'trip_id' } })
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          headers: new Headers({ 'content-type': 'application/json' }),
+          body: { payload: {}, trip_id: 'trip_id' },
+        })
       )
       await provider.tokenizeHostedFields()
 

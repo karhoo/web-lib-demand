@@ -18,12 +18,17 @@ const clientNonceResponse = {
   nonce: 'nonce',
 }
 
+const jsonResponseHeaders = new Headers({
+  'content-type': 'application/json',
+})
+
 const getMock = <T>(method: (a?: Partial<T>) => HttpResponseOk<T>) => (partialBody?: Partial<T>) =>
   jest.fn((): Promise<HttpResponse<T>> => Promise.resolve(method(partialBody)))
 
 const getErrorResponse = (message: string) => (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
   ok: false,
   status: 500,
+  headers: jsonResponseHeaders,
   error: {
     code,
     message: `${message}: Something went wrong`,
@@ -35,6 +40,7 @@ export const getMockedPaymentCreateClientTokenResponse = (
 ): HttpResponseOk<CreateTokenResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     token: 'token',
     ...partialBody,
@@ -50,6 +56,7 @@ export const getMockedAddPaymentCardResponse = (
 ): HttpResponseOk<ClientNonceResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     ...clientNonceResponse,
     ...partialBody,
@@ -65,6 +72,7 @@ export const getMockedPaymentGetClientNonceResponse = (
 ): HttpResponseOk<ClientNonceResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     ...clientNonceResponse,
     ...partialBody,
@@ -80,6 +88,7 @@ export const paymentProviderIdBeingUsed: ProviderId = 'Braintree'
 export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     provider: {
       id: paymentProviderIdBeingUsed,
@@ -92,6 +101,7 @@ export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
 export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     clientKey: 'origin-key',
   },
@@ -103,6 +113,7 @@ export const getMockedErrorAdyenClientKeyResponse = getErrorResponse('No client 
 export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     paymentMethods: [],
   },
@@ -114,6 +125,7 @@ export const getMockedErrorAdyenPaymentMethodsResponse = getErrorResponse('No pa
 export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     trip_id: 'trip_id',
     payload: {
@@ -131,6 +143,7 @@ export const getMockedErrorAdyenPaymentAuthResponse = getErrorResponse('Failed t
 export const getMockedAdyenPaymentDetailsResponse = (): HttpResponseOk<object> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {},
 })
 

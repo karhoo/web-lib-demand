@@ -30,11 +30,20 @@ export * from './location/testMocks'
 export * from './trip/testMocks'
 export * from './fare/testMocks'
 
-export const mockHttpGet = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { get: true } }))
-export const mockHttpPost = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { post: true } }))
-export const mockHttpPut = jest.fn(() => Promise.resolve({ ok: true, status: 200, body: { put: true } }))
+export const mockHttpGet = jest.fn(() =>
+  Promise.resolve({ ok: true, status: 200, body: { get: true }, headers: new Headers() })
+)
+
+export const mockHttpPost = jest.fn(() =>
+  Promise.resolve({ ok: true, status: 200, body: { post: true }, headers: new Headers() })
+)
+
+export const mockHttpPut = jest.fn(() =>
+  Promise.resolve({ ok: true, status: 200, body: { put: true }, headers: new Headers() })
+)
+
 export const mockHttpRemove = jest.fn(() =>
-  Promise.resolve({ ok: true, status: 200, body: { remove: true } })
+  Promise.resolve({ ok: true, status: 200, body: { remove: true }, headers: new Headers() })
 )
 
 export const getApiMock = () => {

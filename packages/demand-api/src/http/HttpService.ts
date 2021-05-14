@@ -28,9 +28,9 @@ export async function request<T>(url: string, options: RequestInit): Promise<Htt
     const isJsonResponse = (response.headers?.get('content-type') ?? '').indexOf('application/json') !== -1
 
     const body = isJsonResponse ? await getJsonBody(response) : {}
-    const { ok, status } = response
+    const { ok, status, headers } = response
 
-    return ok ? { ok, status, body } : { ok, status, error: body }
+    return ok ? { ok, status, body, headers } : { ok, status, headers, error: body }
   } catch (error) {
     const message = error.message || ''
     const code = isOffline(message) ? errorCodes.ERR_OFFLINE : errorCodes.ERR_UNKNOWN
@@ -38,6 +38,7 @@ export async function request<T>(url: string, options: RequestInit): Promise<Htt
     return {
       ok: false,
       status: 0,
+      headers: new Headers(),
       error: {
         code,
         message,

@@ -71,9 +71,14 @@ const quoteV2 = {
   },
 }
 
+const jsonResponseHeaders = new Headers({
+  'content-type': 'application/json',
+})
+
 const getErrorResponse = (message: string) => (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
   ok: false,
   status: 500,
+  headers: jsonResponseHeaders,
   error: {
     code,
     message: `${message}: Something went wrong`,
@@ -85,6 +90,7 @@ export const getMockedQuotesSerchByIdResponse = (
 ): HttpResponseOk<QuotesByIdResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
     quote_items: [quote],
@@ -99,6 +105,7 @@ export const getMockedQuotesV2SerchByIdResponse = (
 ): HttpResponseOk<QuotesV2ByIdResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
     quotes: [quoteV2],
@@ -120,6 +127,7 @@ export const getMockedQuotesSearchResponse = (
 ): HttpResponseOk<QuotesResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
     quote_items: [],
@@ -134,6 +142,7 @@ export const getMockedQuotesV2SearchResponse = (
 ): HttpResponseOk<QuotesV2Response> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     id: '0f50d58a-9ab1-11ea-b5f3-022edec4eb5e',
     quotes: [],
@@ -153,6 +162,7 @@ export const getMockedErrorQuotesSearchResponse = getErrorResponse('Quotes searc
 export const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     availabilities: [{ availability_id: 'availability_id' }],
     categories: ['test'],
@@ -162,6 +172,7 @@ export const getMockedQuotesAvailabilityResponse = (): HttpResponse<QuotesAvaila
 export const getMockedQuotesV2CheckCoverageResponse = (): HttpResponse<QuotesV2CoverageResponse> => ({
   ok: true,
   status: 200,
+  headers: jsonResponseHeaders,
   body: {
     coverage: true,
   },
@@ -170,6 +181,7 @@ export const getMockedQuotesV2CheckCoverageResponse = (): HttpResponse<QuotesV2C
 export const getMockedErrorQuotesAvailabilityResponse = (): HttpResponse<QuotesAvailabilityResponse> => ({
   ok: false,
   status: 500,
+  headers: jsonResponseHeaders,
   error: {
     code: 'K001',
     message: `Availability: Something went wrong`,
