@@ -141,7 +141,6 @@ export type AdyenCheckoutOptions = {
     value: number
     currency: string
   }
-  environment: string
   locale: string
   channel: 'Web'
 }

@@ -24,12 +24,10 @@ export class AdyenProvider implements Provider {
   private action: PaymentAction | null = null
   private shopper: AdyenShopperData | object = {}
 
-  constructor(paymentService: Payment, options: AdyenProviderOptions, isTestEnv = true) {
+  constructor(paymentService: Payment, options: AdyenProviderOptions) {
     this.setValidationStatus = this.setValidationStatus.bind(this)
     this.validatePaymentForm = this.validatePaymentForm.bind(this)
     this.paymentService = paymentService
-
-    const environment = isTestEnv ? 'test' : 'live'
 
     this.options = {
       ...defaultAdyenOptions,
@@ -38,7 +36,6 @@ export class AdyenProvider implements Provider {
 
     this.checkoutOptions = {
       locale: this.options.locale || 'en',
-      environment,
       amount: {
         value: options.price,
         currency: options.currencyCode,
@@ -111,6 +108,7 @@ export class AdyenProvider implements Provider {
 
     const checkout = new AdyenCheckout({
       ...this.checkoutOptions,
+      environment: clientKeyResponse.body.environment,
       clientKey: clientKeyResponse.body.clientKey,
       paymentMethodsResponse: paymentMethodsResponse.body,
       onChange: this.setValidationStatus,

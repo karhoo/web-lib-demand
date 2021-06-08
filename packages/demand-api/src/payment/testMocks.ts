@@ -104,6 +104,7 @@ export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyRespo
   headers: jsonResponseHeaders,
   body: {
     clientKey: 'origin-key',
+    environment: 'test',
   },
 })
 
