@@ -81,7 +81,7 @@ describe('AdyenProvider', () => {
   beforeEach(async () => {
     jest.clearAllMocks()
 
-    provider = new AdyenProvider(paymentService, checkoutOptions, true)
+    provider = new AdyenProvider(paymentService, checkoutOptions)
 
     await provider.initialize()
   })
@@ -101,7 +101,7 @@ describe('AdyenProvider', () => {
     it('should get payment methods for authorized payer and save his data', async () => {
       jest.clearAllMocks()
 
-      provider = new AdyenProvider(paymentService, checkoutOptions, true)
+      provider = new AdyenProvider(paymentService, checkoutOptions)
 
       await provider.initialize(payer)
 
@@ -164,7 +164,7 @@ describe('AdyenProvider', () => {
     })
 
     it('should set live enviroment', async () => {
-      provider = new AdyenProvider(paymentService, checkoutOptions, false)
+      provider = new AdyenProvider(paymentService, checkoutOptions)
 
       await provider.initialize()
       await provider.tokenizeHostedFields()
@@ -301,7 +301,7 @@ describe('AdyenProvider', () => {
         withThreeDSecure: false,
       }
 
-      provider = new AdyenProvider(paymentService, newOptions, true)
+      provider = new AdyenProvider(paymentService, newOptions)
 
       await provider.initialize()
       await provider.tokenizeHostedFields()
