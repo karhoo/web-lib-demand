@@ -74,7 +74,7 @@ describe('AdyenProvider', () => {
       value: 1000,
     },
     channel: 'Web',
-    environment: 'test',
+    //environment: 'test',
     locale: 'en',
   }
 
@@ -176,7 +176,6 @@ describe('AdyenProvider', () => {
           redirectFromIssuerMethod: 'get',
           ...adyenCheckoutOptions,
           ...cardElement.data,
-          environment: 'live',
           returnUrl: '/callback',
         },
       })
