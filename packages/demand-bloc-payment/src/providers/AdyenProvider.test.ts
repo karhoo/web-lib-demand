@@ -7,6 +7,8 @@ import {
   getMockedErrorAdyenClientKeyResponse,
   getMockedErrorAdyenPaymentMethodsResponse,
   getMockedErrorAdyenPaymentAuthResponse,
+  getAdyenPaymentDetailsMock,
+  getMockedErrorAdyenPaymentDetailsResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import { AdyenProvider } from './AdyenProvider'
@@ -54,7 +56,7 @@ describe('AdyenProvider', () => {
     getAdyenClientKey: getAdyenClientKeyMock(),
     getAdyenPaymentMethods: getAdyenPaymentMethodsMock(),
     createAdyenPaymentAuth: getCreateAdyenPaymentAuthMock(),
-    getAdyenPaymentDetails: jest.fn(),
+    getAdyenPaymentDetails: getAdyenPaymentDetailsMock(),
   }
 
   let provider: AdyenProvider
@@ -342,6 +344,24 @@ describe('AdyenProvider', () => {
         await provider.completeThreeDSecureVerification()
       } catch (error) {
         expect(error).toEqual(new AdyenError(errors[codes.AE04], codes.AE04))
+      }
+    })
+
+    it('should handle payment details error', async () => {
+      const params = {
+        MD: 'MD',
+        PaRes: 'PaRes',
+        nonce: 'nonce',
+      }
+
+      paymentService.getAdyenPaymentDetails.mockImplementationOnce(() =>
+        Promise.resolve(getMockedErrorAdyenPaymentDetailsResponse())
+      )
+
+      try {
+        await provider.completeThreeDSecureVerification(params)
+      } catch (error) {
+        expect(error).toEqual(new AdyenError(errors[codes.AE03], codes.AE03))
       }
     })
   })

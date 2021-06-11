@@ -1,5 +1,3 @@
-import { HttpResponseOk, PaymentAuthResponse } from '@karhoo/demand-api'
-
 export class AdyenError extends Error {
   code?: string
   constructor(message: string, code?: string) {
@@ -49,12 +47,16 @@ export const refusalReasons: Record<string, string> = {
   '39': 'RReq not received from DS',
 }
 
-export const handleRefusalResponse = (result: HttpResponseOk<PaymentAuthResponse>) => {
-  if (result.ok && refusalResultCodes.includes(result.body.payload.resultCode as string)) {
-    const refusalReasonCode = result.body.payload.refusalReasonCode as string
+export const handleRefusalResponse = (result: Record<string, unknown>) => {
+  const resultCode = result.resultCode as string
+  const isRefusalError = refusalResultCodes.includes(resultCode)
+
+  if (isRefusalError) {
+    const refusalReasonCode = result.refusalReasonCode as string
     const errorMessage = refusalReasons[refusalReasonCode]
     throw new AdyenError(errorMessage, refusalReasonCode)
   }
+
   return
 }
 

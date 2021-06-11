@@ -81,13 +81,17 @@ export class PaymentBloc {
 
     try {
       if (nonce) {
-        await this.provider.completeThreeDSecureVerification({
-          nonce,
-          MD: params.get('MD') || '',
-          PaRes: params.get('PaRes') || '',
-        })
+        try {
+          await this.provider.completeThreeDSecureVerification({
+            nonce,
+            MD: params.get('MD') || '',
+            PaRes: params.get('PaRes') || '',
+          })
 
-        return { ok: true, nonce }
+          return { ok: true, nonce }
+        } catch (error) {
+          return { ok: false, error }
+        }
       }
 
       const paymentNonce = await this.getPaymentDetails()

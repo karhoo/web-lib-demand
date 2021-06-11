@@ -1,5 +1,4 @@
 import { Http } from '../http/types'
-import { PaymentMethodsResponse } from './types'
 import {
   CreateTokenParams,
   CreateTokenResponse,
@@ -13,6 +12,8 @@ import {
   PaymentAuthParams,
   PaymentAuthResponse,
   PaymentDetailsParams,
+  PaymentMethodsResponse,
+  PaymentDetailsResponse,
 } from './types'
 
 export class PaymentService implements Payment {
@@ -95,6 +96,6 @@ export class PaymentService implements Payment {
   }
 
   getAdyenPaymentDetails(params: PaymentDetailsParams) {
-    return this.http.post<object>(`${this.apiV3}/${this.url}/adyen/payments-details`, params)
+    return this.http.post<PaymentDetailsResponse>(`${this.apiV3}/${this.url}/adyen/payments-details`, params)
   }
 }

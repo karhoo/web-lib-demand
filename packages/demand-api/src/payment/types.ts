@@ -91,6 +91,16 @@ export type PaymentDetailsParams = {
   }
 }
 
+export type PaymentDetailsResponse = {
+  action?: Record<string, unknown>
+  additionalData: Record<string, string>
+  merchantReference: string
+  pspReference: string
+  refusalReason?: string
+  refusalReasonCode?: string
+  resultCode: string
+}
+
 export type PaymentMethodsResponse = PaymentMethodsResponseObject
 export interface Payment {
   createClientToken(params: CreateTokenParams): Promise<HttpResponse<CreateTokenResponse>>
@@ -103,5 +113,5 @@ export interface Payment {
   getAdyenClientKey(): Promise<HttpResponse<ClientKeyResponse>>
   getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
-  getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<object>>
+  getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
 }

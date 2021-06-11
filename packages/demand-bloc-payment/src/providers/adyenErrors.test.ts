@@ -1,23 +1,24 @@
-import { HttpResponseOk, PaymentAuthResponse } from '@karhoo/demand-api'
 import { handleRefusalResponse } from './adyenErrors'
 
 describe('handleRefusalResponse', () => {
-  const refusalFakeResponse: HttpResponseOk<PaymentAuthResponse> = {
-    ok: true,
-    status: 200,
-    headers: new Headers(),
-    body: {
-      payload: {
-        refusalReasonCode: '20',
-        resultCode: 'Refused',
-      },
-      trip_id: 'trip_id',
-    },
-  }
-
   it('should throw new error with refusalReason message', () => {
+    const refusalFakePayload = {
+      refusalReasonCode: '20',
+      resultCode: 'Refused',
+    }
+
     expect(() => {
-      handleRefusalResponse(refusalFakeResponse)
+      handleRefusalResponse(refusalFakePayload)
     }).toThrow('FRAUD')
+  })
+
+  it('should not throw new error with refusalReason message', () => {
+    const refusalFakePayload = {
+      resultCode: 'Authorised',
+    }
+
+    expect(() => {
+      handleRefusalResponse(refusalFakePayload)
+    }).not.toThrow('FRAUD')
   })
 })
