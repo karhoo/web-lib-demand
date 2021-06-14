@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.2.2](https://github.com/karhoo/web-lib-demand/compare/v15.2.1...v15.2.2) (2021-06-14)
+
+
+### Bug Fixes
+
+* [Adyen PSP] clear payment data on refused payment ([b7a75cc](https://github.com/karhoo/web-lib-demand/commit/b7a75ccf1c2a7c488dcf73485d9f6d5b76ffc455))
+
+
+
+
+
 ## [15.2.1](https://github.com/karhoo/web-lib-demand/compare/v15.2.0...v15.2.1) (2021-06-14)
 
 

@@ -128,6 +128,10 @@ export class BraintreeProvider implements Provider {
     }
   }
 
+  clearPaymentNonce() {
+    return null
+  }
+
   async dispose() {
     this.pendingInitialisation?.cancel()
     this.pendingInitialisation = undefined

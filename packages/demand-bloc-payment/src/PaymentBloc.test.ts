@@ -41,6 +41,7 @@ describe('PaymentBloc', () => {
   const braintreeProvider = {
     initialize: jest.fn(),
     dispose: jest.fn(),
+    clearPaymentNonce: jest.fn(),
     tokenizeHostedFields: jest.fn(() => Promise.resolve(['key1', tokenizeHostedFieldsResponse.nonce])),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
@@ -54,6 +55,7 @@ describe('PaymentBloc', () => {
   const adyenProvider = {
     initialize: jest.fn(),
     dispose: jest.fn(),
+    clearPaymentNonce: jest.fn(),
     tokenizeHostedFields: jest.fn(() => Promise.resolve(['key1', tokenizeHostedFieldsResponse.nonce])),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),

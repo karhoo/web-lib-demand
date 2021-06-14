@@ -90,6 +90,7 @@ export class PaymentBloc {
 
           return { ok: true, nonce }
         } catch (error) {
+          this.provider.clearPaymentNonce()
           return { ok: false, error }
         }
       }
