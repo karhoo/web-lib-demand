@@ -74,7 +74,6 @@ describe('AdyenProvider', () => {
       value: 1000,
     },
     channel: 'Web',
-    //environment: 'test',
     locale: 'en',
   }
 
