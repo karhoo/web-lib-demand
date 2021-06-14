@@ -33,6 +33,7 @@ type PaymentProviderProps = {
 // Currently this type is based on braintree types. In the future this might be changed
 export type Provider = {
   initialize(payer?: Payer): Promise<void> | void
+  clearPaymentNonce: () => void
   dispose(): Promise<void> | void
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean

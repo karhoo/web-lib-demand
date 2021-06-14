@@ -255,11 +255,13 @@ describe('AdyenProvider', () => {
   })
 
   describe('dispose', () => {
-    it('should remove dropin', () => {
+    it('should remove dropin and clear payment data', () => {
+      provider.clearPaymentNonce = jest.fn()
       provider.dispose()
 
       expect(cardElement.remove).toHaveBeenCalledTimes(1)
       expect((provider as any).isFormValid).toBe(false)
+      expect((provider as any).clearPaymentNonce).toBeCalledTimes(1)
     })
   })
 

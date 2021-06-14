@@ -160,9 +160,15 @@ export class AdyenProvider implements Provider {
     return this.isFormValid
   }
 
+  clearPaymentNonce() {
+    this.paymentData = ''
+    this.nonce = ''
+  }
+
   dispose() {
     this.cardElement?.remove()
     this.isFormValid = false
+    this.clearPaymentNonce()
   }
 
   startThreeDSecureVerification() {
