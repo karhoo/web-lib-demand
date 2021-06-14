@@ -1,4 +1,4 @@
-import { PaymentMethodsResponse } from './types'
+import { PaymentMethodsResponse, PaymentDetailsResponse } from './types'
 import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from '../http/types'
 import { errorCodes } from '../responseCodes'
 
@@ -140,11 +140,32 @@ export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthRespon
 export const getCreateAdyenPaymentAuthMock = getMock(getMockedPaymentAuthResponse)
 export const getMockedErrorAdyenPaymentAuthResponse = getErrorResponse('Failed to create a payment')
 
-export const getMockedAdyenPaymentDetailsResponse = (): HttpResponseOk<object> => ({
+export const getMockedAdyenPaymentDetailsResponse = (): HttpResponseOk<PaymentDetailsResponse> => ({
   ok: true,
   status: 200,
   headers: jsonResponseHeaders,
-  body: {},
+  body: {
+    additionalData: { cardSummary: '0000' },
+    merchantReference: 'merchantReference',
+    pspReference: 'pspReference',
+    resultCode: 'Authorised',
+  },
 })
 
 export const getAdyenPaymentDetailsMock = getMock(getMockedAdyenPaymentDetailsResponse)
+export const getMockedErrorAdyenPaymentDetailsResponse = getErrorResponse('Failed to create a payment')
+
+export const getMockedAdyenPaymentDetailsRefusedResponse = (): HttpResponseOk<PaymentDetailsResponse> => ({
+  ok: true,
+  status: 200,
+  headers: jsonResponseHeaders,
+  body: {
+    additionalData: { cardSummary: '0000' },
+    merchantReference: 'merchantReference',
+    pspReference: 'pspReference',
+    resultCode: 'Refused',
+    refusalReasonCode: 'CVC Declined',
+  },
+})
+
+export const getAdyenPaymentDetailsRefusedMock = getMock(getMockedAdyenPaymentDetailsRefusedResponse)

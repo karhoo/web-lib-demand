@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.2.1](https://github.com/karhoo/web-lib-demand/compare/v15.2.0...v15.2.1) (2021-06-14)
+
+
+### Bug Fixes
+
+* [Adyen PSP]: handle refusal state ([570632b](https://github.com/karhoo/web-lib-demand/commit/570632b13d65ccdd596fc37a1d098fa2fb917afd))
+
+
+
+
+
 # [15.2.0](https://github.com/karhoo/web-lib-demand/compare/v15.1.0...v15.2.0) (2021-05-14)
 
 **Note:** Version bump only for package @karhoo/lib-feature-flags

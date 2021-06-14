@@ -142,7 +142,7 @@ export class AdyenProvider implements Provider {
       throw new AdyenError(errors[codes.AE03], codes.AE03)
     }
 
-    handleRefusalResponse(makePaymentResponse)
+    handleRefusalResponse(makePaymentResponse.body.payload)
 
     this.paymentData = makePaymentResponse.body.payload.action?.paymentData || ''
 
@@ -190,7 +190,7 @@ export class AdyenProvider implements Provider {
 
     const { MD, PaRes, nonce } = params
 
-    await this.paymentService.getAdyenPaymentDetails({
+    const paymentDetailsResponse = await this.paymentService.getAdyenPaymentDetails({
       payments_payload: {
         paymentData: this.paymentData,
         details: {
@@ -200,6 +200,12 @@ export class AdyenProvider implements Provider {
       },
       trip_id: nonce,
     })
+
+    if (!paymentDetailsResponse.ok) {
+      throw new AdyenError(errors[codes.AE03], codes.AE03)
+    }
+
+    handleRefusalResponse(paymentDetailsResponse.body)
 
     this.nonce = ''
 
