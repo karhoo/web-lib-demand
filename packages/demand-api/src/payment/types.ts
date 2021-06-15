@@ -55,6 +55,7 @@ export type PaymentProvidersResponse = {
 
 export type ClientKeyResponse = {
   clientKey: string
+  environment: string
 }
 
 export type PaymentMethodsParams = {

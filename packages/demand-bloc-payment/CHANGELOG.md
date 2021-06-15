@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.0.0](https://github.com/karhoo/web-lib-demand/compare/v15.2.2...v16.0.0) (2021-06-15)
+
+
+### Features
+
+* **ES-1274:** get env from payments api instead of hardcoded value ([70b90df](https://github.com/karhoo/web-lib-demand/commit/70b90df382437b16a3f7d720cd22a16a46b66805))
+
+
+
+
+
 ## [15.2.2](https://github.com/karhoo/web-lib-demand/compare/v15.2.1...v15.2.2) (2021-06-14)
 
 
