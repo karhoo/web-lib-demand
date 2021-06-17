@@ -45,11 +45,14 @@ describe('QuotesBloc', () => {
       fleet: {
         id: '1',
         name: 'Fleet One',
+        capabilities: ['gps_tracking'],
       },
       vehicle: {
         class: 'executive',
         passenger_capacity: 3,
         luggage_capacity: 2,
+        type: 'standard',
+        tags: ['electric'],
       },
     },
     {
@@ -63,11 +66,14 @@ describe('QuotesBloc', () => {
       fleet: {
         id: '2',
         name: 'Fleet Two',
+        capabilities: ['gps_tracking'],
       },
       vehicle: {
         class: 'executive',
         passenger_capacity: 5,
         luggage_capacity: 1,
+        type: 'standard',
+        tags: ['electric'],
       },
     },
     {
@@ -81,11 +87,14 @@ describe('QuotesBloc', () => {
       fleet: {
         id: '3',
         name: 'Fleet Three',
+        capabilities: ['gps_tracking'],
       },
       vehicle: {
         class: 'executive',
         passenger_capacity: 1,
         luggage_capacity: 1,
+        type: 'standard',
+        tags: ['electric'],
       },
     },
   ]

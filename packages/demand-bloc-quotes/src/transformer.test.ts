@@ -29,6 +29,7 @@ describe('transformer', () => {
       logo_url: '69279eb83537f0471137a72184f31edb.png',
       terms_conditions_url: '/fleets/7f8d80dc-0872-4fc0-86bd-658488d8fcb2/index.html',
       phone_number: '+44800000000',
+      capabilities: ['gps_tracking'],
     },
     vehicle: {
       qta: {
@@ -38,6 +39,8 @@ describe('transformer', () => {
       class: 'executive',
       passenger_capacity: 3,
       luggage_capacity: 2,
+      type: 'standard',
+      tags: ['electric'],
     },
   }
 
@@ -49,6 +52,7 @@ describe('transformer', () => {
       to: 6,
     },
     finalPrice: null,
+    fleetCapabilities: ['gps_tracking'],
     fleetId: '82cdc359-beed-45cb-8743-baec84e58b57',
     fleetLogo: '69279eb83537f0471137a72184f31edb.png',
     fleetName: 'PHV Fleet (Robot Fleet GB)',
@@ -59,6 +63,8 @@ describe('transformer', () => {
     quotedPrice: 2000,
     type: 'FIXED',
     vehicleClass: 'executive',
+    vehicleTags: ['electric'],
+    vehicleType: 'standard',
     vehicleLuggageCapacity: 2,
     vehiclePassengerCapacity: 3,
     fleetDescription:
@@ -97,6 +103,7 @@ describe('transformer', () => {
         to: null,
       },
       finalPrice: null,
+      fleetCapabilities: [],
       fleetId: '2',
       fleetLogo: '',
       fleetName: 'Robouser',
@@ -106,6 +113,8 @@ describe('transformer', () => {
       quotedPrice: null,
       type: 'FIXED',
       vehicleClass: '',
+      vehicleTags: [],
+      vehicleType: '',
       vehicleLuggageCapacity: 0,
       vehiclePassengerCapacity: 0,
       fleetDescription: '',
