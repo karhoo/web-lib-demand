@@ -8,6 +8,7 @@ export interface QuoteItem {
     to?: number | null
   }
   finalPrice?: null
+  fleetCapabilities: string[]
   fleetId: string
   fleetLogo: string
   fleetName: string
@@ -17,6 +18,8 @@ export interface QuoteItem {
   quotedPrice: number | null
   type: QuotePriceType | ''
   vehicleClass: string
+  vehicleTags: string[]
+  vehicleType: string
   vehicleLuggageCapacity: number
   vehiclePassengerCapacity: number
   fleetDescription: string
@@ -36,12 +39,15 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
       terms_conditions_url = '',
       phone_number = '',
       description = '',
+      capabilities = [],
     },
     vehicle: {
       qta: { high_minutes = null, low_minutes = null } = {},
       passenger_capacity = 0,
       luggage_capacity = 0,
       class: vehicle_class = '',
+      tags = [],
+      type = '',
     } = {},
     service_level_agreements = null,
   } = quote
@@ -54,6 +60,7 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
       to: high_minutes,
     },
     finalPrice: null,
+    fleetCapabilities: capabilities,
     fleetId: fleet_id,
     fleetLogo: logo_url,
     fleetName: name,
@@ -63,6 +70,8 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
     quotedPrice: high,
     type: quote_type,
     vehicleClass: vehicle_class,
+    vehicleTags: tags,
+    vehicleType: type,
     vehicleLuggageCapacity: luggage_capacity,
     vehiclePassengerCapacity: passenger_capacity,
     fleetDescription: description,

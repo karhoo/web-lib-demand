@@ -59,6 +59,7 @@ const quoteV2 = {
     logo_url: 'https://karhoo.com/logo/cab.png',
     terms_conditions_url: 'https://karhoo.com/terms/',
     phone_number: '+44123456789',
+    capabilities: ['gps_tracking'],
   },
   vehicle: {
     qta: {
@@ -68,6 +69,8 @@ const quoteV2 = {
     class: 'Saloon',
     passenger_capacity: 2,
     luggage_capacity: 4,
+    tags: ['electric'],
+    type: 'standard',
   },
 }
 

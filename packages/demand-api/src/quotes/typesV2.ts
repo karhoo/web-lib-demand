@@ -45,6 +45,7 @@ export type QuotesV2Fleet = {
   logo_url?: string
   terms_conditions_url?: string
   phone_number?: string
+  capabilities?: string[]
 }
 
 export type QuotesV2Vehicle = {
@@ -55,6 +56,8 @@ export type QuotesV2Vehicle = {
   class: string
   passenger_capacity?: number
   luggage_capacity?: number
+  tags: string[]
+  type: string
 }
 
 export type QuoteV2Item = {
