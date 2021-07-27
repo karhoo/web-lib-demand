@@ -145,3 +145,7 @@ export type AdyenCheckoutOptions = {
   locale: string
   channel: 'Web'
 }
+
+export enum ResultCodes {
+  AUTHORISED = 'Authorised',
+}

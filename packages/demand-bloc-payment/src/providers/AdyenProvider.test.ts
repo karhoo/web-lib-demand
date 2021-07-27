@@ -237,6 +237,25 @@ describe('AdyenProvider', () => {
       expect(provider.paymentData).toEqual('')
     })
 
+    it('should save nonce if resultCode is Authorised', async () => {
+      paymentService.createAdyenPaymentAuth.mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          headers: new Headers({ 'content-type': 'application/json' }),
+          body: {
+            payload: {
+              resultCode: 'Authorised',
+            },
+            trip_id: 'trip_id',
+          },
+        })
+      )
+      await provider.tokenizeHostedFields()
+
+      expect(provider.getNonce()).toEqual('trip_id')
+    })
+
     it('should save nonce', async () => {
       await provider.tokenizeHostedFields()
 
