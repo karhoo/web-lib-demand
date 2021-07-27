@@ -307,22 +307,6 @@ describe('PaymentBloc', () => {
       })
     })
 
-    it('should return nonce with if resulCode exists', async () => {
-      const payment = await PaymentBloc.create({
-        providers: providersMapMock,
-        paymentService: paymentServiceMock,
-      })
-
-      const providerBeingUsedMock = getPaymentProviderBeingUsed()
-      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
-
-      mocked.tokenizeHostedFields.mockReturnValueOnce(
-        Promise.resolve(['meta.trip_id', '12345', 'authorised'])
-      )
-
-      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: '12345' })
-    })
-
     it('should return error when verifyWithThreeDSecure emits error', async () => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,

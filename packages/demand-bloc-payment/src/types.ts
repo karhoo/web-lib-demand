@@ -146,4 +146,6 @@ export type AdyenCheckoutOptions = {
   channel: 'Web'
 }
 
-export const AUTHORISED = 'Authorised'
+export enum ResultCodes {
+  AUTHORISED = 'Authorised',
+}

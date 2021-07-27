@@ -97,7 +97,7 @@ export class PaymentBloc {
 
       const { nonce: paymentNonce, resultCode } = await this.getPaymentDetails()
       if (resultCode) {
-        return { ok: true, nonce }
+        return { ok: true, nonce: paymentNonce }
       }
       const verifiedNonce = await this.provider.startThreeDSecureVerification(amount, paymentNonce)
       const resultNonce = paymentNonce && verifiedNonce
