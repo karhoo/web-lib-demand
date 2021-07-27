@@ -95,7 +95,10 @@ export class PaymentBloc {
         }
       }
 
-      const paymentNonce = await this.getPaymentDetails()
+      const { nonce: paymentNonce, resultCode } = await this.getPaymentDetails()
+      if (resultCode) {
+        return { ok: true, nonce: nonce }
+      }
       const verifiedNonce = await this.provider.startThreeDSecureVerification(amount, paymentNonce)
       const resultNonce = paymentNonce && verifiedNonce
       return { ok: true, nonce: resultNonce }
@@ -118,9 +121,9 @@ export class PaymentBloc {
 
   async getPaymentNonce(): Promise<PaymentNonceResponse> {
     try {
-      const nonce = await this.getPaymentDetails()
+      const { nonce } = await this.getPaymentDetails()
 
-      return { ok: true, nonce }
+      return { ok: true, nonce: nonce }
     } catch (error) {
       return { ok: false, error }
     }
@@ -130,12 +133,12 @@ export class PaymentBloc {
     const selectedCard = this.cardsInfo?.getSelectedPaymentCard()
 
     if (selectedCard?.nonce) {
-      return selectedCard.nonce
+      return { nonce: selectedCard.nonce, resultCode: '' }
     }
 
-    const [_, nonce] = await this.provider.tokenizeHostedFields()
+    const [_, nonce, resultCode] = await this.provider.tokenizeHostedFields()
 
-    return nonce
+    return { nonce, resultCode }
   }
 
   async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {

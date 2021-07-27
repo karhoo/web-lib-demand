@@ -145,3 +145,5 @@ export type AdyenCheckoutOptions = {
   locale: string
   channel: 'Web'
 }
+
+export const AUTHORISED = 'Authorised'

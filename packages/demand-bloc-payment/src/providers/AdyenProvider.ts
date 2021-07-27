@@ -10,6 +10,7 @@ import {
   CompleteThreeDSecureVerificationParams,
   Payer,
   AdyenShopperData,
+  AUTHORISED,
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
 import { AdyenError, handleRefusalResponse, errors, codes } from './adyenErrors'
@@ -141,6 +142,11 @@ export class AdyenProvider implements Provider {
     }
 
     handleRefusalResponse(makePaymentResponse.body.payload)
+
+    if (makePaymentResponse.body.payload.resultCode === AUTHORISED) {
+      this.nonce = makePaymentResponse.body.trip_id
+      return ['meta.trip_id', makePaymentResponse.body.trip_id, makePaymentResponse.body.payload.resultCode]
+    }
 
     this.paymentData = makePaymentResponse.body.payload.action?.paymentData || ''
 
