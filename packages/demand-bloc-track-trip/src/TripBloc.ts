@@ -256,7 +256,15 @@ export class TripBloc {
   getUpcomingTrips(searchParams: TripsSearchParams = {}) {
     const {
       paginationOffset = 0,
-      statuses = [TripStatuses.CONFIRMED, TripStatuses.REQUESTED],
+      statuses = [
+        TripStatuses.ALLOCATED,
+        TripStatuses.APPROACHING,
+        TripStatuses.ARRIVED,
+        TripStatuses.CONFIRMED,
+        TripStatuses.DRIVER_EN_ROUTE,
+        TripStatuses.POB,
+        TripStatuses.REQUESTED,
+      ],
       paginationRowCount = this.options.paginationRowCount,
     } = searchParams
 
@@ -282,7 +290,12 @@ export class TripBloc {
   async getPastTrips(searchParams: TripsSearchParams = {}) {
     const {
       paginationOffset = 0,
-      statuses = [TripStatuses.COMPLETED],
+      statuses = [
+        TripStatuses.COMPLETED,
+        TripStatuses.BOOKER_CANCELLED,
+        TripStatuses.DRIVER_CANCELLED,
+        TripStatuses.NO_DRIVERS_AVAILABLE,
+      ],
       paginationRowCount = this.options.paginationRowCount,
     } = searchParams
 
