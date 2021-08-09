@@ -33,8 +33,6 @@ type Address = {
 }
 
 export enum TripStatuses {
-  ALLOCATED = 'ALLOCATED',
-  APPROACHING = 'APPROACHING',
   ARRIVED = 'ARRIVED',
   BOOKER_CANCELLED = 'BOOKER_CANCELLED',
   COMPLETED = 'COMPLETED',

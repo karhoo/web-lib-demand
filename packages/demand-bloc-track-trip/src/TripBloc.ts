@@ -257,8 +257,6 @@ export class TripBloc {
     const {
       paginationOffset = 0,
       statuses = [
-        TripStatuses.ALLOCATED,
-        TripStatuses.APPROACHING,
         TripStatuses.ARRIVED,
         TripStatuses.CONFIRMED,
         TripStatuses.DRIVER_EN_ROUTE,
