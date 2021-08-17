@@ -6,6 +6,7 @@ import {
   TripFollowResponse,
   SearchResponse,
   BookATripResponse,
+  OrderOptions,
 } from '@karhoo/demand-api'
 import {
   getMockedTrackTripResponse,
@@ -288,16 +289,18 @@ describe('TripBloc', () => {
     const paginationRowCount = 2
     const paginationOffset = 2
     const stream = new Subject<BookATripResponse[]>()
+    const order_by: OrderOptions[] = ['date']
 
     it('should call searchTrips', async () => {
       const searchTripsSpy = jest.spyOn(TripBloc.prototype as any, 'searchTrips')
 
-      await bloc.getTrips(stream, statuses, tripsPagination, paginationOffset, paginationRowCount)
+      await bloc.getTrips(stream, statuses, tripsPagination, paginationOffset, paginationRowCount, order_by)
 
       expect(searchTripsSpy).toHaveBeenCalled()
       expect(searchTripsSpy).toHaveBeenCalledWith(statuses, {
         pagination_offset: paginationOffset,
         pagination_row_count: paginationRowCount,
+        order_by,
       })
     })
 
@@ -311,7 +314,7 @@ describe('TripBloc', () => {
 
       const trips: Array<BookATripResponse[]> = []
       stream.subscribe(data => trips.push(data))
-      await bloc.getTrips(stream, statuses, tripsPagination, paginationOffset, paginationRowCount)
+      await bloc.getTrips(stream, statuses, tripsPagination, paginationOffset, paginationRowCount, order_by)
 
       stream.subscribe(data => trips.push(data))
 
@@ -338,10 +341,11 @@ describe('TripBloc', () => {
     const upcomingTripsPagination = 'upcomingTripsOffset'
     const pastTripsPagination = 'pastTripsOffset'
     const paginationOffset = 2
+    const order_by: OrderOptions[] = ['date']
 
     describe('getUpcomingTrips', () => {
       it('should call getTrips', () => {
-        TripBloc.prototype.getUpcomingTrips.call(that, { paginationOffset, statuses })
+        TripBloc.prototype.getUpcomingTrips.call(that, { paginationOffset, statuses, order_by })
 
         expect(that.getTrips).toHaveBeenCalledTimes(1)
         expect(that.getTrips).toHaveBeenCalledWith(
@@ -349,7 +353,8 @@ describe('TripBloc', () => {
           statuses,
           upcomingTripsPagination,
           paginationOffset,
-          that.options.paginationRowCount
+          that.options.paginationRowCount,
+          order_by
         )
       })
     })
@@ -367,7 +372,7 @@ describe('TripBloc', () => {
 
     describe('getPastTrips', () => {
       it('should call getTrips', () => {
-        TripBloc.prototype.getPastTrips.call(that, { paginationOffset, statuses })
+        TripBloc.prototype.getPastTrips.call(that, { paginationOffset, statuses, order_by })
 
         expect(that.getTrips).toHaveBeenCalledTimes(1)
         expect(that.getTrips).toHaveBeenCalledWith(
@@ -375,7 +380,8 @@ describe('TripBloc', () => {
           statuses,
           pastTripsPagination,
           paginationOffset,
-          that.options.paginationRowCount
+          that.options.paginationRowCount,
+          order_by
         )
       })
     })
