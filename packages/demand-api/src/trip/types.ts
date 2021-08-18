@@ -186,6 +186,17 @@ export type OrderOptions =
   | 'fleet'
   | 'origin'
   | 'destination'
+  | '-id'
+  | '-date'
+  | '-booking_date'
+  | '-reference'
+  | '-name'
+  | '-surname'
+  | '-vehicle'
+  | '-state'
+  | '-fleet'
+  | '-origin'
+  | '-destination'
 
 export type SearchParams = {
   trip_states?: TripStatus[]

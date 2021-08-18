@@ -5,6 +5,7 @@ import {
   CancellationParams,
   BookATripResponse,
   SearchParams,
+  OrderOptions,
 } from '@karhoo/demand-api'
 import { Subject, Subscription } from 'rxjs'
 import polling from './polling'
@@ -211,7 +212,7 @@ export class TripBloc {
    */
   private async searchTrips(
     statuses: TripStatuses[] = [],
-    paginationOptions?: Pick<SearchParams, 'pagination_offset' | 'pagination_row_count'>
+    paginationOptions?: Pick<SearchParams, 'pagination_offset' | 'pagination_row_count' | 'order_by'>
   ): Promise<BookATripResponse[]> {
     const params = makeSearchParams(statuses, paginationOptions)
 
@@ -232,7 +233,8 @@ export class TripBloc {
     statuses: TripStatuses[] = [],
     tripsPagination: keyof TripsOffset,
     paginationOffset: number,
-    paginationRowCount: number
+    paginationRowCount: number,
+    order_by: OrderOptions[]
   ) {
     if (paginationOffset === 0) {
       this.tripsOffset[tripsPagination] = 0
@@ -241,6 +243,7 @@ export class TripBloc {
     const trips = await this.searchTrips(statuses, {
       pagination_offset: paginationOffset,
       pagination_row_count: paginationRowCount || this.options.paginationRowCount,
+      order_by,
     })
 
     this.tripsOffset[tripsPagination] += trips?.length || 0
@@ -264,6 +267,7 @@ export class TripBloc {
         TripStatuses.REQUESTED,
       ],
       paginationRowCount = this.options.paginationRowCount,
+      order_by = ['-date'],
     } = searchParams
 
     return this.getTrips(
@@ -271,7 +275,8 @@ export class TripBloc {
       statuses,
       'upcomingTripsOffset',
       paginationOffset,
-      paginationRowCount
+      paginationRowCount,
+      order_by
     )
   }
 
@@ -295,9 +300,17 @@ export class TripBloc {
         TripStatuses.NO_DRIVERS_AVAILABLE,
       ],
       paginationRowCount = this.options.paginationRowCount,
+      order_by = ['date'],
     } = searchParams
 
-    return this.getTrips(this.pastTrips$, statuses, 'pastTripsOffset', paginationOffset, paginationRowCount)
+    return this.getTrips(
+      this.pastTrips$,
+      statuses,
+      'pastTripsOffset',
+      paginationOffset,
+      paginationRowCount,
+      order_by
+    )
   }
 
   /**
