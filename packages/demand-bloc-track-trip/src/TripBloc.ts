@@ -267,7 +267,7 @@ export class TripBloc {
         TripStatuses.REQUESTED,
       ],
       paginationRowCount = this.options.paginationRowCount,
-      order_by = ['-date'],
+      order_by = ['date'],
     } = searchParams
 
     return this.getTrips(
@@ -300,7 +300,7 @@ export class TripBloc {
         TripStatuses.NO_DRIVERS_AVAILABLE,
       ],
       paginationRowCount = this.options.paginationRowCount,
-      order_by = ['date'],
+      order_by = ['-date'],
     } = searchParams
 
     return this.getTrips(
