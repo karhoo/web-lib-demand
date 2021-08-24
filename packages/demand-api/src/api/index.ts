@@ -6,6 +6,7 @@ import { QuotesV2Service } from '../quotes/QuotesV2Service'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
 import { PaymentService } from '../payment/PaymentService'
+import { LoyaltyService } from '../loyalty/LoyaltyService'
 import { FlagsService } from '../flags/FlagsService'
 import { UserService } from '../user/UserService'
 import { AuthService } from '../auth/AuthService'
@@ -55,6 +56,7 @@ export function getApi(apiOptions: ApiOptions = {}): Api {
     tripService: new TripService(httpV1),
     fareService: new FareService(httpV1),
     paymentService: new PaymentService(httpCommon),
+    loyaltyService: new LoyaltyService(httpCommon),
     flagsService: new FlagsService(httpV1),
     userService: new UserService(httpV1),
     authService: new AuthService(httpForAuthService),

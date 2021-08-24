@@ -5,6 +5,7 @@ import { QuotesService } from '../quotes/QuotesService'
 import { QuotesV2Service } from '../quotes/QuotesV2Service'
 import { TripService } from '../trip/TripService'
 import { FareService } from '../fare/FareService'
+import { LoyaltyService } from '../loyalty/LoyaltyService'
 import { PaymentService } from '../payment/PaymentService'
 import { FlagsService } from '../flags/FlagsService'
 import { UserService } from '../user/UserService'
@@ -25,6 +26,7 @@ export type Api = {
   quotesV2Service: QuotesV2Service
   tripService: TripService
   fareService: FareService
+  loyaltyService: LoyaltyService
   paymentService: PaymentService
   flagsService: FlagsService
   userService: UserService
