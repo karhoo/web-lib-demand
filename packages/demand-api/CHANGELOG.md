@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.2.0](https://github.com/karhoo/web-lib-demand/compare/v16.1.4...v16.2.0) (2021-08-25)
+
+
+### Features
+
+* **es-1532:** loyalty api service ([d157ee8](https://github.com/karhoo/web-lib-demand/commit/d157ee8acb4104e2882fbba110e3c9784493d52b))
+
+
+
+
+
 ## [16.1.4](https://github.com/karhoo/web-lib-demand/compare/v16.1.3...v16.1.4) (2021-08-18)
 
 **Note:** Version bump only for package @karhoo/demand-api
