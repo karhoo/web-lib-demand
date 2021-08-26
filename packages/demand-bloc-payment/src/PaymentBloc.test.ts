@@ -4,6 +4,7 @@ import {
   getMockedErrorAddPaymentCardResponse,
   getMockedPaymentProviderResponse,
   paymentProviderIdBeingUsed,
+  loyaltyProgramBeingUsed,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import { errors } from './constants'
@@ -523,6 +524,16 @@ describe('PaymentBloc', () => {
       const data = await fetchPaymentProvider(paymentServiceMock)
       expect(paymentServiceMock.getPaymentProvider).toBeCalledTimes(1)
       expect(data).toStrictEqual(getMockedPaymentProviderResponse().body)
+    })
+
+    it('should return clientId of loyalty program', async () => {
+      const payment = await PaymentBloc.create({
+        providers: providersMapMock,
+        paymentService: paymentServiceMock,
+      })
+
+      const clientId = payment.getLoyaltyClientId()
+      expect(clientId).toEqual(loyaltyProgramBeingUsed.id)
     })
   })
 

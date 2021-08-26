@@ -54,6 +54,7 @@ export type CardsInfo = {
 export type PaymentOptions = {
   paymentCardsEnabled: boolean
   preselectProvider?: string
+  loyaltyClientId?: string
 }
 
 export type VerifyCardError = {
