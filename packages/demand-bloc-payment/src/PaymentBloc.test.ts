@@ -5,6 +5,8 @@ import {
   getMockedPaymentProviderResponse,
   paymentProviderIdBeingUsed,
   loyaltyProgramBeingUsed,
+  getMockedPaymentProviderWithoutLoyaltyResponse,
+  getMockedPaymentProviderEmptyResponse,
 } from '@karhoo/demand-api/dist/mocks/testMocks'
 
 import { errors } from './constants'
@@ -526,7 +528,27 @@ describe('PaymentBloc', () => {
       expect(data).toStrictEqual(getMockedPaymentProviderResponse().body)
     })
 
-    it('should return clientId of loyalty program', async () => {
+    it('should throw error when wrong provider', async () => {
+      const mocked = paymentServiceMock as jest.Mocked<typeof paymentServiceMock>
+      const response = getMockedPaymentProviderEmptyResponse()
+      mocked.getPaymentProvider.mockImplementationOnce(() => Promise.resolve(response))
+
+      await expect(
+        PaymentBloc.create({ providers: providersMapMock, paymentService: mocked })
+      ).rejects.toThrow(Error)
+    })
+
+    it('should return payment provider props', async () => {
+      const payment = await PaymentBloc.create({
+        providers: providersMapMock,
+        paymentService: paymentServiceMock,
+      })
+
+      payment.getPaymentProviderProps()
+      expect(getPaymentProviderBeingUsed().getPaymentProviderProps).toBeCalledTimes(1)
+    })
+
+    it('should return clientId of loyalty program from api', async () => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,
@@ -534,6 +556,20 @@ describe('PaymentBloc', () => {
 
       const clientId = payment.getLoyaltyClientId()
       expect(clientId).toEqual(loyaltyProgramBeingUsed.id)
+    })
+
+    it('should return empty clientId of loyalty program when not available', async () => {
+      const mocked = paymentServiceMock as jest.Mocked<typeof paymentServiceMock>
+      const response = getMockedPaymentProviderWithoutLoyaltyResponse()
+      mocked.getPaymentProvider.mockImplementationOnce(() => Promise.resolve(response))
+
+      const payment = await PaymentBloc.create({
+        providers: providersMapMock,
+        paymentService: mocked,
+      })
+
+      const clientId = payment.getLoyaltyClientId()
+      expect(clientId).toEqual(undefined)
     })
   })
 

@@ -100,6 +100,24 @@ export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvid
   },
 })
 
+export const getMockedPaymentProviderEmptyResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
+  ok: true,
+  status: 200,
+  headers: jsonResponseHeaders,
+  body: {},
+})
+
+export const getMockedPaymentProviderWithoutLoyaltyResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
+  ok: true,
+  status: 200,
+  headers: jsonResponseHeaders,
+  body: {
+    provider: {
+      id: paymentProviderIdBeingUsed,
+    },
+  },
+})
+
 export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
 
 export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyResponse> => ({

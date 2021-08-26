@@ -46,8 +46,8 @@ export class PaymentBloc {
     cardsInfo,
   }: PaymentBlocProps) {
     const providersResponse = await fetchPaymentProvider(paymentService)
-    const targetId = options.preselectProvider || (providersResponse?.provider?.id ?? '')
-    const loyaltyClientId = providersResponse?.loyalty_program?.id ?? ''
+    const targetId = options.preselectProvider || (providersResponse.provider?.id ?? '')
+    const loyaltyClientId = providersResponse.loyalty_program?.id
     const provider = getPaymentProvider(providers, targetId)
 
     const paymentOptions = {
