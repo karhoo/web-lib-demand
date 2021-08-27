@@ -45,11 +45,17 @@ export class PaymentBloc {
     options = defaultPaymentOptions,
     cardsInfo,
   }: PaymentBlocProps) {
-    const targetId =
-      options.preselectProvider || ((await fetchPaymentProvider(paymentService)).provider?.id ?? '')
+    const providersResponse = await fetchPaymentProvider(paymentService)
+    const targetId = options.preselectProvider || (providersResponse.provider?.id ?? '')
+    const loyaltyClientId = providersResponse.loyalty_program?.id
     const provider = getPaymentProvider(providers, targetId)
 
-    return new PaymentBloc(provider, options, cardsInfo)
+    const paymentOptions = {
+      ...options,
+      loyaltyClientId,
+    }
+
+    return new PaymentBloc(provider, paymentOptions, cardsInfo)
   }
 
   async initPayment(payer?: Payer) {
@@ -158,6 +164,10 @@ export class PaymentBloc {
 
   getPaymentProviderProps() {
     return this.provider.getPaymentProviderProps()
+  }
+
+  getLoyaltyClientId() {
+    return this.options.loyaltyClientId
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-payment",
-  "version": "16.2.0",
+  "version": "16.3.0",
   "description": "BLoC to work with Karhoo Payment API",
   "keywords": [
     "bloc",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@adyen/adyen-web": "3.19.0",
-    "@karhoo/demand-api": "^16.2.0",
+    "@karhoo/demand-api": "^16.3.0",
     "braintree-web": "3.62.2"
   },
   "devDependencies": {

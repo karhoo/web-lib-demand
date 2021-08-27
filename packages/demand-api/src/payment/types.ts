@@ -38,7 +38,7 @@ export type Provider = {
   id: ProviderId
 }
 
-type LoyaltyProgrammes = {
+export type LoyaltyProgram = {
   id?: string
   name?: string
 }
@@ -50,7 +50,7 @@ type Amount = {
 
 export type PaymentProvidersResponse = {
   provider?: Provider
-  loyalty_programmes?: LoyaltyProgrammes[]
+  loyalty_program?: LoyaltyProgram
 }
 
 export type ClientKeyResponse = {

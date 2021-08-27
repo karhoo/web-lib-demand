@@ -9,6 +9,7 @@ import {
   ClientKeyResponse,
   PaymentAuthResponse,
   ProviderId,
+  LoyaltyProgram,
 } from './types'
 import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 
@@ -85,7 +86,28 @@ export const getPaymentGetClientNonceMock = getMock(getMockedPaymentGetClientNon
 
 export const paymentProviderIdBeingUsed: ProviderId = 'Braintree'
 
+export const loyaltyProgramBeingUsed: LoyaltyProgram = { id: 'client', name: 'Client Name' }
+
 export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
+  ok: true,
+  status: 200,
+  headers: jsonResponseHeaders,
+  body: {
+    provider: {
+      id: paymentProviderIdBeingUsed,
+    },
+    loyalty_program: loyaltyProgramBeingUsed,
+  },
+})
+
+export const getMockedPaymentProviderEmptyResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
+  ok: true,
+  status: 200,
+  headers: jsonResponseHeaders,
+  body: {},
+})
+
+export const getMockedPaymentProviderWithoutLoyaltyResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
   ok: true,
   status: 200,
   headers: jsonResponseHeaders,
