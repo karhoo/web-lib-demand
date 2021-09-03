@@ -45,6 +45,7 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
+    "core-js-pure": "3.17.2",
     "date-and-time": "0.13.1",
     "lodash": "4.17.15",
     "lodash-es": "4.17.15",
