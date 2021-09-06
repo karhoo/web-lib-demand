@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.4.0](https://github.com/karhoo/web-lib-demand/compare/v16.3.0...v16.4.0) (2021-09-06)
+
+**Note:** Version bump only for package @karhoo/demand-deeplink
+
+
+
+
+
 # [16.3.0](https://github.com/karhoo/web-lib-demand/compare/v16.2.0...v16.3.0) (2021-08-27)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink
