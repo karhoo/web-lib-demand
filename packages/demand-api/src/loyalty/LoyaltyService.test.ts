@@ -30,17 +30,35 @@ describe('LoyaltyService', () => {
       currency: 'GBP',
     }
 
-    it('should call post of http', () => {
+    it('should call get of http', () => {
       new LoyaltyService(http).convertMoneyToPoints(clientId, params)
 
-      expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('loyalty-client/money-to-points', params)
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith('loyalty-client/exrates/GBP/burnpoints?amount=1000')
+    })
+  })
+
+  describe('calculatePointsToEarn', () => {
+    const params = {
+      total_amount: 1000,
+      burn_points: 500,
+      currency: 'GBP',
+    }
+
+    it('should call get of http', () => {
+      new LoyaltyService(http).calculatePointsToEarn(clientId, params)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(
+        'loyalty-client/exrates/GBP/earnpoints?total_amount=1000&burn_points=500'
+      )
     })
   })
 
   describe('preAuth', () => {
     const params = {
       points: 1000,
+      flexpay: false,
     }
 
     it('should call post of http', () => {
