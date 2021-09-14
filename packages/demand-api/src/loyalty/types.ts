@@ -24,7 +24,7 @@ export type EarnPointsCalcParams = {
 }
 
 export type EarnPointsCalcResponse = {
-  points?: number
+  points: number
 }
 
 export type PreAuthParams = {
@@ -34,7 +34,7 @@ export type PreAuthParams = {
 }
 
 export type PreAuthResponse = {
-  nonce?: string
+  nonce: string
 }
 
 export interface Loyalty {
