@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.6.0](https://github.com/karhoo/web-lib-demand/compare/v16.5.0...v16.6.0) (2021-09-14)
+
+**Note:** Version bump only for package web-lib-demand
+
+
+
+
+
 # [16.5.0](https://github.com/karhoo/web-lib-demand/compare/v16.4.0...v16.5.0) (2021-09-06)
 
 **Note:** Version bump only for package web-lib-demand
