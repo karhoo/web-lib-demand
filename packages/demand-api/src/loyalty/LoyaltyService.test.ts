@@ -60,6 +60,7 @@ describe('LoyaltyService', () => {
       points: 1000,
       flexpay: false,
       loyalty_membership: '12345678',
+      currency: 'GBP',
     }
 
     it('should call post of http', () => {

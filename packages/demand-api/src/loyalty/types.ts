@@ -3,7 +3,7 @@ import { HttpResponse } from '../http/types'
 export type ClientId = string // could be a list of supported clients but lib is public
 
 export type LoyaltyStatusResponse = {
-  balance: number
+  balance?: number
   can_burn: boolean
   can_earn: boolean
 }
@@ -28,6 +28,7 @@ export type EarnPointsCalcResponse = {
 }
 
 export type PreAuthParams = {
+  currency: string
   points: number
   flexpay: boolean
   loyalty_membership?: string
