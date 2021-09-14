@@ -36,7 +36,7 @@ export class LoyaltyService implements Loyalty {
     return this.http.get<EarnPointsCalcResponse>(
       `${this.createUrl(clientId)}/exrates/${params.currency}/earnpoints?total_amount=${
         params.total_amount
-      }&burn_points=${params.burn_points}`
+      }&burn_points=${params.burn_points || 0}`
     )
   }
 
