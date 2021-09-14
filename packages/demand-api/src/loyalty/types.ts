@@ -4,31 +4,49 @@ export type ClientId = string // could be a list of supported clients but lib is
 
 export type LoyaltyStatusResponse = {
   balance?: number
-  can_burn_points?: boolean
+  can_burn: boolean
+  can_earn: boolean
 }
 
-export type MoneyToPointsParams = {
-  amount?: number
-  currency?: string // probably should be a list of supported currencies?
+export type BurnPointsCalcParams = {
+  amount: number
+  currency: string
 }
 
-export type MoneyToPointsResponse = {
-  points?: number
+export type BurnPointsCalcResponse = {
+  points: number
+}
+
+export type EarnPointsCalcParams = {
+  total_amount: number
+  burn_points?: number
+  currency: string
+}
+
+export type EarnPointsCalcResponse = {
+  points: number
 }
 
 export type PreAuthParams = {
-  points?: number
+  currency: string
+  points: number
+  flexpay: boolean
+  loyalty_membership?: string
 }
 
 export type PreAuthResponse = {
-  nonce?: string
+  nonce: string
 }
 
 export interface Loyalty {
   getStatus(clientId: ClientId): Promise<HttpResponse<LoyaltyStatusResponse>>
   convertMoneyToPoints(
     clientId: ClientId,
-    params: MoneyToPointsParams
-  ): Promise<HttpResponse<MoneyToPointsResponse>>
+    params: BurnPointsCalcParams
+  ): Promise<HttpResponse<BurnPointsCalcResponse>>
+  calculatePointsToEarn(
+    clientId: ClientId,
+    params: EarnPointsCalcParams
+  ): Promise<HttpResponse<EarnPointsCalcResponse>>
   preAuth(clientId: ClientId, params: PreAuthParams): Promise<HttpResponse<PreAuthResponse>>
 }
