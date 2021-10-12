@@ -50,7 +50,7 @@ type Amount = {
 
 export type PaymentProvidersResponse = {
   provider?: Provider
-  loyalty_program?: LoyaltyProgram
+  loyalty_programme?: LoyaltyProgram
 }
 
 export type ClientKeyResponse = {
