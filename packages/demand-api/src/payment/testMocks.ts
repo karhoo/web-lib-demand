@@ -96,7 +96,7 @@ export const getMockedPaymentProviderResponse = (): HttpResponseOk<PaymentProvid
     provider: {
       id: paymentProviderIdBeingUsed,
     },
-    loyalty_program: loyaltyProgramBeingUsed,
+    loyalty_programme: loyaltyProgramBeingUsed,
   },
 })
 
