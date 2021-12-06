@@ -179,15 +179,19 @@ export class TripBloc {
 
       const pickUpKey = `${id}_pickUpTime`
 
-      if (body.date_scheduled === body.date_booked) {
-        return
-      }
-
-      if (body.date_scheduled && !this.storage.getItem(pickUpKey)) {
+      if (
+        body.date_scheduled &&
+        !this.storage.getItem(pickUpKey) &&
+        body.date_scheduled !== body.date_booked
+      ) {
         this.storage.setItem(pickUpKey, body.date_scheduled)
       }
 
-      if (body.date_scheduled && this.storage.getItem(pickUpKey) !== body.date_scheduled) {
+      if (
+        body.date_scheduled &&
+        this.storage.getItem(pickUpKey) !== body.date_scheduled &&
+        body.date_scheduled !== body.date_booked
+      ) {
         this.storage.setItem(pickUpKey, body.date_scheduled)
         this.pickUpTimeUpdates$.next()
       }
