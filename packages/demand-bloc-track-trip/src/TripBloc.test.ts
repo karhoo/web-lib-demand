@@ -196,7 +196,7 @@ describe('TripBloc', () => {
       expect(storageMock.setItem).toBeCalledWith(expect.any(String), dateScheduled)
     })
 
-    it('should exit when date_scheduled equals date_booked (ASAP booking)', async () => {
+    it('should not set pickup time in local storage when date_scheduled equals date_booked (ASAP booking)', async () => {
       const dateScheduled = '2020-05-28T01:00:00Z'
       const dateBooked = '2020-05-28T01:00:00Z'
       let pickUpTimeUpdated = false
