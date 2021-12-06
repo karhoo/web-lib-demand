@@ -199,6 +199,7 @@ describe('TripBloc', () => {
     it('should exit when date_scheduled equals date_booked (ASAP booking)', async () => {
       const dateScheduled = '2020-05-28T01:00:00Z'
       const dateBooked = '2020-05-28T01:00:00Z'
+      let pickUpTimeUpdated = false
 
       tripServiceMock.trackTrip.mockReturnValueOnce(
         Promise.resolve(
@@ -206,11 +207,15 @@ describe('TripBloc', () => {
         )
       )
 
+      bloc.pickUpTimeUpdates.subscribe(() => {
+        pickUpTimeUpdated = true
+      })
       bloc.track(id)
 
       await promise
 
-      expect(storageMock.setItem).not.toBeCalledTimes(1)
+      expect(storageMock.setItem).not.toBeCalled()
+      expect(pickUpTimeUpdated).toBe(false)
     })
 
     it('should emit pickUpTimeUpdates', async () => {
