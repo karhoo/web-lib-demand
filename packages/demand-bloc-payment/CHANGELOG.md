@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.8.0](https://github.com/karhoo/web-lib-demand/compare/v16.7.0...v16.8.0) (2021-12-06)
+
+**Note:** Version bump only for package @karhoo/demand-bloc-payment
+
+
+
+
+
 # [16.7.0](https://github.com/karhoo/web-lib-demand/compare/v16.6.1...v16.7.0) (2021-11-02)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-payment
