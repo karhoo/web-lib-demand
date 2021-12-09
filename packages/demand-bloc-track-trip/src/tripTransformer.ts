@@ -57,6 +57,7 @@ export type TripFollowResponse = {
   meetingPointPosition: Partial<LatLng>
   status: TripStatus
   stateDetails: string
+  flightNumber: string | null
   trainNumber: string | null
   trainTime: string | null
   tripId: string | null
@@ -79,6 +80,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     state_details,
     tracking,
     quote,
+    flight_number,
     train_number,
     train_time,
     trip_id,
@@ -158,6 +160,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     meetingPointPosition: meeting_point?.position || {},
     status: status || '',
     stateDetails: state_details || '',
+    flightNumber: flight_number || null,
     trainNumber: train_number || null,
     trainTime: train_time || null,
     tripId: display_trip_id || null,
