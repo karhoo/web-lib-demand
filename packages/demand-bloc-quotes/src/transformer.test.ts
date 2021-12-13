@@ -61,6 +61,7 @@ describe('transformer', () => {
     id:
       'ff773de1-9e6f-11ea-a984-cee7b28f559b:ODJjZGMzNTktYmVlZC00NWNiLTg3NDMtYmFlYzg0ZTU4YjU3O2V4ZWN1dGl2ZQ==',
     quotedPrice: 2000,
+    pickUpType: 'DEFAULT',
     type: 'FIXED',
     vehicleClass: 'executive',
     vehicleTags: ['electric'],
