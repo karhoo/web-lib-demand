@@ -26,6 +26,8 @@ export interface QuoteItem {
   vehicleClass: string
   vehicleTags: string[]
   vehicleType: string
+  vehicleList: string[]
+  vehicleImage: string
   vehicleLuggageCapacity: number
   vehiclePassengerCapacity: number
   fleetDescription: string
@@ -54,6 +56,8 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
       class: vehicle_class = '',
       tags = [],
       type = '',
+      vehicle_list = [],
+      image = '',
     } = {},
     service_level_agreements = null,
     pick_up_type,
@@ -80,6 +84,8 @@ export const transformer = (quote: OriginalQuoteItem): QuoteItem => {
     vehicleClass: vehicle_class,
     vehicleTags: tags,
     vehicleType: type,
+    vehicleList: vehicle_list,
+    vehicleImage: image,
     vehicleLuggageCapacity: luggage_capacity,
     vehiclePassengerCapacity: passenger_capacity,
     fleetDescription: description,

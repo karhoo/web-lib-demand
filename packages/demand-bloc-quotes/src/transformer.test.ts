@@ -39,6 +39,12 @@ describe('transformer', () => {
       class: 'executive',
       passenger_capacity: 3,
       luggage_capacity: 2,
+      vehicle_list: [
+        'Mercedes E Class',
+        'BMW 5 Series',
+        'Audi A7',
+      ],
+      image: 'https://cdn.karhoo.com/d/images/logos/cc775eda-950d-4a77-aa83-172d487a4cbf.png',
       type: 'standard',
       tags: ['electric'],
     },
@@ -66,6 +72,12 @@ describe('transformer', () => {
     vehicleClass: 'executive',
     vehicleTags: ['electric'],
     vehicleType: 'standard',
+    vehicleList: [
+      'Mercedes E Class',
+      'BMW 5 Series',
+      'Audi A7',
+    ],
+    vehicleImage: 'https://cdn.karhoo.com/d/images/logos/cc775eda-950d-4a77-aa83-172d487a4cbf.png',
     vehicleLuggageCapacity: 2,
     vehiclePassengerCapacity: 3,
     fleetDescription:
