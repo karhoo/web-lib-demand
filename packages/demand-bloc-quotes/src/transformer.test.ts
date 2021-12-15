@@ -120,6 +120,8 @@ describe('transformer', () => {
       vehicleClass: '',
       vehicleTags: [],
       vehicleType: '',
+      vehicleList: [],
+      vehicleImage: '',
       vehicleLuggageCapacity: 0,
       vehiclePassengerCapacity: 0,
       fleetDescription: '',
