@@ -56,6 +56,8 @@ export type QuotesV2Vehicle = {
   class: string
   passenger_capacity?: number
   luggage_capacity?: number
+  vehicle_list?: string[]
+  image?: string
   tags: string[]
   type: string
 }
