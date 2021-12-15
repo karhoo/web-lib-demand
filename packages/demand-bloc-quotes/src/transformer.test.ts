@@ -68,7 +68,7 @@ describe('transformer', () => {
     vehicleClass: 'executive',
     vehicleTags: ['electric'],
     vehicleType: 'standard',
-    vehicleList: ['Mercedes E', 'BMW 5 Series', 'Audi A7'],
+    vehicleList: ['Mercedes E Class', 'BMW 5 Series', 'Audi A7'],
     vehicleImage: 'https://cdn.karhoo.com/d/images/logos/cc775eda-950d-4a77-aa83-172d487a4cbf.png',
     vehicleLuggageCapacity: 2,
     vehiclePassengerCapacity: 3,
