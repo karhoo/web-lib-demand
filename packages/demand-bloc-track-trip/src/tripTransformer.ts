@@ -24,7 +24,7 @@ export type TripFollowResponse = {
     termsAndConditionsUrl: string
     supplierLogoUrl: string
     fleetId: string
-    vehicleClass: string
+    vehicleType: string
   }
   etaBreakdown: {
     from: string

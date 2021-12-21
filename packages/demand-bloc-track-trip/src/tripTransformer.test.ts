@@ -12,7 +12,7 @@ describe('tripTransformer', () => {
         termsAndConditionsUrl: '',
         supplierLogoUrl: '',
         fleetId: '',
-        vehicleClass: '',
+        vehicleType: '',
       },
       priceInfo: {
         currencyCode: '',
@@ -210,7 +210,7 @@ describe('tripTransformer', () => {
         termsAndConditionsUrl: tripInfo.fleet_info?.terms_conditions_url,
         supplierLogoUrl: tripInfo.fleet_info?.logo_url,
         fleetId: tripInfo.fleet_info?.fleet_id,
-        vehicleClass: tripInfo.quote?.vehicle_class,
+        vehicleType: tripInfo.quote?.vehicle_class,
       },
       priceInfo: {
         currencyCode: tripInfo.quote?.currency,
