@@ -161,7 +161,7 @@ describe('tripTransformer', () => {
           passenger_capacity: 4,
         },
         vehicle_class: 'saloon',
-        vehicle_type: 'Standard (Saloon)',
+        type: 'Standard',
       },
       state_details: 'state_details',
       status: TripStatuses.CONFIRMED,
@@ -194,7 +194,7 @@ describe('tripTransformer', () => {
           photo_url: 'photo_url',
         },
         vehicle_class: 'saloon',
-        vehicle_type: 'Standard (Saloon)',
+        type: 'Standard',
         vehicle_license_plate: 'vehicle_license_plate',
       },
     }
@@ -214,7 +214,7 @@ describe('tripTransformer', () => {
         supplierLogoUrl: tripInfo.fleet_info?.logo_url,
         fleetId: tripInfo.fleet_info?.fleet_id,
         vehicleClass: tripInfo.quote?.vehicle_class,
-        vehicleType: tripInfo.quote?.vehicle_type,
+        vehicleType: tripInfo.quote?.type,
       },
       priceInfo: {
         currencyCode: tripInfo.quote?.currency,
