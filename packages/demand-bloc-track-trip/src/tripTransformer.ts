@@ -24,6 +24,7 @@ export type TripFollowResponse = {
     termsAndConditionsUrl: string
     supplierLogoUrl: string
     fleetId: string
+    vehicleClass: string
     vehicleType: string
   }
   etaBreakdown: {
@@ -109,6 +110,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     supplierLogoUrl: dv(fleet_info?.logo_url),
     fleetId: dv(fleet_info?.fleet_id),
     vehicleClass: dv(quote?.vehicle_class),
+    vehicleType: dv(quote?.vehicle_type),
   }
 
   const priceInfo = {
