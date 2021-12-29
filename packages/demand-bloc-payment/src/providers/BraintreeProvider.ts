@@ -124,7 +124,7 @@ export class BraintreeProvider implements Provider {
     try {
       await instance?.teardown?.()
     } catch (error) {
-      this.options.logger?.error(error)
+      this.options.logger?.error(error as Error)
     }
   }
 
