@@ -77,15 +77,17 @@ const jsonResponseHeaders = new Headers({
   'content-type': 'application/json',
 })
 
-const getErrorResponse = (message: string) => (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
-  ok: false,
-  status: 500,
-  headers: jsonResponseHeaders,
-  error: {
-    code,
-    message: `${message}: Something went wrong`,
-  },
-})
+const getErrorResponse =
+  (message: string) =>
+  (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
+    ok: false,
+    status: 500,
+    headers: jsonResponseHeaders,
+    error: {
+      code,
+      message: `${message}: Something went wrong`,
+    },
+  })
 
 export const getMockedTrackTripResponse = (
   partialBody: Partial<TripFollowResponse> = {}

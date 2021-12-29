@@ -511,10 +511,7 @@ describe('BraintreeProvider', () => {
     it('should not throw error when there is no elements and removeFrame is called', async () => {
       const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
 
-      jest
-        .spyOn(document, 'getElementById')
-        .mockReturnValueOnce(null)
-        .mockReturnValueOnce(null)
+      jest.spyOn(document, 'getElementById').mockReturnValueOnce(null).mockReturnValueOnce(null)
 
       expect(removeFrame()).toBe(undefined)
     })
