@@ -7,21 +7,21 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error', { singleQuote: true }],
+    '@typescript-eslint/ban-types': 'off',
   },
   settings: {
     react: {
-      version: '16'
-    }
+      version: '16',
+    },
   },
   overrides: [
     {
-      files: [
-          '**/*.{ts,tsx}'
-      ],
+      files: ['**/*.{ts,tsx}'],
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint'
+        'plugin:prettier/recommended',
+        'prettier',
       ],
       parserOptions: {
         project: ['./packages/*/tsconfig.json'],
@@ -38,18 +38,18 @@ module.exports = {
             args: 'after-used',
             ignoreRestSiblings: true,
             argsIgnorePattern: '^_',
-            varsIgnorePattern: '^_'
-          }
-        ]
-      }
+            varsIgnorePattern: '^_',
+          },
+        ],
+        '@typescript-eslint/ban-types': 'off',
+      },
     },
     {
-      files: [
-          '**/*.test.{ts,tsx}'
-      ],
+      files: ['**/*.test.{ts,tsx}'],
       rules: {
-        '@typescript-eslint/no-explicit-any': 'off'
-      }
-    }
-  ]
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-types': 'off',
+      },
+    },
+  ],
 }

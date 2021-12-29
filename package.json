@@ -8,7 +8,8 @@
     "build": "npx lerna run build --stream",
     "test": "npx lerna run test --stream",
     "lint": "npx eslint . --ext js,jsx,ts,tsx",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prettier-format": "prettier --config .prettierrc.js '**/*.ts' --write"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "npx eslint --fix"
+      "npx eslint --fix",
+      "npx prettier --write"
     ]
   }
 }
