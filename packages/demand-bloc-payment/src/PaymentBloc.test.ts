@@ -140,6 +140,7 @@ describe('PaymentBloc', () => {
       expect(cardsInfoMock.setPaymentCards).toBeCalledWith(cards, payer)
     })
 
+    // @ts-ignore
     it('should throw error if paymentCardsEnabled is true and cardsInfo is not provided', async done => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
@@ -153,6 +154,7 @@ describe('PaymentBloc', () => {
       })
     })
 
+    // @ts-ignore
     it('should throw operationCancelled error if dispose has been called', async done => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
@@ -347,6 +349,7 @@ describe('PaymentBloc', () => {
       const MD = 'MD-test'
       const PaRes = 'PaRes-test'
 
+      // @ts-ignore
       delete window.location
 
       const providerBeingUsedMock = getPaymentProviderBeingUsed()
