@@ -1,4 +1,6 @@
 import braintree, { Client, ThreeDSecure, HostedFields } from 'braintree-web'
+import { HostedFieldsHostedFieldsFieldName } from 'braintree-web/modules/hosted-fields'
+
 import { Payment } from '@karhoo/demand-api'
 
 import { BraintreeProviderOptions, FullBraintreeProviderOptions, Provider, Payer } from '../types'
@@ -160,12 +162,14 @@ export class BraintreeProvider implements Provider {
     const { fields } = hostedFields.getState()
 
     Object.keys(fields).forEach(fieldName => {
-      const isValid = fields[fieldName].isValid
+      const isValid = fields[fieldName as HostedFieldsHostedFieldsFieldName].isValid
 
       toogleClass(fieldName, isValid, invalidFieldClass)
     })
 
-    return Object.keys(fields).every(fieldName => fields[fieldName].isValid)
+    return Object.keys(fields).every(
+      fieldName => fields[fieldName as HostedFieldsHostedFieldsFieldName].isValid
+    )
   }
 
   completeThreeDSecureVerification() {
@@ -192,6 +196,7 @@ export class BraintreeProvider implements Provider {
 
     const { iframeContainerId, loadingId, processingId } = threeDSecureFields
 
+    // @ts-ignore: bin property is no longer optional in ThreeDSecureVerifyPayload type
     return threeDSecure.verifyCard({
       amount,
       nonce,
@@ -242,6 +247,7 @@ export class BraintreeProvider implements Provider {
     const verifyPromise = this.verifyCard(amount, nonce)
 
     return new Promise((resolve, reject) => {
+      // @ts-ignore: bin property is no longer optional in ThreeDSecureVerifyPayload type
       verifyPromise.then(response => {
         if (response.liabilityShifted) {
           resolve(response.nonce)
