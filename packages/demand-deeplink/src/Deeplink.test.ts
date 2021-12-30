@@ -603,7 +603,7 @@ describe('Deeplink', () => {
       try {
         deeplink.resolve(jest.fn())
       } catch (error) {
-        expect(error.message).toEqual(expect.any(String))
+        expect((error as Error).message).toEqual(expect.any(String))
       }
     })
   })

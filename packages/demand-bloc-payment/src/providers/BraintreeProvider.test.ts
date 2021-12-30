@@ -327,7 +327,7 @@ describe('BraintreeProvider', () => {
       try {
         new BraintreeProvider(paymentService, { organisationId, currencyCode }).validatePaymentForm()
       } catch (error) {
-        expect(error.message).toBe(errors.hostedFieldsNotInitialized)
+        expect((error as Error).message).toBe(errors.hostedFieldsNotInitialized)
 
         done()
       }

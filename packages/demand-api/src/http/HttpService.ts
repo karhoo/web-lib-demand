@@ -32,7 +32,7 @@ export async function request<T>(url: string, options: RequestInit): Promise<Htt
 
     return ok ? { ok, status, body, headers } : { ok, status, headers, error: body }
   } catch (error) {
-    const message = error.message || ''
+    const message = (error as Error).message || ''
     const code = isOffline(message) ? errorCodes.ERR_OFFLINE : errorCodes.ERR_UNKNOWN
 
     return {
