@@ -43,6 +43,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.2",
     "jest": "^27.4.5",
+    "jest-mock": "^27.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "ts-jest": "^27.1.2",
