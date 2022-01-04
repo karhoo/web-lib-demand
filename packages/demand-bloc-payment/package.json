@@ -32,11 +32,11 @@
   "dependencies": {
     "@adyen/adyen-web": "4.7.4",
     "@karhoo/demand-api": "^16.12.0",
-    "braintree-web": "^3.62.2",
+    "braintree-web": "3.62.2",
     "core-js-pure": "^3.20.1"
   },
   "peerDependencies": {
     "@adyen/adyen-web": "4.7.4",
-    "braintree-web": "^3.62.2"
+    "braintree-web": "3.62.2"
   }
 }
