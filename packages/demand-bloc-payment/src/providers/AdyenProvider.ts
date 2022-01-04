@@ -107,6 +107,7 @@ export class AdyenProvider implements Provider {
       throw new AdyenError(errors[codes.AE02], codes.AE02)
     }
 
+    // @ts-ignore: AdyenCheckout accept `any` but its not allowed in our TS configuration
     const checkout = new AdyenCheckout({
       ...this.checkoutOptions,
       environment: clientKeyResponse.body.environment,
