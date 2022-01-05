@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-quotes",
-  "version": "16.12.0",
+  "version": "16.13.0",
   "description": "BLoC to work with Karhoo Quotes API",
   "keywords": [
     "bloc",
@@ -22,7 +22,7 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^16.12.0",
+    "@karhoo/demand-api": "^16.13.0",
     "rxjs": "^6.6.7"
   }
 }
