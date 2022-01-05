@@ -327,7 +327,7 @@ describe('BraintreeProvider', () => {
       try {
         new BraintreeProvider(paymentService, { organisationId, currencyCode }).validatePaymentForm()
       } catch (error) {
-        expect(error.message).toBe(errors.hostedFieldsNotInitialized)
+        expect((error as Error).message).toBe(errors.hostedFieldsNotInitialized)
 
         done()
       }
@@ -511,10 +511,7 @@ describe('BraintreeProvider', () => {
     it('should not throw error when there is no elements and removeFrame is called', async () => {
       const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
 
-      jest
-        .spyOn(document, 'getElementById')
-        .mockReturnValueOnce(null)
-        .mockReturnValueOnce(null)
+      jest.spyOn(document, 'getElementById').mockReturnValueOnce(null).mockReturnValueOnce(null)
 
       expect(removeFrame()).toBe(undefined)
     })

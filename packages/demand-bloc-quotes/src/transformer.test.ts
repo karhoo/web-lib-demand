@@ -3,8 +3,7 @@ import { QuoteV2Item } from '@karhoo/demand-api'
 
 describe('transformer', () => {
   const originalQuote: QuoteV2Item = {
-    id:
-      'ff773de1-9e6f-11ea-a984-cee7b28f559b:ODJjZGMzNTktYmVlZC00NWNiLTg3NDMtYmFlYzg0ZTU4YjU3O2V4ZWN1dGl2ZQ==',
+    id: 'ff773de1-9e6f-11ea-a984-cee7b28f559b:ODJjZGMzNTktYmVlZC00NWNiLTg3NDMtYmFlYzg0ZTU4YjU3O2V4ZWN1dGl2ZQ==',
     price: {
       currency_code: 'GBP',
       high: 2000,
@@ -60,8 +59,7 @@ describe('transformer', () => {
     fleetName: 'PHV Fleet (Robot Fleet GB)',
     fleetPhoneNumber: '+44800000000',
     fleetTermsAndConditions: '/fleets/7f8d80dc-0872-4fc0-86bd-658488d8fcb2/index.html',
-    id:
-      'ff773de1-9e6f-11ea-a984-cee7b28f559b:ODJjZGMzNTktYmVlZC00NWNiLTg3NDMtYmFlYzg0ZTU4YjU3O2V4ZWN1dGl2ZQ==',
+    id: 'ff773de1-9e6f-11ea-a984-cee7b28f559b:ODJjZGMzNTktYmVlZC00NWNiLTg3NDMtYmFlYzg0ZTU4YjU3O2V4ZWN1dGl2ZQ==',
     quotedPrice: 2000,
     pickUpType: 'DEFAULT',
     type: 'FIXED',

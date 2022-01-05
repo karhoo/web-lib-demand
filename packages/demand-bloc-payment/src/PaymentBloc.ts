@@ -105,6 +105,7 @@ export class PaymentBloc {
       if (resultCode) {
         return { ok: true, nonce: paymentNonce }
       }
+
       const verifiedNonce = await this.provider.startThreeDSecureVerification(amount, paymentNonce)
       const resultNonce = paymentNonce && verifiedNonce
       return { ok: true, nonce: resultNonce }
@@ -131,7 +132,7 @@ export class PaymentBloc {
 
       return { ok: true, nonce }
     } catch (error) {
-      return { ok: false, error }
+      return { ok: false, error: error as Error }
     }
   }
 
@@ -158,7 +159,7 @@ export class PaymentBloc {
 
       return response.ok ? { ok: true } : { ok: false, error: new Error(response.error.message) }
     } catch (error) {
-      return { ok: false, error }
+      return { ok: false, error: error as Error }
     }
   }
 

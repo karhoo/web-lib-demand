@@ -8,15 +8,17 @@ const jsonResponseHeaders = new Headers({
   'content-type': 'application/json',
 })
 
-const getErrorResponse = <T>(message: string) => (code = errorCodes.K0001): HttpResponse<T> => ({
-  ok: false,
-  status: 500,
-  headers: jsonResponseHeaders,
-  error: {
-    code,
-    message: `${message}: Something went wrong`,
-  },
-})
+const getErrorResponse =
+  <T>(message: string) =>
+  (code = errorCodes.K0001): HttpResponse<T> => ({
+    ok: false,
+    status: 500,
+    headers: jsonResponseHeaders,
+    error: {
+      code,
+      message: `${message}: Something went wrong`,
+    },
+  })
 
 export const getMockedLocationAddressDetailsResponse = (
   data: any
@@ -38,9 +40,8 @@ export const getMockedLocationAddressDetailsResponse = (
   },
 })
 
-export const getMockedErrorLocationAddressDetailsResponse = getErrorResponse<LocationAddressDetailsResponse>(
-  'Location address details'
-)
+export const getMockedErrorLocationAddressDetailsResponse =
+  getErrorResponse<LocationAddressDetailsResponse>('Location address details')
 
 export const getMockedLocationAddressAutocompleteResponse = (
   data: any
@@ -59,13 +60,11 @@ export const getMockedLocationAddressAutocompleteResponse = (
   },
 })
 
-export const getMockedErrorLocationAddressAutocompleteResponse = getErrorResponse<
-  LocationAddressAutocompleteResponse
->('Location autocomplete')
+export const getMockedErrorLocationAddressAutocompleteResponse =
+  getErrorResponse<LocationAddressAutocompleteResponse>('Location autocomplete')
 
-export const getMockedErrorReverseGeocodeResponse = getErrorResponse<LocationAddressDetailsResponse>(
-  'Location Reverse Geocode'
-)
+export const getMockedErrorReverseGeocodeResponse =
+  getErrorResponse<LocationAddressDetailsResponse>('Location Reverse Geocode')
 
 export const getLocationGetAddressDetailsMock = () =>
   jest.fn((data: any) => {

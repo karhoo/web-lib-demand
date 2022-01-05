@@ -140,20 +140,23 @@ describe('PaymentBloc', () => {
       expect(cardsInfoMock.setPaymentCards).toBeCalledWith(cards, payer)
     })
 
-    it('should throw error if paymentCardsEnabled is true and cardsInfo is not provided', async done => {
+    it('should throw error if paymentCardsEnabled is true and cardsInfo is not provided', async () => {
+      expect.assertions(1)
+
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,
         options: { paymentCardsEnabled: true },
       })
 
-      payment.initPayment(payer).catch(error => {
+      return payment.initPayment(payer).catch(error => {
         expect(error.message).toBe(errors.noCardsInfo)
-        done()
       })
     })
 
-    it('should throw operationCancelled error if dispose has been called', async done => {
+    it('should throw operationCancelled error if dispose has been called', async () => {
+      expect.assertions(1)
+
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,
@@ -161,12 +164,13 @@ describe('PaymentBloc', () => {
         cardsInfo: cardsInfoMock,
       })
 
-      payment.initPayment(payer).catch(error => {
-        expect(error.message).toBe(errors.operationCancelled)
-        done()
-      })
+      const paymentInstance = payment.initPayment(payer)
 
       payment.dispose()
+
+      return paymentInstance.catch(error => {
+        expect(error.message).toBe(errors.operationCancelled)
+      })
     })
   })
 
@@ -347,6 +351,7 @@ describe('PaymentBloc', () => {
       const MD = 'MD-test'
       const PaRes = 'PaRes-test'
 
+      // @ts-ignore
       delete window.location
 
       const providerBeingUsedMock = getPaymentProviderBeingUsed()
