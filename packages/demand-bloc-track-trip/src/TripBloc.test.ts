@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs'
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 import {
   TripStatuses,
   HttpResponse,

@@ -23,18 +23,22 @@ const jsonResponseHeaders = new Headers({
   'content-type': 'application/json',
 })
 
-const getMock = <T>(method: (a?: Partial<T>) => HttpResponseOk<T>) => (partialBody?: Partial<T>) =>
-  jest.fn((): Promise<HttpResponse<T>> => Promise.resolve(method(partialBody)))
+const getMock =
+  <T>(method: (a?: Partial<T>) => HttpResponseOk<T>) =>
+  (partialBody?: Partial<T>) =>
+    jest.fn((): Promise<HttpResponse<T>> => Promise.resolve(method(partialBody)))
 
-const getErrorResponse = (message: string) => (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
-  ok: false,
-  status: 500,
-  headers: jsonResponseHeaders,
-  error: {
-    code,
-    message: `${message}: Something went wrong`,
-  },
-})
+const getErrorResponse =
+  (message: string) =>
+  (code = errorCodes.K0001): HttpResponseError<ApiError> => ({
+    ok: false,
+    status: 500,
+    headers: jsonResponseHeaders,
+    error: {
+      code,
+      message: `${message}: Something went wrong`,
+    },
+  })
 
 export const getMockedPaymentCreateClientTokenResponse = (
   partialBody: Partial<CreateTokenResponse> = {}
@@ -107,16 +111,17 @@ export const getMockedPaymentProviderEmptyResponse = (): HttpResponseOk<PaymentP
   body: {},
 })
 
-export const getMockedPaymentProviderWithoutLoyaltyResponse = (): HttpResponseOk<PaymentProvidersResponse> => ({
-  ok: true,
-  status: 200,
-  headers: jsonResponseHeaders,
-  body: {
-    provider: {
-      id: paymentProviderIdBeingUsed,
+export const getMockedPaymentProviderWithoutLoyaltyResponse =
+  (): HttpResponseOk<PaymentProvidersResponse> => ({
+    ok: true,
+    status: 200,
+    headers: jsonResponseHeaders,
+    body: {
+      provider: {
+        id: paymentProviderIdBeingUsed,
+      },
     },
-  },
-})
+  })
 
 export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
 

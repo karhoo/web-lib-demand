@@ -75,7 +75,7 @@ function validateBookingType(bookingType: BookingType, fieldName = 'bookingType'
 }
 
 function validateRoute(fields: string[], fieldName: string) {
-  const errors = []
+  const errors: { code: string; path: string; error: string }[] = []
 
   if (!fields.filter(isNotEmptyString).length) {
     errors.push(getError(codes.DP005, fieldName))

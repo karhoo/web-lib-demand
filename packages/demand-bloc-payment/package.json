@@ -33,15 +33,7 @@
     "@adyen/adyen-web": "4.7.4",
     "@karhoo/demand-api": "^16.12.0",
     "braintree-web": "3.62.2",
-    "core-js-pure": "3.17.2"
-  },
-  "devDependencies": {
-    "@microsoft/api-extractor": "7.7.13",
-    "@types/braintree-web": "3.47.2",
-    "@types/jest": "25.1.3",
-    "ts-jest": "25.2.1",
-    "tsdx": "0.13.1",
-    "typescript": "3.8.3"
+    "core-js-pure": "^3.20.1"
   },
   "peerDependencies": {
     "@adyen/adyen-web": "4.7.4",

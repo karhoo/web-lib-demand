@@ -1,4 +1,4 @@
-import { mocked } from 'ts-jest/utils'
+import { mocked } from 'jest-mock'
 import { HttpService } from '../http/HttpService'
 import { LocationService } from '../location/LocationService'
 import { PoiService } from '../poi/PoiService'

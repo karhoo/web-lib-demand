@@ -1,4 +1,5 @@
 import braintree, { Client, ThreeDSecure, HostedFields } from 'braintree-web'
+
 import { Payment } from '@karhoo/demand-api'
 
 import { BraintreeProviderOptions, FullBraintreeProviderOptions, Provider, Payer } from '../types'
@@ -124,7 +125,7 @@ export class BraintreeProvider implements Provider {
     try {
       await instance?.teardown?.()
     } catch (error) {
-      this.options.logger?.error(error)
+      this.options.logger?.error(error as Error)
     }
   }
 

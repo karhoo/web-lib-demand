@@ -235,7 +235,7 @@ export class QuotesBloc {
       }
     } catch (err) {
       this.stopLoading()
-      this.quotesLoadingError$.next(err.error)
+      this.quotesLoadingError$.next(err as Error)
     }
   }
 
