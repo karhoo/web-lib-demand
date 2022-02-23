@@ -1,6 +1,6 @@
 import { ThreeDSecureVerifyPayload, HostedFieldFieldOptions, BraintreeError } from 'braintree-web'
 
-import { HttpResponse, ClientNonceResponse } from '@karhoo/demand-api'
+import { HttpResponse, ClientNonceResponse, ProviderVersion } from '@karhoo/demand-api'
 
 export type CardInfo = Partial<{
   id: string
@@ -55,6 +55,7 @@ export type PaymentOptions = {
   paymentCardsEnabled: boolean
   preselectProvider?: string
   loyaltyClientId?: string
+  apiVersion?: ProviderVersion
 }
 
 export type VerifyCardError = {

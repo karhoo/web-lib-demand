@@ -34,8 +34,11 @@ export interface AddPaymentCardParams extends ClientNonceParams {
 
 export type ProviderId = 'Braintree' | 'Adyen'
 
+export type ProviderVersion = 'v68' | undefined
+
 export type Provider = {
   id: ProviderId
+  version?: ProviderVersion
 }
 
 export type LoyaltyProgram = {
@@ -115,4 +118,5 @@ export interface Payment {
   getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
+  providerVersion: ProviderVersion
 }

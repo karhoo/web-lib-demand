@@ -46,6 +46,9 @@ export class PaymentBloc {
     cardsInfo,
   }: PaymentBlocProps) {
     const providersResponse = await fetchPaymentProvider(paymentService)
+    const apiVersion = providersResponse.provider?.version
+    paymentService.providerVersion = apiVersion
+
     const targetId = options.preselectProvider || (providersResponse.provider?.id ?? '')
     const loyaltyClientId = providersResponse.loyalty_programme?.id
     const provider = getPaymentProvider(providers, targetId)
@@ -53,6 +56,7 @@ export class PaymentBloc {
     const paymentOptions = {
       ...options,
       loyaltyClientId,
+      apiVersion,
     }
 
     return new PaymentBloc(provider, paymentOptions, cardsInfo)
