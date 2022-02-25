@@ -81,6 +81,8 @@ export type TripFollowResponse = {
       photo_url?: string
       license_number?: string
     }
+    type: string
+    tags?: Array<string>
   }
   tracking?: {
     position?: LatLng

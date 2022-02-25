@@ -14,6 +14,13 @@ describe('tripTransformer', () => {
         fleetId: '',
         vehicleClass: '',
       },
+      vehicle: {
+        vehicleDescription: '',
+        licensePlate: '',
+        vehicleClass: '',
+        vehicleType: '',
+        tags: [],
+      },
       priceInfo: {
         currencyCode: '',
         type: '',
@@ -191,6 +198,7 @@ describe('tripTransformer', () => {
           phone_number: 'phone_number',
           photo_url: 'photo_url',
         },
+        type: 'standard',
         vehicle_class: 'saloon',
         vehicle_license_plate: 'vehicle_license_plate',
       },
@@ -211,6 +219,13 @@ describe('tripTransformer', () => {
         supplierLogoUrl: tripInfo.fleet_info?.logo_url,
         fleetId: tripInfo.fleet_info?.fleet_id,
         vehicleClass: tripInfo.quote?.vehicle_class,
+      },
+      vehicle: {
+        vehicleDescription: tripInfo.vehicle?.description,
+        licensePlate: tripInfo.vehicle?.vehicle_license_plate,
+        vehicleClass: tripInfo.quote?.vehicle_class,
+        vehicleType: tripInfo.vehicle?.type,
+        tags: [],
       },
       priceInfo: {
         currencyCode: tripInfo.quote?.currency,
