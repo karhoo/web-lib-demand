@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/karhoo/web-lib-demand#readme",
   "devDependencies": {
-    "@adyen/adyen-web": "4.7.4",
+    "@adyen/adyen-web": "5.8.0",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "@microsoft/api-extractor": "^7.19.2",
