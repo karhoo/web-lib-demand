@@ -31,7 +31,7 @@ export type TripFollowResponse = {
     licensePlate: string
     vehicleClass: string
     vehicleType: string
-    tags?: Array<string>
+    tags: Array<string>
   }
   etaBreakdown: {
     from: string

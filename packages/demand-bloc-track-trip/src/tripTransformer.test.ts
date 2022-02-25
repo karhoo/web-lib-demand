@@ -13,7 +13,13 @@ describe('tripTransformer', () => {
         supplierLogoUrl: '',
         fleetId: '',
         vehicleClass: '',
+      },
+      vehicle: {
+        vehicleDescription: '',
+        licensePlate: '',
+        vehicleClass: '',
         vehicleType: '',
+        tags: [],
       },
       priceInfo: {
         currencyCode: '',
