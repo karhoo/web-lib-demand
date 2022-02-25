@@ -213,6 +213,11 @@ describe('tripTransformer', () => {
         supplierLogoUrl: tripInfo.fleet_info?.logo_url,
         fleetId: tripInfo.fleet_info?.fleet_id,
         vehicleClass: tripInfo.quote?.vehicle_class,
+      },
+      vehicle: {
+        vehicleDescription: tripInfo.vehicle?.description,
+        licensePlate: tripInfo.vehicle?.vehicle_license_plate,
+        vehicleClass: tripInfo.quote?.vehicle_class,
         vehicleType: tripInfo.vehicle?.type,
       },
       priceInfo: {

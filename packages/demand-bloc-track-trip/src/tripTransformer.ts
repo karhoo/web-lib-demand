@@ -25,7 +25,13 @@ export type TripFollowResponse = {
     supplierLogoUrl: string
     fleetId: string
     vehicleClass: string
+  }
+  vehicle: {
+    vehicleDescription: string
+    licensePlate: string
+    vehicleClass: string
     vehicleType: string
+    tags?: Array<string>
   }
   etaBreakdown: {
     from: string
@@ -110,7 +116,14 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
     supplierLogoUrl: dv(fleet_info?.logo_url),
     fleetId: dv(fleet_info?.fleet_id),
     vehicleClass: dv(vehicle?.vehicle_class || quote?.vehicle_class),
+  }
+
+  const vehicleInfo = {
+    vehicleDescription: dv(vehicle?.description),
+    licensePlate: dv(vehicle?.vehicle_license_plate),
+    vehicleClass: dv(vehicle?.vehicle_class || quote?.vehicle_class),
     vehicleType: dv(vehicle?.type),
+    tags: vehicle?.tags || [],
   }
 
   const priceInfo = {
@@ -142,6 +155,7 @@ export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResp
   return {
     driver,
     fleet,
+    vehicle: vehicleInfo,
     priceInfo,
     passengersAndLuggage,
     dateScheduled: dv(date_scheduled),
