@@ -201,7 +201,6 @@ describe('tripTransformer', () => {
         type: 'standard',
         vehicle_class: 'saloon',
         vehicle_license_plate: 'vehicle_license_plate',
-        tags: [],
       },
     }
 
@@ -226,6 +225,7 @@ describe('tripTransformer', () => {
         licensePlate: tripInfo.vehicle?.vehicle_license_plate,
         vehicleClass: tripInfo.quote?.vehicle_class,
         vehicleType: tripInfo.vehicle?.type,
+        tags: [],
       },
       priceInfo: {
         currencyCode: tripInfo.quote?.currency,
