@@ -1,13 +1,22 @@
 import { HttpResponse } from '../http/types'
 
-type BreakdownItem = Partial<{
+export type FareBreakdownItem = {
   tax_percentage: number
-  discount_percentage: number
-  commission_percentage: number
+  discount_percentage?: number
+  commission_percentage?: number
   tax_amount: number
   list_price: number
   net_price: number
-}>
+}
+
+export type FareBreakdown = {
+  base: FareBreakdownItem
+  commission?: FareBreakdownItem
+  extras?: FareBreakdownItem[]
+  expenses?: FareBreakdownItem[]
+  total: number
+  currency: string
+}
 
 export enum FinalFareStatuses {
   PENDING = 'PENDING',
@@ -20,14 +29,7 @@ export type FinalFareResponse = {
   state: keyof typeof FinalFareStatuses
   expected_final_time?: string
   expected_in?: number
-  breakdown?: Partial<{
-    base: BreakdownItem
-    commission: BreakdownItem
-    extras: BreakdownItem[]
-    expenses: BreakdownItem[]
-    total: number
-    currency: string
-  }>
+  breakdown?: FareBreakdown
 }
 
 export interface Fare {
