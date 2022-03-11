@@ -30,13 +30,13 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@adyen/adyen-web": "5.8.0",
+    "@adyen/adyen-web": "4.9.0",
     "@karhoo/demand-api": "^16.16.0",
     "braintree-web": "3.62.2",
     "core-js-pure": "^3.20.1"
   },
   "peerDependencies": {
-    "@adyen/adyen-web": "5.8.0",
+    "@adyen/adyen-web": "4.9.0",
     "braintree-web": "3.62.2"
   }
 }
