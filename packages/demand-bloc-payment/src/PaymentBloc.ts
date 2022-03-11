@@ -85,14 +85,15 @@ export class PaymentBloc {
     }
   }
 
-  async verifyCardWithThreeDSecure(amount: number, redirectResult?: string) {
+  async verifyCardWithThreeDSecure(amount: number) {
     const params = new URLSearchParams(location.search) // eslint-disable-line no-restricted-globals
     const nonce = this.provider.getNonce()
 
     try {
       if (nonce) {
         try {
-          if (redirectResult) {
+          const redirectResult = params.get('redirectResult')
+          if (redirectResult && typeof this.provider.completeV68ThreeDSecureVerification === 'function') {
             await this.provider.completeV68ThreeDSecureVerification({
               nonce,
               redirectResult,

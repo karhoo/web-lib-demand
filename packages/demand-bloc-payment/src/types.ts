@@ -43,7 +43,7 @@ export type Provider = {
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
   completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
-  completeV68ThreeDSecureVerification(
+  completeV68ThreeDSecureVerification?(
     params?: CompleteV68ThreeDSecureVerificationParams
   ): Promise<string | Error>
   startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
