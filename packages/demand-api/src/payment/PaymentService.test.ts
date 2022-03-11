@@ -226,4 +226,22 @@ describe('PaymentService', () => {
       expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/payments-details', params)
     })
   })
+
+  describe('getV68PaymentDetails', () => {
+    it('should call post of http', () => {
+      const params = {
+        trip_id: 'trip_id',
+        payments_payload: {
+          details: {
+            redirectResult: '',
+          },
+        },
+      }
+
+      new PaymentService(http).getV68AdyenPaymentDetails(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-details', params)
+    })
+  })
 })
