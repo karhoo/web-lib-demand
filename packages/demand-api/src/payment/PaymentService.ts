@@ -12,6 +12,7 @@ import {
   PaymentAuthParams,
   PaymentAuthResponse,
   PaymentDetailsParams,
+  V68PaymentDetailsParams,
   PaymentMethodsResponse,
   PaymentDetailsResponse,
   ProviderVersion,
@@ -112,8 +113,12 @@ export class PaymentService implements Payment {
   }
 
   getAdyenPaymentDetails(params: PaymentDetailsParams) {
+    return this.http.post<PaymentDetailsResponse>(`${this.apiV3}/${this.url}/adyen/payments-details`, params)
+  }
+
+  getV68AdyenPaymentDetails(params: V68PaymentDetailsParams) {
     return this.http.post<PaymentDetailsResponse>(
-      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath()}payments-details`,
+      `${this.apiV3}/${this.url}/adyen/v68/payments-details`,
       params
     )
   }

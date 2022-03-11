@@ -85,18 +85,25 @@ export class PaymentBloc {
     }
   }
 
-  async verifyCardWithThreeDSecure(amount: number) {
+  async verifyCardWithThreeDSecure(amount: number, redirectResult: string) {
     const params = new URLSearchParams(location.search) // eslint-disable-line no-restricted-globals
     const nonce = this.provider.getNonce()
 
     try {
       if (nonce) {
         try {
-          await this.provider.completeThreeDSecureVerification({
-            nonce,
-            MD: params.get('MD') || '',
-            PaRes: params.get('PaRes') || '',
-          })
+          if (redirectResult) {
+            await this.provider.completeV68ThreeDSecureVerification({
+              nonce,
+              redirectResult,
+            })
+          } else {
+            await this.provider.completeThreeDSecureVerification({
+              nonce,
+              MD: params.get('MD') || '',
+              PaRes: params.get('PaRes') || '',
+            })
+          }
 
           return { ok: true, nonce }
         } catch (error) {

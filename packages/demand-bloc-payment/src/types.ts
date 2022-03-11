@@ -25,6 +25,11 @@ export type CompleteThreeDSecureVerificationParams = {
   PaRes: string
 }
 
+export type CompleteV68ThreeDSecureVerificationParams = {
+  nonce: string
+  redirectResult: string
+}
+
 type PaymentProviderProps = {
   class?: string
   usePaymentModal?: boolean
@@ -38,6 +43,9 @@ export type Provider = {
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
   completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
+  completeV68ThreeDSecureVerification(
+    params?: CompleteV68ThreeDSecureVerificationParams
+  ): Promise<string | Error>
   startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void

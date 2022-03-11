@@ -95,6 +95,15 @@ export type PaymentDetailsParams = {
   }
 }
 
+export type V68PaymentDetailsParams = {
+  trip_id: string
+  payments_payload: {
+    details: {
+      redirectResult: string
+    }
+  }
+}
+
 export type PaymentDetailsResponse = {
   action?: Record<string, unknown>
   additionalData: Record<string, string>
@@ -118,5 +127,6 @@ export interface Payment {
   getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
+  getV68AdyenPaymentDetails(params: V68PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
   providerVersion: ProviderVersion
 }

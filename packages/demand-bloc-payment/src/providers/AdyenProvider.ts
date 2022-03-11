@@ -8,6 +8,7 @@ import {
   AdyenCheckoutOptions,
   Provider,
   CompleteThreeDSecureVerificationParams,
+  CompleteV68ThreeDSecureVerificationParams,
   Payer,
   AdyenShopperData,
   ResultCodes,
@@ -143,7 +144,6 @@ export class AdyenProvider implements Provider {
     }
 
     handleRefusalResponse(makePaymentResponse.body.payload)
-
     if (makePaymentResponse.body.payload.resultCode === ResultCodes.AUTHORISED) {
       this.nonce = makePaymentResponse.body.trip_id
       return ['meta.trip_id', makePaymentResponse.body.trip_id, makePaymentResponse.body.payload.resultCode]
@@ -192,6 +192,32 @@ export class AdyenProvider implements Provider {
     this.cardElement?.handleAction(paymentAction)
 
     return Promise.resolve('')
+  }
+
+  async completeV68ThreeDSecureVerification(params?: CompleteV68ThreeDSecureVerificationParams) {
+    if (!params) {
+      return new Error(errors.missingRequiredParamsFor3dSecure)
+    }
+
+    const { redirectResult, nonce } = params
+    const paymentDetailsResponse = await this.paymentService.getV68AdyenPaymentDetails({
+      payments_payload: {
+        details: {
+          redirectResult,
+        },
+      },
+      trip_id: nonce,
+    })
+
+    if (!paymentDetailsResponse.ok) {
+      throw new AdyenError(errors[codes.AE03], codes.AE03)
+    }
+
+    handleRefusalResponse(paymentDetailsResponse.body)
+
+    this.nonce = ''
+
+    return nonce
   }
 
   async completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams) {
