@@ -100,6 +100,13 @@ describe('getApi', () => {
     expect(setCorrelationIdPrefix).toHaveBeenCalledWith('')
   })
 
+  it('should use default parameters when on PRODUCTION', () => {
+    getApi()
+    process.env.NODE_ENV = 'production'
+    expect(HttpService).toHaveBeenCalledWith(`${defaultUrl}/${apiV1}`)
+    expect(setCorrelationIdPrefix).toHaveBeenCalledWith('')
+  })
+
   it('should create services', () => {
     getApi(params)
 

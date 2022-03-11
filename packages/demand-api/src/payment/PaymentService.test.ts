@@ -177,6 +177,26 @@ describe('PaymentService', () => {
     })
   })
 
+  describe('getPaymentMethods v68', () => {
+    it('should call post of http', () => {
+      const params = {
+        merchantAccount: 'testAccount',
+        countryCode: 'UK',
+        amount: {
+          currency: 'GBR',
+          value: 35,
+        },
+      }
+
+      const service = new PaymentService(http)
+      service.providerVersion = 'v68'
+      service.getAdyenPaymentMethods(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/payments-methods', params)
+    })
+  })
+
   describe('createPaymentAuth', () => {
     it('should call post of http', () => {
       const params = {

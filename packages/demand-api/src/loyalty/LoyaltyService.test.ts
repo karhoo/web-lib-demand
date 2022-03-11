@@ -55,6 +55,22 @@ describe('LoyaltyService', () => {
     })
   })
 
+  describe('calculatePointsToEarn when burn_points unavailable', () => {
+    const params = {
+      total_amount: 1000,
+      currency: 'GBP',
+    }
+
+    it('should call get of http', () => {
+      new LoyaltyService(http).calculatePointsToEarn(clientId, params)
+
+      expect(http.get).toHaveBeenCalledTimes(1)
+      expect(http.get).toHaveBeenCalledWith(
+        'loyalty-client/exrates/GBP/earnpoints?total_amount=1000&burn_points=0'
+      )
+    })
+  })
+
   describe('preAuth', () => {
     const params = {
       points: 1000,
