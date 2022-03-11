@@ -59,6 +59,8 @@ describe('BraintreeProvider', () => {
     getAdyenPaymentMethods: jest.fn(),
     createAdyenPaymentAuth: jest.fn(),
     getAdyenPaymentDetails: jest.fn(),
+    getV68AdyenPaymentDetails: jest.fn(),
+    providerVersion: undefined,
   }
 
   const client = {

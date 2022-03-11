@@ -127,6 +127,6 @@ export interface Payment {
   getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
   createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
   getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
-  getV68AdyenPaymentDetails(params: V68PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
-  providerVersion: ProviderVersion
+  getV68AdyenPaymentDetails?(params: V68PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
+  providerVersion?: ProviderVersion
 }
