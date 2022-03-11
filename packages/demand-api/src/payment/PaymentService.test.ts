@@ -193,7 +193,7 @@ describe('PaymentService', () => {
       service.getAdyenPaymentMethods(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/payments-methods', params)
+      expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-methods', params)
     })
   })
 
