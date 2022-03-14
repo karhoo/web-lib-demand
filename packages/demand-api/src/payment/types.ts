@@ -138,5 +138,4 @@ export interface Payment {
     params: PaymentDetailsParams,
     version?: ProviderVersion
   ): Promise<HttpResponse<PaymentDetailsResponse>>
-  providerVersion?: ProviderVersion
 }

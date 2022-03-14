@@ -23,7 +23,6 @@ export class PaymentService implements Payment {
   private apiV3 = 'v3'
 
   private http: Http
-  private providerApiVersion: ProviderVersion
 
   constructor(http: Http) {
     this.http = http

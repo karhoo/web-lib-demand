@@ -100,7 +100,6 @@ export const getApiMock = () => {
       getAdyenPaymentMethods: mockGetAdyenPaymentMethods,
       createAdyenPaymentAuth: mockCreateAdyenPaymentAuth,
       getAdyenPaymentDetails: mockGetAdyenPaymentDetails,
-      providerVersion: undefined,
     },
     fareService: {
       status: mockFinalFare,
