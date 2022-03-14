@@ -21,18 +21,16 @@ export type ThreeDSecureVerifyResponse = ThreeDSecureVerifyPayload & { type?: st
 
 export type CompleteThreeDSecureVerificationParams = {
   nonce: string
-  MD: string
-  PaRes: string
-}
-
-export type CompleteThreeDSecureVerificationNewApiParams = {
-  nonce: string
-  redirectResult: string
+  locationParams: URLSearchParams
 }
 
 type PaymentProviderProps = {
   class?: string
   usePaymentModal?: boolean
+}
+
+export type ProviderOptions = {
+  apiVersion: ProviderVersion
 }
 
 // Currently this type is based on braintree types. In the future this might be changed
@@ -43,14 +41,12 @@ export type Provider = {
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
   completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
-  completeThreeDSecureVerificationNewApi?(
-    params?: CompleteThreeDSecureVerificationNewApiParams
-  ): Promise<string | Error>
   startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
   getNonce(): string | null
+  apiVersion?: ProviderVersion
 }
 
 export type CardsInfo = {
@@ -145,6 +141,7 @@ export type AdyenProviderOptions = {
   paymentMethodsConfiguration?: AdyenPaymentMethodsConfiguration
   showPayButton?: boolean
   fleetId: string
+  apiVersion?: ProviderVersion
 }
 
 export type AdyenCheckoutOptions = {

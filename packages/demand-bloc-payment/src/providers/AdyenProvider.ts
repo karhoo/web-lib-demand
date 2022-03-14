@@ -1,14 +1,13 @@
 import AdyenCheckout from '@adyen/adyen-web'
 import CardElement from '@adyen/adyen-web/dist/types/components/Dropin'
 import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
-import { Payment } from '@karhoo/demand-api'
+import { Payment, ProviderVersion } from '@karhoo/demand-api'
 
 import {
   AdyenProviderOptions,
   AdyenCheckoutOptions,
   Provider,
   CompleteThreeDSecureVerificationParams,
-  CompleteThreeDSecureVerificationNewApiParams,
   Payer,
   AdyenShopperData,
   ResultCodes,
@@ -74,6 +73,13 @@ export class AdyenProvider implements Provider {
     sessionStorage.setItem('adyenNonce', value)
   }
 
+  set apiVersion(value: ProviderVersion) {
+    this.options = {
+      ...this.options,
+      apiVersion: value,
+    }
+  }
+
   getNonce() {
     return sessionStorage.getItem('adyenNonce') || ''
   }
@@ -90,11 +96,14 @@ export class AdyenProvider implements Provider {
       }
     }
 
-    const paymentMethodsReq = this.paymentService.getAdyenPaymentMethods({
-      amount: this.checkoutOptions.amount,
-      shopperLocale: this.checkoutOptions.locale,
-      ...this.shopperData,
-    })
+    const paymentMethodsReq = this.paymentService.getAdyenPaymentMethods(
+      {
+        amount: this.checkoutOptions.amount,
+        shopperLocale: this.checkoutOptions.locale,
+        ...this.shopperData,
+      },
+      this.options.apiVersion
+    )
 
     const clientKeyReq = this.paymentService.getAdyenClientKey()
 
@@ -128,16 +137,19 @@ export class AdyenProvider implements Provider {
   }
 
   async tokenizeHostedFields() {
-    const makePaymentResponse = await this.paymentService.createAdyenPaymentAuth({
-      supply_partner_id: this.options.fleetId,
-      payments_payload: {
-        ...this.checkoutOptions,
-        ...this.cardElement?.data,
-        ...this.shopperData,
-        redirectFromIssuerMethod: 'get',
-        returnUrl: this.options.returnUrl,
+    const makePaymentResponse = await this.paymentService.createAdyenPaymentAuth(
+      {
+        supply_partner_id: this.options.fleetId,
+        payments_payload: {
+          ...this.checkoutOptions,
+          ...this.cardElement?.data,
+          ...this.shopperData,
+          redirectFromIssuerMethod: 'get',
+          returnUrl: this.options.returnUrl,
+        },
       },
-    })
+      this.options.apiVersion
+    )
 
     if (!makePaymentResponse.ok) {
       throw new AdyenError(errors[codes.AE03], codes.AE03)
@@ -194,49 +206,39 @@ export class AdyenProvider implements Provider {
     return Promise.resolve('')
   }
 
-  async completeThreeDSecureVerificationNewApi(params?: CompleteThreeDSecureVerificationNewApiParams) {
-    if (!params) {
-      return new Error(errors.missingRequiredParamsFor3dSecure)
-    }
-
-    const { redirectResult, nonce } = params
-    const paymentDetailsResponse = await this.paymentService.getAdyenPaymentDetails({
-      payments_payload: {
-        details: {
-          redirectResult,
-        },
-      },
-      trip_id: nonce,
-    })
-
-    if (!paymentDetailsResponse.ok) {
-      throw new AdyenError(errors[codes.AE03], codes.AE03)
-    }
-
-    handleRefusalResponse(paymentDetailsResponse.body)
-
-    this.nonce = ''
-
-    return nonce
-  }
-
   async completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams) {
     if (!params) {
       return new Error(errors.missingRequiredParamsFor3dSecure)
     }
 
-    const { MD, PaRes, nonce } = params
+    const { locationParams, nonce } = params
 
-    const paymentDetailsResponse = await this.paymentService.getAdyenPaymentDetails({
+    const oldPayload = {
+      trip_id: nonce,
       payments_payload: {
         paymentData: this.paymentData,
         details: {
-          MD,
-          PaRes,
+          MD: locationParams.get('MD') || '',
+          PaRes: locationParams.get('PaRes') || '',
         },
       },
+    }
+
+    const newPayload = {
       trip_id: nonce,
-    })
+      payments_payload: {
+        details: {
+          redirectResult: locationParams.get('redirectResult') || '',
+        },
+      },
+    }
+
+    const payload = this.options.apiVersion ? newPayload : oldPayload
+
+    const paymentDetailsResponse = await this.paymentService.getAdyenPaymentDetails(
+      payload,
+      this.options.apiVersion
+    )
 
     if (!paymentDetailsResponse.ok) {
       throw new AdyenError(errors[codes.AE03], codes.AE03)

@@ -189,8 +189,7 @@ describe('PaymentService', () => {
       }
 
       const service = new PaymentService(http)
-      service.providerVersion = 'v68'
-      service.getAdyenPaymentMethods(params)
+      service.getAdyenPaymentMethods(params, 'v68')
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-methods', params)
@@ -259,8 +258,7 @@ describe('PaymentService', () => {
       }
 
       const service = new PaymentService(http)
-      service.providerVersion = 'v68'
-      service.getAdyenPaymentDetails(params)
+      service.getAdyenPaymentDetails(params, 'v68')
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-details', params)

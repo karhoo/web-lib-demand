@@ -47,11 +47,11 @@ export class PaymentBloc {
   }: PaymentBlocProps) {
     const providersResponse = await fetchPaymentProvider(paymentService)
     const apiVersion = providersResponse.provider?.version
-    paymentService.providerVersion = apiVersion
 
     const targetId = options.preselectProvider || (providersResponse.provider?.id ?? '')
     const loyaltyClientId = providersResponse.loyalty_programme?.id
     const provider = getPaymentProvider(providers, targetId)
+    provider.apiVersion = apiVersion
 
     const paymentOptions = {
       ...options,
@@ -92,19 +92,10 @@ export class PaymentBloc {
     try {
       if (nonce) {
         try {
-          const redirectResult = params.get('redirectResult')
-          if (redirectResult && typeof this.provider.completeThreeDSecureVerificationNewApi === 'function') {
-            await this.provider.completeThreeDSecureVerificationNewApi({
-              nonce,
-              redirectResult,
-            })
-          } else {
-            await this.provider.completeThreeDSecureVerification({
-              nonce,
-              MD: params.get('MD') || '',
-              PaRes: params.get('PaRes') || '',
-            })
-          }
+          await this.provider.completeThreeDSecureVerification({
+            nonce,
+            locationParams: params,
+          })
 
           return { ok: true, nonce }
         } catch (error) {

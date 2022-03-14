@@ -29,12 +29,8 @@ export class PaymentService implements Payment {
     this.http = http
   }
 
-  set providerVersion(value: ProviderVersion) {
-    this.providerApiVersion = value
-  }
-
-  getApiVersionPath() {
-    return this.providerApiVersion ? `${this.providerApiVersion}/` : ''
+  private getApiVersionPath(version: ProviderVersion) {
+    return version ? `${version}/` : ''
   }
 
   /** @deprecated use createBraintreeClientToken instead */
@@ -97,23 +93,23 @@ export class PaymentService implements Payment {
     return this.http.get<ClientKeyResponse>(`${this.apiV3}/${this.url}/adyen/client-key`)
   }
 
-  getAdyenPaymentMethods(params: PaymentMethodsParams) {
+  getAdyenPaymentMethods(params: PaymentMethodsParams, version?: ProviderVersion) {
     return this.http.post<PaymentMethodsResponse>(
-      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath()}payments-methods`,
+      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath(version)}payments-methods`,
       params
     )
   }
 
-  createAdyenPaymentAuth(params: PaymentAuthParams) {
+  createAdyenPaymentAuth(params: PaymentAuthParams, version?: ProviderVersion) {
     return this.http.post<PaymentAuthResponse>(
-      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath()}payments`,
+      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath(version)}payments`,
       params
     )
   }
 
-  getAdyenPaymentDetails(params: PaymentDetailsParams) {
+  getAdyenPaymentDetails(params: PaymentDetailsParams, version?: ProviderVersion) {
     return this.http.post<PaymentDetailsResponse>(
-      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath()}payments-details`,
+      `${this.apiV3}/${this.url}/adyen/${this.getApiVersionPath(version)}payments-details`,
       params
     )
   }

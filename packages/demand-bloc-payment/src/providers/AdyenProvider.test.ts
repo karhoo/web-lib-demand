@@ -336,9 +336,9 @@ describe('AdyenProvider', () => {
 
   describe('completeThreeDSecureVerification', () => {
     it('should retrun nonce', async () => {
+      const locationSearch = '?MD=MD&PaRes=PaRes'
       const params = {
-        MD: 'MD',
-        PaRes: 'PaRes',
+        locationParams: new URLSearchParams(locationSearch),
         nonce: 'nonce',
       }
 
@@ -348,8 +348,8 @@ describe('AdyenProvider', () => {
         payments_payload: {
           paymentData: 'paymentData',
           details: {
-            MD: params.MD,
-            PaRes: params.PaRes,
+            MD: params.locationParams.get('MD'),
+            PaRes: params.locationParams.get('PaRes'),
           },
         },
         trip_id: params.nonce,
@@ -367,9 +367,9 @@ describe('AdyenProvider', () => {
     })
 
     it('should handle payment details error', async () => {
+      const locationSearch = '?MD=MD&PaRes=PaRes'
       const params = {
-        MD: 'MD',
-        PaRes: 'PaRes',
+        locationParams: new URLSearchParams(locationSearch),
         nonce: 'nonce',
       }
 
