@@ -358,6 +358,28 @@ describe('AdyenProvider', () => {
       expect(provider.getNonce()).toEqual('')
     })
 
+    it('should return nonce using new api', async () => {
+      const locationSearch = '?redirectResult=redirectResult'
+      const params = {
+        locationParams: new URLSearchParams(locationSearch),
+        nonce: 'nonce',
+      }
+
+      provider.apiVersion = 'v68'
+      const nonce = await provider.completeThreeDSecureVerification(params)
+      expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
+      expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith({
+        payments_payload: {
+          details: {
+            redirectResult: params.locationParams.get('redirectResult'),
+          },
+        },
+        trip_id: params.nonce,
+      })
+      expect(nonce).toBe(params.nonce)
+      expect(provider.getNonce()).toEqual('')
+    })
+
     it('should throw error if required params are missing', async () => {
       try {
         await provider.completeThreeDSecureVerification()
