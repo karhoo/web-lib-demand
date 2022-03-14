@@ -365,7 +365,7 @@ describe('PaymentBloc', () => {
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })
     })
 
-    it('should completeV68ThreeDSecureVerification if nonce is passed from search params', async () => {
+    it('should use completeThreeDSecureVerificationNewApi if nonce is passed from search params', async () => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,

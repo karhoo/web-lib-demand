@@ -8,7 +8,7 @@ import {
   AdyenCheckoutOptions,
   Provider,
   CompleteThreeDSecureVerificationParams,
-  CompleteV68ThreeDSecureVerificationParams,
+  CompleteThreeDSecureVerificationNewApiParams,
   Payer,
   AdyenShopperData,
   ResultCodes,
@@ -194,13 +194,13 @@ export class AdyenProvider implements Provider {
     return Promise.resolve('')
   }
 
-  async completeV68ThreeDSecureVerification(params?: CompleteV68ThreeDSecureVerificationParams) {
+  async completeThreeDSecureVerificationNewApi(params?: CompleteThreeDSecureVerificationNewApiParams) {
     if (!params) {
       return new Error(errors.missingRequiredParamsFor3dSecure)
     }
 
     const { redirectResult, nonce } = params
-    const paymentDetailsResponse = await this.paymentService.getV68AdyenPaymentDetails({
+    const paymentDetailsResponse = await this.paymentService.getAdyenPaymentDetails({
       payments_payload: {
         details: {
           redirectResult,

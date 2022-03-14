@@ -57,7 +57,6 @@ describe('AdyenProvider', () => {
     getAdyenPaymentMethods: getAdyenPaymentMethodsMock(),
     createAdyenPaymentAuth: getCreateAdyenPaymentAuthMock(),
     getAdyenPaymentDetails: getAdyenPaymentDetailsMock(),
-    getV68AdyenPaymentDetails: getAdyenPaymentDetailsMock(),
   }
 
   let provider: AdyenProvider

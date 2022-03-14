@@ -93,8 +93,8 @@ export class PaymentBloc {
       if (nonce) {
         try {
           const redirectResult = params.get('redirectResult')
-          if (redirectResult && typeof this.provider.completeV68ThreeDSecureVerification === 'function') {
-            await this.provider.completeV68ThreeDSecureVerification({
+          if (redirectResult && typeof this.provider.completeThreeDSecureVerificationNewApi === 'function') {
+            await this.provider.completeThreeDSecureVerificationNewApi({
               nonce,
               redirectResult,
             })

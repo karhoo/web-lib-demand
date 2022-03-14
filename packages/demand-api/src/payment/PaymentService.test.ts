@@ -247,7 +247,7 @@ describe('PaymentService', () => {
     })
   })
 
-  describe('getV68PaymentDetails', () => {
+  describe('getPaymentDetails using new api version', () => {
     it('should call post of http', () => {
       const params = {
         trip_id: 'trip_id',
@@ -258,7 +258,9 @@ describe('PaymentService', () => {
         },
       }
 
-      new PaymentService(http).getV68AdyenPaymentDetails(params)
+      const service = new PaymentService(http)
+      service.providerVersion = 'v68'
+      service.getAdyenPaymentDetails(params)
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-details', params)
