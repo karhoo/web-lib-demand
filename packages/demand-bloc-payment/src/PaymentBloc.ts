@@ -46,13 +46,17 @@ export class PaymentBloc {
     cardsInfo,
   }: PaymentBlocProps) {
     const providersResponse = await fetchPaymentProvider(paymentService)
+    const apiVersion = providersResponse.provider?.version
+
     const targetId = options.preselectProvider || (providersResponse.provider?.id ?? '')
     const loyaltyClientId = providersResponse.loyalty_programme?.id
     const provider = getPaymentProvider(providers, targetId)
+    provider.apiVersion = apiVersion
 
     const paymentOptions = {
       ...options,
       loyaltyClientId,
+      apiVersion,
     }
 
     return new PaymentBloc(provider, paymentOptions, cardsInfo)
@@ -90,8 +94,7 @@ export class PaymentBloc {
         try {
           await this.provider.completeThreeDSecureVerification({
             nonce,
-            MD: params.get('MD') || '',
-            PaRes: params.get('PaRes') || '',
+            locationParams: params,
           })
 
           return { ok: true, nonce }

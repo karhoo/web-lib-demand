@@ -177,6 +177,25 @@ describe('PaymentService', () => {
     })
   })
 
+  describe('getPaymentMethods v68', () => {
+    it('should call post of http', () => {
+      const params = {
+        merchantAccount: 'testAccount',
+        countryCode: 'UK',
+        amount: {
+          currency: 'GBR',
+          value: 35,
+        },
+      }
+
+      const service = new PaymentService(http)
+      service.getAdyenPaymentMethods(params, 'v68')
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-methods', params)
+    })
+  })
+
   describe('createPaymentAuth', () => {
     it('should call post of http', () => {
       const params = {
@@ -224,6 +243,25 @@ describe('PaymentService', () => {
 
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/payments-details', params)
+    })
+  })
+
+  describe('getPaymentDetails using new api version', () => {
+    it('should call post of http', () => {
+      const params = {
+        trip_id: 'trip_id',
+        payments_payload: {
+          details: {
+            redirectResult: '',
+          },
+        },
+      }
+
+      const service = new PaymentService(http)
+      service.getAdyenPaymentDetails(params, 'v68')
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith('v3/payments/adyen/v68/payments-details', params)
     })
   })
 })

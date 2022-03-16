@@ -364,6 +364,29 @@ describe('PaymentBloc', () => {
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })
     })
+
+    it('should use completeThreeDSecureVerification if nonce and redirectResult is passed from search params', async () => {
+      const payment = await PaymentBloc.create({
+        providers: providersMapMock,
+        paymentService: paymentServiceMock,
+      })
+
+      const krhutuuid = 'krhutuuid-test'
+      const redirectResult = 'redirectResult-test'
+
+      // @ts-ignore
+      delete window.location
+
+      const providerBeingUsedMock = getPaymentProviderBeingUsed()
+      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
+      mocked.getNonce.mockReturnValueOnce(krhutuuid)
+
+      window.location = {
+        search: `?redirectResult=${redirectResult}`,
+      } as Location
+
+      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })
+    })
   })
 
   describe('getPaymentNonce', () => {

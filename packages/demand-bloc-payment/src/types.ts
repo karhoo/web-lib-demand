@@ -1,6 +1,6 @@
 import { ThreeDSecureVerifyPayload, HostedFieldFieldOptions, BraintreeError } from 'braintree-web'
 
-import { HttpResponse, ClientNonceResponse } from '@karhoo/demand-api'
+import { HttpResponse, ClientNonceResponse, ProviderVersion } from '@karhoo/demand-api'
 
 export type CardInfo = Partial<{
   id: string
@@ -21,13 +21,16 @@ export type ThreeDSecureVerifyResponse = ThreeDSecureVerifyPayload & { type?: st
 
 export type CompleteThreeDSecureVerificationParams = {
   nonce: string
-  MD: string
-  PaRes: string
+  locationParams: URLSearchParams
 }
 
 type PaymentProviderProps = {
   class?: string
   usePaymentModal?: boolean
+}
+
+export type ProviderOptions = {
+  apiVersion: ProviderVersion
 }
 
 // Currently this type is based on braintree types. In the future this might be changed
@@ -43,6 +46,7 @@ export type Provider = {
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
   getNonce(): string | null
+  apiVersion?: ProviderVersion
 }
 
 export type CardsInfo = {
@@ -55,6 +59,7 @@ export type PaymentOptions = {
   paymentCardsEnabled: boolean
   preselectProvider?: string
   loyaltyClientId?: string
+  apiVersion?: ProviderVersion
 }
 
 export type VerifyCardError = {
@@ -136,6 +141,7 @@ export type AdyenProviderOptions = {
   paymentMethodsConfiguration?: AdyenPaymentMethodsConfiguration
   showPayButton?: boolean
   fleetId: string
+  apiVersion?: ProviderVersion
 }
 
 export type AdyenCheckoutOptions = {

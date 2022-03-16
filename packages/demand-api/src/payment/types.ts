@@ -34,8 +34,11 @@ export interface AddPaymentCardParams extends ClientNonceParams {
 
 export type ProviderId = 'Braintree' | 'Adyen'
 
+export type ProviderVersion = 'v68' | undefined
+
 export type Provider = {
   id: ProviderId
+  version?: ProviderVersion
 }
 
 export type LoyaltyProgram = {
@@ -81,7 +84,7 @@ export type PaymentAuthResponse = {
   }
 }
 
-export type PaymentDetailsParams = {
+type OldApiPaymentDetailsParams = {
   trip_id: string
   payments_payload: {
     paymentData: string
@@ -91,6 +94,17 @@ export type PaymentDetailsParams = {
     }
   }
 }
+
+type NewApiPaymentDetailsParams = {
+  trip_id: string
+  payments_payload: {
+    details: {
+      redirectResult: string
+    }
+  }
+}
+
+export type PaymentDetailsParams = OldApiPaymentDetailsParams | NewApiPaymentDetailsParams
 
 export type PaymentDetailsResponse = {
   action?: Record<string, unknown>
@@ -112,7 +126,16 @@ export interface Payment {
   addBraintreePaymentCard(params: AddPaymentCardParams): Promise<HttpResponse<ClientNonceResponse>>
   getPaymentProvider(): Promise<HttpResponse<PaymentProvidersResponse>>
   getAdyenClientKey(): Promise<HttpResponse<ClientKeyResponse>>
-  getAdyenPaymentMethods(params: PaymentMethodsParams): Promise<HttpResponse<PaymentMethodsResponse>>
-  createAdyenPaymentAuth(params: PaymentAuthParams): Promise<HttpResponse<PaymentAuthResponse>>
-  getAdyenPaymentDetails(params: PaymentDetailsParams): Promise<HttpResponse<PaymentDetailsResponse>>
+  getAdyenPaymentMethods(
+    params: PaymentMethodsParams,
+    version?: ProviderVersion
+  ): Promise<HttpResponse<PaymentMethodsResponse>>
+  createAdyenPaymentAuth(
+    params: PaymentAuthParams,
+    version?: ProviderVersion
+  ): Promise<HttpResponse<PaymentAuthResponse>>
+  getAdyenPaymentDetails(
+    params: PaymentDetailsParams,
+    version?: ProviderVersion
+  ): Promise<HttpResponse<PaymentDetailsResponse>>
 }
