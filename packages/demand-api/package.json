@@ -39,6 +39,6 @@
     "uuid": "^8.3.2"
   },
   "peerDependencies": {
-    "@adyen/adyen-web": "4.7.4"
+    "@adyen/adyen-web": "4.9.0"
   }
 }
