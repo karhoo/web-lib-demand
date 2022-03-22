@@ -177,8 +177,15 @@ function parseSearchString(query: string) {
   const data = new URLSearchParams(query)
 
   data.forEach((v, k) => {
-    const value = v && v.trim()
+    let value = v && v.trim()
     const key = k && k.trim().toLowerCase()
+
+    if (key.includes('time')) {
+      const date = value.replace(' ', '+')
+      if (date && !isNaN(Date.parse(date))) {
+        value = date
+      }
+    }
 
     key && value && result.push([key, value])
   })
