@@ -81,3 +81,9 @@ export type ServiceLevelAgreements = {
     minutes: number
   }
 }
+
+export interface Breakdown {
+  value: number
+  name: string
+  description?: string
+}

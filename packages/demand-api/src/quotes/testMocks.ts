@@ -6,6 +6,7 @@ import { QuotesResponse, QuotesByIdResponse, QuotesAvailabilityResponse } from '
 import { QuotesV2Response, QuotesV2ByIdResponse, QuotesV2CoverageResponse } from './typesV2'
 
 const quote = {
+  type: QuotePriceTypes.FIXED,
   availability_id: 'ZDU5MDVhM2QtZGE4MC00NWRjLWJkZjItOTAzZWE5ZWEyMjM1O21wdg==',
   category_name: 'MPV',
   currency_code: 'GBP',
@@ -71,6 +72,11 @@ const quoteV2 = {
     luggage_capacity: 4,
     tags: ['electric'],
     type: 'standard',
+  },
+  breakdown: {
+    value: 'number',
+    name: 'string',
+    description: 'string',
   },
 }
 
