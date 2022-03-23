@@ -32,6 +32,7 @@ import {
   dropoffLongitudeParameter,
   bookingTypeParameter,
   BookingTypes,
+  brokenTimeFormatRegexp,
 } from './constants'
 
 const legNameIndex = 2
@@ -180,7 +181,7 @@ function parseSearchString(query: string) {
     let value = v && v.trim()
     const key = k && k.trim().toLowerCase()
 
-    if (key.includes('time')) {
+    if (brokenTimeFormatRegexp.test(value)) {
       const date = value.replace(' ', '+')
       if (date && !isNaN(Date.parse(date))) {
         value = date

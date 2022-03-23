@@ -1,6 +1,8 @@
 export const journeyLegFieldsRegexp = /^leg-(\d+)-(.+)/i
 export const expectedTimeFormatRegexp =
   /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/
+export const brokenTimeFormatRegexp =
+  /^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([ ][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([ ][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([ ][0-2]\d:[0-5]\d|Z))$/
 export const timezoneRegexp = /([+-][0-2]\d:[0-5]\d|Z)$/
 export const travellerLocaleRegexp = /^[a-z]{2}-[a-z]{2}$/i
 export const latitudeRegexp = /^(\+|-)?(?:90(?:(?:\.0{1,})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,})?))$/
