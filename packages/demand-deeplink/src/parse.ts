@@ -183,7 +183,7 @@ function parseSearchString(query: string) {
 
     if (brokenTimeFormatRegexp.test(value)) {
       const date = value.replace(' ', '+')
-      if (date && !isNaN(Date.parse(date))) {
+      if (!isNaN(Date.parse(date))) {
         value = date
       }
     }

@@ -49,6 +49,14 @@ describe('parse', () => {
     })
   })
 
+  it('should parse wrong pickup time', () => {
+    const data = { ...passengerInfo, 'leg-1-pickup-time': '2020-08-09T18:31:42 03:30' }
+    expect(parse(getQueryString(data))).toEqual({
+      ...defaultExpectedInfo,
+      passengerInfo: expectedPassengerInfo,
+    })
+  })
+
   it('should have travellerLocale', () => {
     expect(parse(`traveller-locale=${travellerLocale}`)).toEqual({
       ...defaultExpectedInfo,
