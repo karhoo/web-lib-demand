@@ -181,6 +181,9 @@ function parseSearchString(query: string) {
     let value = v && v.trim()
     const key = k && k.trim().toLowerCase()
 
+    // We are accepting a date with the space before the timezone. It's wrong format which results
+    // in an error when parsing the date, so to avoid further troubles we are detecting dates here
+    // and then converting them to correct format with + sign in the place of space
     if (brokenTimeFormatRegexp.test(value)) {
       const date = value.replace(' ', '+')
       if (!isNaN(Date.parse(date))) {
