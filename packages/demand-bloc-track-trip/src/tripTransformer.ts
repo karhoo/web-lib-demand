@@ -75,7 +75,7 @@ export type TripFollowResponse = {
   serviceLevelAgreements?: ServiceLevelAgreements | null
 }
 
-export const tripTransformer = (trip: OriginalTripFollowResponse | BookATripResponse): TripFollowResponse => {
+export const tripTransformer = (trip: OriginalTripFollowResponse & BookATripResponse): TripFollowResponse => {
   const {
     fleet_info = {},
     vehicle,

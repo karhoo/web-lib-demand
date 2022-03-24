@@ -6,108 +6,94 @@ import {
   MeetingPointType,
   VehicleAttributes,
   ServiceLevelAgreements,
+  Breakdown,
 } from '../sharedTypes'
 
-export type PassengerDetails = {
-  first_name?: string
-  last_name: string
-  email?: string
-  phone_number: string
-  locale?: string
-}
-
-type Passengers = {
-  additional_passengers?: number
-  luggage?: {
-    total: number
-  }
-  passenger_details: PassengerDetails[]
-}
-
-type Address = {
-  display_address: string
-  place_id: string
-  poi_type?: 'NOT_SET_POI_TYPE' | CommonPoiType
-  position?: LatLng
-  timezone?: string
-}
-
 export enum TripStatuses {
-  ARRIVED = 'ARRIVED',
-  BOOKER_CANCELLED = 'BOOKER_CANCELLED',
-  COMPLETED = 'COMPLETED',
   CONFIRMED = 'CONFIRMED',
-  DRIVER_CANCELLED = 'DRIVER_CANCELLED',
   DRIVER_EN_ROUTE = 'DRIVER_EN_ROUTE',
-  NO_DRIVERS_AVAILABLE = 'NO_DRIVERS_AVAILABLE',
+  ARRIVED = 'ARRIVED',
   POB = 'POB',
-  REQUESTED = 'REQUESTED',
+  COMPLETED = 'COMPLETED',
+  NO_DRIVERS_AVAILABLE = 'NO_DRIVERS_AVAILABLE',
+  DRIVER_CANCELLED = 'DRIVER_CANCELLED',
+  BOOKER_CANCELLED = 'BOOKER_CANCELLED',
   KARHOO_CANCELLED = 'KARHOO_CANCELLED',
+  FAILED = 'FAILED',
   PREAUTH_DECLINED = 'PREAUTH_DECLINED',
   INCOMPLETE = 'INCOMPLETE',
-  FAILED = 'FAILED',
+  /** @deprecated no longer in use by API, left for backward compability */
+  REQUESTED = 'REQUESTED',
+}
+
+export enum StateDetails {
+  // Dispatch cancellation reasons
+  REQUESTED_BY_USER = 'REQUESTED_BY_USER',
+  PASSENGER_DIDNT_SHOW_UP = 'PASSENGER_DIDNT_SHOW_UP',
+  DRIVER_CANCELED = 'DRIVER_CANCELED',
+  SUPPLIER_CANCELLED = 'SUPPLIER_CANCELLED',
+  DISPATCH_CANCELLED = 'DISPATCH_CANCELLED',
+  NO_AVAILABILITY_IN_THE_AREA = 'NO_AVAILABILITY_IN_THE_AREA',
+  NO_FEE = 'NO_FEE',
+  OTHER_DISPATCH_REASON = 'OTHER_DISPATCH_REASON',
+
+  // User cancellation reasons
+  DRIVER_DIDNT_SHOW_UP = 'DRIVER_DIDNT_SHOW_UP',
+  ETA_TOO_LONG = 'ETA_TOO_LONG',
+  DRIVER_IS_LATE = 'DRIVER_IS_LATE',
+  CAN_NOT_FIND_VEHICLE = 'CAN_NOT_FIND_VEHICLE',
+  NOT_NEEDED_ANYMORE = 'NOT_NEEDED_ANYMORE',
+  ASKED_BY_DRIVER_TO_CANCEL = 'ASKED_BY_DRIVER_TO_CANCEL',
+  FOUND_BETTER_PRICE = 'FOUND_BETTER_PRICE',
+  NOT_CLEAR_MEETING_INSTRUCTIONS = 'NOT_CLEAR_MEETING_INSTRUCTIONS',
+  COULD_NOT_CONTACT_CARRIER = 'COULD_NOT_CONTACT_CARRIER',
+  OTHER_USER_REASON = 'OTHER_USER_REASON',
+
+  // Karhoo cancellation reasons
+  FRAUD = 'FRAUD',
+  NO_AVAILABILITY = 'NO_AVAILABILITY',
+  ASKED_BY_USER = 'ASKED_BY_USER',
+  ASKED_BY_DISPATCH = 'ASKED_BY_DISPATCH',
+  ASKED_BY_DRIVER = 'ASKED_BY_DRIVER',
+  FAILIURE = 'FAILIURE',
+  PREAUTH_FAILED = 'PREAUTH_FAILED',
+  OTHER_KARHOO_REASON = 'OTHER_KARHOO_REASON',
 }
 
 export type TripStatus = keyof typeof TripStatuses
 
 export type TripFollowResponse = {
-  passengers?: Passengers
-  status: TripStatus
-  state_details?: string
   origin?: Address
   destination?: Address
-  date_scheduled?: string
   date_booked?: string
-  quote?: Quote
-  display_trip_id?: string
-  fleet_info?: {
-    fleet_id?: string
-    name?: string
-    logo_url?: string
-    description?: string
-    phone_number?: string
-    terms_conditions_url?: string
-    email?: string
-  }
-  vehicle?: {
-    vehicle_class: string
-    description?: string
-    vehicle_license_plate: string
-    attributes?: VehicleAttributes
-    driver: {
-      first_name: string
-      last_name: string
-      phone_number: string
-      photo_url?: string
-      license_number?: string
-    }
-    type: string
-    tags?: Array<string>
-  }
-  tracking?: {
-    position?: LatLng
-    direction?: {
-      kph: number
-      heading: number
-    }
-    origin_eta?: number
-    destination_eta?: number
-  }
+  date_scheduled?: string
+  status: TripStatuses
+  state_details?: StateDetails
+  vehicle?: Vehicle
+  tracking?: Tracking
+  fleet_info?: FleetInfo
   train_number?: string
+  trip_id?: string
+  display_trip_id?: string
+  passengers?: Passengers
+  quote?: Quote
+  meeting_point?: MeetingPoint
+  meta?: Record<string, string>
   train_time?: string
   flight_number?: string
-  trip_id?: string
-  id?: string
-  meeting_point?: {
-    position?: LatLng
-    type?: 'NOT_SET' | MeetingPointType
-    instructions?: string
-    note?: string
-  }
   service_level_agreements?: ServiceLevelAgreements
-  meta?: {
-    [k: string]: string
-  }
+}
+
+export interface Tracking {
+  position?: LatLng
+  direction?: Direction
+  origin_eta?: number
+  destination_eta?: number
+}
+
+interface Direction {
+  kph: number
+  heading: number
 }
 
 export type BookATripParams = {
@@ -136,39 +122,125 @@ export type BookATripWithoutNonceParams = {
   train_time?: string
 }
 
-export interface BookATripResponse extends TripFollowResponse {
-  agent?: {
-    organisation_id?: string
-    organisation_name?: string
-    user_id?: string
-    user_name?: string
-  }
-  cancelled_by?: {
-    email?: string
-    first_name?: string
-    last_name?: string
-    id?: string
-  }
-  comments?: string
-  cost_center_reference?: string
+export interface BookATripResponse {
+  id: string
+  passengers?: Passengers
+  partner_traveller_id?: string
+  status: TripStatuses
+  state_details?: StateDetails
   origin: Address
   destination: Address
-  external_trip_id?: string
-  follow_code?: string
-  id: string
-  partner_trip_id?: string
+  date_scheduled?: string
   quote: Quote
-  traveller_id?: string
-  fare?: {
-    total: number
-    currency: string
-    gratuity_percent?: number
-    breakdown?: {
-      value: number
-      name: string
-      description?: string
-    }[]
-  }
+  fare?: BookingFare
+  external_trip_id?: string
+  display_trip_id?: string
+  fleet_info?: FleetInfo
+  vehicle?: Vehicle
+  partner_trip_id?: string
+  comments?: string
+  flight_number?: string
+  train_number?: string
+  date_booked?: string
+  meeting_point: MeetingPoint
+  agent?: Agent
+  cost_center_reference?: string
+  cancelled_by?: CancelledBy
+  follow_code?: string
+  meta?: Record<string, string>
+  train_time?: string
+  service_level_agreements?: ServiceLevelAgreements
+}
+
+export interface Agent {
+  user_id?: string
+  user_name?: string
+  organisation_id?: string
+  organisation_name?: string
+}
+
+export interface CancelledBy {
+  first_name?: string
+  last_name?: string
+  id?: string
+  email?: string
+}
+
+export interface Address {
+  display_address: string
+  position?: LatLng
+  place_id: string
+  poi_type?: 'NOT_SET_POI_TYPE' | CommonPoiType
+  timezone?: string
+}
+
+export interface BookingFare {
+  total: number
+  currency: string
+  gratuity_percent?: number
+  breakdown?: Breakdown[]
+}
+
+export interface FleetInfo {
+  fleet_id?: string
+  name?: string
+  logo_url?: string
+  description?: string
+  phone_number?: string
+  terms_conditions_url?: string
+  email?: string
+}
+
+export interface MeetingPoint {
+  position: LatLng
+  type: 'NOT_SET' | MeetingPointType
+  instructions?: string
+  note?: string
+}
+
+export interface Passengers {
+  additional_passengers?: number
+  passenger_details: PassengerDetails[]
+  luggage?: Luggage
+}
+
+export interface Luggage {
+  total: number
+}
+
+export interface PassengerDetails {
+  first_name?: string
+  last_name: string
+  email?: string
+  phone_number: string
+  locale?: string
+}
+
+export interface FreeCancellation {
+  type: string
+  minutes: number
+}
+
+export interface FreeWaitingTime {
+  minutes: number
+}
+
+export interface Vehicle {
+  type?: string
+  tags?: string[]
+  vehicle_class: string
+  description?: string
+  vehicle_license_plate: string
+  driver: Driver
+  attributes?: VehicleAttributes
+}
+
+export interface Driver {
+  first_name: string
+  last_name: string
+  phone_number: string
+  photo_url?: string
+  license_number?: string
 }
 
 export type CancellationParams = {

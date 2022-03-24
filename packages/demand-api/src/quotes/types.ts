@@ -4,6 +4,7 @@ import {
   QuotePriceType,
   QuotePickUpType,
   QuoteSource,
+  Breakdown,
 } from '../sharedTypes'
 import { HttpResponse } from '../http/types'
 
@@ -71,20 +72,17 @@ export interface QuotesByIdResponse extends QuotesResponse {
 }
 
 export type Quote = {
-  type?: string
+  type?: 'QUOTE_TYPE_NOT_SET' | QuotePriceType
   total: number
   currency: string
   gratuity_percent?: number
-  breakdown?: {
-    value: number
-    name: string
-    description?: string
-  }[]
+  /** @depricated */
+  breakdown?: Breakdown[]
   vehicle_class?: string
   qta_high_minutes?: number
   qta_low_minutes?: number
   vehicle_attributes?: VehicleAttributes
-  source?: string
+  source?: QuoteSource
   high_price?: number
   low_price?: number
 }
