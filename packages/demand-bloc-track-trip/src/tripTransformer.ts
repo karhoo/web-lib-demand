@@ -75,7 +75,7 @@ export type TripFollowResponse = {
   serviceLevelAgreements?: ServiceLevelAgreements | null
 }
 
-export const tripTransformer = (trip: OriginalTripFollowResponse & BookATripResponse): TripFollowResponse => {
+const baseTransformer = (trip: OriginalTripFollowResponse | BookATripResponse): TripFollowResponse => {
   const {
     fleet_info = {},
     vehicle,
@@ -85,14 +85,11 @@ export const tripTransformer = (trip: OriginalTripFollowResponse & BookATripResp
     date_booked,
     status,
     state_details,
-    tracking,
     quote,
     flight_number,
     train_number,
     train_time,
-    trip_id,
     display_trip_id,
-    id,
     passengers,
     meeting_point,
     service_level_agreements,
@@ -145,8 +142,6 @@ export const tripTransformer = (trip: OriginalTripFollowResponse & BookATripResp
     date_scheduled &&
     new Date(date_scheduled).getTime() - new Date(original_date_scheduled).getTime() >= 60000
 
-  const originEta = status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta
-
   const etaBreakdown = {
     from: dv(quote?.qta_low_minutes?.toString()),
     to: dv(quote?.qta_high_minutes?.toString()),
@@ -165,13 +160,13 @@ export const tripTransformer = (trip: OriginalTripFollowResponse & BookATripResp
     originPlaceId: dv(origin?.place_id),
     originPosition: origin?.position || {},
     originTimezone: dv(origin?.timezone),
-    originEta,
+    originEta: 0,
     etaBreakdown,
     destinationDisplayName: dv(destination?.display_address),
     destinationPlaceId: dv(destination?.place_id),
     destinationPosition: destination?.position || {},
-    destinationEta: tracking?.destination_eta,
-    driverPosition: tracking?.position || {},
+    destinationEta: undefined,
+    driverPosition: {},
     meetDriverMessage: dv(meeting_point?.instructions),
     meetingPointPosition: meeting_point?.position || {},
     status: status || '',
@@ -180,8 +175,36 @@ export const tripTransformer = (trip: OriginalTripFollowResponse & BookATripResp
     trainNumber: train_number || null,
     trainTime: train_time || null,
     tripId: display_trip_id || null,
-    internalTripId: trip_id || id || null,
+    internalTripId: null,
     serviceLevelAgreements: service_level_agreements || null,
     meta: meta || null,
+  }
+}
+
+export const tripFollowTransformer = (trip: OriginalTripFollowResponse): TripFollowResponse => {
+  const base = baseTransformer(trip)
+
+  const { tracking, trip_id, status } = trip
+
+  return {
+    ...base,
+    originEta: status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta,
+    destinationEta: tracking?.destination_eta,
+    driverPosition: tracking?.position || {},
+    internalTripId: trip_id || null,
+  }
+}
+
+// for backward compatibility
+export const tripTransformer = (trip: BookATripResponse & OriginalTripFollowResponse): TripFollowResponse => {
+  const base = baseTransformer(trip)
+  const { tracking, trip_id, status, id } = trip
+
+  return {
+    ...base,
+    originEta: status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta,
+    internalTripId: trip_id || id || null,
+    destinationEta: tracking?.destination_eta,
+    driverPosition: tracking?.position || {},
   }
 }

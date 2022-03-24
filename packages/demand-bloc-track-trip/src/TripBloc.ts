@@ -12,7 +12,7 @@ import polling from './polling'
 
 import { publishReplay, refCount } from 'rxjs/operators'
 import { FinalTripStatuses, FinalFareStatuses, TripStatuses } from './statuses'
-import { tripTransformer, TripFollowResponse } from './tripTransformer'
+import { tripFollowTransformer, TripFollowResponse } from './tripTransformer'
 import { makeSearchParams } from './utils'
 import { Storage, TripService, FareService, TripsOffset, TripsSearchParams, CustomOptions } from './types'
 
@@ -175,7 +175,7 @@ export class TripBloc {
 
       const { body } = data
 
-      this.trip$.next(tripTransformer(body))
+      this.trip$.next(tripFollowTransformer(body))
 
       const pickUpKey = `${id}_pickUpTime`
 

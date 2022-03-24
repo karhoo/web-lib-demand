@@ -107,19 +107,19 @@ describe('TripBloc', () => {
     })
 
     it('should call tripTransformer', async () => {
-      jest.spyOn(transformer, 'tripTransformer')
+      jest.spyOn(transformer, 'tripFollowTransformer')
 
       bloc.track(id)
 
       await promise
 
-      expect(transformer.tripTransformer).toBeCalledTimes(1)
-      expect(transformer.tripTransformer).toBeCalledWith(defaultTrackTripResponse.body)
+      expect(transformer.tripFollowTransformer).toBeCalledTimes(1)
+      expect(transformer.tripFollowTransformer).toBeCalledWith(defaultTrackTripResponse.body)
     })
 
     it('should emit trip info', async () => {
       const tripInfo: transformer.TripFollowResponse[] = []
-      const expectedTripInfo = [transformer.tripTransformer(defaultTrackTripResponse.body)]
+      const expectedTripInfo = [transformer.tripFollowTransformer(defaultTrackTripResponse.body)]
 
       bloc.trip.subscribe(data => tripInfo.push(data))
       bloc.track(id)
@@ -131,7 +131,7 @@ describe('TripBloc', () => {
 
     it('should emit trip info', async () => {
       const tripInfo: transformer.TripFollowResponse[] = []
-      const expectedTripInfo = [transformer.tripTransformer(defaultTrackTripResponse.body)]
+      const expectedTripInfo = [transformer.tripFollowTransformer(defaultTrackTripResponse.body)]
 
       bloc.trip.subscribe(data => tripInfo.push(data))
       bloc.track(id)
