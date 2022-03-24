@@ -50,9 +50,9 @@ describe('parse', () => {
   })
 
   it('should parse wrong pickup time', () => {
-    const data = getQueryString({ 'leg-1-pickup-time': '2020-08-09T18:31:42 03:30' })
+    const data = getQueryString({ 'leg-1-pickup-time': '2022-03-24T09:40:42 03:30' })
 
-    expect(parse(data)).toEqual({ 'leg-1-pickup-time': '2020-08-09T18:31:42+03:30' })
+    expect(parse(data).legs[0].pickupTime).toEqual('2022-03-24T09:40:42+03:30')
   })
 
   it('should have travellerLocale', () => {
