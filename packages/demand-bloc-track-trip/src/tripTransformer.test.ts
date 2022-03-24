@@ -1,10 +1,10 @@
-import { TripStatuses, MeetingPointTypes, PoiTypes } from '@karhoo/demand-api'
+import { TripStatuses, MeetingPointTypes, PoiTypes, TripFollowResponse } from '@karhoo/demand-api'
 
-import { tripTransformer } from './tripTransformer'
+import { tripFollowTransformer } from './tripTransformer'
 
-describe('tripTransformer', () => {
+describe('tripFollowTransformer', () => {
   it('should return value with defult parameters for not required properties', () => {
-    expect(tripTransformer({ status: TripStatuses.CONFIRMED })).toEqual({
+    expect(tripFollowTransformer({ status: TripStatuses.CONFIRMED })).toEqual({
       driver: null,
       fleet: {
         phoneNumber: '',
@@ -60,7 +60,7 @@ describe('tripTransformer', () => {
   })
 
   it('should originEta be 0 when status is ARRIVED', () => {
-    expect(tripTransformer({ status: TripStatuses.ARRIVED }).originEta).toEqual(0)
+    expect(tripFollowTransformer({ status: TripStatuses.ARRIVED }).originEta).toEqual(0)
   })
 
   it('should return originalDateScheduled', () => {
@@ -68,7 +68,7 @@ describe('tripTransformer', () => {
     const originalDateScheduled = '2020-05-29T13:58:00Z'
 
     expect(
-      tripTransformer({
+      tripFollowTransformer({
         status: TripStatuses.ARRIVED,
         date_scheduled: dateScheduled,
         meta: { original_date_scheduled: originalDateScheduled },
@@ -81,7 +81,7 @@ describe('tripTransformer', () => {
     const originalDateScheduled = '2020-05-29T13:59:20Z'
 
     expect(
-      tripTransformer({
+      tripFollowTransformer({
         status: TripStatuses.ARRIVED,
         date_scheduled: dateScheduled,
         meta: { original_date_scheduled: originalDateScheduled },
@@ -90,7 +90,7 @@ describe('tripTransformer', () => {
   })
 
   it('should return expected result', () => {
-    const tripInfo = {
+    const tripInfo: TripFollowResponse = {
       date_booked: '2020-05-28T08:17:07Z',
       date_scheduled: '2020-05-29T14:00:00Z',
       destination: {
@@ -168,7 +168,6 @@ describe('tripTransformer', () => {
         },
         vehicle_class: 'saloon',
       },
-      state_details: 'state_details',
       status: TripStatuses.CONFIRMED,
       tracking: {
         destination_eta: 11,
@@ -181,7 +180,6 @@ describe('tripTransformer', () => {
       flight_number: 'flight_number',
       train_number: 'train_number',
       train_time: 'train_time',
-      id: 'id',
       vehicle: {
         attributes: {
           child_seat: false,
@@ -204,7 +202,7 @@ describe('tripTransformer', () => {
       },
     }
 
-    expect(tripTransformer(tripInfo)).toEqual({
+    expect(tripFollowTransformer(tripInfo)).toEqual({
       driver: {
         name: `${tripInfo.vehicle?.driver?.first_name} ${tripInfo.vehicle?.driver?.last_name}`.trim(),
         phoneNumber: tripInfo.vehicle?.driver?.phone_number,
@@ -256,12 +254,12 @@ describe('tripTransformer', () => {
       driverPosition: tripInfo.tracking?.position,
       meetDriverMessage: tripInfo.meeting_point?.instructions,
       meetingPointPosition: tripInfo.meeting_point?.position,
-      stateDetails: tripInfo.state_details,
+      stateDetails: '',
       trainNumber: tripInfo.train_number,
       trainTime: tripInfo.train_time,
       tripId: tripInfo.display_trip_id,
       flightNumber: tripInfo.flight_number,
-      internalTripId: tripInfo.id,
+      internalTripId: null,
       serviceLevelAgreements: null,
       meta: tripInfo.meta,
       status: tripInfo.status,
@@ -281,7 +279,7 @@ describe('tripTransformer', () => {
       },
     }
     expect(
-      tripTransformer({
+      tripFollowTransformer({
         status: TripStatuses.ARRIVED,
         date_scheduled: dateScheduled,
         meta: { original_date_scheduled: originalDateScheduled },
