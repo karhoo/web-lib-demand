@@ -78,6 +78,15 @@ export type DeeplinkData = {
   customFields?: Dictionary<string>
 }
 
+// to relax specific validation extend ValidationOptions with allowXYZ property where XYZ is specific rule
+export type ValidationOptions = {
+  /**
+   * If `false`, non of the field will be required and validation will be applied to present fields.
+   * Default true
+   */
+  strict?: boolean
+}
+
 export type ValidationError = {
   code: string
   path: string
