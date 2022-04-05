@@ -199,11 +199,11 @@ export function validateLeg(
   const activeBookingType = leg.bookingType ?? defaultBookingType
 
   if (pickUpFields.length || pickupPosition) {
-    collectErrors(validatePlace(pickUpFields, pickupPosition, 'pickupPosition', 'pickup'))
+    collectErrors(validatePlace(pickUpFields, pickupPosition, 'pickup', 'pickupPosition'))
   }
 
   if (dropoffFields.length || dropoffPosition) {
-    collectErrors(validatePlace(dropoffFields, dropoffPosition, 'dropoffPosition', 'dropoff'))
+    collectErrors(validatePlace(dropoffFields, dropoffPosition, 'dropoff', 'dropoffPosition'))
   }
 
   if (pickupPosition && dropoffPosition) {
@@ -271,10 +271,6 @@ export function validateLegToQuotes(leg: JourneyLeg, defaultBookingType: Booking
 
   if ((!pickUpFields.length && !pickupPosition) || (!dropoffFields.length && !dropoffPosition)) {
     errors.push(getError(codes.DP014, path))
-  }
-
-  if (bookingType === BookingTypes.PREBOOK && isUndefined(leg.pickupTime)) {
-    errors.push(getError(codes.DP001, 'pickupTime'))
   }
 
   errors.push(...validateLeg(leg, bookingType, 'legs.1', { strict: true }))
