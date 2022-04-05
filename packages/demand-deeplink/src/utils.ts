@@ -1,7 +1,4 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
-import isUndefined from 'lodash/isUndefined'
-import negate from 'lodash/negate'
-
 export const isNotEmptyString = (value: any) => typeof value === 'string' && !!value.trim()
 
 export const isPositiveInteger = (value: any) =>
@@ -9,4 +6,4 @@ export const isPositiveInteger = (value: any) =>
 
 export const isObject = (value: any) => Object.prototype.toString.call(value) === '[object Object]'
 
-export const excludeUndefined = <T>(arr: Array<T | undefined>) => arr.filter(negate(isUndefined)) as T[]
+export const excludeUndefined = <T>(arr: Array<T | undefined>) => arr.filter(el => !!el) as T[]

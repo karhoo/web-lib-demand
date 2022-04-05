@@ -86,7 +86,7 @@ function validateBookingType(
 function validateRoute(fields: string[], fieldName: string) {
   const errors: { code: string; path: string; error: string }[] = []
 
-  if (!fields.filter(isNotEmptyString).length) {
+  if (!fields.length) {
     errors.push(getError(codes.DP005, fieldName))
   }
 
@@ -115,6 +115,13 @@ function validatePlace(
   }
 
   return errors
+}
+
+function validateCoordinates(pickupPosition: Position, dropoffPosition: Position) {
+  const fieldNme = 'pickup'
+  return pickupPosition.lng === dropoffPosition.lng && pickupPosition.lat === dropoffPosition.lat
+    ? [getError(codes.DP012, fieldNme)]
+    : []
 }
 
 function validateTime(time: string | undefined, fieldName: string, { strict }: ValidationOptions) {
@@ -164,7 +171,6 @@ export function validateLeg(
 ) {
   const errors = []
 
-  // TODO: maybe let's exclude all empty: undefined, empty string etc
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
   const pickupPosition = leg.pickupPosition
@@ -198,6 +204,10 @@ export function validateLeg(
 
   if (dropoffFields.length || dropoffPosition) {
     collectErrors(validatePlace(dropoffFields, dropoffPosition, 'dropoffPosition', 'dropoff'))
+  }
+
+  if (pickupPosition && dropoffPosition) {
+    collectErrors(validateCoordinates(pickupPosition, dropoffPosition))
   }
 
   if (strict && !pickUpFields.length && !pickupPosition && !isUndefined(leg.pickupTime)) {
