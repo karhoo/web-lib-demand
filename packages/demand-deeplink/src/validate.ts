@@ -97,6 +97,26 @@ function validateRoute(fields: string[], fieldName: string) {
   return errors
 }
 
+function validatePlace(
+  placeFields: string[],
+  placePosition: Position | undefined,
+  placeFieldsName: string,
+  placePositionName: string
+) {
+  const errors = []
+
+  if (placeFields.length) {
+    errors.push(...validateRoute(placeFields, placeFieldsName))
+    placePosition && errors.push(getError(codes.DP002, placePositionName))
+  }
+
+  if (!placeFields.length && placePosition) {
+    errors.push(...validatePosition(placePosition, placePositionName))
+  }
+
+  return errors
+}
+
 function validateTime(time: string | undefined, fieldName: string, { strict }: ValidationOptions) {
   if (!time) {
     return strict ? [getError(codes.DP001, fieldName)] : []
@@ -143,6 +163,8 @@ export function validateLeg(
   { strict }: ValidationOptions
 ) {
   const errors = []
+
+  // TODO: maybe let's exclude all empty: undefined, empty string etc
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
   const pickupPosition = leg.pickupPosition
@@ -158,7 +180,9 @@ export function validateLeg(
 
   if (strict && !pickUpFields.length && !dropoffFields.length && !pickupPosition && !dropoffPosition) {
     errors.push(getError(codes.DP001, path))
-  } else if (pickUpFields.length && dropoffFields.length && pickUpFields[0] === dropoffFields[0]) {
+  }
+
+  if (pickUpFields.length && dropoffFields.length && pickUpFields[0] === dropoffFields[0]) {
     errors.push(getError(codes.DP006, path))
   }
 
@@ -168,41 +192,30 @@ export function validateLeg(
 
   const activeBookingType = leg.bookingType ?? defaultBookingType
 
-  if (pickUpFields.length) {
-    collectErrors(validateRoute(pickUpFields, 'pickup'))
-    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType, { strict }))
-    pickupPosition && collectErrors([getError(codes.DP002, 'pickup')])
+  if (pickUpFields.length || pickupPosition) {
+    collectErrors(validatePlace(pickUpFields, pickupPosition, 'pickupPosition', 'pickup'))
+  }
+
+  if (dropoffFields.length || dropoffPosition) {
+    collectErrors(validatePlace(dropoffFields, dropoffPosition, 'dropoffPosition', 'dropoff'))
   }
 
   if (strict && !pickUpFields.length && !pickupPosition && !isUndefined(leg.pickupTime)) {
     collectErrors([getError(codes.DP009, 'pickup')])
   }
 
-  if (!pickUpFields.length && pickupPosition) {
-    collectErrors(validatePosition(pickupPosition, 'pickupPosition'))
-    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType, { strict }))
-  }
-
-  if (dropoffFields.length) {
-    collectErrors(validateRoute(dropoffFields, 'dropoff'))
-    dropoffPosition && collectErrors([getError(codes.DP002, 'dropoff')])
-  }
-
-  if (!dropoffFields.length && dropoffPosition) {
-    collectErrors(validatePosition(dropoffPosition, 'dropoffPosition'))
-  }
+  collectErrors(validatePickupTime(leg.pickupTime, activeBookingType, { strict }))
 
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
 
   !isUndefined(leg.meta) &&
-    collectErrors(
-      !isUndefined(leg.meta[trainTimeParameter])
-        ? [
-            ...validateMeta(leg.meta),
-            ...validateTime(leg.meta[trainTimeParameter], `meta.${trainTimeParameter}`, { strict }),
-          ]
-        : validateMeta(leg.meta)
-    )
+    collectErrors([
+      ...validateMeta(leg.meta),
+      ...(!isUndefined(leg.meta[trainTimeParameter])
+        ? validateTime(leg.meta[trainTimeParameter], `meta.${trainTimeParameter}`, { strict })
+        : []),
+    ])
+
   !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
   !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
 
@@ -234,12 +247,7 @@ export function validate(
   return errors.length ? { ok: false, errors } : { ok: true }
 }
 
-export function validateLegToQuotes(
-  leg: JourneyLeg,
-  defaultBookingType: BookingType = BookingTypes.PREBOOK,
-  path: string,
-  { strict }: ValidationOptions = { strict: true }
-) {
+export function validateLegToQuotes(leg: JourneyLeg, defaultBookingType: BookingType, path: string) {
   const errors = []
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
@@ -247,17 +255,6 @@ export function validateLegToQuotes(
   const dropoffPosition = leg.dropoffPosition
   const bookingType = leg.bookingType ?? defaultBookingType
 
-  // ?? I don't get this logic  ??
-  //   why pickup or dropoff cannot be defined ?
-  //   error code means 'Pickup or dropoff are unacceptable parameters',
-  //
-  //   use case in web-booker
-  //   const { ok } = validate(parse(searchString))
-  //   const { bookingType } = parse(searchString)
-  //
-  //   const hasValidDeeplink = ok
-  //     ? validateLegToQuotes(parse(searchString).legs[0], bookingType, 'legs.0').ok
-  //     : false
   if (leg.pickup || leg.dropoff) {
     errors.push(getError(codes.DP013, path))
   }
@@ -266,9 +263,11 @@ export function validateLegToQuotes(
     errors.push(getError(codes.DP014, path))
   }
 
-  if (strict && bookingType === BookingTypes.PREBOOK && isUndefined(leg.pickupTime)) {
+  if (bookingType === BookingTypes.PREBOOK && isUndefined(leg.pickupTime)) {
     errors.push(getError(codes.DP001, 'pickupTime'))
   }
+
+  errors.push(...validateLeg(leg, bookingType, 'legs.1', { strict: true }))
 
   return errors.length ? { ok: false, errors } : { ok: true }
 }
