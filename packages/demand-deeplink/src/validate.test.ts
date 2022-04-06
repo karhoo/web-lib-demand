@@ -12,7 +12,7 @@ import {
 } from './testData'
 
 import { trainTimeParameter, BookingTypes } from './constants'
-import {BookingType} from "./types";
+import { DeeplinkData } from './types'
 
 describe('parse', () => {
   const baseDeeplinkData = {
@@ -540,6 +540,15 @@ describe('parse', () => {
       expect(validate(baseDeeplinkData, relaxedValidateOptions)).toEqual({ ok: true })
     })
 
+    it('should return ok equals true for deeplink without booking type', () => {
+      const deeplinkData = ({
+        ...baseDeeplinkData,
+        bookingType: undefined,
+      } as unknown) as DeeplinkData
+
+      expect(validate(deeplinkData, relaxedValidateOptions)).toEqual({ ok: true })
+    })
+
     it('should return ok equals true for valid deeplink when customFields exist', () => {
       expect(validate(getData({ customFields: { utm_campaign: 'test utm campaign ' } }))).toEqual({
         ok: true,
@@ -636,17 +645,6 @@ describe('parse', () => {
       it('should return empty array when there is no errors', () => {
         expect(
           validateLeg(baseDeeplinkData.legs[0], BookingTypes.PREBOOK, 'legs.0', relaxedValidateOptions)
-        ).toEqual([])
-      })
-
-      it('should return empty array when there is no Booking type', () => {
-        expect(
-          validateLeg(
-            baseDeeplinkData.legs[0],
-            (undefined as unknown) as BookingType,
-            'legs.0',
-            relaxedValidateOptions
-          )
         ).toEqual([])
       })
 
