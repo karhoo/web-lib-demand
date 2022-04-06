@@ -12,7 +12,6 @@ import {
 } from './testData'
 
 import { trainTimeParameter, BookingTypes } from './constants'
-import { DeeplinkData } from './types'
 
 describe('parse', () => {
   const baseDeeplinkData = {
@@ -541,11 +540,13 @@ describe('parse', () => {
     })
 
     it('should return ok equals true for deeplink without booking type', () => {
-      const deeplinkData = ({
+      const deeplinkData = {
         ...baseDeeplinkData,
         bookingType: undefined,
-      } as unknown) as DeeplinkData
+      }
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       expect(validate(deeplinkData, relaxedValidateOptions)).toEqual({ ok: true })
     })
 
