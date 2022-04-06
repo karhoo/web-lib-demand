@@ -533,10 +533,10 @@ describe('parse', () => {
   })
 
   describe('in relaxed mode', () => {
-    const strictValidateOptions = { strict: false }
+    const relaxedValidateOptions = { strict: false }
 
     it('should return ok equals true for valid deeplink', () => {
-      expect(validate(baseDeeplinkData)).toEqual({ ok: true })
+      expect(validate(baseDeeplinkData, relaxedValidateOptions)).toEqual({ ok: true })
     })
 
     it('should return ok equals true for valid deeplink when customFields exist', () => {
@@ -553,7 +553,7 @@ describe('parse', () => {
         meta: {},
       }
 
-      expect(validate(deeplinkData)).toEqual({ ok: true })
+      expect(validate(deeplinkData, relaxedValidateOptions)).toEqual({ ok: true })
     })
 
     it('should return error when legs is empty array', () => {
@@ -564,63 +564,63 @@ describe('parse', () => {
         meta: {},
       }
 
-      expect(validate(deeplinkData)).toEqual({
+      expect(validate(deeplinkData, relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP001, 'legs')],
       })
     })
 
     it('should return error when passengers is not a number', () => {
-      expect(validate(getData({ passengerInfo: { passengers: NaN } }))).toEqual({
+      expect(validate(getData({ passengerInfo: { passengers: NaN } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'passengerInfo.passengers')],
       })
     })
 
     it('should return error when passengers is negative number', () => {
-      expect(validate(getData({ passengerInfo: { passengers: -2 } }))).toEqual({
+      expect(validate(getData({ passengerInfo: { passengers: -2 } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'passengerInfo.passengers')],
       })
     })
 
     it('should return error when passengers is float', () => {
-      expect(validate(getData({ passengerInfo: { passengers: 2.22 } }))).toEqual({
+      expect(validate(getData({ passengerInfo: { passengers: 2.22 } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'passengerInfo.passengers')],
       })
     })
 
     it('should return error when luggage is not a number', () => {
-      expect(validate(getData({ passengerInfo: { luggage: NaN } }))).toEqual({
+      expect(validate(getData({ passengerInfo: { luggage: NaN } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'passengerInfo.luggage')],
       })
     })
 
     it('should return error when one of the passengerInfo fileds is empty string', () => {
-      expect(validate(getData({ passengerInfo: { email: '' } }))).toEqual({
+      expect(validate(getData({ passengerInfo: { email: '' } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'passengerInfo.email')],
       })
     })
 
     it('should return error when one of the meta fileds is string that contains only spaces', () => {
-      expect(validate(getData({ meta: { 'test-field': '   ' } }))).toEqual({
+      expect(validate(getData({ meta: { 'test-field': '   ' } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'meta.test-field')],
       })
     })
 
     it('should return error when one of the customFields fileds is empty string', () => {
-      expect(validate(getData({ customFields: { 'test-field': '' } }))).toEqual({
+      expect(validate(getData({ customFields: { 'test-field': '' } }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP005, 'customFields.test-field')],
       })
     })
 
     it('should return error if bookingType is neiter ASAP nor PRE-BOOK', () => {
-      expect(validate(getData({ bookingType: BookingTypes.CUSTOM }))).toEqual({
+      expect(validate(getData({ bookingType: BookingTypes.CUSTOM }), relaxedValidateOptions)).toEqual({
         ok: false,
         errors: [getError(codes.DP010, 'bookingType')],
       })
@@ -634,7 +634,7 @@ describe('parse', () => {
 
       it('should return empty array when there is no errors', () => {
         expect(
-          validateLeg(baseDeeplinkData.legs[0], BookingTypes.PREBOOK, 'legs.0', strictValidateOptions)
+          validateLeg(baseDeeplinkData.legs[0], BookingTypes.PREBOOK, 'legs.0', relaxedValidateOptions)
         ).toEqual([])
       })
 
@@ -650,7 +650,7 @@ describe('parse', () => {
             }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -663,7 +663,7 @@ describe('parse', () => {
             getData({ pickup, dropoff: pickup }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP006, 'legs.0')])
       })
@@ -674,7 +674,7 @@ describe('parse', () => {
             getData({ pickup: '', dropoff: undefined }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -685,7 +685,7 @@ describe('parse', () => {
             getData({ pickup: undefined, dropoff: '', pickupTime: undefined }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -696,7 +696,7 @@ describe('parse', () => {
             getData({ pickup: undefined, dropoff: '', pickupTime: '2021-12-09T11:46:00Z' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -707,7 +707,7 @@ describe('parse', () => {
             getData({ pickup: undefined, dropoff: 'dropoff', pickupTime: undefined }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -718,7 +718,7 @@ describe('parse', () => {
             getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
       })
@@ -729,7 +729,7 @@ describe('parse', () => {
             getData({ pickup: 'pickup', pickupPosition: { lat: '53.1243546', lng: '-0.1743561' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
       })
@@ -740,7 +740,7 @@ describe('parse', () => {
             getData({ dropoff: 'dropoff', dropoffPlaceId: 'dropoffPlaceId' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.dropoff')])
       })
@@ -751,7 +751,7 @@ describe('parse', () => {
             getData({ dropoff: 'dropoff', dropoffPosition: { lat: '53.1243546', lng: '-0.1743561' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.dropoff')])
       })
@@ -768,7 +768,7 @@ describe('parse', () => {
             }),
             BookingTypes.ASAP,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP012, 'legs.0.pickup')])
       })
@@ -779,7 +779,7 @@ describe('parse', () => {
             getData({ pickup: undefined, pickupPosition: { lat: '90.1243546', lng: '-0.1743561' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP012, 'legs.0.pickupPosition')])
       })
@@ -790,7 +790,7 @@ describe('parse', () => {
             getData({ dropoff: undefined, dropoffPosition: { lat: '54.124re3546', lng: '-180.1743561' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP012, 'legs.0.dropoffPosition')])
       })
@@ -801,7 +801,7 @@ describe('parse', () => {
             getData({ pickup: undefined, pickupPosition: { lat: undefined, lng: '-121.1743561' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP012, 'legs.0.pickupPosition')])
       })
@@ -812,7 +812,7 @@ describe('parse', () => {
             getData({ dropoff: undefined, dropoffPosition: { lat: undefined, lng: '-165.1743561' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP012, 'legs.0.dropoffPosition')])
       })
@@ -823,7 +823,7 @@ describe('parse', () => {
             getData({ pickupKpoi: 'pickupKpoi', pickupPlaceId: 'pickupPlaceId' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
       })
@@ -834,7 +834,7 @@ describe('parse', () => {
             getData({ pickup: undefined, pickupTime: '2021-12-09T11:46:00Z' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -845,7 +845,7 @@ describe('parse', () => {
             getData({ pickup: 'pickup', pickupTime: '2020-08-09T18:31:42' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([
           expectedError(codes.DP003, 'legs.0.pickupTime'),
@@ -859,7 +859,7 @@ describe('parse', () => {
             getData({ pickup: 'pickup', pickupTime: undefined }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -870,7 +870,7 @@ describe('parse', () => {
             getData({ pickup: 'pickup', pickupPlaceId: 'pickupPlaceId', pickupTime: undefined }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
       })
@@ -881,7 +881,7 @@ describe('parse', () => {
             getData({ pickupTime: '2020-08-09T18:31:42' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([
           expectedError(codes.DP003, 'legs.0.pickupTime'),
@@ -895,7 +895,7 @@ describe('parse', () => {
             getData({ pickupTime: '2020-08-09T18+01:00' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP003, 'legs.0.pickupTime')])
       })
@@ -906,7 +906,7 @@ describe('parse', () => {
             getData({ pickupTime: '2020-08-09T18:31:42Z' }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -921,7 +921,7 @@ describe('parse', () => {
             }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -932,7 +932,7 @@ describe('parse', () => {
             getData({ meta: { [trainTimeParameter]: '2020-08-09T18+01:00' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP003, 'legs.0.meta.train-time')])
       })
@@ -943,7 +943,7 @@ describe('parse', () => {
             getData({ meta: { train: 4312, [trainTimeParameter]: '2020-08-09T18+01:00' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([
           expectedError(codes.DP005, 'legs.0.meta.train'),
@@ -957,14 +957,14 @@ describe('parse', () => {
             getData({ meta: { train: '4312' } }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
 
       it('should return error if bookingType is neiter ASAP nor PRE-BOOK', () => {
         expect(
-          validateLeg(getData({ pickupTime: undefined }), BookingTypes.ASAP, 'legs.0', strictValidateOptions)
+          validateLeg(getData({ pickupTime: undefined }), BookingTypes.ASAP, 'legs.0', relaxedValidateOptions)
         ).toEqual([])
       })
 
@@ -974,13 +974,13 @@ describe('parse', () => {
             getData({ bookingType: BookingTypes.CUSTOM }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP010, 'legs.0.bookingType')])
       })
 
       it('should return error if defaultBookingType is ASAP and pickupTime is specified', () => {
-        expect(validateLeg(getData({}), BookingTypes.ASAP, 'legs.0', strictValidateOptions)).toEqual([
+        expect(validateLeg(getData({}), BookingTypes.ASAP, 'legs.0', relaxedValidateOptions)).toEqual([
           expectedError(codes.DP011, 'legs.0.pickupTime'),
         ])
       })
@@ -991,7 +991,7 @@ describe('parse', () => {
             getData({ bookingType: BookingTypes.ASAP, pickupTime: undefined }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([])
       })
@@ -1002,7 +1002,7 @@ describe('parse', () => {
             getData({ bookingType: BookingTypes.ASAP }),
             BookingTypes.PREBOOK,
             'legs.0',
-            strictValidateOptions
+            relaxedValidateOptions
           )
         ).toEqual([expectedError(codes.DP011, 'legs.0.pickupTime')])
       })
