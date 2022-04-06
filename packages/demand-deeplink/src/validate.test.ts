@@ -872,9 +872,7 @@ describe('parse', () => {
             'legs.0',
             strictValidateOptions
           )
-        ).toEqual([
-          expectedError(codes.DP002, 'legs.0.pickup'),
-        ])
+        ).toEqual([expectedError(codes.DP002, 'legs.0.pickup')])
       })
 
       it('should return errors if pickupTime has no timezone', () => {
