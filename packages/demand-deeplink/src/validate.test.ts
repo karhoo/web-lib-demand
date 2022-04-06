@@ -12,6 +12,7 @@ import {
 } from './testData'
 
 import { trainTimeParameter, BookingTypes } from './constants'
+import {BookingType} from "./types";
 
 describe('parse', () => {
   const baseDeeplinkData = {
@@ -635,6 +636,17 @@ describe('parse', () => {
       it('should return empty array when there is no errors', () => {
         expect(
           validateLeg(baseDeeplinkData.legs[0], BookingTypes.PREBOOK, 'legs.0', relaxedValidateOptions)
+        ).toEqual([])
+      })
+
+      it('should return empty array when there is no Booking type', () => {
+        expect(
+          validateLeg(
+            baseDeeplinkData.legs[0],
+            (undefined as unknown) as BookingType,
+            'legs.0',
+            relaxedValidateOptions
+          )
         ).toEqual([])
       })
 
