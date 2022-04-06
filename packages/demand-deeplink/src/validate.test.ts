@@ -172,7 +172,7 @@ describe('parse', () => {
             'legs.0',
             strictValidateOptions
           )
-        ).toEqual([expectedError(codes.DP001, 'legs.0')])
+        ).toEqual([expectedError(codes.DP001, 'legs.0'), expectedError(codes.DP001, 'legs.0.pickupTime')])
       })
 
       it('should return errors when pickup is the same as dropoff', () => {
@@ -196,7 +196,7 @@ describe('parse', () => {
             'legs.0',
             strictValidateOptions
           )
-        ).toEqual([expectedError(codes.DP005, 'legs.0.pickup')])
+        ).toEqual([expectedError(codes.DP001, 'legs.0'), expectedError(codes.DP009, 'legs.0.pickup')])
       })
 
       it('should return errors when there is dropoff but it is empty string', () => {
@@ -207,7 +207,29 @@ describe('parse', () => {
             'legs.0',
             strictValidateOptions
           )
-        ).toEqual([expectedError(codes.DP005, 'legs.0.dropoff')])
+        ).toEqual([expectedError(codes.DP001, 'legs.0'), expectedError(codes.DP001, 'legs.0.pickupTime')])
+      })
+
+      it('should return errors when there is dropoff but it is empty string and time is sepcified', () => {
+        expect(
+          validateLeg(
+            getData({ pickup: undefined, dropoff: '', pickupTime: '2021-12-09T11:46:00Z' }),
+            BookingTypes.PREBOOK,
+            'legs.0',
+            strictValidateOptions
+          )
+        ).toEqual([expectedError(codes.DP001, 'legs.0'), expectedError(codes.DP009, 'legs.0.pickup')])
+      })
+
+      it('should return errors when there is dropoff but there is no pickupTime', () => {
+        expect(
+          validateLeg(
+            getData({ pickup: undefined, dropoff: 'dropoff', pickupTime: undefined }),
+            BookingTypes.PREBOOK,
+            'legs.0',
+            strictValidateOptions
+          )
+        ).toEqual([expectedError(codes.DP001, 'legs.0.pickupTime')])
       })
 
       it('should return errors when multiple pickups are provided', () => {
@@ -252,6 +274,23 @@ describe('parse', () => {
             strictValidateOptions
           )
         ).toEqual([expectedError(codes.DP002, 'legs.0.dropoff')])
+      })
+
+      it('should return errors when dropoffPosition and pickupPosition are the same', () => {
+        expect(
+          validateLeg(
+            getData({
+              pickupTime: undefined,
+              dropoff: undefined,
+              dropoffPosition: { lat: '53.1243546', lng: '-0.1743561' },
+              pickup: undefined,
+              pickupPosition: { lat: '53.1243546', lng: '-0.1743561' },
+            }),
+            BookingTypes.ASAP,
+            'legs.0',
+            strictValidateOptions
+          )
+        ).toEqual([expectedError(codes.DP012, 'legs.0.pickup')])
       })
 
       it('should return errors when pickupPosition has incorrect format', () => {
@@ -312,12 +351,26 @@ describe('parse', () => {
       it('should return errors when pickupTime is provided and pickup not', () => {
         expect(
           validateLeg(
-            getData({ pickup: undefined, pickupTime: '2020-08-09T18:31:42' }),
+            getData({ pickup: undefined, pickupTime: '2021-12-09T11:46:00Z' }),
             BookingTypes.PREBOOK,
             'legs.0',
             strictValidateOptions
           )
         ).toEqual([expectedError(codes.DP009, 'legs.0.pickup')])
+      })
+
+      it('should return errors when incorrect time format', () => {
+        expect(
+          validateLeg(
+            getData({ pickup: 'pickup', pickupTime: '2020-08-09T18:31:42' }),
+            BookingTypes.PREBOOK,
+            'legs.0',
+            strictValidateOptions
+          )
+        ).toEqual([
+          expectedError(codes.DP003, 'legs.0.pickupTime'),
+          expectedError(codes.DP004, 'legs.0.pickupTime'),
+        ])
       })
 
       it('should return errors if pickup is provided and pickupTime not', () => {
@@ -520,7 +573,7 @@ describe('parse', () => {
           'PRE-BOOK',
           'legs.0'
         )
-      ).toEqual(expectedResult(codes.DP001, 'legs.1.pickupTime'))
+      ).toEqual(expectedResult(codes.DP001, 'legs.0.pickupTime'))
     })
   })
 })

@@ -107,7 +107,7 @@ function validatePlace(
 
   if (placeFields.length) {
     errors.push(...validateRoute(placeFields, placeFieldsName))
-    placePosition && errors.push(getError(codes.DP002, placePositionName))
+    placePosition && errors.push(getError(codes.DP002, placeFieldsName))
   }
 
   if (!placeFields.length && placePosition) {
@@ -273,7 +273,7 @@ export function validateLegToQuotes(leg: JourneyLeg, defaultBookingType: Booking
     errors.push(getError(codes.DP014, path))
   }
 
-  errors.push(...validateLeg(leg, bookingType, 'legs.1', { strict: true }))
+  errors.push(...validateLeg(leg, bookingType, 'legs.0', { strict: true }))
 
   return errors.length ? { ok: false, errors } : { ok: true }
 }
