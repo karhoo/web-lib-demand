@@ -21,6 +21,7 @@ import {
   Dictionary,
   BookingType,
   Position,
+  ValidationOptions,
 } from './types'
 
 const devIsObjectCheck = (data: object, fieldName: string) => {
@@ -66,7 +67,15 @@ function validateTravellerLocale(locale?: string) {
     : [getError(codes.DP003, 'travellerLocale')]
 }
 
-function validateBookingType(bookingType: BookingType, fieldName = 'bookingType') {
+function validateBookingType(
+  bookingType: BookingType,
+  fieldName = 'bookingType',
+  { strict }: ValidationOptions
+) {
+  if (!strict && !bookingType) {
+    return []
+  }
+
   if (bookingType === BookingTypes.ASAP || bookingType === BookingTypes.PREBOOK) {
     return []
   }
@@ -77,7 +86,7 @@ function validateBookingType(bookingType: BookingType, fieldName = 'bookingType'
 function validateRoute(fields: string[], fieldName: string) {
   const errors: { code: string; path: string; error: string }[] = []
 
-  if (!fields.filter(isNotEmptyString).length) {
+  if (!fields.length) {
     errors.push(getError(codes.DP005, fieldName))
   }
 
@@ -88,9 +97,36 @@ function validateRoute(fields: string[], fieldName: string) {
   return errors
 }
 
-function validateTime(time: string | undefined, fieldName: string) {
+function validatePlace(
+  placeFields: string[],
+  placePosition: Position | undefined,
+  placeFieldsName: string,
+  placePositionName: string
+) {
+  const errors = []
+
+  if (placeFields.length) {
+    errors.push(...validateRoute(placeFields, placeFieldsName))
+    placePosition && errors.push(getError(codes.DP002, placeFieldsName))
+  }
+
+  if (!placeFields.length && placePosition) {
+    errors.push(...validatePosition(placePosition, placePositionName))
+  }
+
+  return errors
+}
+
+function validateCoordinates(pickupPosition: Position, dropoffPosition: Position) {
+  const fieldNme = 'pickup'
+  return pickupPosition.lng === dropoffPosition.lng && pickupPosition.lat === dropoffPosition.lat
+    ? [getError(codes.DP012, fieldNme)]
+    : []
+}
+
+function validateTime(time: string | undefined, fieldName: string, { strict }: ValidationOptions) {
   if (!time) {
-    return [getError(codes.DP001, fieldName)]
+    return strict ? [getError(codes.DP001, fieldName)] : []
   }
 
   const errors = expectedTimeFormatRegexp.test(time) ? [] : [getError(codes.DP003, fieldName)]
@@ -98,7 +134,11 @@ function validateTime(time: string | undefined, fieldName: string) {
   return timezoneRegexp.test(time) ? errors : errors.concat([getError(codes.DP004, fieldName)])
 }
 
-function validatePickupTime(time: string | undefined, bookingType: BookingType) {
+function validatePickupTime(
+  time: string | undefined,
+  bookingType: BookingType,
+  { strict }: ValidationOptions
+) {
   const errors = []
 
   if (bookingType === BookingTypes.ASAP && !isUndefined(time)) {
@@ -106,7 +146,7 @@ function validatePickupTime(time: string | undefined, bookingType: BookingType) 
   }
 
   if (bookingType === BookingTypes.PREBOOK) {
-    errors.push(...validateTime(time, 'pickupTime'))
+    errors.push(...validateTime(time, 'pickupTime', { strict }))
   }
 
   return errors
@@ -123,8 +163,14 @@ function validatePosition(position: Position, path: string) {
     : []
 }
 
-export function validateLeg(leg: JourneyLeg, defaultBookingType: BookingType, path: string) {
+export function validateLeg(
+  leg: JourneyLeg,
+  defaultBookingType: BookingType,
+  path: string,
+  { strict }: ValidationOptions
+) {
   const errors = []
+
   const pickUpFields = excludeUndefined([leg.pickup, leg.pickupPlaceId, leg.pickupKpoi])
   const dropoffFields = excludeUndefined([leg.dropoff, leg.dropoffPlaceId, leg.dropoffKpoi])
   const pickupPosition = leg.pickupPosition
@@ -138,65 +184,63 @@ export function validateLeg(leg: JourneyLeg, defaultBookingType: BookingType, pa
       })
     )
 
-  if (!pickUpFields.length && !dropoffFields.length && !pickupPosition && !dropoffPosition) {
+  if (strict && !pickUpFields.length && !dropoffFields.length && !pickupPosition && !dropoffPosition) {
     errors.push(getError(codes.DP001, path))
-  } else if (pickUpFields.length && dropoffFields.length && pickUpFields[0] === dropoffFields[0]) {
+  }
+
+  if (pickUpFields.length && dropoffFields.length && pickUpFields[0] === dropoffFields[0]) {
     errors.push(getError(codes.DP006, path))
   }
 
   if (leg.bookingType) {
-    collectErrors(validateBookingType(leg.bookingType))
+    collectErrors(validateBookingType(leg.bookingType, 'bookingType', { strict }))
   }
 
   const activeBookingType = leg.bookingType ?? defaultBookingType
 
-  if (pickUpFields.length) {
-    collectErrors(validateRoute(pickUpFields, 'pickup'))
-    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType))
-    pickupPosition && collectErrors([getError(codes.DP002, 'pickup')])
+  if (pickUpFields.length || pickupPosition) {
+    collectErrors(validatePlace(pickUpFields, pickupPosition, 'pickup', 'pickupPosition'))
   }
 
-  if (!pickUpFields.length && !pickupPosition && !isUndefined(leg.pickupTime)) {
+  if (dropoffFields.length || dropoffPosition) {
+    collectErrors(validatePlace(dropoffFields, dropoffPosition, 'dropoff', 'dropoffPosition'))
+  }
+
+  if (pickupPosition && dropoffPosition) {
+    collectErrors(validateCoordinates(pickupPosition, dropoffPosition))
+  }
+
+  if (strict && !pickUpFields.length && !pickupPosition && !isUndefined(leg.pickupTime)) {
     collectErrors([getError(codes.DP009, 'pickup')])
   }
 
-  if (!pickUpFields.length && pickupPosition) {
-    collectErrors(validatePosition(pickupPosition, 'pickupPosition'))
-    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType))
-  }
-
-  if (dropoffFields.length) {
-    collectErrors(validateRoute(dropoffFields, 'dropoff'))
-    dropoffPosition && collectErrors([getError(codes.DP002, 'dropoff')])
-  }
-
-  if (!dropoffFields.length && dropoffPosition) {
-    collectErrors(validatePosition(dropoffPosition, 'dropoffPosition'))
-  }
+  collectErrors(validatePickupTime(leg.pickupTime, activeBookingType, { strict }))
 
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
 
   !isUndefined(leg.meta) &&
-    collectErrors(
-      !isUndefined(leg.meta[trainTimeParameter])
-        ? [
-            ...validateMeta(leg.meta),
-            ...validateTime(leg.meta[trainTimeParameter], `meta.${trainTimeParameter}`),
-          ]
-        : validateMeta(leg.meta)
-    )
+    collectErrors([
+      ...validateMeta(leg.meta),
+      ...(!isUndefined(leg.meta[trainTimeParameter])
+        ? validateTime(leg.meta[trainTimeParameter], `meta.${trainTimeParameter}`, { strict })
+        : []),
+    ])
+
   !isUndefined(leg.pickupMeta) && collectErrors(validateMeta(leg.pickupMeta, 'pickupMeta'))
   !isUndefined(leg.dropoffMeta) && collectErrors(validateMeta(leg.dropoffMeta, 'dropoffMeta'))
 
   return errors
 }
 
-export function validate(deeplinkData: DeeplinkData): ValidationResponse {
+export function validate(
+  deeplinkData: DeeplinkData,
+  { strict }: ValidationOptions = { strict: true }
+): ValidationResponse {
   const errors = []
   const { legs, passengerInfo, travellerLocale, meta, customFields, bookingType } = deeplinkData
 
   if (legs.length) {
-    legs.forEach((leg, index) => errors.push(...validateLeg(leg, bookingType, `legs.${index}`)))
+    legs.forEach((leg, index) => errors.push(...validateLeg(leg, bookingType, `legs.${index}`, { strict })))
   } else {
     errors.push(getError(codes.DP001, 'legs'))
   }
@@ -204,7 +248,7 @@ export function validate(deeplinkData: DeeplinkData): ValidationResponse {
   errors.push(
     ...validatePassengerInfo(passengerInfo),
     ...validateTravellerLocale(travellerLocale),
-    ...validateBookingType(bookingType),
+    ...validateBookingType(bookingType, 'bookingType', { strict }),
     ...validateMeta(meta)
   )
 
@@ -229,9 +273,7 @@ export function validateLegToQuotes(leg: JourneyLeg, defaultBookingType: Booking
     errors.push(getError(codes.DP014, path))
   }
 
-  if (bookingType === BookingTypes.PREBOOK && isUndefined(leg.pickupTime)) {
-    errors.push(getError(codes.DP001, 'pickupTime'))
-  }
+  errors.push(...validateLeg(leg, bookingType, 'legs.0', { strict: true }))
 
   return errors.length ? { ok: false, errors } : { ok: true }
 }
