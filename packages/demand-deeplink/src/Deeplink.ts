@@ -9,6 +9,7 @@ import {
   Api,
   Position,
   ResolvePlace,
+  ValidationOptions
 } from './types'
 import { parse } from './parse'
 import { validate } from './validate'
@@ -90,9 +91,9 @@ export class Deeplink {
 
   private api: Api
 
-  constructor(query: string, api: Api) {
+  constructor(query: string, api: Api, validationOptions?: ValidationOptions) {
     this.deeplinkInfo = parse(query)
-    this.validation = validate(this.deeplinkInfo)
+    this.validation = validate(this.deeplinkInfo, validationOptions)
     this.api = api
   }
 
