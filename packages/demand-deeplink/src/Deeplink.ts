@@ -9,7 +9,7 @@ import {
   Api,
   Position,
   ResolvePlace,
-  ValidationOptions
+  ValidationOptions,
 } from './types'
 import { parse } from './parse'
 import { validate } from './validate'
