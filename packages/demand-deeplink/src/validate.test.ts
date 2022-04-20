@@ -53,7 +53,7 @@ describe('parse', () => {
   })
 
   describe('in strict mode', () => {
-    const strictValidateOptions = { strict: true }
+    const strictValidateOptions = {strict: true}
 
     it('should return ok equals true for valid deeplink', () => {
       expect(validate(baseDeeplinkData)).toEqual({ ok: true })
@@ -150,6 +150,17 @@ describe('parse', () => {
       const getData = (data: any) => ({
         ...baseDeeplinkData.legs[0],
         ...data,
+      })
+
+      it('should not return error when train time is defined and pickup time is undefined', () => {
+        expect(
+          validateLeg(
+            getData({  meta: { [trainTimeParameter]: '2021-03-10T02:10:00Z' }, dropoff: 'Euston, London NW1 2DS' , pickup: undefined, pickupTime: undefined}),
+            BookingTypes.PREBOOK,
+            'legs.0',
+            strictValidateOptions
+          )
+        ).toEqual([])
       })
 
       it('should return empty array when there is no errors', () => {
