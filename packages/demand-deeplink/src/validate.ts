@@ -214,7 +214,7 @@ export function validateLeg(
     collectErrors([getError(codes.DP009, 'pickup')])
   }
 
-  if (leg.meta && !leg.meta[trainTimeParameter]) {
+  if (!(leg.meta && leg.meta[trainTimeParameter])) {
     collectErrors(validatePickupTime(leg.pickupTime, activeBookingType, { strict }))
   }
 
