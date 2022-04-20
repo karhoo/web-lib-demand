@@ -215,7 +215,7 @@ export function validateLeg(
   }
 
   if (leg.meta && !leg.meta[trainTimeParameter]) {
-    collectErrors(validatePickupTime(leg.pickupTime , activeBookingType, { strict }))
+    collectErrors(validatePickupTime(leg.pickupTime, activeBookingType, { strict }))
   }
 
   !isUndefined(leg.passengerInfo) && collectErrors(validatePassengerInfo(leg.passengerInfo))
