@@ -146,6 +146,7 @@ export class AdyenProvider implements Provider {
           ...this.shopperData,
           redirectFromIssuerMethod: 'get',
           returnUrl: this.options.returnUrl,
+          origin: window.location.origin,
         },
       },
       this.options.apiVersion
