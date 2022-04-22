@@ -167,6 +167,7 @@ describe('AdyenProvider', () => {
             ...adyenCheckoutOptions,
             ...cardElement.data,
             returnUrl: '/callback',
+            origin: 'http://localhost',
           },
         },
         undefined
@@ -188,6 +189,7 @@ describe('AdyenProvider', () => {
             ...adyenCheckoutOptions,
             ...cardElement.data,
             returnUrl: '/callback',
+            origin: 'http://localhost',
           },
         },
         undefined
