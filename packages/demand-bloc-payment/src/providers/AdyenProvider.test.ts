@@ -208,6 +208,7 @@ describe('AdyenProvider', () => {
             ...cardElement.data,
             ...shopperData,
             returnUrl: '/callback',
+            origin: 'http://localhost',
           },
         },
         undefined
