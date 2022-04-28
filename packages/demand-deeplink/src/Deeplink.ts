@@ -278,7 +278,7 @@ export class Deeplink {
       return { ok: false, error: response.error }
     }
 
-    const { place_id } = response.body.locations?.[0]
+    const { place_id } = response.body.locations?.[0] || {}
 
     if (place_id) {
       return await this.resolveByPlaceId({ key: item.key, value: place_id })
