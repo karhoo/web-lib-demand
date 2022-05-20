@@ -169,7 +169,7 @@ const baseTransformer = (trip: OriginalTripFollowResponse | BookATripResponse): 
     driverPosition: {},
     meetDriverMessage: dv(meeting_point?.instructions),
     meetingPointPosition: meeting_point?.position || {},
-    status: status || '',
+    status,
     stateDetails: state_details || '',
     flightNumber: flight_number || null,
     trainNumber: train_number || null,
