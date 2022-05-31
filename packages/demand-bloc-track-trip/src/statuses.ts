@@ -9,7 +9,11 @@ export const FinalTripStatuses: TripStatus[] = [
   TripStatuses.NO_DRIVERS_AVAILABLE,
 ]
 
-export const TrackableStatuses = [TripStatuses.ARRIVED, TripStatuses.DRIVER_EN_ROUTE, TripStatuses.POB]
+export const TrackableStatuses: TripStatus[] = [
+  TripStatuses.ARRIVED,
+  TripStatuses.DRIVER_EN_ROUTE,
+  TripStatuses.POB,
+]
 
 export const CancelableStatuses = [
   TripStatuses.ARRIVED,
@@ -18,9 +22,12 @@ export const CancelableStatuses = [
   TripStatuses.REQUESTED,
 ]
 
-export const BeforeDriverEnRouteStatuses = [TripStatuses.REQUESTED, TripStatuses.CONFIRMED]
+export const BeforeDriverEnRouteStatuses: TripStatus[] = [TripStatuses.REQUESTED, TripStatuses.CONFIRMED]
 
-export const CancelledByFleetStatuses = [TripStatuses.NO_DRIVERS_AVAILABLE, TripStatuses.DRIVER_CANCELLED]
+export const CancelledByFleetStatuses: TripStatus[] = [
+  TripStatuses.NO_DRIVERS_AVAILABLE,
+  TripStatuses.DRIVER_CANCELLED,
+]
 
 export const StateDetailsCodes = {
   REASON_NOT_SET: 'REASON_NOT_SET',
