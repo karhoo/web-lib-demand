@@ -7,6 +7,7 @@ export { FlagsService } from './flags/FlagsService'
 export { FareService } from './fare/FareService'
 export { UserService } from './user/UserService'
 export { AuthService } from './auth/AuthService'
+export { TripService } from './trip/TripService'
 export { getApi } from './api'
 export { errorCodes } from './responseCodes'
 

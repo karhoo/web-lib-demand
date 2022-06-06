@@ -1,3 +1,3 @@
 export { TripBloc } from './TripBloc'
-export { tripTransformer } from './tripTransformer'
+export { tripTransformer, tripFollowTransformer } from './tripTransformer'
 export * from './statuses'
