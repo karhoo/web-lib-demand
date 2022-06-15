@@ -202,6 +202,7 @@ export const tripTransformer = (trip: BookATripResponse & OriginalTripFollowResp
 
   return {
     ...base,
+    // @ts-ignore
     originEta: status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta,
     internalTripId: trip_id || id || null,
     destinationEta: tracking?.destination_eta,
