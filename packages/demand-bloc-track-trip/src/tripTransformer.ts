@@ -3,7 +3,6 @@ import {
   BookATripResponse,
   PassengerDetails,
   LatLng,
-  TripStatus,
   TripStatuses,
   ServiceLevelAgreements,
 } from '@karhoo/demand-api'
@@ -62,7 +61,7 @@ export type TripFollowResponse = {
   driverPosition: Partial<LatLng>
   meetDriverMessage: string
   meetingPointPosition: Partial<LatLng>
-  status: TripStatus
+  status: TripStatuses
   stateDetails: string
   flightNumber: string | null
   trainNumber: string | null
@@ -202,12 +201,9 @@ export const tripTransformer = (trip: BookATripResponse & OriginalTripFollowResp
 
   return {
     ...base,
-    // @ts-ignore
     originEta: status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta,
     internalTripId: trip_id || id || null,
-    // @ts-ignore
     destinationEta: tracking?.destination_eta,
-    // @ts-ignore
     driverPosition: tracking?.position || {},
   }
 }
