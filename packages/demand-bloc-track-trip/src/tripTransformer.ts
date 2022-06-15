@@ -205,6 +205,7 @@ export const tripTransformer = (trip: BookATripResponse & OriginalTripFollowResp
     // @ts-ignore
     originEta: status === TripStatuses.ARRIVED ? 0 : tracking?.origin_eta,
     internalTripId: trip_id || id || null,
+    // @ts-ignore
     destinationEta: tracking?.destination_eta,
     driverPosition: tracking?.position || {},
   }
