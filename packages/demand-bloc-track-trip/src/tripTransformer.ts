@@ -207,6 +207,7 @@ export const tripTransformer = (trip: BookATripResponse & OriginalTripFollowResp
     internalTripId: trip_id || id || null,
     // @ts-ignore
     destinationEta: tracking?.destination_eta,
+    // @ts-ignore
     driverPosition: tracking?.position || {},
   }
 }
