@@ -67,7 +67,7 @@ export type TripFollowResponse = {
   destination?: Address
   date_booked?: string
   date_scheduled?: string
-  status: TripStatuses
+  status: TripStatus
   state_details?: StateDetails
   vehicle?: Vehicle
   tracking?: Tracking

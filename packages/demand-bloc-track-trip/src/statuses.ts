@@ -15,7 +15,7 @@ export const TrackableStatuses: TripStatus[] = [
   TripStatuses.POB,
 ]
 
-export const CancelableStatuses = [
+export const CancelableStatuses: TripStatus[] = [
   TripStatuses.ARRIVED,
   TripStatuses.CONFIRMED,
   TripStatuses.DRIVER_EN_ROUTE,
