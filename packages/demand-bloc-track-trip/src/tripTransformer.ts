@@ -3,7 +3,7 @@ import {
   BookATripResponse,
   PassengerDetails,
   LatLng,
-  TripStatuses,
+  TripStatus,
   ServiceLevelAgreements,
 } from '@karhoo/demand-api'
 
@@ -61,7 +61,7 @@ export type TripFollowResponse = {
   driverPosition: Partial<LatLng>
   meetDriverMessage: string
   meetingPointPosition: Partial<LatLng>
-  status: TripStatuses
+  status: TripStatus
   stateDetails: string
   flightNumber: string | null
   trainNumber: string | null
