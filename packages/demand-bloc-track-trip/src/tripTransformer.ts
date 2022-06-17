@@ -4,6 +4,7 @@ import {
   PassengerDetails,
   LatLng,
   TripStatus,
+  TripStatuses,
   ServiceLevelAgreements,
 } from '@karhoo/demand-api'
 
