@@ -10,6 +10,7 @@
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/lib-feature-flags#readme",
   "license": "BSD-2-Clause",
   "main": "dist/index.js",
+  "module": "dist/lib-feature-flags.esm.js",
   "typings": "dist/typings.d.ts",
   "directories": {
     "src": "src"
@@ -20,7 +21,6 @@
     "dist/typings.d.ts",
     "src"
   ],
-  "module": "dist/lib-feature-flags.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"

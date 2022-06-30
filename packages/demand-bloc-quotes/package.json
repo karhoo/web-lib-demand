@@ -9,6 +9,7 @@
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-bloc-template#readme",
   "license": "BSD-2-Clause",
   "main": "dist/index.js",
+  "module": "dist/demand-bloc-quotes.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
