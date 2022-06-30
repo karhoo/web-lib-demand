@@ -1,10 +1,11 @@
 {
   "name": "@karhoo/demand-api",
-  "version": "17.5.5",
+  "version": "17.6.0",
   "description": "The Demand API provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses.",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-api#readme",
   "license": "BSD-2-Clause",
   "main": "dist/index.js",
+  "module": "dist/demand-api.esm.js",
   "typings": "dist/typings.d.ts",
   "directories": {
     "src": "src"
@@ -17,7 +18,6 @@
     "dist/mocks/**/*.d.ts",
     "src"
   ],
-  "module": "dist/demand-api.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"

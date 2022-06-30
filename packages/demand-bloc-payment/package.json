@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-payment",
-  "version": "17.5.5",
+  "version": "17.6.0",
   "description": "BLoC to work with Karhoo Payment API",
   "keywords": [
     "bloc",
@@ -9,6 +9,7 @@
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-bloc-template#readme",
   "license": "BSD-2-Clause",
   "main": "dist/index.js",
+  "module": "dist/demand-bloc-payment.esm.js",
   "typings": "dist/typings.d.ts",
   "files": [
     "dist/*.js",
@@ -16,7 +17,6 @@
     "dist/typings.d.ts",
     "src"
   ],
-  "module": "dist/demand-bloc-payment.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/karhoo/web-lib-demand.git"
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@adyen/adyen-web": "4.9.0",
-    "@karhoo/demand-api": "^17.5.5",
+    "@karhoo/demand-api": "^17.6.0",
     "braintree-web": "3.62.2",
     "core-js-pure": "^3.20.1"
   },
