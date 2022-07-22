@@ -9,4 +9,7 @@ module.exports = {
       statements: 85,
     },
   },
+  moduleNameMapper: {
+    '^lodash-es$': 'lodash',
+  },
 }

@@ -1,6 +1,4 @@
-import toPairs from 'lodash/toPairs'
-import isUndefined from 'lodash/isUndefined'
-import flatten from 'lodash/flatten'
+import { toPairs, isUndefined, flatten } from 'lodash-es'
 import {
   HttpResponse,
   LocationAddressDetailsResponse,
