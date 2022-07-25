@@ -1,6 +1,4 @@
-import camelCase from 'lodash/camelCase'
-import toPairs from 'lodash/toPairs'
-import fromPairs from 'lodash/fromPairs'
+import { camelCase, toPairs, fromPairs } from 'lodash-es'
 
 import { BookingTypes } from './constants'
 

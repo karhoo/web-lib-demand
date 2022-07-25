@@ -1,6 +1,4 @@
-import isUndefined from 'lodash/isUndefined'
-import fromPairs from 'lodash/fromPairs'
-import isNil from 'lodash/isNil'
+import { isUndefined, fromPairs, isNil } from 'lodash-es'
 
 import { DeeplinkData, JourneyLeg, PassengerInfo, KeyValueList, Dictionary } from './types'
 
