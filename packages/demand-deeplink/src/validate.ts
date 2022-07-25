@@ -1,4 +1,4 @@
-import { isUndefined } from 'lodash-es'
+import isUndefined from 'lodash/isUndefined'
 import {
   expectedTimeFormatRegexp,
   timezoneRegexp,
