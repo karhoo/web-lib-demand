@@ -1,4 +1,4 @@
-import { toPairs } from 'lodash-es'
+import toPairs from 'lodash/toPairs'
 
 import { BookingTypes } from './constants'
 import {

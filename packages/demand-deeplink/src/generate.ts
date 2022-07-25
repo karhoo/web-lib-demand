@@ -1,4 +1,5 @@
-import { kebabCase, isString } from 'lodash-es'
+import kebabCase from 'lodash/kebabCase'
+import isString from 'lodash/isString'
 
 import { DeeplinkData, JourneyLeg, KeyValueList, Dictionary, PassengerInfo } from './types'
 

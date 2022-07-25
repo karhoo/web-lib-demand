@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-api",
-  "version": "17.7.0",
+  "version": "17.8.0",
   "description": "The Demand API provides the ability to contact Karhoo's public API and allows you to send and receive network calls and responses.",
   "homepage": "https://github.com/karhoo/web-lib-demand/tree/master/packages/demand-api#readme",
   "license": "BSD-2-Clause",
@@ -34,7 +34,7 @@
   "dependencies": {
     "core-js-pure": "^3.20.1",
     "date-and-time": "^2.0.1",
-    "lodash-es": "^4.17.21",
+    "lodash": "^4.17.21",
     "uuid": "^8.3.2"
   },
   "peerDependencies": {

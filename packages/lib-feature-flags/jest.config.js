@@ -10,7 +10,4 @@ module.exports = {
   },
   setupFiles: ['./src/setupTest.ts'],
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  moduleNameMapper: {
-    '^lodash-es$': 'lodash',
-  },
 }
