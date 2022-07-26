@@ -1,6 +1,7 @@
 import { ThreeDSecureVerifyPayload, HostedFieldFieldOptions, BraintreeError } from 'braintree-web'
 
 import { HttpResponse, ClientNonceResponse, ProviderVersion } from '@karhoo/demand-api'
+import { CustomTranslations } from '@adyen/adyen-web/dist/types/language/types'
 
 export type CardInfo = Partial<{
   id: string
@@ -129,6 +130,7 @@ export type AdyenShopperData = {
 }
 
 export type AdyenProviderOptions = {
+  translations?: CustomTranslations
   dropinContainerId: string
   withThreeDSecure?: boolean
   environment?: 'test' | 'live'
