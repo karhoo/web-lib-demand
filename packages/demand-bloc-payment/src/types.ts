@@ -130,7 +130,7 @@ export type AdyenShopperData = {
 }
 
 export type AdyenProviderOptions = {
-  translations: CustomTranslations
+  translations?: CustomTranslations
   dropinContainerId: string
   withThreeDSecure?: boolean
   environment?: 'test' | 'live'
