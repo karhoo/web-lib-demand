@@ -95,6 +95,7 @@ export class AutocompleteBloc {
   dispose() {
     this.query$.complete()
     this.selectedAddress$.complete()
+    this.error$.complete()
   }
 
   private regenerateSessionToken() {
