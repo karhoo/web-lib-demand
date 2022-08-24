@@ -151,6 +151,36 @@ describe('AutocompleteBloc', () => {
     })
   })
 
+  describe('onSelect error', () => {
+    it('should emit error after error when selecting item', async () => {
+      const getAddressAutocompleteErrorMock = jest.fn()
+
+      const locationServiceErrorMock = {
+        getAddressDetails: getAddressAutocompleteErrorMock,
+        getAddressAutocompleteData: jest.fn(),
+        getReverseGeocode: jest.fn(),
+      }
+
+      locationServiceErrorMock.getAddressDetails.mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: false,
+          error: {
+            message: 'addressDetailsError',
+          },
+        })
+      )
+
+      const errorBloc = new AutocompleteBloc(locationServiceErrorMock, options)
+      const spy = jest.fn()
+      errorBloc.error.subscribe(spy)
+
+      await errorBloc.onSelect(locationsData[0].place_id)
+
+      expect(spy).toBeCalledWith('addressDetailsError')
+      errorBloc.dispose()
+    })
+  })
+
   describe('sessionToken', () => {
     it(
       'should call getAddressAutocompleteData and getAddressDetails with same session token',

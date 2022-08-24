@@ -88,7 +88,7 @@ export class AutocompleteBloc {
       this.selectedAddress$.next(placeDetailsTransformer(data.body))
       this.regenerateSessionToken()
     } else {
-      this.error$.next(data?.error?.message || 'locationService.getAddressDetails error')
+      this.onError(data?.error?.message || 'locationService.getAddressDetails error')
     }
   }
 
