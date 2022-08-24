@@ -53,6 +53,10 @@ export class AutocompleteBloc {
     return createStream(this.selectedAddress$)
   }
 
+  get error() {
+    return createStream(this.error$)
+  }
+
   get results() {
     return this.getFetchedResults()
   }
@@ -83,6 +87,8 @@ export class AutocompleteBloc {
     if (data.ok) {
       this.selectedAddress$.next(placeDetailsTransformer(data.body))
       this.regenerateSessionToken()
+    } else {
+      this.error$.next(data?.error?.message || 'locationService.getAddressDetails error')
     }
   }
 
