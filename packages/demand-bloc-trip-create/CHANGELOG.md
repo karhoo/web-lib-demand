@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.9.2](https://github.com/karhoo/web-lib-demand/compare/v17.9.1...v17.9.2) (2022-09-28)
+
+**Note:** Version bump only for package @karhoo/demand-bloc-trip-create
+
+
+
+
+
 ## [17.9.1](https://github.com/karhoo/web-lib-demand/compare/v17.9.0...v17.9.1) (2022-08-25)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-trip-create
