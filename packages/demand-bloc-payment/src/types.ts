@@ -1,4 +1,5 @@
 import { ThreeDSecureVerifyPayload, HostedFieldFieldOptions, BraintreeError } from 'braintree-web'
+import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
 
 import { HttpResponse, ClientNonceResponse, ProviderVersion } from '@karhoo/demand-api'
 import { CustomTranslations } from '@adyen/adyen-web/dist/types/language/types'
@@ -17,7 +18,12 @@ export type Payer = {
   last_name: string
 }
 
-type TokenizePayload = string[]
+type TokenizePayload = {
+  nonce: string
+  details?: HostedFieldsAccountDetails
+  resultCode?: string
+}
+
 export type ThreeDSecureVerifyResponse = ThreeDSecureVerifyPayload & { type?: string }
 
 export type CompleteThreeDSecureVerificationParams = {
@@ -42,7 +48,12 @@ export type Provider = {
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
   completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
-  startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
+  startThreeDSecureVerification(
+    amount: number,
+    nonce: string,
+    bin?: HostedFieldsAccountDetails,
+    email?: string
+  ): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
