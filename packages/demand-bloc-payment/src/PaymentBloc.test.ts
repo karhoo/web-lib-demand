@@ -12,6 +12,7 @@ import {
 import { errors } from './constants'
 
 import { PaymentBloc, PaymentProvidersMap, fetchPaymentProvider, getPaymentProvider } from './PaymentBloc'
+import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
 
 describe('PaymentBloc', () => {
   const tokenizeHostedFieldsResponse = {
@@ -50,7 +51,11 @@ describe('PaymentBloc', () => {
     dispose: jest.fn(),
     clearPaymentNonce: jest.fn(),
     tokenizeHostedFields: jest.fn(() =>
-      Promise.resolve({ nonce: tokenizeHostedFieldsResponse.nonce, details })
+      // ignore missing fields id details, bin is the only prop we use
+      Promise.resolve({
+        nonce: tokenizeHostedFieldsResponse.nonce,
+        details,
+      } as unknown as HostedFieldsAccountDetails)
     ),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
