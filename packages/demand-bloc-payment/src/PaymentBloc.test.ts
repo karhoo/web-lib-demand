@@ -12,7 +12,7 @@ import {
 import { errors } from './constants'
 
 import { PaymentBloc, PaymentProvidersMap, fetchPaymentProvider, getPaymentProvider } from './PaymentBloc'
-import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
+import { HostedFieldsTokenizePayload } from 'braintree-web/modules/hosted-fields'
 
 describe('PaymentBloc', () => {
   const tokenizeHostedFieldsResponse = {
@@ -55,7 +55,7 @@ describe('PaymentBloc', () => {
       Promise.resolve({
         nonce: tokenizeHostedFieldsResponse.nonce,
         details,
-      } as unknown as HostedFieldsAccountDetails)
+      } as unknown as HostedFieldsTokenizePayload)
     ),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
