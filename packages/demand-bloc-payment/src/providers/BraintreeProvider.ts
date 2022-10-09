@@ -14,6 +14,7 @@ import {
 import { getCancellablePromise, CancellablePromise } from '../utils'
 import { errors as paymentErrors } from '../constants'
 import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
+import { ThreeDSecureVerifyOptions } from 'braintree-web/modules/three-d-secure'
 
 type PendingInitialisation =
   | CancellablePromise<string>
@@ -198,6 +199,7 @@ export class BraintreeProvider implements Provider {
 
     const { iframeContainerId, loadingId, processingId } = threeDSecureFields
 
+    // as ThreeDSecureVerifyOptions because onLookupComplete method is not present in ThreeDSecureVerifyOptions interface
     return threeDSecure.verifyCard({
       amount,
       nonce,
@@ -247,7 +249,7 @@ export class BraintreeProvider implements Provider {
         // use `data` here, then call `next()`
         next()
       },
-    })
+    } as ThreeDSecureVerifyOptions)
   }
 
   async startThreeDSecureVerification(
