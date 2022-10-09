@@ -23,7 +23,7 @@
   "devDependencies": {
     "@adyen/adyen-web": "4.9.0",
     "@microsoft/api-extractor": "^7.19.2",
-    "@types/braintree-web": "3.69.5",
+    "@types/braintree-web": "^3.75.0",
     "@types/date-and-time": "^0.13.0",
     "@types/enzyme": "^3.10.10",
     "@types/enzyme-adapter-react-16": "^1.0.6",
