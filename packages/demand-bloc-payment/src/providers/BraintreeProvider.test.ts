@@ -1,4 +1,5 @@
 import braintree from 'braintree-web'
+import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
 import {
   getMockedErrorPaymentCreateClientTokenResponse,
   getMockedErrorPaymentGetClientNonceResponse,
@@ -19,6 +20,11 @@ import {
 import { BraintreeProvider, toogleClass } from './BraintreeProvider'
 
 const amount = 10
+const bin = 'test_bank_identification_number'
+const email = 'test@email.com'
+const details = {
+  bin,
+} as HostedFieldsAccountDetails
 
 describe('BraintreeProvider', () => {
   const organisationId = 'organisationId'
@@ -129,6 +135,7 @@ describe('BraintreeProvider', () => {
       expect(braintree.threeDSecure.create).toBeCalledTimes(1)
       expect(braintree.threeDSecure.create).toBeCalledWith({
         client,
+        version: 2,
       })
     })
 
@@ -431,12 +438,15 @@ describe('BraintreeProvider', () => {
     })
 
     it('should call verifyCard of threeDSecure', async () => {
-      await provider.startThreeDSecureVerification(amount, nonce)
+      await provider.startThreeDSecureVerification(amount, nonce, details, email)
 
       expect(threeDSecure.verifyCard).toBeCalledTimes(1)
       expect(threeDSecure.verifyCard).toBeCalledWith({
         amount,
+        bin,
+        email,
         nonce,
+        onLookupComplete: expect.any(Function),
         addFrame: expect.any(Function),
         removeFrame: expect.any(Function),
       })
@@ -462,7 +472,7 @@ describe('BraintreeProvider', () => {
 
       threeDSecure.verifyCard.mockImplementationOnce(a => a)
 
-      const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { removeFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -493,7 +503,7 @@ describe('BraintreeProvider', () => {
       const removeChildSpy = jest.fn()
       const containerStyle = {}
 
-      const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { removeFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       jest.spyOn(document, 'getElementById').mockImplementationOnce(
         () =>
@@ -509,7 +519,7 @@ describe('BraintreeProvider', () => {
     })
 
     it('should not throw error when there is no elements and removeFrame is called', async () => {
-      const { removeFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { removeFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce(null).mockReturnValueOnce(null)
 
@@ -529,7 +539,7 @@ describe('BraintreeProvider', () => {
 
       await activeProvider.initialize()
 
-      const { removeFrame } = (await activeProvider.verifyCard(amount, nonce)) as any
+      const { removeFrame } = (await activeProvider.verifyCard(amount, nonce, bin, email)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -543,7 +553,7 @@ describe('BraintreeProvider', () => {
 
     it('should log error when addFrame is called', async () => {
       const error = new Error('test')
-      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       addFrame(error, {})
 
@@ -552,7 +562,7 @@ describe('BraintreeProvider', () => {
     })
 
     it('should log error when addFrame is called without iframe', async () => {
-      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce({} as any)
 
@@ -565,7 +575,7 @@ describe('BraintreeProvider', () => {
     })
 
     it('should log error when addFrame is called and there is no iframeContainerElement', async () => {
-      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce(null)
 
@@ -583,7 +593,7 @@ describe('BraintreeProvider', () => {
       const containerStyle = {}
       const loadingStyle = {}
 
-      const { addFrame } = (await provider.verifyCard(amount, nonce)) as any
+      const { addFrame } = (await provider.verifyCard(amount, nonce, bin, email)) as any
 
       jest
         .spyOn(document, 'getElementById')
@@ -615,7 +625,7 @@ describe('BraintreeProvider', () => {
 
       await braintreeProvider.initialize()
 
-      const { addFrame } = (await braintreeProvider.verifyCard(amount, nonce)) as any
+      const { addFrame } = (await braintreeProvider.verifyCard(amount, nonce, bin, email)) as any
 
       jest.spyOn(document, 'getElementById').mockReturnValueOnce({
         appendChild: jest.fn(),
@@ -638,7 +648,7 @@ describe('BraintreeProvider', () => {
 
       await braintreeProvider.initialize()
 
-      const { removeFrame } = (await braintreeProvider.verifyCard(amount, nonce)) as any
+      const { removeFrame } = (await braintreeProvider.verifyCard(amount, nonce, bin, email)) as any
 
       removeFrame()
 
@@ -647,7 +657,7 @@ describe('BraintreeProvider', () => {
 
     it('should return rejected threeDSecureNotInitialized error', done => {
       new BraintreeProvider(paymentService, { organisationId, currencyCode })
-        .verifyCard(amount, nonce)
+        .verifyCard(amount, nonce, bin, email)
         .catch(error => {
           expect(error.message).toBe(errors.threeDSecureNotInitialized)
 
@@ -657,7 +667,7 @@ describe('BraintreeProvider', () => {
 
     it('should return rejected threeDSecureOptionNotEnabled error', done => {
       new BraintreeProvider(paymentService, { organisationId, currencyCode, withThreeDSecure: false })
-        .verifyCard(amount, nonce)
+        .verifyCard(amount, nonce, bin, email)
         .catch(error => {
           expect(error.message).toBe(errors.threeDSecureOptionNotEnabled)
 

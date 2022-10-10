@@ -13,6 +13,8 @@ import {
 } from './braintreeConstants'
 import { getCancellablePromise, CancellablePromise } from '../utils'
 import { errors as paymentErrors } from '../constants'
+import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
+import { ThreeDSecureVerifyOptions } from 'braintree-web/modules/three-d-secure'
 
 type PendingInitialisation =
   | CancellablePromise<string>
@@ -89,6 +91,7 @@ export class BraintreeProvider implements Provider {
     if (withThreeDSecure) {
       this.pendingInitialisation = getCancellablePromise(
         braintree.threeDSecure.create({
+          version: 2, // Will use 3DS2 whenever possible
           client: this.client,
         })
       )
@@ -116,9 +119,12 @@ export class BraintreeProvider implements Provider {
       return Promise.reject(new Error(errors.hostedFieldsNotInitialized))
     }
 
-    const { nonce } = await this.hostedFields.tokenize()
+    const { nonce, details } = await this.hostedFields.tokenize()
 
-    return ['payment_nonce', nonce]
+    return {
+      nonce,
+      details,
+    }
   }
 
   private async teardownBraintreeInstance(instance?: Client | HostedFields | ThreeDSecure) {
@@ -173,7 +179,7 @@ export class BraintreeProvider implements Provider {
     return Promise.resolve('')
   }
 
-  verifyCard(amount: number, nonce: string) {
+  verifyCard(amount: number, nonce: string, bin: string, email?: string) {
     const {
       threeDSecure,
       options: {
@@ -193,9 +199,12 @@ export class BraintreeProvider implements Provider {
 
     const { iframeContainerId, loadingId, processingId } = threeDSecureFields
 
+    // as ThreeDSecureVerifyOptions because onLookupComplete method is not present in ThreeDSecureVerifyOptions interface
     return threeDSecure.verifyCard({
       amount,
       nonce,
+      bin,
+      email,
       addFrame(err, iframe) {
         const iframeContainerElement = document.getElementById(iframeContainerId)
 
@@ -236,11 +245,21 @@ export class BraintreeProvider implements Provider {
 
         onRemoveThreeDSecureFrame?.()
       },
-    })
+      onLookupComplete(data: object, next: () => void) {
+        // use `data` here, then call `next()`
+        next()
+      },
+    } as ThreeDSecureVerifyOptions)
   }
 
-  async startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error> {
-    const verifyPromise = this.verifyCard(amount, nonce)
+  async startThreeDSecureVerification(
+    amount: number,
+    nonce: string,
+    details?: HostedFieldsAccountDetails,
+    email?: string
+  ): Promise<string | Error> {
+    const bin = (details && details.bin) as string
+    const verifyPromise = this.verifyCard(amount, nonce, bin, email)
 
     return new Promise((resolve, reject) => {
       verifyPromise.then(response => {

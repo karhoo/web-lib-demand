@@ -17,7 +17,14 @@ export type Payer = {
   last_name: string
 }
 
-type TokenizePayload = string[]
+type TokenizePayload = {
+  nonce: string
+  details?: {
+    bin: string
+  }
+  resultCode?: string
+}
+
 export type ThreeDSecureVerifyResponse = ThreeDSecureVerifyPayload & { type?: string }
 
 export type CompleteThreeDSecureVerificationParams = {
@@ -42,7 +49,14 @@ export type Provider = {
   tokenizeHostedFields(): Promise<TokenizePayload>
   validatePaymentForm(): boolean
   completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams): Promise<string | Error>
-  startThreeDSecureVerification(amount: number, nonce: string): Promise<string | Error>
+  startThreeDSecureVerification(
+    amount: number,
+    nonce: string,
+    details?: {
+      bin: string
+    },
+    email?: string
+  ): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
   saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps

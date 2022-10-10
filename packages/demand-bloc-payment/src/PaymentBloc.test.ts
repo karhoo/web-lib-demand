@@ -12,6 +12,7 @@ import {
 import { errors } from './constants'
 
 import { PaymentBloc, PaymentProvidersMap, fetchPaymentProvider, getPaymentProvider } from './PaymentBloc'
+import { HostedFieldsTokenizePayload } from 'braintree-web/modules/hosted-fields'
 
 describe('PaymentBloc', () => {
   const tokenizeHostedFieldsResponse = {
@@ -41,11 +42,21 @@ describe('PaymentBloc', () => {
     },
   ]
 
+  const details = {
+    bin: 'test_bank_identification_number',
+  }
+
   const braintreeProvider = {
     initialize: jest.fn(),
     dispose: jest.fn(),
     clearPaymentNonce: jest.fn(),
-    tokenizeHostedFields: jest.fn(() => Promise.resolve(['key1', tokenizeHostedFieldsResponse.nonce])),
+    tokenizeHostedFields: jest.fn(() =>
+      // ignore missing fields id details, bin is the only prop we use
+      Promise.resolve({
+        nonce: tokenizeHostedFieldsResponse.nonce,
+        details,
+      } as unknown as HostedFieldsTokenizePayload)
+    ),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
     completeThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
@@ -59,7 +70,7 @@ describe('PaymentBloc', () => {
     initialize: jest.fn(),
     dispose: jest.fn(),
     clearPaymentNonce: jest.fn(),
-    tokenizeHostedFields: jest.fn(() => Promise.resolve(['key1', tokenizeHostedFieldsResponse.nonce])),
+    tokenizeHostedFields: jest.fn(() => Promise.resolve({ nonce: tokenizeHostedFieldsResponse.nonce })),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
     completeThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
@@ -270,19 +281,22 @@ describe('PaymentBloc', () => {
 
     it('should call verifyWithThreeDSecure of provider', async () => {
       const amount = 10
+      const email = 'test@email.com'
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,
       })
 
-      await payment.verifyCardWithThreeDSecure(amount)
+      await payment.verifyCardWithThreeDSecure(amount, email)
 
       const providerBeingUsedMock = getPaymentProviderBeingUsed()
 
       expect(providerBeingUsedMock.startThreeDSecureVerification).toBeCalledTimes(1)
       expect(providerBeingUsedMock.startThreeDSecureVerification).toBeCalledWith(
         amount,
-        tokenizeHostedFieldsResponse.nonce
+        tokenizeHostedFieldsResponse.nonce,
+        details,
+        email
       )
     })
 

@@ -160,7 +160,10 @@ export class AdyenProvider implements Provider {
     handleRefusalResponse(makePaymentResponse.body.payload)
     if (makePaymentResponse.body.payload.resultCode === ResultCodes.AUTHORISED) {
       this.nonce = makePaymentResponse.body.trip_id
-      return ['meta.trip_id', makePaymentResponse.body.trip_id, makePaymentResponse.body.payload.resultCode]
+      return {
+        nonce: makePaymentResponse.body.trip_id,
+        resultCode: makePaymentResponse.body.payload.resultCode,
+      }
     }
 
     this.paymentData = makePaymentResponse.body.payload.action?.paymentData || ''
@@ -171,7 +174,7 @@ export class AdyenProvider implements Provider {
 
     this.nonce = makePaymentResponse.body.trip_id
 
-    return ['meta.trip_id', makePaymentResponse.body.trip_id]
+    return { nonce: makePaymentResponse.body.trip_id }
   }
 
   validatePaymentForm() {

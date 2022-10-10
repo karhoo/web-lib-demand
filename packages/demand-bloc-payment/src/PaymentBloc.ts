@@ -85,7 +85,7 @@ export class PaymentBloc {
     }
   }
 
-  async verifyCardWithThreeDSecure(amount: number) {
+  async verifyCardWithThreeDSecure(amount: number, email?: string) {
     const params = new URLSearchParams(location.search) // eslint-disable-line no-restricted-globals
     const nonce = this.provider.getNonce()
 
@@ -104,12 +104,19 @@ export class PaymentBloc {
         }
       }
 
-      const { nonce: paymentNonce, resultCode } = await this.getPaymentDetails()
+      const { nonce: paymentNonce, resultCode, details } = await this.getPaymentDetails()
+
       if (resultCode) {
         return { ok: true, nonce: paymentNonce }
       }
 
-      const verifiedNonce = await this.provider.startThreeDSecureVerification(amount, paymentNonce)
+      const verifiedNonce = await this.provider.startThreeDSecureVerification(
+        amount,
+        paymentNonce,
+        details,
+        email
+      )
+
       const resultNonce = paymentNonce && verifiedNonce
       return { ok: true, nonce: resultNonce }
     } catch (error) {
@@ -146,15 +153,15 @@ export class PaymentBloc {
       return { nonce: selectedCard.nonce, resultCode: '' }
     }
 
-    const [_, nonce, resultCode] = await this.provider.tokenizeHostedFields()
+    const { nonce, resultCode, details } = await this.provider.tokenizeHostedFields()
 
-    return { nonce, resultCode }
+    return { nonce, resultCode, details }
   }
 
   async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {
     try {
-      const [_, value] = await this.provider.tokenizeHostedFields()
-      const response = await this.provider.saveCard(value, payer)
+      const { nonce } = await this.provider.tokenizeHostedFields()
+      const response = await this.provider.saveCard(nonce, payer)
 
       if (!response) {
         return { ok: false, error: new Error('Not possible to save a card') }
