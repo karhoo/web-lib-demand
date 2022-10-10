@@ -4,11 +4,13 @@
   ],
   "command": {
     "publish": {
+      "message": "chore(release): publish",
       "registry": "https://registry.npmjs.org"
     },
     "version": {
       "conventionalCommits": true
     }
   },
-  "version": "17.10.0"
+  "version": "17.10.0",
+  "npmClient": "yarn"
 }

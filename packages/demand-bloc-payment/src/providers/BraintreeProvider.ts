@@ -167,11 +167,13 @@ export class BraintreeProvider implements Provider {
     const { fields } = hostedFields.getState()
 
     Object.keys(fields).forEach(fieldName => {
+      // @ts-ignore
       const isValid = fields[fieldName].isValid
 
       toogleClass(fieldName, isValid, invalidFieldClass)
     })
 
+    // @ts-ignore
     return Object.keys(fields).every(fieldName => fields[fieldName].isValid)
   }
 

@@ -25,29 +25,24 @@ Simple and complete set of components and utilities that helps to build web appl
 ## Installation
 
 ### Start Development
-
 ```sh
 git clone git@github.com:karhoo/web-lib-demand.git
-npm run bootstrap
 ```
-
+#### Installs all dependencies for all packages.
+```shell script
+yarn
+```
 ### Available Scripts
 
-In the project directory, you can run:
-
-#### `npm run bootstrap`
-
-Installs all dependencies for all packages.
-
-#### `npm test`
+#### `yarn test`
 
 Launches the test runner.
 
-#### `npm run lint`
+#### `yarn run lint`
 
 Runs linting.
 
-#### `npm run build`
+#### `yarn run build`
 
 Builds all packages.
 
