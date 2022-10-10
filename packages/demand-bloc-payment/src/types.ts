@@ -52,7 +52,9 @@ export type Provider = {
   startThreeDSecureVerification(
     amount: number,
     nonce: string,
-    bin?: string,
+    details?: {
+      bin: string
+    },
     email?: string
   ): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
