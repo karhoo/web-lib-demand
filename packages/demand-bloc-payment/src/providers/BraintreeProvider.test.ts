@@ -1,5 +1,4 @@
 import braintree from 'braintree-web'
-import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
 import {
   getMockedErrorPaymentCreateClientTokenResponse,
   getMockedErrorPaymentGetClientNonceResponse,
@@ -22,9 +21,9 @@ import { BraintreeProvider, toogleClass } from './BraintreeProvider'
 const amount = 10
 const bin = 'test_bank_identification_number'
 const email = 'test@email.com'
-const details = {
+const options = {
   bin,
-} as HostedFieldsAccountDetails
+}
 
 describe('BraintreeProvider', () => {
   const organisationId = 'organisationId'
@@ -438,7 +437,7 @@ describe('BraintreeProvider', () => {
     })
 
     it('should call verifyCard of threeDSecure', async () => {
-      await provider.startThreeDSecureVerification(amount, nonce, details, email)
+      await provider.startThreeDSecureVerification(amount, nonce, options, email)
 
       expect(threeDSecure.verifyCard).toBeCalledTimes(1)
       expect(threeDSecure.verifyCard).toBeCalledWith({
