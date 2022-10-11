@@ -14,7 +14,6 @@
     "build": "lerna run build --stream",
     "test": "lerna run test --stream",
     "lint": "eslint . --ext js,jsx,ts,tsx",
-    "lint-yarn": "run-p lint:*",
     "prepare": "husky install",
     "prettier-format": "prettier --config .prettierrc.js '**/*.ts' --write"
   },
@@ -34,13 +33,13 @@
     "@types/date-and-time": "^0.13.0",
     "@types/enzyme": "^3.10.10",
     "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
     "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.182",
     "@types/react": "^16.14.32",
     "@types/rx": "^4.1.2",
     "@types/uuid": "^8.3.3",
+    "@typescript-eslint/eslint-plugin": "4.33.0",
+    "@typescript-eslint/parser": "4.33.0",
     "babel-eslint": "^10.0.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
@@ -73,8 +72,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "npx eslint --fix",
+      "npx prettier --write"
     ]
   }
 }
