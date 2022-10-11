@@ -13,6 +13,7 @@ jobs:
         node-version: '14.x'
         registry-url: 'https://registry.npmjs.org'
         scope: '@karhoo'
+    - run: yarn
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
     - run: yarn run lint
