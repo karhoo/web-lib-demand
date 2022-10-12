@@ -124,7 +124,7 @@ export class BraintreeProvider implements Provider {
       return Promise.reject(new Error(errors.hostedFieldsNotInitialized))
     }
 
-    const { nonce, details = { bin: '' } } = await this.hostedFields.tokenize()
+    const { nonce, details = { bin: undefined } } = await this.hostedFields.tokenize()
 
     return {
       nonce,
