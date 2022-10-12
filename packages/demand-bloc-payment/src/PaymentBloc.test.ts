@@ -42,7 +42,7 @@ describe('PaymentBloc', () => {
     },
   ]
 
-  const details = {
+  const options = {
     bin: 'test_bank_identification_number',
   }
 
@@ -54,7 +54,7 @@ describe('PaymentBloc', () => {
       // ignore missing fields id details, bin is the only prop we use
       Promise.resolve({
         nonce: tokenizeHostedFieldsResponse.nonce,
-        details,
+        options,
       } as unknown as HostedFieldsTokenizePayload)
     ),
     validatePaymentForm: jest.fn(() => true),
@@ -295,7 +295,7 @@ describe('PaymentBloc', () => {
       expect(providerBeingUsedMock.startThreeDSecureVerification).toBeCalledWith(
         amount,
         tokenizeHostedFieldsResponse.nonce,
-        details,
+        options,
         email
       )
     })
