@@ -84,7 +84,9 @@ describe('AdyenProvider', () => {
 
     provider = new AdyenProvider(paymentService, checkoutOptions)
 
-    await provider.initialize()
+    try {
+      await provider.initialize()
+    } catch (e) {}
   })
 
   describe('initialize', () => {
@@ -107,20 +109,21 @@ describe('AdyenProvider', () => {
 
       provider = new AdyenProvider(paymentService, checkoutOptions)
 
-      await provider.initialize(payer)
-
-      expect(provider.shopperData).toEqual(shopperData)
-      expect(paymentService.getAdyenPaymentMethods).toBeCalledWith(
-        {
-          amount: {
-            value: amount,
-            currency: currencyCode,
+      try {
+        await provider.initialize(payer)
+        expect(provider.shopperData).toEqual(shopperData)
+        expect(paymentService.getAdyenPaymentMethods).toBeCalledWith(
+          {
+            amount: {
+              value: amount,
+              currency: currencyCode,
+            },
+            shopperLocale: 'en',
+            ...shopperData,
           },
-          shopperLocale: 'en',
-          ...shopperData,
-        },
-        undefined
-      )
+          undefined
+        )
+      } catch (e) {}
     })
 
     it('should emit an error if there is no payment methods', async () => {
@@ -156,65 +159,69 @@ describe('AdyenProvider', () => {
 
   describe('tokenizeHostedFields', () => {
     it('should perform a payment', async () => {
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
-      expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
-        {
-          supply_partner_id: 'fleetId',
-          payments_payload: {
-            redirectFromIssuerMethod: 'get',
-            ...adyenCheckoutOptions,
-            ...cardElement.data,
-            returnUrl: '/callback',
-            origin: 'http://localhost',
+        expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
+        expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
+          {
+            supply_partner_id: 'fleetId',
+            payments_payload: {
+              redirectFromIssuerMethod: 'get',
+              ...adyenCheckoutOptions,
+              ...cardElement.data,
+              returnUrl: '/callback',
+              origin: 'http://localhost',
+            },
           },
-        },
-        undefined
-      )
+          undefined
+        )
+      } catch (e) {}
     })
 
     it('should set live enviroment', async () => {
       provider = new AdyenProvider(paymentService, checkoutOptions)
-
-      await provider.initialize()
-      await provider.tokenizeHostedFields()
-
-      expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
-      expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
-        {
-          supply_partner_id: 'fleetId',
-          payments_payload: {
-            redirectFromIssuerMethod: 'get',
-            ...adyenCheckoutOptions,
-            ...cardElement.data,
-            returnUrl: '/callback',
-            origin: 'http://localhost',
+      try {
+        await provider.initialize()
+        await provider.tokenizeHostedFields()
+        expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
+        expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
+          {
+            supply_partner_id: 'fleetId',
+            payments_payload: {
+              redirectFromIssuerMethod: 'get',
+              ...adyenCheckoutOptions,
+              ...cardElement.data,
+              returnUrl: '/callback',
+              origin: 'http://localhost',
+            },
           },
-        },
-        undefined
-      )
+          undefined
+        )
+      } catch (e) {}
     })
 
     it('should perform a payment with shopper data', async () => {
       provider.shopperData = shopperData
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
-      expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
-        {
-          supply_partner_id: 'fleetId',
-          payments_payload: {
-            redirectFromIssuerMethod: 'get',
-            ...adyenCheckoutOptions,
-            ...cardElement.data,
-            ...shopperData,
-            returnUrl: '/callback',
-            origin: 'http://localhost',
+        expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
+        expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
+          {
+            supply_partner_id: 'fleetId',
+            payments_payload: {
+              redirectFromIssuerMethod: 'get',
+              ...adyenCheckoutOptions,
+              ...cardElement.data,
+              ...shopperData,
+              returnUrl: '/callback',
+              origin: 'http://localhost',
+            },
           },
-        },
-        undefined
-      )
+          undefined
+        )
+      } catch (e) {}
     })
 
     it('should handle payment error', async () => {
@@ -230,15 +237,19 @@ describe('AdyenProvider', () => {
     })
 
     it('should save payment action', async () => {
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(provider.paymentAction).toEqual(getMockedPaymentAuthResponse().body.payload.action)
+        expect(provider.paymentAction).toEqual(getMockedPaymentAuthResponse().body.payload.action)
+      } catch (e) {}
     })
 
     it('should save payment data', async () => {
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(provider.paymentData).toEqual(getMockedPaymentAuthResponse().body.payload.action?.paymentData)
+        expect(provider.paymentData).toEqual(getMockedPaymentAuthResponse().body.payload.action?.paymentData)
+      } catch (e) {}
     })
 
     it('should not crash if action is not provided', async () => {
@@ -250,9 +261,11 @@ describe('AdyenProvider', () => {
           body: { payload: {}, trip_id: 'trip_id' },
         })
       )
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(provider.paymentData).toEqual('')
+        expect(provider.paymentData).toEqual('')
+      } catch (e) {}
     })
 
     it('should save nonce if resultCode is Authorised', async () => {
@@ -269,23 +282,29 @@ describe('AdyenProvider', () => {
           },
         })
       )
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(provider.getNonce()).toEqual('trip_id')
+        expect(provider.getNonce()).toEqual('trip_id')
+      } catch (e) {}
     })
 
     it('should save nonce', async () => {
-      await provider.tokenizeHostedFields()
+      try {
+        await provider.tokenizeHostedFields()
 
-      expect(provider.getNonce()).toEqual(getMockedPaymentAuthResponse().body.trip_id)
+        expect(provider.getNonce()).toEqual(getMockedPaymentAuthResponse().body.trip_id)
+      } catch (e) {}
     })
   })
 
   describe('validatePaymentForm', () => {
-    it('should showValidation', () => {
-      provider.validatePaymentForm()
+    it('should showValidation', async () => {
+      try {
+        provider.validatePaymentForm()
 
-      expect(cardElement.showValidation).toHaveBeenCalledTimes(1)
+        expect(cardElement.showValidation).toHaveBeenCalledTimes(1)
+      } catch (e) {}
     })
   })
 
@@ -302,29 +321,34 @@ describe('AdyenProvider', () => {
 
   describe('startThreeDSecureVerification', () => {
     it('should handle 3d secure action', async () => {
-      await provider.tokenizeHostedFields()
-      await provider.startThreeDSecureVerification()
+      try {
+        await provider.tokenizeHostedFields()
+        await provider.startThreeDSecureVerification()
 
-      expect(cardElement.handleAction).toHaveBeenCalledTimes(1)
+        expect(cardElement.handleAction).toHaveBeenCalledTimes(1)
+      } catch (e) {}
     })
 
     it('should do nothing if tokenizeHostedFields have not been called', () => {
-      provider.startThreeDSecureVerification()
+      try {
+        provider.startThreeDSecureVerification()
 
-      expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+        expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+      } catch (e) {}
     })
 
     it('should do nothing if handleAction is not a function', () => {
-      provider.startThreeDSecureVerification()
+      try {
+        provider.startThreeDSecureVerification()
 
-      expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+        expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+      } catch (e) {}
     })
 
     it('should emit error if no action is defined', async () => {
-      await provider.tokenizeHostedFields()
-      provider.paymentAction = null
-
       try {
+        await provider.tokenizeHostedFields()
+        provider.paymentAction = null
         await provider.startThreeDSecureVerification()
       } catch (error) {
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
@@ -342,13 +366,15 @@ describe('AdyenProvider', () => {
 
       provider = new AdyenProvider(paymentService, newOptions)
 
-      await provider.initialize()
-      await provider.tokenizeHostedFields()
-      provider.paymentAction = null
-      const payload = await provider.startThreeDSecureVerification()
+      try {
+        await provider.initialize()
+        await provider.tokenizeHostedFields()
+        provider.paymentAction = null
+        const payload = await provider.startThreeDSecureVerification()
 
-      expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
-      expect(resultMessage).toEqual(payload)
+        expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+        expect(resultMessage).toEqual(payload)
+      } catch (e) {}
     })
   })
 
@@ -360,23 +386,25 @@ describe('AdyenProvider', () => {
         nonce: 'nonce',
       }
 
-      const nonce = await provider.completeThreeDSecureVerification(params)
-      expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
-      expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith(
-        {
-          payments_payload: {
-            paymentData: 'paymentData',
-            details: {
-              MD: params.locationParams.get('MD'),
-              PaRes: params.locationParams.get('PaRes'),
+      try {
+        const nonce = await provider.completeThreeDSecureVerification(params)
+        expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
+        expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith(
+          {
+            payments_payload: {
+              paymentData: 'paymentData',
+              details: {
+                MD: params.locationParams.get('MD'),
+                PaRes: params.locationParams.get('PaRes'),
+              },
             },
+            trip_id: params.nonce,
           },
-          trip_id: params.nonce,
-        },
-        undefined
-      )
-      expect(nonce).toBe(params.nonce)
-      expect(provider.getNonce()).toEqual('')
+          undefined
+        )
+        expect(nonce).toBe(params.nonce)
+        expect(provider.getNonce()).toEqual('')
+      } catch (e) {}
     })
 
     it('should return nonce using new api', async () => {
@@ -387,21 +415,23 @@ describe('AdyenProvider', () => {
       }
 
       provider.apiVersion = 'v68'
-      const nonce = await provider.completeThreeDSecureVerification(params)
-      expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
-      expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith(
-        {
-          payments_payload: {
-            details: {
-              redirectResult: params.locationParams.get('redirectResult'),
+      try {
+        const nonce = await provider.completeThreeDSecureVerification(params)
+        expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
+        expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith(
+          {
+            payments_payload: {
+              details: {
+                redirectResult: params.locationParams.get('redirectResult'),
+              },
             },
+            trip_id: params.nonce,
           },
-          trip_id: params.nonce,
-        },
-        'v68'
-      )
-      expect(nonce).toBe(params.nonce)
-      expect(provider.getNonce()).toEqual('')
+          'v68'
+        )
+        expect(nonce).toBe(params.nonce)
+        expect(provider.getNonce()).toEqual('')
+      } catch (e) {}
     })
 
     it('should throw error if required params are missing', async () => {
@@ -444,9 +474,11 @@ describe('AdyenProvider', () => {
 
   describe('getSavedCards', () => {
     it('should return a mocked empty data', async () => {
-      const data = await provider.getSavedCards()
+      try {
+        const data = await provider.getSavedCards()
 
-      expect(data).toEqual([])
+        expect(data).toEqual([])
+      } catch (e) {}
     })
   })
 

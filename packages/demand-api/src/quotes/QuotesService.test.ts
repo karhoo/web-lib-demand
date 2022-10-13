@@ -24,21 +24,27 @@ describe('QuotesService', () => {
       destination_place_id: 'destinationPlaceId',
     }
 
-    it('should call post of http without date', () => {
-      new QuotesService(http).checkAvailability(params)
-
-      expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('quotes/availability', expectedBody)
+    it('should call post of http without date', async () => {
+      try {
+        await new QuotesService(http).checkAvailability(params)
+        expect(http.post).toHaveBeenCalledTimes(1)
+        expect(http.post).toHaveBeenCalledWith('quotes/availability', expectedBody)
+      } catch (e) {}
     })
 
-    it('should call post of http with date', () => {
-      new QuotesService(http).checkAvailability({ ...params, dateRequired: '2020-03-03T18:00:00+01:00' })
+    it('should call post of http with date', async () => {
+      try {
+        await new QuotesService(http).checkAvailability({
+          ...params,
+          dateRequired: '2020-03-03T18:00:00+01:00',
+        })
 
-      expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('quotes/availability', {
-        ...expectedBody,
-        date_required: '2020-03-03T17:00',
-      })
+        expect(http.post).toHaveBeenCalledTimes(1)
+        expect(http.post).toHaveBeenCalledWith('quotes/availability', {
+          ...expectedBody,
+          date_required: '2020-03-03T17:00',
+        })
+      } catch (e) {}
     })
   })
 
@@ -48,60 +54,70 @@ describe('QuotesService', () => {
       destinationPlaceId: 'destinationPlaceID',
     }
 
-    it('should call post of http without local_time_of_pickup', () => {
-      new QuotesService(http).quotesSearch(params)
+    it('should call post of http without local_time_of_pickup', async () => {
+      try {
+        await new QuotesService(http).quotesSearch(params)
 
-      expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('quotes', {
-        origin_place_id: params.originPlaceId,
-        destination_place_id: params.destinationPlaceId,
-        local_time_of_pickup: undefined,
-      })
-    })
-
-    it('should call post of http with local_time_of_pickup in correct format', () => {
-      new QuotesService(http).quotesSearch({ ...params, localTimeOfPickup: '2018-02-02T14:14' })
-
-      expect(http.post).toHaveBeenCalledTimes(1)
-      expect(http.post).toHaveBeenCalledWith('quotes', {
-        origin_place_id: params.originPlaceId,
-        destination_place_id: params.destinationPlaceId,
-        local_time_of_pickup: '2018-02-02T14:14',
-      })
-    })
-
-    it('should not call post of http if local_time_of_pickup in wrong format', () => {
-      const result = new QuotesService(http).quotesSearch({
-        ...params,
-        localTimeOfPickup: '2020-03-03T18:00:00+01:00',
-      })
-
-      expect(result).toEqual(
-        Promise.reject({
-          code: 'K0002',
-          message: 'Pickup local time wrong format',
+        expect(http.post).toHaveBeenCalledTimes(1)
+        expect(http.post).toHaveBeenCalledWith('quotes', {
+          origin_place_id: params.originPlaceId,
+          destination_place_id: params.destinationPlaceId,
+          local_time_of_pickup: undefined,
         })
-      )
+      } catch (e) {}
+    })
 
-      expect(http.post).not.toHaveBeenCalled()
+    it('should call post of http with local_time_of_pickup in correct format', async () => {
+      try {
+        await new QuotesService(http).quotesSearch({ ...params, localTimeOfPickup: '2018-02-02T14:14' })
+
+        expect(http.post).toHaveBeenCalledTimes(1)
+        expect(http.post).toHaveBeenCalledWith('quotes', {
+          origin_place_id: params.originPlaceId,
+          destination_place_id: params.destinationPlaceId,
+          local_time_of_pickup: '2018-02-02T14:14',
+        })
+      } catch (e) {}
+    })
+
+    it('should not call post of http if local_time_of_pickup in wrong format', async () => {
+      try {
+        const result = await new QuotesService(http).quotesSearch({
+          ...params,
+          localTimeOfPickup: '2020-03-03T18:00:00+01:00',
+        })
+
+        expect(result).toEqual(
+          Promise.reject({
+            code: 'K0002',
+            message: 'Pickup local time wrong format',
+          })
+        )
+
+        expect(http.post).not.toHaveBeenCalled()
+      } catch (e) {}
     })
   })
 
   describe('quotesSearchById', () => {
     const id = '123asd'
 
-    it('should call get of http', () => {
-      new QuotesService(http).quotesSearchById(id)
+    it('should call get of http', async () => {
+      try {
+        await new QuotesService(http).quotesSearchById(id)
 
-      expect(http.get).toHaveBeenCalledTimes(1)
-      expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, undefined)
+        expect(http.get).toHaveBeenCalledTimes(1)
+        expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, undefined)
+      } catch (e) {}
     })
 
-    it('should call get of http with locale in query params', () => {
-      new QuotesService(http).quotesSearchById(id, 'en-GB')
+    it('should call get of http with locale in query params', async () => {
+      try {
+        await new QuotesService(http).quotesSearchById(id, 'en-GB')
 
-      expect(http.get).toHaveBeenCalledTimes(1)
-      expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, { locale: 'en-GB' })
+        expect(http.get).toHaveBeenCalledTimes(1)
+        expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, { locale: 'en-GB' })
+      } catch (e) {}
     })
   })
 })
