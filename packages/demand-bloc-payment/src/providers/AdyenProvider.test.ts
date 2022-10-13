@@ -329,17 +329,17 @@ describe('AdyenProvider', () => {
       } catch (e) {}
     })
 
-    it('should do nothing if tokenizeHostedFields have not been called', () => {
+    it('should do nothing if tokenizeHostedFields have not been called', async () => {
       try {
-        provider.startThreeDSecureVerification()
+        await provider.startThreeDSecureVerification()
 
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
       } catch (e) {}
     })
 
-    it('should do nothing if handleAction is not a function', () => {
+    it('should do nothing if handleAction is not a function', async () => {
       try {
-        provider.startThreeDSecureVerification()
+        await provider.startThreeDSecureVerification()
 
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
       } catch (e) {}
@@ -349,8 +349,8 @@ describe('AdyenProvider', () => {
       try {
         await provider.tokenizeHostedFields()
         provider.paymentAction = null
-        await provider.startThreeDSecureVerification()
       } catch (error) {
+        await provider.startThreeDSecureVerification()
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
         expect(error).toEqual(new AdyenError(errors[codes.AE04], codes.AE04))
       }
