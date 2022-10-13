@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "main": "index.js",
   "scripts": {
