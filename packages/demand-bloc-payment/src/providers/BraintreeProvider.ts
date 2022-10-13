@@ -2,7 +2,13 @@ import braintree, { Client, ThreeDSecure, HostedFields } from 'braintree-web'
 
 import { Payment } from '@karhoo/demand-api'
 
-import { BraintreeProviderOptions, FullBraintreeProviderOptions, Provider, Payer } from '../types'
+import {
+  BraintreeProviderOptions,
+  FullBraintreeProviderOptions,
+  Provider,
+  Payer,
+  ThreeDSecureOptions,
+} from '../types'
 import {
   defaultHostedFieldsConfig,
   defaultHostedFieldsStyles,
@@ -13,7 +19,6 @@ import {
 } from './braintreeConstants'
 import { getCancellablePromise, CancellablePromise } from '../utils'
 import { errors as paymentErrors } from '../constants'
-import { HostedFieldsAccountDetails } from 'braintree-web/modules/hosted-fields'
 import { ThreeDSecureVerifyOptions } from 'braintree-web/modules/three-d-secure'
 
 type PendingInitialisation =
@@ -119,11 +124,13 @@ export class BraintreeProvider implements Provider {
       return Promise.reject(new Error(errors.hostedFieldsNotInitialized))
     }
 
-    const { nonce, details } = await this.hostedFields.tokenize()
+    const { nonce, details = { bin: undefined } } = await this.hostedFields.tokenize()
 
     return {
       nonce,
-      details,
+      options: {
+        bin: details.bin,
+      },
     }
   }
 
@@ -257,10 +264,10 @@ export class BraintreeProvider implements Provider {
   async startThreeDSecureVerification(
     amount: number,
     nonce: string,
-    details?: HostedFieldsAccountDetails,
+    options?: ThreeDSecureOptions,
     email?: string
   ): Promise<string | Error> {
-    const bin = (details && details.bin) as string
+    const bin = (options && options.bin) as string
     const verifyPromise = this.verifyCard(amount, nonce, bin, email)
 
     return new Promise((resolve, reject) => {

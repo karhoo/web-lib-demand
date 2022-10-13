@@ -19,9 +19,7 @@ export type Payer = {
 
 type TokenizePayload = {
   nonce: string
-  details?: {
-    bin: string
-  }
+  options?: ThreeDSecureOptions
   resultCode?: string
 }
 
@@ -35,6 +33,10 @@ export type CompleteThreeDSecureVerificationParams = {
 type PaymentProviderProps = {
   class?: string
   usePaymentModal?: boolean
+}
+
+export type ThreeDSecureOptions = {
+  bin?: string
 }
 
 export type ProviderOptions = {
@@ -52,9 +54,7 @@ export type Provider = {
   startThreeDSecureVerification(
     amount: number,
     nonce: string,
-    details?: {
-      bin: string
-    },
+    options?: ThreeDSecureOptions,
     email?: string
   ): Promise<string | Error>
   getSavedCards(payer: Payer): Promise<CardInfo[]>
