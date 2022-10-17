@@ -11,20 +11,14 @@ export class UserService {
   }
 
   getCurrentUser() {
-    try {
-      return this.http.get<GetCurrentUserResponse>(`${this.url}/users/me`)
-    } catch (e) {}
+    return this.http.get<GetCurrentUserResponse>(`${this.url}/users/me`)
   }
 
   resetPassword(params: ResetPasswordParams) {
-    try {
-      return this.http.post<object>(`${this.url}/users/password-reset`, params)
-    } catch (e) {}
+    return this.http.post<object>(`${this.url}/users/password-reset`, params)
   }
 
   getOrganisationConfiguration(id: string) {
-    try {
-      return this.http.get<GetOrganisationConfigurationResponse>(`${this.url}/organisations/${id}`)
-    } catch (e) {}
+    return this.http.get<GetOrganisationConfigurationResponse>(`${this.url}/organisations/${id}`)
   }
 }
