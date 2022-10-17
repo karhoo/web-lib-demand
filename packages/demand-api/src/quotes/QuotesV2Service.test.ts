@@ -47,20 +47,18 @@ describe('QuotesV2Service', () => {
 
     it('should not call post of http if local_time_of_pickup in wrong format', async () => {
       try {
-        const result = await new QuotesV2Service(http).quotesSearch({
+        await new QuotesV2Service(http).quotesSearch({
           ...params,
           localTimeOfPickup: '2020-03-03T18:00:00+01:00',
         })
-
-        expect(result).toEqual(
-          Promise.reject({
-            code: 'K0002',
-            message: 'Pickup local time wrong format',
-          })
-        )
+      } catch (e) {
+        expect(e).toEqual({
+          code: 'K0002',
+          message: 'Pickup local time wrong format',
+        })
 
         expect(http.post).not.toHaveBeenCalled()
-      } catch (e) {}
+      }
     })
   })
 

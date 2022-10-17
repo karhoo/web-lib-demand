@@ -84,9 +84,7 @@ describe('AdyenProvider', () => {
 
     provider = new AdyenProvider(paymentService, checkoutOptions)
 
-    try {
-      await provider.initialize()
-    } catch (e) {}
+    await provider.initialize()
   })
 
   describe('initialize', () => {
@@ -310,15 +308,17 @@ describe('AdyenProvider', () => {
     it('should do nothing if tokenizeHostedFields have not been called', async () => {
       try {
         await provider.startThreeDSecureVerification()
+      } catch (e) {
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
-      } catch (e) {}
+      }
     })
 
     it('should do nothing if handleAction is not a function', async () => {
       try {
         await provider.startThreeDSecureVerification()
+      } catch (e) {
         expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
-      } catch (e) {}
+      }
     })
 
     it('should emit error if no action is defined', async () => {
