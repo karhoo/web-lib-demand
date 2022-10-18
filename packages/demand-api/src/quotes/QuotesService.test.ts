@@ -73,6 +73,7 @@ describe('QuotesService', () => {
     })
 
     it('should not call post of http if local_time_of_pickup in wrong format', async () => {
+      expect.assertions(2)
       try {
         await new QuotesService(http).quotesSearch({
           ...params,
