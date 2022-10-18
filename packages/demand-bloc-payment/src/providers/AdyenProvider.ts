@@ -211,11 +211,7 @@ export class AdyenProvider implements Provider {
     return Promise.resolve('')
   }
 
-  async completeThreeDSecureVerification(params?: CompleteThreeDSecureVerificationParams) {
-    if (!params) {
-      return new Error(errors.missingRequiredParamsFor3dSecure)
-    }
-
+  async completeThreeDSecureVerification(params: CompleteThreeDSecureVerificationParams) {
     const { locationParams, nonce } = params
 
     const oldPayload = {
