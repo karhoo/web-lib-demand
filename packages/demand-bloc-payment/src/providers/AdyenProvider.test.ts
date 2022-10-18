@@ -282,7 +282,7 @@ describe('AdyenProvider', () => {
   })
 
   describe('validatePaymentForm', () => {
-    it('should showValidation', async () => {
+    it('should showValidation', () => {
       provider.validatePaymentForm()
 
       expect(cardElement.showValidation).toHaveBeenCalledTimes(1)
