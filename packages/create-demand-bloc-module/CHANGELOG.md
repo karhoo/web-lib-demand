@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [17.12.0](https://github.com/karhoo/web-lib-demand/compare/v17.11.0...v17.12.0) (2022-10-18)
+
+**Note:** Version bump only for package @karhoo/create-demand-bloc-module
+
+
+
+
+
 # [17.11.0](https://github.com/karhoo/web-lib-demand/compare/v17.10.0...v17.11.0) (2022-10-12)
 
 **Note:** Version bump only for package @karhoo/create-demand-bloc-module
