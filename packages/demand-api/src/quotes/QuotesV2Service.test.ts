@@ -25,9 +25,8 @@ describe('QuotesV2Service', () => {
       },
     }
 
-    it('should call post of http without local_time_of_pickup', () => {
-      new QuotesV2Service(http).quotesSearch(params)
-
+    it('should call post of http without local_time_of_pickup', async () => {
+      await new QuotesV2Service(http).quotesSearch(params)
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
         origin: params.origin,
@@ -36,9 +35,8 @@ describe('QuotesV2Service', () => {
       })
     })
 
-    it('should call post of http with local_time_of_pickup in correct format', () => {
-      new QuotesV2Service(http).quotesSearch({ ...params, localTimeOfPickup: '2018-02-02T14:14' })
-
+    it('should call post of http with local_time_of_pickup in correct format', async () => {
+      await new QuotesV2Service(http).quotesSearch({ ...params, localTimeOfPickup: '2018-02-02T14:14' })
       expect(http.post).toHaveBeenCalledTimes(1)
       expect(http.post).toHaveBeenCalledWith('quotes', {
         origin: params.origin,
@@ -47,20 +45,21 @@ describe('QuotesV2Service', () => {
       })
     })
 
-    it('should not call post of http if local_time_of_pickup in wrong format', () => {
-      const result = new QuotesV2Service(http).quotesSearch({
-        ...params,
-        localTimeOfPickup: '2020-03-03T18:00:00+01:00',
-      })
-
-      expect(result).toEqual(
-        Promise.reject({
+    it('should not call post of http if local_time_of_pickup in wrong format', async () => {
+      expect.assertions(2)
+      try {
+        await new QuotesV2Service(http).quotesSearch({
+          ...params,
+          localTimeOfPickup: '2020-03-03T18:00:00+01:00',
+        })
+      } catch (e) {
+        expect(e).toEqual({
           code: 'K0002',
           message: 'Pickup local time wrong format',
         })
-      )
 
-      expect(http.post).not.toHaveBeenCalled()
+        expect(http.post).not.toHaveBeenCalled()
+      }
     })
   })
 
@@ -70,9 +69,8 @@ describe('QuotesV2Service', () => {
       longitude: '-0.07',
     }
 
-    it('should call get of http without local_time_of_pickup', () => {
-      new QuotesV2Service(http).checkCoverage(query)
-
+    it('should call get of http without local_time_of_pickup', async () => {
+      await new QuotesV2Service(http).checkCoverage(query)
       expect(http.get).toHaveBeenCalledTimes(1)
       expect(http.get).toHaveBeenCalledWith('quotes/coverage', {
         latitude: query.latitude,
@@ -81,9 +79,11 @@ describe('QuotesV2Service', () => {
       })
     })
 
-    it('should call get of http with local_time_of_pickup in correct format', () => {
-      new QuotesV2Service(http).checkCoverage({ ...query, localTimeOfPickup: '2018-02-02T14:14:00+01:00' })
-
+    it('should call get of http with local_time_of_pickup in correct format', async () => {
+      await new QuotesV2Service(http).checkCoverage({
+        ...query,
+        localTimeOfPickup: '2018-02-02T14:14:00+01:00',
+      })
       expect(http.get).toHaveBeenCalledTimes(1)
       expect(http.get).toHaveBeenCalledWith('quotes/coverage', {
         latitude: query.latitude,
@@ -92,36 +92,34 @@ describe('QuotesV2Service', () => {
       })
     })
 
-    it('should not call get of http if local_time_of_pickup in wrong format', () => {
-      const result = new QuotesV2Service(http).checkCoverage({
-        ...query,
-        localTimeOfPickup: '2018/02/02T14:14:00+01:00',
-      })
-
-      expect(result).toEqual(
-        Promise.reject({
+    it('should not call get of http if local_time_of_pickup in wrong format', async () => {
+      expect.assertions(2)
+      try {
+        await new QuotesV2Service(http).checkCoverage({
+          ...query,
+          localTimeOfPickup: '2018/02/02T14:14:00+01:00',
+        })
+      } catch (error) {
+        expect(error).toEqual({
           code: 'K0002',
           message: 'Pickup local time wrong format',
         })
-      )
-
-      expect(http.get).not.toHaveBeenCalled()
+        expect(http.get).not.toHaveBeenCalled()
+      }
     })
   })
 
   describe('quotesSearchById', () => {
     const id = '123asd'
 
-    it('should call get of http', () => {
-      new QuotesV2Service(http).quotesSearchById(id)
-
+    it('should call get of http', async () => {
+      await new QuotesV2Service(http).quotesSearchById(id)
       expect(http.get).toHaveBeenCalledTimes(1)
       expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, undefined)
     })
 
-    it('should call get of http with locale in query params', () => {
-      new QuotesV2Service(http).quotesSearchById(id, 'en-GB')
-
+    it('should call get of http with locale in query params', async () => {
+      await new QuotesV2Service(http).quotesSearchById(id, 'en-GB')
       expect(http.get).toHaveBeenCalledTimes(1)
       expect(http.get).toHaveBeenCalledWith(`quotes/${id}`, { locale: 'en-GB' })
     })

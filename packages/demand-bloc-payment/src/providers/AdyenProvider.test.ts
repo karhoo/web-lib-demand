@@ -108,7 +108,6 @@ describe('AdyenProvider', () => {
       provider = new AdyenProvider(paymentService, checkoutOptions)
 
       await provider.initialize(payer)
-
       expect(provider.shopperData).toEqual(shopperData)
       expect(paymentService.getAdyenPaymentMethods).toBeCalledWith(
         {
@@ -124,6 +123,7 @@ describe('AdyenProvider', () => {
     })
 
     it('should emit an error if there is no payment methods', async () => {
+      expect.assertions(1)
       paymentService.getAdyenPaymentMethods.mockImplementationOnce(() =>
         Promise.resolve(getMockedErrorAdyenPaymentMethodsResponse())
       )
@@ -136,6 +136,7 @@ describe('AdyenProvider', () => {
     })
 
     it('should emit an error if there is no client key', async () => {
+      expect.assertions(1)
       paymentService.getAdyenClientKey.mockImplementationOnce(() =>
         Promise.resolve(getMockedErrorAdyenClientKeyResponse())
       )
@@ -176,10 +177,8 @@ describe('AdyenProvider', () => {
 
     it('should set live enviroment', async () => {
       provider = new AdyenProvider(paymentService, checkoutOptions)
-
       await provider.initialize()
       await provider.tokenizeHostedFields()
-
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
         {
@@ -218,6 +217,7 @@ describe('AdyenProvider', () => {
     })
 
     it('should handle payment error', async () => {
+      expect.assertions(1)
       paymentService.createAdyenPaymentAuth.mockImplementationOnce(() =>
         Promise.resolve(getMockedErrorAdyenPaymentAuthResponse())
       )
@@ -308,22 +308,20 @@ describe('AdyenProvider', () => {
       expect(cardElement.handleAction).toHaveBeenCalledTimes(1)
     })
 
-    it('should do nothing if tokenizeHostedFields have not been called', () => {
-      provider.startThreeDSecureVerification()
-
-      expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
-    })
-
-    it('should do nothing if handleAction is not a function', () => {
-      provider.startThreeDSecureVerification()
-
-      expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+    it('should throw error if tokenizeHostedFields have not been called', async () => {
+      expect.assertions(2)
+      try {
+        await provider.startThreeDSecureVerification()
+      } catch (error) {
+        expect(cardElement.handleAction).toHaveBeenCalledTimes(0)
+        expect(error).toEqual(new AdyenError(errors[codes.AE04], codes.AE04))
+      }
     })
 
     it('should emit error if no action is defined', async () => {
+      expect.assertions(2)
       await provider.tokenizeHostedFields()
       provider.paymentAction = null
-
       try {
         await provider.startThreeDSecureVerification()
       } catch (error) {
@@ -359,7 +357,6 @@ describe('AdyenProvider', () => {
         locationParams: new URLSearchParams(locationSearch),
         nonce: 'nonce',
       }
-
       const nonce = await provider.completeThreeDSecureVerification(params)
       expect(paymentService.getAdyenPaymentDetails).toHaveBeenCalledTimes(1)
       expect(paymentService.getAdyenPaymentDetails).toHaveBeenLastCalledWith(
@@ -404,17 +401,9 @@ describe('AdyenProvider', () => {
       expect(provider.getNonce()).toEqual('')
     })
 
-    it('should throw error if required params are missing', async () => {
-      jest.clearAllMocks()
-      try {
-        await provider.completeThreeDSecureVerification()
-      } catch (error) {
-        expect(error).toEqual(new AdyenError(errors[codes.AE04], codes.AE04))
-      }
-    })
-
     it('should handle payment details error', async () => {
       jest.clearAllMocks()
+      expect.assertions(1)
       const locationSearch = '?MD=MD&PaRes=PaRes'
       const params = {
         locationParams: new URLSearchParams(locationSearch),

@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "npx tsdx watch --tsconfig ./tsconfig.json",
-    "build": "npx tsdx build --tsconfig ./tsconfig.json && npx api-extractor run && npm run build:mocks",
+    "build": "npx tsdx build --tsconfig ./tsconfig.json && npx api-extractor run && yarn run build:mocks",
     "build:mocks": "tsc --declaration --outDir dist/mocks src/testMocks.ts",
     "test": "npx tsdx test"
   },

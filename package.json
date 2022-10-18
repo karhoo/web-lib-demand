@@ -1,13 +1,19 @@
 {
   "name": "web-lib-demand",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
   "main": "index.js",
   "scripts": {
-    "bootstrap": "npm ci && npx lerna bootstrap --hoist",
-    "build": "npx lerna run build --stream",
-    "test": "npx lerna run test --stream",
-    "lint": "npx eslint . --ext js,jsx,ts,tsx",
+    "build": "lerna run build --stream",
+    "test": "lerna run test --stream",
+    "lint": "eslint . --ext js,jsx,ts,tsx",
     "prepare": "husky install",
     "prettier-format": "prettier --config .prettierrc.js '**/*.ts' --write"
   },
@@ -29,7 +35,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.182",
-    "@types/react": "^16.9.35",
+    "@types/react": "^16.14.32",
     "@types/rx": "^4.1.2",
     "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -63,8 +69,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "npx eslint --fix",
-      "npx prettier --write"
+      "eslint --fix",
+      "prettier --write"
     ]
   }
 }
