@@ -14,21 +14,24 @@ import {
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
 import { AdyenError, handleRefusalResponse, errors, codes } from './adyenErrors'
+import noop from 'lodash/noop'
 
 export class AdyenProvider implements Provider {
   private paymentService: Payment
   private isFormValid = false
   private cardElement?: CardElement
+  private submitGooglePayPayment: Function
 
   private options: AdyenProviderOptions
   private checkoutOptions: AdyenCheckoutOptions
   private action: PaymentAction | null = null
   private shopper: AdyenShopperData | object = {}
 
-  constructor(paymentService: Payment, options: AdyenProviderOptions) {
+  constructor(paymentService: Payment, options: AdyenProviderOptions, submitGooglePayPayment?: Function) {
     this.setValidationStatus = this.setValidationStatus.bind(this)
     this.validatePaymentForm = this.validatePaymentForm.bind(this)
     this.paymentService = paymentService
+    this.submitGooglePayPayment = submitGooglePayPayment || noop
 
     this.options = {
       ...defaultAdyenOptions,
@@ -132,6 +135,12 @@ export class AdyenProvider implements Provider {
           enableStoreDetails: this.options.enableStoreDetails,
         },
       },
+      // @ts-ignore
+      onSubmit: async state => {
+        if (state.data.paymentMethod.type === 'paywithgoogle') {
+          this.submitGooglePayPayment()
+        }
+      },
     })
 
     this.cardElement = checkout.create('dropin').mount(`#${this.options.dropinContainerId}`)
@@ -178,8 +187,14 @@ export class AdyenProvider implements Provider {
   }
 
   validatePaymentForm() {
+    const isValid = this.isFormValid
+    if (this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle' && !isValid) {
+      this.cardElement?.submit()
+      return false
+    }
+
     this.cardElement?.showValidation()
-    return this.isFormValid
+    return isValid
   }
 
   clearPaymentNonce() {
