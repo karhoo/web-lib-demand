@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@adyen/adyen-web@5.28.3":
-  version "5.28.3"
-  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.28.3.tgz#cba50300b15e06fab41ccf9b140c16c165a9bbf9"
-  integrity sha512-UvEiUizNEIPTtNnPYEhKmC0fUPoEvyPRrknhxvXDm90OH5HIHpQ4H6Bx0cS46dT2VURwEuXJ+hdUZBJ3aEwu6w==
+"@adyen/adyen-web@5.29.0":
+  version "5.29.0"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.29.0.tgz#f73ab1bd837d9f8fa6b812f7f0a980e248655c8c"
+  integrity sha512-zoflOQ/uxbSlW+wZqX2N+8AwAj3Y6pCPsOw1gWVC0f9AaITjwE4peNxkYtmJKwpkM+3Eaq3I13iramsn15u3nw==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@babel/runtime-corejs3" "^7.19.1"
@@ -4041,10 +4041,10 @@ braces@^3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-braintree-web@3.88.3:
-  version "3.88.3"
-  resolved "https://registry.yarnpkg.com/braintree-web/-/braintree-web-3.88.3.tgz#17e19b7b77b18de659f18f41b7842f880bdde265"
-  integrity sha512-+RM22/OeErWGJWoB3CYW8Od3QDaLLc3ZBEktKL3byqMabaHgzgJqHGrHVmqKNAy+ML+TCY15IQGM71U0N4pvqw==
+braintree-web@3.88.4:
+  version "3.88.4"
+  resolved "https://registry.yarnpkg.com/braintree-web/-/braintree-web-3.88.4.tgz#0f001e781dc7eb2e6450cf437a549432e96707ad"
+  integrity sha512-WfMQn0otDdZgqor2hgNeZ8LBoBov9slCJ6o1qaqc2IhnAo7sJ3GfV3qGN2m8FF7KzB+hwG45ytkVP7f2/Cp5aw==
   dependencies:
     "@braintree/asset-loader" "0.4.4"
     "@braintree/browser-detection" "1.14.0"
