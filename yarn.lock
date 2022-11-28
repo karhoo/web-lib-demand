@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@adyen/adyen-web@5.28.2":
-  version "5.28.2"
-  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.28.2.tgz#ea960e3ff9b21abe27a8899ee752f7cdced70011"
-  integrity sha512-6iSTxUFwiyLVvKlMNAlqxkYLzTdN+8GUBjNgqXrxX2BGRRodbjXKIyaCaY8uez9M7DwlK2QnOpxLkJE0B4Znyw==
+"@adyen/adyen-web@5.29.0":
+  version "5.29.0"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.29.0.tgz#f73ab1bd837d9f8fa6b812f7f0a980e248655c8c"
+  integrity sha512-zoflOQ/uxbSlW+wZqX2N+8AwAj3Y6pCPsOw1gWVC0f9AaITjwE4peNxkYtmJKwpkM+3Eaq3I13iramsn15u3nw==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@babel/runtime-corejs3" "^7.19.1"
@@ -13,7 +13,7 @@
     "@types/googlepay" "^0.6.2"
     classnames "^2.3.1"
     core-js-pure "^3.25.3"
-    preact "10.7.3"
+    preact "10.11.2"
 
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
@@ -4041,10 +4041,10 @@ braces@^3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-braintree-web@3.88.1:
-  version "3.88.1"
-  resolved "https://registry.yarnpkg.com/braintree-web/-/braintree-web-3.88.1.tgz#1156ee47d5fc9cd5c85c9ea559fbb908563a43bb"
-  integrity sha512-+57sUyDJ5vMAtw19AJeZyJFFrEm2+fXX7oIfnra1L9HnRu2PefRc38pq10GNO0sy8ldEE5msryMczg7RH+mjSA==
+braintree-web@3.88.4:
+  version "3.88.4"
+  resolved "https://registry.yarnpkg.com/braintree-web/-/braintree-web-3.88.4.tgz#0f001e781dc7eb2e6450cf437a549432e96707ad"
+  integrity sha512-WfMQn0otDdZgqor2hgNeZ8LBoBov9slCJ6o1qaqc2IhnAo7sJ3GfV3qGN2m8FF7KzB+hwG45ytkVP7f2/Cp5aw==
   dependencies:
     "@braintree/asset-loader" "0.4.4"
     "@braintree/browser-detection" "1.14.0"
@@ -4057,7 +4057,7 @@ braintree-web@3.88.1:
     "@braintree/wrap-promise" "2.1.0"
     card-validator "8.1.1"
     credit-card-type "9.1.0"
-    framebus "5.1.2"
+    framebus "5.2.0"
     inject-stylesheet "5.0.0"
     promise-polyfill "8.2.3"
     restricted-input "3.0.5"
@@ -6202,10 +6202,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framebus@5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/framebus/-/framebus-5.1.2.tgz#cb38cf6a282d405411227cfaab4a1095ca9e8e15"
-  integrity sha512-Z/y6/0gHVx4Td4c0jkDiASBo0pXlJ2fKOP6CynSFnxTzqojG9xOKOFOqoYkcBHlz1vP4t4yHHR6Esp+GsYIh/Q==
+framebus@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/framebus/-/framebus-5.2.0.tgz#a1689e8bbd5abf3ae7af8b1139658bb66d808e62"
+  integrity sha512-hIKt71vBVd/g0emUbuVg8HAeHEjxBwhAE87CKXvxPIy0sCoGWqBulB1k9lWBWUU6ZHXPs0xjXWMwUldWMiqD6A==
   dependencies:
     "@braintree/uuid" "^0.1.0"
 
@@ -9994,10 +9994,10 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==
 
-preact@10.7.3:
-  version "10.7.3"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.7.3.tgz#f98c09a29cb8dbb22e5fc824a1edcc377fc42b5a"
-  integrity sha512-giqJXP8VbtA1tyGa3f1n9wiN7PrHtONrDyE3T+ifjr/tTkg+2N4d/6sjC9WyJKv8wM7rOYDveqy5ZoFmYlwo4w==
+preact@10.11.2:
+  version "10.11.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.11.2.tgz#e43f2a2f2985dedb426bb4c765b7bb037734f8a8"
+  integrity sha512-skAwGDFmgxhq1DCBHke/9e12ewkhc7WYwjuhHB8HHS8zkdtITXLRmUMTeol2ldxvLwYtwbFeifZ9uDDWuyL4Iw==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/karhoo/web-lib-demand#readme",
   "devDependencies": {
-    "@adyen/adyen-web": "5.28.2",
+    "@adyen/adyen-web": "5.29.0",
     "@microsoft/api-extractor": "^7.19.2",
     "@types/braintree-web": "^3.75.0",
     "@types/date-and-time": "^0.13.0",
@@ -41,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "babel-eslint": "^10.0.3",
+    "braintree-web": "3.88.4",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.2",

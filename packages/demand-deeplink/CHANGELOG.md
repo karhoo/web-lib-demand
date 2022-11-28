@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [18.0.0](https://github.com/karhoo/web-lib-demand/compare/v17.13.1...v18.0.0) (2022-11-22)
+
+**Note:** Version bump only for package @karhoo/demand-deeplink
+
+
+
+
+
+## [17.13.1](https://github.com/karhoo/web-lib-demand/compare/v17.13.0...v17.13.1) (2022-11-18)
+
+**Note:** Version bump only for package @karhoo/demand-deeplink
+
+
+
+
+
 # [17.13.0](https://github.com/karhoo/web-lib-demand/compare/v17.12.0...v17.13.0) (2022-10-19)
 
 **Note:** Version bump only for package @karhoo/demand-deeplink

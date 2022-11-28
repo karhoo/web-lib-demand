@@ -230,6 +230,7 @@ export class QuotesBloc {
 
       if (requestQuotesResponse.error.code === NO_QUOTES_AVAILABLE) {
         this.noQuotesFound$.next()
+        this.quotesLoadingError$.next(requestQuotesResponse.error)
       } else {
         this.quotesLoadingError$.next(requestQuotesResponse.error)
       }
