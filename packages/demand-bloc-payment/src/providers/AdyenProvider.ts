@@ -186,15 +186,16 @@ export class AdyenProvider implements Provider {
     return { nonce: makePaymentResponse.body.trip_id }
   }
 
-  validatePaymentForm() {
-    const isValid = this.isFormValid
-    if (this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle' && !isValid) {
-      this.cardElement?.submit()
-      return false
-    }
+  isGooglePay() {
+    return this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle'
+  }
 
-    this.cardElement?.showValidation()
-    return isValid
+  forceGooglePayPopup() {
+    this.cardElement?.submit()
+  }
+
+  validatePaymentForm() {
+    return this.isFormValid
   }
 
   clearPaymentNonce() {

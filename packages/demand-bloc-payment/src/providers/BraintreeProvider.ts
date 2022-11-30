@@ -320,4 +320,12 @@ export class BraintreeProvider implements Provider {
       usePaymentModal: true,
     }
   }
+
+  isGooglePay() {
+    return false
+  }
+
+  forceGooglePayPopup() {
+    return null
+  }
 }
