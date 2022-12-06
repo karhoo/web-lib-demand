@@ -21,7 +21,7 @@ export class AdyenProvider implements Provider {
   private isFormValid = false
   private cardElement?: CardElement
   private submitGooglePayPayment: Function
-  private submitGooglePayPaymentPayload: Object
+  private submitGooglePayPaymentPayload: Object | undefined
 
   private options: AdyenProviderOptions
   private checkoutOptions: AdyenCheckoutOptions
