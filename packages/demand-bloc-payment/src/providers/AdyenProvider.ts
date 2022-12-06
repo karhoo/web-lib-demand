@@ -1,6 +1,6 @@
 import AdyenCheckout from '@adyen/adyen-web'
 import CardElement from '@adyen/adyen-web/dist/types/components/Dropin'
-import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
+import { PaymentAction, PaymentMethod } from '@adyen/adyen-web/dist/types/types'
 import { Payment, ProviderVersion } from '@karhoo/demand-api'
 
 import {
@@ -15,6 +15,14 @@ import {
 import { defaultAdyenOptions } from '../constants'
 import { AdyenError, handleRefusalResponse, errors, codes } from './adyenErrors'
 import noop from 'lodash/noop'
+
+type onSubmitStateData = {
+  paymentMethod: PaymentMethod
+}
+
+type OnSubmitState = {
+  data: onSubmitStateData
+}
 
 export class AdyenProvider implements Provider {
   private paymentService: Payment
@@ -92,6 +100,12 @@ export class AdyenProvider implements Provider {
     this.isFormValid = isValid
   }
 
+  onAdyenSubmit = (state: OnSubmitState) => {
+    if (state.data.paymentMethod.type === 'paywithgoogle') {
+      this.submitGooglePayPayment(this.submitGooglePayPaymentPayload)
+    }
+  }
+
   async initialize(payer?: Payer) {
     if (payer) {
       this.shopperData = {
@@ -136,12 +150,7 @@ export class AdyenProvider implements Provider {
           enableStoreDetails: this.options.enableStoreDetails,
         },
       },
-      // @ts-ignore
-      onSubmit: async state => {
-        if (state.data.paymentMethod.type === 'paywithgoogle') {
-          this.submitGooglePayPayment(this.submitGooglePayPaymentPayload)
-        }
-      },
+      onSubmit: this.onAdyenSubmit,
     })
 
     this.cardElement = checkout.create('dropin').mount(`#${this.options.dropinContainerId}`)

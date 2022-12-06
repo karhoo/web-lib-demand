@@ -39,6 +39,8 @@ const shopperData = {
   shopperEmail: payer.email,
 }
 
+const submitGooglePayPayment = jest.fn()
+
 jest.mock('@adyen/adyen-web', () => () => ({
   create: jest.fn(() => ({
     mount: jest.fn(() => cardElement),
@@ -86,7 +88,7 @@ describe('AdyenProvider', () => {
   beforeEach(async () => {
     jest.clearAllMocks()
 
-    provider = new AdyenProvider(paymentService, checkoutOptions)
+    provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
 
     await provider.initialize()
   })
@@ -109,7 +111,7 @@ describe('AdyenProvider', () => {
     it('should get payment methods for authorized payer and save his data', async () => {
       jest.clearAllMocks()
 
-      provider = new AdyenProvider(paymentService, checkoutOptions)
+      provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
 
       await provider.initialize(payer)
       expect(provider.shopperData).toEqual(shopperData)
@@ -180,7 +182,7 @@ describe('AdyenProvider', () => {
     })
 
     it('should set live enviroment', async () => {
-      provider = new AdyenProvider(paymentService, checkoutOptions)
+      provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
       await provider.initialize()
       await provider.tokenizeHostedFields()
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
@@ -315,6 +317,12 @@ describe('AdyenProvider', () => {
       cardElement.data.paymentMethod.type = 'paywithgoogle'
       const isGooglePay = provider.isGooglePay()
       expect(isGooglePay).toBeTruthy()
+    })
+
+    it('should call submitGooglePayPayment onSubmit', () => {
+      provider.onAdyenSubmit({ data: { paymentMethod: { type: 'paywithgoogle' } } })
+
+      expect(submitGooglePayPayment).toHaveBeenCalledTimes(1)
     })
   })
 
