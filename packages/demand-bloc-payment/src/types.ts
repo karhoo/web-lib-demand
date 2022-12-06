@@ -63,7 +63,7 @@ export type Provider = {
   getNonce(): string | null
   apiVersion?: ProviderVersion
   isGooglePay(): boolean
-  forceGooglePayPopup(): void
+  forceGooglePayPopup(payload?: Object): void
 }
 
 export type CardsInfo = {

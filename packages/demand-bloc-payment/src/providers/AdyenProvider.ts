@@ -21,6 +21,7 @@ export class AdyenProvider implements Provider {
   private isFormValid = false
   private cardElement?: CardElement
   private submitGooglePayPayment: Function
+  private submitGooglePayPaymentPayload: Object
 
   private options: AdyenProviderOptions
   private checkoutOptions: AdyenCheckoutOptions
@@ -138,7 +139,7 @@ export class AdyenProvider implements Provider {
       // @ts-ignore
       onSubmit: async state => {
         if (state.data.paymentMethod.type === 'paywithgoogle') {
-          this.submitGooglePayPayment()
+          this.submitGooglePayPayment(this.submitGooglePayPaymentPayload)
         }
       },
     })
@@ -190,7 +191,8 @@ export class AdyenProvider implements Provider {
     return this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle'
   }
 
-  forceGooglePayPopup() {
+  forceGooglePayPopup(payload: Object) {
+    this.submitGooglePayPaymentPayload = payload
     this.cardElement?.submit()
   }
 

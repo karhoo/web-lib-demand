@@ -136,8 +136,8 @@ export class PaymentBloc {
     return this.provider.isGooglePay()
   }
 
-  forceGooglePayPopup() {
-    this.provider.forceGooglePayPopup()
+  forceGooglePayPopup(payload: Object) {
+    this.provider.forceGooglePayPopup(payload)
   }
 
   validatePaymentDetails() {
