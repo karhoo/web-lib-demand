@@ -17,10 +17,14 @@ import { errors, AdyenError, codes } from './adyenErrors'
 const cardElement = {
   data: {
     testData: '1',
+    paymentMethod: {
+      type: 'card',
+    },
   },
   remove: jest.fn(),
   showValidation: jest.fn(),
   handleAction: jest.fn(),
+  submit: jest.fn(),
 }
 
 const payer = {
@@ -279,6 +283,12 @@ describe('AdyenProvider', () => {
 
       expect(provider.getNonce()).toEqual(getMockedPaymentAuthResponse().body.trip_id)
     })
+
+    it('should clear nonce', () => {
+      provider.clearPaymentNonce()
+      expect(provider.getNonce()).toEqual('')
+      expect(provider.paymentData).toEqual('')
+    })
   })
 
   describe('validatePaymentForm', () => {
@@ -286,6 +296,25 @@ describe('AdyenProvider', () => {
       provider.validatePaymentForm()
 
       expect(cardElement.showValidation).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('google pay', () => {
+    it('should force adyen dropin submit', () => {
+      provider.forceGooglePayPopup()
+
+      expect(cardElement.submit).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return false if its not google pay', () => {
+      const isGooglePay = provider.isGooglePay()
+      expect(isGooglePay).toBeFalsy()
+    })
+
+    it('should return true if its google pay', () => {
+      cardElement.data.paymentMethod.type = 'paywithgoogle'
+      const isGooglePay = provider.isGooglePay()
+      expect(isGooglePay).toBeTruthy()
     })
   })
 

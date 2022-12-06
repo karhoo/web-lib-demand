@@ -191,7 +191,7 @@ export class AdyenProvider implements Provider {
     return this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle'
   }
 
-  forceGooglePayPopup(payload: Object) {
+  forceGooglePayPopup(payload?: Object) {
     this.submitGooglePayPaymentPayload = payload
     this.cardElement?.submit()
   }
