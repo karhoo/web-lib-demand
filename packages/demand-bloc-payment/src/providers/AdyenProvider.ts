@@ -197,6 +197,7 @@ export class AdyenProvider implements Provider {
   }
 
   validatePaymentForm() {
+    this.cardElement?.showValidation()
     return this.isFormValid
   }
 
