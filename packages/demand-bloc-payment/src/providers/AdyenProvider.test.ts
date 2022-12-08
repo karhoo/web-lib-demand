@@ -17,10 +17,14 @@ import { errors, AdyenError, codes } from './adyenErrors'
 const cardElement = {
   data: {
     testData: '1',
+    paymentMethod: {
+      type: 'card',
+    },
   },
   remove: jest.fn(),
   showValidation: jest.fn(),
   handleAction: jest.fn(),
+  submit: jest.fn(),
 }
 
 const payer = {
@@ -34,6 +38,8 @@ const shopperData = {
   shopperReference: payer.id,
   shopperEmail: payer.email,
 }
+
+const submitGooglePayPayment = jest.fn()
 
 jest.mock('@adyen/adyen-web', () => () => ({
   create: jest.fn(() => ({
@@ -82,7 +88,7 @@ describe('AdyenProvider', () => {
   beforeEach(async () => {
     jest.clearAllMocks()
 
-    provider = new AdyenProvider(paymentService, checkoutOptions)
+    provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
 
     await provider.initialize()
   })
@@ -105,7 +111,7 @@ describe('AdyenProvider', () => {
     it('should get payment methods for authorized payer and save his data', async () => {
       jest.clearAllMocks()
 
-      provider = new AdyenProvider(paymentService, checkoutOptions)
+      provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
 
       await provider.initialize(payer)
       expect(provider.shopperData).toEqual(shopperData)
@@ -176,7 +182,7 @@ describe('AdyenProvider', () => {
     })
 
     it('should set live enviroment', async () => {
-      provider = new AdyenProvider(paymentService, checkoutOptions)
+      provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
       await provider.initialize()
       await provider.tokenizeHostedFields()
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
@@ -279,6 +285,12 @@ describe('AdyenProvider', () => {
 
       expect(provider.getNonce()).toEqual(getMockedPaymentAuthResponse().body.trip_id)
     })
+
+    it('should clear nonce', () => {
+      provider.clearPaymentNonce()
+      expect(provider.getNonce()).toEqual('')
+      expect(provider.paymentData).toEqual('')
+    })
   })
 
   describe('validatePaymentForm', () => {
@@ -286,6 +298,31 @@ describe('AdyenProvider', () => {
       provider.validatePaymentForm()
 
       expect(cardElement.showValidation).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('google pay', () => {
+    it('should force adyen dropin submit', () => {
+      provider.forceGooglePayPopup()
+
+      expect(cardElement.submit).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return false if its not google pay', () => {
+      const isGooglePay = provider.isGooglePay()
+      expect(isGooglePay).toBeFalsy()
+    })
+
+    it('should return true if its google pay', () => {
+      cardElement.data.paymentMethod.type = 'paywithgoogle'
+      const isGooglePay = provider.isGooglePay()
+      expect(isGooglePay).toBeTruthy()
+    })
+
+    it('should call submitGooglePayPayment onSubmit', () => {
+      provider.onAdyenSubmit({ data: { paymentMethod: { type: 'paywithgoogle' } } })
+
+      expect(submitGooglePayPayment).toHaveBeenCalledTimes(1)
     })
   })
 

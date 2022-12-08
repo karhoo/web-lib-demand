@@ -220,6 +220,13 @@ describe('BraintreeProvider', () => {
 
       provider.dispose()
     })
+
+    describe('should return nothing for google pay (unsupported)', () => {
+      it('should return nothing', () => {
+        expect(provider.isGooglePay()).toBeFalsy()
+        expect(provider.forceGooglePayPopup()).toBeNull()
+      })
+    })
   })
 
   describe('tokenizeHostedFields', () => {

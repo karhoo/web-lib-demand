@@ -132,6 +132,14 @@ export class PaymentBloc {
     await this.provider.dispose()
   }
 
+  isGooglePayPayment() {
+    return this.provider.isGooglePay()
+  }
+
+  forceGooglePayPopup(payload: Object) {
+    this.provider.forceGooglePayPopup(payload)
+  }
+
   validatePaymentDetails() {
     return !!this.cardsInfo?.getSelectedPaymentCard() || this.provider.validatePaymentForm()
   }

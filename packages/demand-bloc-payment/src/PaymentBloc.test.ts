@@ -64,6 +64,8 @@ describe('PaymentBloc', () => {
     saveCard: getAddPaymentCardMock(),
     getPaymentProviderProps: jest.fn(),
     getNonce: jest.fn(),
+    isGooglePay: jest.fn(),
+    forceGooglePayPopup: jest.fn(),
   }
 
   const adyenProvider = {
@@ -78,6 +80,8 @@ describe('PaymentBloc', () => {
     getPaymentProviderProps: jest.fn(),
     saveCard: getAddPaymentCardMock(),
     getNonce: jest.fn(),
+    isGooglePay: jest.fn(),
+    forceGooglePayPopup: jest.fn(),
   }
 
   const providersMapMock: PaymentProvidersMap = {
@@ -400,6 +404,24 @@ describe('PaymentBloc', () => {
       } as Location
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })
+    })
+
+    describe('google pay', () => {
+      it('should call validatePaymentForm of provider', async () => {
+        const payment = await PaymentBloc.create({
+          providers: providersMapMock,
+          paymentService: paymentServiceMock,
+        })
+
+        const payload = { reference_id: 'test' }
+
+        const providerBeingUsedMock = getPaymentProviderBeingUsed()
+        payment.isGooglePayPayment()
+        expect(providerBeingUsedMock.isGooglePay).toBeCalledTimes(1)
+        payment.forceGooglePayPopup(payload)
+        expect(providerBeingUsedMock.forceGooglePayPopup).toBeCalledTimes(1)
+        expect(providerBeingUsedMock.forceGooglePayPopup).toHaveBeenCalledWith(payload)
+      })
     })
   })
 

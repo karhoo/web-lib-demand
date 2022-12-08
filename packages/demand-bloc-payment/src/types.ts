@@ -62,6 +62,8 @@ export type Provider = {
   getPaymentProviderProps(): PaymentProviderProps
   getNonce(): string | null
   apiVersion?: ProviderVersion
+  isGooglePay(): boolean
+  forceGooglePayPopup(payload?: Object): void
 }
 
 export type CardsInfo = {

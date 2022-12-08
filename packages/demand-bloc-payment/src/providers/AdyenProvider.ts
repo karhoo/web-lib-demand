@@ -14,21 +14,25 @@ import {
 } from '../types'
 import { defaultAdyenOptions } from '../constants'
 import { AdyenError, handleRefusalResponse, errors, codes } from './adyenErrors'
+import noop from 'lodash/noop'
 
 export class AdyenProvider implements Provider {
   private paymentService: Payment
   private isFormValid = false
   private cardElement?: CardElement
+  private submitGooglePayPayment: Function
+  private submitGooglePayPaymentPayload: Object | undefined
 
   private options: AdyenProviderOptions
   private checkoutOptions: AdyenCheckoutOptions
   private action: PaymentAction | null = null
   private shopper: AdyenShopperData | object = {}
 
-  constructor(paymentService: Payment, options: AdyenProviderOptions) {
+  constructor(paymentService: Payment, options: AdyenProviderOptions, submitGooglePayPayment?: Function) {
     this.setValidationStatus = this.setValidationStatus.bind(this)
     this.validatePaymentForm = this.validatePaymentForm.bind(this)
     this.paymentService = paymentService
+    this.submitGooglePayPayment = submitGooglePayPayment || noop
 
     this.options = {
       ...defaultAdyenOptions,
@@ -88,6 +92,13 @@ export class AdyenProvider implements Provider {
     this.isFormValid = isValid
   }
 
+  // @ts-ignore: no appropriate type in Adyen lib
+  onAdyenSubmit = state => {
+    if (state.data.paymentMethod.type === 'paywithgoogle') {
+      this.submitGooglePayPayment(this.submitGooglePayPaymentPayload)
+    }
+  }
+
   async initialize(payer?: Payer) {
     if (payer) {
       this.shopperData = {
@@ -132,6 +143,7 @@ export class AdyenProvider implements Provider {
           enableStoreDetails: this.options.enableStoreDetails,
         },
       },
+      onSubmit: this.onAdyenSubmit,
     })
 
     this.cardElement = checkout.create('dropin').mount(`#${this.options.dropinContainerId}`)
@@ -175,6 +187,15 @@ export class AdyenProvider implements Provider {
     this.nonce = makePaymentResponse.body.trip_id
 
     return { nonce: makePaymentResponse.body.trip_id }
+  }
+
+  isGooglePay() {
+    return this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle'
+  }
+
+  forceGooglePayPopup(payload?: Object) {
+    this.submitGooglePayPaymentPayload = payload
+    this.cardElement?.submit()
   }
 
   validatePaymentForm() {
