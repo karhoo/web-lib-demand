@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [18.1.0](https://github.com/karhoo/web-lib-demand/compare/v18.0.0...v18.1.0) (2022-12-08)
+
+**Note:** Version bump only for package @karhoo/lib-feature-flags
+
+
+
+
+
 # [18.0.0](https://github.com/karhoo/web-lib-demand/compare/v17.13.1...v18.0.0) (2022-11-22)
 
 **Note:** Version bump only for package @karhoo/lib-feature-flags
