@@ -152,6 +152,7 @@ export class AdyenProvider implements Provider {
   async tokenizeHostedFields() {
     const makePaymentResponse = await this.paymentService.createAdyenPaymentAuth(
       {
+        consent_mode_supported: this.options.enableStoreDetails,
         supply_partner_id: this.options.fleetId,
         payments_payload: {
           ...this.checkoutOptions,
