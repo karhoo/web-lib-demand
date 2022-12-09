@@ -73,6 +73,7 @@ export type PaymentMethodsParams = {
 export type PaymentAuthParams = {
   supply_partner_id: string
   payments_payload: CoreOptions
+  consent_mode_supported?: boolean
 }
 
 export type PaymentAuthResponse = {

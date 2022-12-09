@@ -168,6 +168,7 @@ describe('AdyenProvider', () => {
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
         {
+          consent_mode_supported: false,
           supply_partner_id: 'fleetId',
           payments_payload: {
             redirectFromIssuerMethod: 'get',
@@ -181,13 +182,14 @@ describe('AdyenProvider', () => {
       )
     })
 
-    it('should set live enviroment', async () => {
+    it('should set live environment', async () => {
       provider = new AdyenProvider(paymentService, checkoutOptions, submitGooglePayPayment)
       await provider.initialize()
       await provider.tokenizeHostedFields()
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
         {
+          consent_mode_supported: false,
           supply_partner_id: 'fleetId',
           payments_payload: {
             redirectFromIssuerMethod: 'get',
@@ -208,6 +210,7 @@ describe('AdyenProvider', () => {
       expect(paymentService.createAdyenPaymentAuth).toBeCalledTimes(1)
       expect(paymentService.createAdyenPaymentAuth).toBeCalledWith(
         {
+          consent_mode_supported: false,
           supply_partner_id: 'fleetId',
           payments_payload: {
             redirectFromIssuerMethod: 'get',
