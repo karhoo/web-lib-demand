@@ -16,6 +16,8 @@ import { defaultAdyenOptions } from '../constants'
 import { AdyenError, handleRefusalResponse, errors, codes } from './adyenErrors'
 import noop from 'lodash/noop'
 
+const GOOGLE_PAY_TYPES = ['paywithgoogle', 'googlepay']
+
 export class AdyenProvider implements Provider {
   private paymentService: Payment
   private isFormValid = false
@@ -94,7 +96,7 @@ export class AdyenProvider implements Provider {
 
   // @ts-ignore: no appropriate type in Adyen lib
   onAdyenSubmit = state => {
-    if (state.data.paymentMethod.type === 'paywithgoogle') {
+    if (GOOGLE_PAY_TYPES.includes(state.data.paymentMethod.type)) {
       this.submitGooglePayPayment(this.submitGooglePayPaymentPayload)
     }
   }
@@ -191,7 +193,7 @@ export class AdyenProvider implements Provider {
   }
 
   isGooglePay() {
-    return this.cardElement?.data?.paymentMethod?.type === 'paywithgoogle'
+    return GOOGLE_PAY_TYPES.includes(this.cardElement?.data?.paymentMethod?.type)
   }
 
   forceGooglePayPopup(payload?: Object) {
