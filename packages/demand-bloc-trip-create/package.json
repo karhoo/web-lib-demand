@@ -1,6 +1,6 @@
 {
   "name": "@karhoo/demand-bloc-trip-create",
-  "version": "18.2.0",
+  "version": "18.2.1",
   "description": "BLoC to work with Karhoo Autocomplete and Place APIs",
   "keywords": [
     "bloc",
@@ -23,7 +23,7 @@
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
   "dependencies": {
-    "@karhoo/demand-api": "^18.2.0",
+    "@karhoo/demand-api": "^18.2.1",
     "rxjs": "^6.6.7"
   }
 }
