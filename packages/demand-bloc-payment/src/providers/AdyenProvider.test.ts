@@ -318,6 +318,9 @@ describe('AdyenProvider', () => {
 
     it('should return true if its google pay', () => {
       cardElement.data.paymentMethod.type = 'paywithgoogle'
+      const isPayWithGoogle = provider.isGooglePay()
+      expect(isPayWithGoogle).toBeTruthy()
+      cardElement.data.paymentMethod.type = 'googlepay'
       const isGooglePay = provider.isGooglePay()
       expect(isGooglePay).toBeTruthy()
     })
