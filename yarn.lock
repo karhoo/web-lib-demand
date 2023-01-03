@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@adyen/adyen-web@5.30.1":
-  version "5.30.1"
-  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.30.1.tgz#2b72ffa5fb1d8df0c13c0862571652bcc103cc04"
-  integrity sha512-vu5N7j6s1Zcytb5yH9AEQDSoWzKJYMjdvL+Kejos1hS1PsUnvtId/FFhqA+FELXgfsGqzQt+CR8px6OGsxq/JA==
+"@adyen/adyen-web@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.31.0.tgz#faed8d99e3fbb36bf9b422744c7ecf6d61b59cc4"
+  integrity sha512-bReEiNyxGy9+DVPef4ElfgQJdmAIEYO+mEMbetfyLtCm0LNDpcwh0lVew2NFwe6ebEi0pTwX9GrlI7tA+KRslw==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@babel/runtime-corejs3" "^7.20.1"
@@ -13,7 +13,7 @@
     "@types/googlepay" "^0.6.2"
     classnames "^2.3.1"
     core-js-pure "^3.25.3"
-    preact "10.11.2"
+    preact "10.11.3"
 
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
@@ -9994,10 +9994,10 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==
 
-preact@10.11.2:
-  version "10.11.2"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.11.2.tgz#e43f2a2f2985dedb426bb4c765b7bb037734f8a8"
-  integrity sha512-skAwGDFmgxhq1DCBHke/9e12ewkhc7WYwjuhHB8HHS8zkdtITXLRmUMTeol2ldxvLwYtwbFeifZ9uDDWuyL4Iw==
+preact@10.11.3:
+  version "10.11.3"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.11.3.tgz#8a7e4ba19d3992c488b0785afcc0f8aa13c78d19"
+  integrity sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
