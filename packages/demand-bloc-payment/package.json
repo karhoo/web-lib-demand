@@ -34,7 +34,7 @@
     "core-js-pure": "^3.20.1"
   },
   "peerDependencies": {
-    "@adyen/adyen-web": "5.31.1",
+    "@adyen/adyen-web": "5.31.2",
     "braintree-web": "3.88.6"
   }
 }

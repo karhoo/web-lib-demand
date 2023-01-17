@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/karhoo/web-lib-demand#readme",
   "devDependencies": {
-    "@adyen/adyen-web": "5.31.1",
+    "@adyen/adyen-web": "5.31.2",
     "@microsoft/api-extractor": "^7.19.2",
     "@types/braintree-web": "^3.75.0",
     "@types/date-and-time": "^0.13.0",
