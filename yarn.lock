@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@adyen/adyen-web@5.32.0":
-  version "5.32.0"
-  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.32.0.tgz#eccfc6af4e5d27fd455779bec0da26b1ebc010aa"
-  integrity sha512-12Xi5UAnIWZTK0DZPBs+yFeM3eaMRaXNkPrfOKPrzHLI6qq5OxQ9/wyBDrTBA9phSRqE1HP2vtSzEucC3zIsZw==
+"@adyen/adyen-web@5.33.0":
+  version "5.33.0"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.33.0.tgz#3429a30104c59a8cb4eb28673305b2da88a3a514"
+  integrity sha512-UKYjlEVasf4D4ujVxsAb9dvY+oDhNxM7KaBZMFJ7l3sU9bHE037g3Y1+3yraUxJaHfSJQnNVHGrTd3QmQZntbA==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@babel/runtime-corejs3" "^7.20.1"
