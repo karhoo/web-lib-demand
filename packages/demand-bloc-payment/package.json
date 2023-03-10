@@ -35,6 +35,6 @@
   },
   "peerDependencies": {
     "@adyen/adyen-web": "5.35.0",
-    "braintree-web": "3.91.0"
+    "braintree-web": "3.92.0"
   }
 }
