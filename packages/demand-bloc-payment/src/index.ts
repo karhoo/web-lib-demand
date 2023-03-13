@@ -2,7 +2,6 @@ import {
   defaultHostedFieldsConfig,
   defaultHostedFieldsStyles,
   defaultInvalidFieldClass,
-  defaultThreeDSecureFields,
   default3DSecureStatus,
 } from './providers/braintreeConstants'
 
@@ -16,7 +15,6 @@ export const braintreeDefaultValues = {
   defaultHostedFieldsConfig,
   defaultHostedFieldsStyles,
   defaultInvalidFieldClass,
-  defaultThreeDSecureFields,
   default3DSecureStatus,
 }
 

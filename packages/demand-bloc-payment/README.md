@@ -163,7 +163,6 @@ if `hostedFields` is not provided following defaults will be used:
 ```
 
 if `invalidFieldClass` is not provided `braintreeDefaultValues.defaultInvalidFieldClass` will be used.
-if `threeDSecureFields` is not provided `braintreeDefaultValues.defaultThreeDSecureFields` will be used.
 if `withThreeDSecure` is not provided `braintreeDefaultValues.default3DSecureStatus` will be used.
 
 Initialize provider:
