@@ -32,7 +32,6 @@ export type CompleteThreeDSecureVerificationParams = {
 
 type PaymentProviderProps = {
   class?: string
-  usePaymentModal?: boolean
 }
 
 export type ThreeDSecureOptions = {
@@ -116,22 +115,10 @@ export type BraintreeProviderOptions = {
     hostedFieldsStyles: Record<string, Record<string, string>>
   }
   withThreeDSecure?: boolean
-  threeDSecureFields?: {
-    iframeContainerId: string
-    loadingId?: string
-    processingId?: string
-  }
-  onAddThreeDSecureFrame?: () => void
-  onRemoveThreeDSecureFrame?: () => void
 }
 
-export type FullBraintreeProviderOptions = Omit<
-  Required<BraintreeProviderOptions>,
-  'logger' | 'onAddThreeDSecureFrame' | 'onRemoveThreeDSecureFrame'
-> & {
+export type FullBraintreeProviderOptions = Omit<Required<BraintreeProviderOptions>, 'logger'> & {
   logger?: Logger
-  onAddThreeDSecureFrame?: () => void
-  onRemoveThreeDSecureFrame?: () => void
 }
 
 export type AdyenPaymentMethodsConfiguration = {

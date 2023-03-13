@@ -12,7 +12,6 @@ import {
 import {
   defaultHostedFieldsConfig,
   defaultHostedFieldsStyles,
-  defaultThreeDSecureFields,
   defaultInvalidFieldClass,
   default3DSecureStatus,
   errors,
@@ -50,7 +49,6 @@ export class BraintreeProvider implements Provider {
         hostedFieldsConfig: defaultHostedFieldsConfig,
         hostedFieldsStyles: defaultHostedFieldsStyles,
       },
-      threeDSecureFields: defaultThreeDSecureFields,
       invalidFieldClass: defaultInvalidFieldClass,
       withThreeDSecure: default3DSecureStatus,
       ...options,
@@ -191,13 +189,7 @@ export class BraintreeProvider implements Provider {
   verifyCard(amount: number, nonce: string, bin: string, email?: string) {
     const {
       threeDSecure,
-      options: {
-        withThreeDSecure,
-        threeDSecureFields,
-        logger,
-        onAddThreeDSecureFrame,
-        onRemoveThreeDSecureFrame,
-      },
+      options: { withThreeDSecure },
     } = this
 
     if (!threeDSecure || !withThreeDSecure) {
@@ -206,54 +198,12 @@ export class BraintreeProvider implements Provider {
       )
     }
 
-    const { iframeContainerId, loadingId, processingId } = threeDSecureFields
-
     // as ThreeDSecureVerifyOptions because onLookupComplete method is not present in ThreeDSecureVerifyOptions interface
     return threeDSecure.verifyCard({
       amount,
       nonce,
       bin,
       email,
-      addFrame(err, iframe) {
-        const iframeContainerElement = document.getElementById(iframeContainerId)
-
-        if (err || !iframeContainerElement || !iframe) {
-          const error =
-            err || new Error(iframeContainerElement ? errors.noIframe : errors.noIframeContainerElement)
-
-          logger?.error(error, { description: errors.unableToAddPaymentForm })
-
-          return
-        }
-
-        const loadingElement = loadingId ? document.getElementById(loadingId) : null
-
-        if (loadingElement) {
-          loadingElement.style.display = 'none'
-        }
-
-        iframeContainerElement.appendChild(iframe)
-        iframeContainerElement.style.display = 'block'
-
-        onAddThreeDSecureFrame?.()
-      },
-      removeFrame() {
-        const iframeContainerElement = document.getElementById(iframeContainerId)
-        const processingElement = processingId ? document.getElementById(processingId) : null
-
-        if (iframeContainerElement) {
-          iframeContainerElement.firstChild &&
-            iframeContainerElement.removeChild(iframeContainerElement.firstChild)
-
-          iframeContainerElement.style.display = 'none'
-        }
-
-        if (processingElement) {
-          processingElement.style.display = 'block'
-        }
-
-        onRemoveThreeDSecureFrame?.()
-      },
       onLookupComplete(data: object, next: () => void) {
         // use `data` here, then call `next()`
         next()
@@ -317,7 +267,6 @@ export class BraintreeProvider implements Provider {
   getPaymentProviderProps() {
     return {
       class: 'braintreePsp',
-      usePaymentModal: true,
     }
   }
 
