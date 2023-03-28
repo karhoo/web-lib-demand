@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@adyen/adyen-web@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.37.0.tgz#aa4a51f56dc69b6b15727e5936f9811aebaf9339"
-  integrity sha512-WDPJtqkqt5Q6OQq/5ZD3MSnZcE+hASTT/TK7Y7B+FTixlZx6JzW1YuewdZ+ay0TzqklClzhka3tEPddv6H+mdA==
+"@adyen/adyen-web@5.38.0":
+  version "5.38.0"
+  resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.38.0.tgz#49134a3d3458a1d2843f90dff50a7410606f96cb"
+  integrity sha512-4/Mm4cPxTwrACIDA+dfit/njV+uRXZPeHGewLyojD39taOGIGezKwjASc5y5p5Q4kTLbIW71TVWZ9JjRyJ7sNQ==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@babel/runtime-corejs3" "^7.20.1"
     "@types/applepayjs" "^3.0.4"
-    "@types/googlepay" "^0.6.2"
+    "@types/googlepay" "^0.7.0"
     classnames "^2.3.1"
     core-js-pure "^3.25.3"
     preact "10.11.3"
@@ -2864,10 +2864,15 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/googlepay@*", "@types/googlepay@^0.6.2":
+"@types/googlepay@*":
   version "0.6.4"
   resolved "https://registry.yarnpkg.com/@types/googlepay/-/googlepay-0.6.4.tgz#e0b06ae1f12496c4fa43e52d35e76411dbbee135"
   integrity sha512-PTt/UCllzl8z5HmhymPpSj6uENZvVKZvCBYdDVmbBVJnLStitxtWrterAOQZkKGlqVdzxNXYeif5hOAMNMS5mw==
+
+"@types/googlepay@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@types/googlepay/-/googlepay-0.7.0.tgz#eb11aca185a64cd413952bcb7c16ea25217ac6bc"
+  integrity sha512-jC7ViexJeV8LlTKLiUBfNs5GICbm0PYsm5Y30JCEBkreY0bMNA+F4KnTEz+WtqBTRldTAxKBKqRstlOUFpW+dA==
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.5"
