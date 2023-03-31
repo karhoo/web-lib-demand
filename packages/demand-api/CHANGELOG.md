@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [19.0.1](https://github.com/karhoo/web-lib-demand/compare/v19.0.0...v19.0.1) (2023-03-31)
+
+**Note:** Version bump only for package @karhoo/demand-api
+
+
+
+
+
 # [19.0.0](https://github.com/karhoo/web-lib-demand/compare/v18.2.1...v19.0.0) (2023-03-13)
 
 **Note:** Version bump only for package @karhoo/demand-api
