@@ -115,10 +115,15 @@ export type BraintreeProviderOptions = {
     hostedFieldsStyles: Record<string, Record<string, string>>
   }
   withThreeDSecure?: boolean
+  allowedBinValues?: string[]
 }
 
-export type FullBraintreeProviderOptions = Omit<Required<BraintreeProviderOptions>, 'logger'> & {
+export type FullBraintreeProviderOptions = Omit<
+  Required<BraintreeProviderOptions>,
+  'logger' | 'allowedBinValues'
+> & {
   logger?: Logger
+  allowedBinValues?: string[]
 }
 
 export type AdyenPaymentMethodsConfiguration = {
