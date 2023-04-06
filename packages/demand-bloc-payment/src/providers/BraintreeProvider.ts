@@ -42,6 +42,8 @@ export class BraintreeProvider implements Provider {
 
   private pendingInitialisation?: PendingInitialisation
 
+  private binValue?: string = undefined
+
   constructor(paymentService: Payment, options: BraintreeProviderOptions) {
     this.paymentService = paymentService
     this.options = {
@@ -80,6 +82,7 @@ export class BraintreeProvider implements Provider {
       withThreeDSecure,
     } = this.options
 
+    this.binValue = undefined
     this.pendingInitialisation = getCancellablePromise(this.getAuthorizationToken())
 
     const authorization = await this.pendingInitialisation.promise
@@ -113,8 +116,19 @@ export class BraintreeProvider implements Provider {
     this.hostedFields.on('blur', event => {
       const fieldName = event.emittedBy
 
-      toogleClass(fieldName, event.fields[fieldName].isValid, this.options.invalidFieldClass)
+      if (fieldName === 'number' && this.hasCardBinAllowlist()) {
+        const isValid = event.fields[fieldName].isValid && this.isCardBinAllowed(this.binValue)
+        toogleClass(fieldName, isValid, this.options.invalidFieldClass)
+      } else {
+        toogleClass(fieldName, event.fields[fieldName].isValid, this.options.invalidFieldClass)
+      }
     })
+
+    if (this.hasCardBinAllowlist()) {
+      this.hostedFields.on('binAvailable', event => {
+        this.binValue = event.bin
+      })
+    }
   }
 
   async tokenizeHostedFields() {
@@ -124,12 +138,24 @@ export class BraintreeProvider implements Provider {
 
     const { nonce, details = { bin: undefined } } = await this.hostedFields.tokenize()
 
+    if (!this.isCardBinAllowed(details.bin)) {
+      return Promise.reject(new Error(errors.unsupportedCardBin))
+    }
+
     return {
       nonce,
       options: {
         bin: details.bin,
       },
     }
+  }
+
+  private hasCardBinAllowlist(): boolean {
+    return Array.isArray(this.options.allowedBinValues) && this.options.allowedBinValues.length > 0
+  }
+
+  private isCardBinAllowed(bin: string | undefined): boolean {
+    return this.hasCardBinAllowlist() ? !!bin && !!this.options.allowedBinValues?.includes(bin) : true
   }
 
   private async teardownBraintreeInstance(instance?: Client | HostedFields | ThreeDSecure) {
@@ -171,15 +197,23 @@ export class BraintreeProvider implements Provider {
 
     const { fields } = hostedFields.getState()
 
+    let result = true
+
     Object.keys(fields).forEach(fieldName => {
-      // @ts-ignore
-      const isValid = fields[fieldName].isValid
+      const isValid =
+        fieldName === 'number' && this.hasCardBinAllowlist()
+          ? fields[fieldName].isValid && this.isCardBinAllowed(this.binValue)
+          : // @ts-ignore
+            fields[fieldName].isValid
+
+      if (!isValid) {
+        result = false
+      }
 
       toogleClass(fieldName, isValid, invalidFieldClass)
     })
 
-    // @ts-ignore
-    return Object.keys(fields).every(fieldName => fields[fieldName].isValid)
+    return result
   }
 
   completeThreeDSecureVerification() {

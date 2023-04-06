@@ -28,4 +28,5 @@ export const errors = {
   threeDSecureOptionNotEnabled: 'withThreeDSecure options is not enabled',
   threeDSecureNotInitialized: 'ThreeDSecure is not initialized',
   unableToAddPaymentForm: 'Error - Unable to add payment form',
+  unsupportedCardBin: 'Card BIN not supported',
 }
