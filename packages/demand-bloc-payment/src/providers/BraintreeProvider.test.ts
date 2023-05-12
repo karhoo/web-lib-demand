@@ -451,6 +451,7 @@ describe('BraintreeProvider', () => {
         bin,
         email,
         nonce,
+        challengeRequested: true,
         onLookupComplete: expect.any(Function),
       })
     })
