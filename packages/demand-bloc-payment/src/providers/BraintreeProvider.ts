@@ -238,6 +238,7 @@ export class BraintreeProvider implements Provider {
       nonce,
       bin,
       email,
+      challengeRequested: true,
       onLookupComplete(data: object, next: () => void) {
         // use `data` here, then call `next()`
         next()
