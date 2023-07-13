@@ -1,2 +1,1 @@
-{
-}
+{"enabled":false,"labels":["demand-web","renovate"],"packageRules":[{"addLabels":["demand-web"],"matchDepTypes":["minor","patch","pin","digest","major"]}]}
