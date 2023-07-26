@@ -56,8 +56,8 @@ export type Provider = {
     options?: ThreeDSecureOptions,
     email?: string
   ): Promise<string | Error>
-  getSavedCards(payer: Payer): Promise<CardInfo[]>
-  saveCard(nonce: string, payer: Payer): Promise<HttpResponse<ClientNonceResponse>> | void
+  getSavedCards(): Promise<CardInfo[]>
+  saveCard(nonce: string): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
   getNonce(): string | null
   apiVersion?: ProviderVersion
