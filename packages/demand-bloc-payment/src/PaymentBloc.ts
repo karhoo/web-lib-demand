@@ -75,7 +75,7 @@ export class PaymentBloc {
     this.pendingInitialisation = getCancellablePromise(
       Promise.all([
         this.provider.initialize(payer),
-        paymentCardsEnabled && payer ? this.provider.getSavedCards(payer) : null,
+        paymentCardsEnabled ? this.provider.getSavedCards() : null,
       ])
     )
 
@@ -166,10 +166,10 @@ export class PaymentBloc {
     return { nonce, resultCode, options }
   }
 
-  async savePaymentCard(payer: Payer): Promise<SaveCardResponse> {
+  async savePaymentCard(): Promise<SaveCardResponse> {
     try {
       const { nonce } = await this.provider.tokenizeHostedFields()
-      const response = await this.provider.saveCard(nonce, payer)
+      const response = await this.provider.saveCard(nonce)
 
       if (!response) {
         return { ok: false, error: new Error('Not possible to save a card') }

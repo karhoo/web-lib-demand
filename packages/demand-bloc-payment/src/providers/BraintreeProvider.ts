@@ -6,7 +6,6 @@ import {
   BraintreeProviderOptions,
   FullBraintreeProviderOptions,
   Provider,
-  Payer,
   ThreeDSecureOptions,
 } from '../types'
 import {
@@ -266,20 +265,18 @@ export class BraintreeProvider implements Provider {
     })
   }
 
-  async saveCard(nonce: string, payer: Payer) {
+  async saveCard(nonce: string) {
     const response = await this.paymentService.addBraintreePaymentCard({
       organisation_id: this.options.organisationId,
       nonce,
-      payer,
     })
 
     return response
   }
 
-  async getSavedCards(payer: Payer) {
+  async getSavedCards() {
     const response = await this.paymentService.getBraintreeClientNonce({
       organisation_id: this.options.organisationId,
-      payer,
     })
 
     // status 500 returned when no cards saved

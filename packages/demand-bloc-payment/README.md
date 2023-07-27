@@ -196,13 +196,13 @@ const result: ThreeDSecureVerifyPayload = await provider.verifyCard(amount, toke
 Save card:
 
 ```js
-await provider.saveCard('nonce', payer)
+await provider.saveCard('nonce')
 ```
 
 Get saved cards:
 
 ```js
-const data = await provider.getSavedCards(payer)
+const data = await provider.getSavedCards()
 ```
 
 Dispose:

@@ -34,12 +34,6 @@ describe('PaymentService', () => {
 
   describe('getClientNonce', () => {
     const params = {
-      payer: {
-        id: 'id',
-        first_name: 'first_name',
-        last_name: 'last_name',
-        email: 'email',
-      },
       organisation_id: 'organisation_id',
     }
 
@@ -56,12 +50,6 @@ describe('PaymentService', () => {
 
   describe('addPaymentCard', () => {
     const params = {
-      payer: {
-        id: 'id',
-        first_name: 'first_name',
-        last_name: 'last_name',
-        email: 'email',
-      },
       organisation_id: 'organisation_id',
       nonce: 'nonce',
     }
@@ -98,12 +86,6 @@ describe('PaymentService', () => {
 
   describe('getBraintreeClientNonce', () => {
     const params = {
-      payer: {
-        id: 'id',
-        first_name: 'first_name',
-        last_name: 'last_name',
-        email: 'email',
-      },
       organisation_id: 'organisation_id',
     }
 
@@ -120,12 +102,6 @@ describe('PaymentService', () => {
 
   describe('addBraintreePaymentCard', () => {
     const params = {
-      payer: {
-        id: 'id',
-        first_name: 'first_name',
-        last_name: 'last_name',
-        email: 'email',
-      },
       organisation_id: 'organisation_id',
       nonce: 'nonce',
     }

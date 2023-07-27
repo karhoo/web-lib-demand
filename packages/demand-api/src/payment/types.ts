@@ -13,12 +13,6 @@ export type CreateTokenResponse = {
 }
 
 export type ClientNonceParams = {
-  payer: {
-    id: string
-    first_name: string
-    last_name: string
-    email: string
-  }
   organisation_id: string
 }
 

@@ -33,13 +33,6 @@ describe('BraintreeProvider', () => {
   const lastFour = 'lastFour'
   const nonce = 'nonce'
 
-  const payer = {
-    id: 'id',
-    email: 'email@of.user',
-    first_name: 'firstName',
-    last_name: 'lastName',
-  }
-
   const logger = {
     error: jest.fn(),
   }
@@ -357,13 +350,12 @@ describe('BraintreeProvider', () => {
     })
 
     it('should call addPaymentCard of paymentService', async () => {
-      await provider.saveCard(nonce, payer)
+      await provider.saveCard(nonce)
 
       expect(paymentService.addBraintreePaymentCard).toBeCalledTimes(1)
       expect(paymentService.addBraintreePaymentCard).toBeCalledWith({
         organisation_id: organisationId,
         nonce,
-        payer,
       })
     })
   })
@@ -378,17 +370,16 @@ describe('BraintreeProvider', () => {
     })
 
     it('should call getClientNonce of paymentService', async () => {
-      await provider.getSavedCards(payer)
+      await provider.getSavedCards()
 
       expect(paymentService.getBraintreeClientNonce).toBeCalledTimes(1)
       expect(paymentService.getBraintreeClientNonce).toBeCalledWith({
         organisation_id: organisationId,
-        payer,
       })
     })
 
     it('should return card info', async () => {
-      const data = await provider.getSavedCards(payer)
+      const data = await provider.getSavedCards()
 
       expect(data).toEqual([
         {
@@ -405,7 +396,7 @@ describe('BraintreeProvider', () => {
         Promise.resolve(getMockedErrorPaymentGetClientNonceResponse())
       )
 
-      const data = await provider.getSavedCards(payer)
+      const data = await provider.getSavedCards()
 
       expect(data).toEqual([])
     })

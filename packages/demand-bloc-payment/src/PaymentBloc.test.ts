@@ -139,7 +139,7 @@ describe('PaymentBloc', () => {
 
       await payment.initPayment(payer)
       expect(getPaymentProviderBeingUsed().getSavedCards).toBeCalledTimes(1)
-      expect(getPaymentProviderBeingUsed().getSavedCards).toBeCalledWith(payer)
+      expect(getPaymentProviderBeingUsed().getSavedCards).toBeCalledWith()
     })
 
     it('should call setPaymentCards of cardsInfo', async () => {
@@ -516,7 +516,7 @@ describe('PaymentBloc', () => {
         cardsInfo: cardsInfoMock,
       })
 
-      await payment.savePaymentCard(payer)
+      await payment.savePaymentCard()
 
       expect(getPaymentProviderBeingUsed().tokenizeHostedFields).toBeCalledTimes(1)
     })
@@ -529,10 +529,10 @@ describe('PaymentBloc', () => {
         cardsInfo: cardsInfoMock,
       })
 
-      await payment.savePaymentCard(payer)
+      await payment.savePaymentCard()
 
       expect(getPaymentProviderBeingUsed().saveCard).toBeCalledTimes(1)
-      expect(getPaymentProviderBeingUsed().saveCard).toBeCalledWith(tokenizeHostedFieldsResponse.nonce, payer)
+      expect(getPaymentProviderBeingUsed().saveCard).toBeCalledWith(tokenizeHostedFieldsResponse.nonce)
     })
 
     it('should return status', async () => {
@@ -543,7 +543,7 @@ describe('PaymentBloc', () => {
         cardsInfo: cardsInfoMock,
       })
 
-      const result = await payment.savePaymentCard(payer)
+      const result = await payment.savePaymentCard()
 
       expect(result).toEqual({ ok: true })
     })
@@ -561,7 +561,7 @@ describe('PaymentBloc', () => {
       const error = new Error('test')
       mocked.tokenizeHostedFields.mockImplementationOnce(() => Promise.reject(error))
 
-      const result = await payment.savePaymentCard(payer)
+      const result = await payment.savePaymentCard()
 
       expect(result).toEqual({ ok: false, error })
     })
@@ -579,7 +579,7 @@ describe('PaymentBloc', () => {
         cardsInfo: cardsInfoMock,
       })
 
-      const result = await payment.savePaymentCard(payer)
+      const result = await payment.savePaymentCard()
 
       expect(result).toEqual({ ok: false, error: new Error(response.error.message) })
     })
