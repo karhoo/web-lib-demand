@@ -53,10 +53,6 @@ describe('BraintreeProvider', () => {
     }),
     addBraintreePaymentCard: getAddPaymentCardMock(),
     getPaymentProvider: jest.fn(),
-    getAdyenClientKey: jest.fn(),
-    getAdyenPaymentMethods: jest.fn(),
-    createAdyenPaymentAuth: jest.fn(),
-    getAdyenPaymentDetails: jest.fn(),
   }
 
   const client = {

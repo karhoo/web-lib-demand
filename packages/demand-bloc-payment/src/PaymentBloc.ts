@@ -46,17 +46,13 @@ export class PaymentBloc {
     cardsInfo,
   }: PaymentBlocProps) {
     const providersResponse = await fetchPaymentProvider(paymentService)
-    const apiVersion = providersResponse.provider?.version
-
     const targetId = options.preselectProvider || (providersResponse.provider?.id ?? '')
     const loyaltyClientId = providersResponse.loyalty_programme?.id
     const provider = getPaymentProvider(providers, targetId)
-    provider.apiVersion = apiVersion
 
     const paymentOptions = {
       ...options,
       loyaltyClientId,
-      apiVersion,
     }
 
     return new PaymentBloc(provider, paymentOptions, cardsInfo)
@@ -86,24 +82,7 @@ export class PaymentBloc {
   }
 
   async verifyCardWithThreeDSecure(amount: number, email?: string) {
-    const params = new URLSearchParams(location.search) // eslint-disable-line no-restricted-globals
-    const nonce = this.provider.getNonce()
-
     try {
-      if (nonce) {
-        try {
-          await this.provider.completeThreeDSecureVerification({
-            nonce,
-            locationParams: params,
-          })
-
-          return { ok: true, nonce }
-        } catch (error) {
-          this.provider.clearPaymentNonce()
-          return { ok: false, error }
-        }
-      }
-
       const { nonce: paymentNonce, resultCode, options } = await this.getPaymentDetails()
 
       if (resultCode) {

@@ -56,10 +56,6 @@ export class BraintreeProvider implements Provider {
     }
   }
 
-  getNonce() {
-    return ''
-  }
-
   private async getAuthorizationToken() {
     const { organisationId, currencyCode } = this.options
 
@@ -213,10 +209,6 @@ export class BraintreeProvider implements Provider {
     })
 
     return result
-  }
-
-  completeThreeDSecureVerification() {
-    return Promise.resolve('')
   }
 
   verifyCard(amount: number, nonce: string, bin: string, email?: string) {

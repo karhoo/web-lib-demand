@@ -32,7 +32,7 @@ This library uses `Promise`. For old browsers, e.g. IE11 you must bring your own
 
 ```js
 import { getApi } from '@karhoo/demand-api'
-import { PaymentBloc, BraintreeProvider, AdyenProvider } from '@karhoo/demand-bloc-payment'
+import { PaymentBloc, BraintreeProvider } from '@karhoo/demand-bloc-payment'
 
 const organisationId = '1a12345d-e111-1da1-111f-a1111e1e11f1'
 const currencyCode = 'GBP'
@@ -45,13 +45,6 @@ const payer = {
   last_name: 'lastName',
 }
 
-const adyenProviderOptions = {
-  dropinContainerId: 'containerID',
-  price: 25,
-  currencyCode: 'GBP',
-  returnUrl: 'http://www.return-url.com',
-}
-
 const braintreeOptions = {
   organisationId,
   currencyCode,
@@ -59,7 +52,6 @@ const braintreeOptions = {
 
 const providers = {
   Braintree: new BraintreeProvider(paymentService, braintreeOptions),
-  Adyen: new AdyenProvider(paymentService, adyenProviderOptions),
 }
 
 const options = {
@@ -203,62 +195,6 @@ Get saved cards:
 
 ```js
 const data = await provider.getSavedCards()
-```
-
-Dispose:
-
-```js
-await provider.dispose()
-```
-
-### Adyen
-
-```js
-import AdyenCheckout from '@adyen/adyen-web'
-import CardElement from '@adyen/adyen-web/dist/types/components/Card'
-import { getApi } from '@karhoo/demand-api'
-import { AdyenProvider, AdyenProviderOptions, AdyenCheckoutOptions } from '@karhoo/demand-bloc-payment'
-
-const options: AdyenProviderOptions = {
-  dropinContainerId: 'containerID',
-  price: 25,
-  currencyCode: 'GBP',
-  returnUrl: 'http://www.return-url.com',
-}
-
-const provider = new AdyenProvider(getApi().paymentService, options, false)
-```
-
-`options` should have `dropinContainerId`, `price`, `currencyCode`, `returnUrl`. Other fields are not required
-
-Initialize provider:
-
-```js
-await provider.initialize()
-```
-
-Validate payment form:
-
-```js
-const isValid: boolean = provider.validatePaymentForm()
-```
-
-Tokenize hosted fields:
-
-```js
-const tokenizeResponse = await provider.tokenizeHostedFields()
-```
-
-Verify:
-
-```js
-const verifiedNonce = await provider.startThreeDSecureVerification()
-
-const result = await provider.completeThreeDSecureVerification(
-  (MD: 'MD'),
-  (PaRes: 'id123'),
-  (nonce: 'verifiedNonce')
-)
 ```
 
 Dispose:
