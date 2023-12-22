@@ -53,10 +53,6 @@ describe('BraintreeProvider', () => {
     }),
     addBraintreePaymentCard: getAddPaymentCardMock(),
     getPaymentProvider: jest.fn(),
-    getAdyenClientKey: jest.fn(),
-    getAdyenPaymentMethods: jest.fn(),
-    createAdyenPaymentAuth: jest.fn(),
-    getAdyenPaymentDetails: jest.fn(),
   }
 
   const client = {
@@ -212,13 +208,6 @@ describe('BraintreeProvider', () => {
       })
 
       provider.dispose()
-    })
-
-    describe('should return nothing for google pay (unsupported)', () => {
-      it('should return nothing', () => {
-        expect(provider.isGooglePay()).toBeFalsy()
-        expect(provider.forceGooglePayPopup()).toBeNull()
-      })
     })
   })
 

@@ -1,4 +1,3 @@
-import { PaymentMethodsResponse, PaymentDetailsResponse } from './types'
 import { HttpResponse, HttpResponseOk, HttpResponseError, ApiError } from '../http/types'
 import { errorCodes } from '../responseCodes'
 
@@ -6,12 +5,9 @@ import {
   CreateTokenResponse,
   ClientNonceResponse,
   PaymentProvidersResponse,
-  ClientKeyResponse,
-  PaymentAuthResponse,
   ProviderId,
   LoyaltyProgram,
 } from './types'
-import { PaymentAction } from '@adyen/adyen-web/dist/types/types'
 
 const clientNonceResponse = {
   card_type: 'cardType',
@@ -124,76 +120,3 @@ export const getMockedPaymentProviderWithoutLoyaltyResponse =
   })
 
 export const getPaymentProviderMock = getMock(getMockedPaymentProviderResponse)
-
-export const getMockedAdyenClientKeyResponse = (): HttpResponseOk<ClientKeyResponse> => ({
-  ok: true,
-  status: 200,
-  headers: jsonResponseHeaders,
-  body: {
-    clientKey: 'origin-key',
-    environment: 'test',
-  },
-})
-
-export const getAdyenClientKeyMock = getMock(getMockedAdyenClientKeyResponse)
-export const getMockedErrorAdyenClientKeyResponse = getErrorResponse('No client key received')
-
-export const getMockedAdyenPaymentMethodsResponse = (): HttpResponseOk<PaymentMethodsResponse> => ({
-  ok: true,
-  status: 200,
-  headers: jsonResponseHeaders,
-  body: {
-    paymentMethods: [],
-  },
-})
-
-export const getAdyenPaymentMethodsMock = getMock(getMockedAdyenPaymentMethodsResponse)
-export const getMockedErrorAdyenPaymentMethodsResponse = getErrorResponse('No payment methods received')
-
-export const getMockedPaymentAuthResponse = (): HttpResponseOk<PaymentAuthResponse> => ({
-  ok: true,
-  status: 200,
-  headers: jsonResponseHeaders,
-  body: {
-    trip_id: 'trip_id',
-    payload: {
-      action: {
-        paymentData: 'paymentData',
-        type: 'redirect',
-      } as PaymentAction,
-    },
-  },
-})
-
-export const getCreateAdyenPaymentAuthMock = getMock(getMockedPaymentAuthResponse)
-export const getMockedErrorAdyenPaymentAuthResponse = getErrorResponse('Failed to create a payment')
-
-export const getMockedAdyenPaymentDetailsResponse = (): HttpResponseOk<PaymentDetailsResponse> => ({
-  ok: true,
-  status: 200,
-  headers: jsonResponseHeaders,
-  body: {
-    additionalData: { cardSummary: '0000' },
-    merchantReference: 'merchantReference',
-    pspReference: 'pspReference',
-    resultCode: 'Authorised',
-  },
-})
-
-export const getAdyenPaymentDetailsMock = getMock(getMockedAdyenPaymentDetailsResponse)
-export const getMockedErrorAdyenPaymentDetailsResponse = getErrorResponse('Failed to create a payment')
-
-export const getMockedAdyenPaymentDetailsRefusedResponse = (): HttpResponseOk<PaymentDetailsResponse> => ({
-  ok: true,
-  status: 200,
-  headers: jsonResponseHeaders,
-  body: {
-    additionalData: { cardSummary: '0000' },
-    merchantReference: 'merchantReference',
-    pspReference: 'pspReference',
-    resultCode: 'Refused',
-    refusalReasonCode: 'CVC Declined',
-  },
-})
-
-export const getAdyenPaymentDetailsRefusedMock = getMock(getMockedAdyenPaymentDetailsRefusedResponse)

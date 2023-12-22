@@ -59,34 +59,13 @@ describe('PaymentBloc', () => {
     ),
     validatePaymentForm: jest.fn(() => true),
     startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
-    completeThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
     saveCard: getAddPaymentCardMock(),
     getPaymentProviderProps: jest.fn(),
-    getNonce: jest.fn(),
-    isGooglePay: jest.fn(),
-    forceGooglePayPopup: jest.fn(),
-  }
-
-  const adyenProvider = {
-    initialize: jest.fn(),
-    dispose: jest.fn(),
-    clearPaymentNonce: jest.fn(),
-    tokenizeHostedFields: jest.fn(() => Promise.resolve({ nonce: tokenizeHostedFieldsResponse.nonce })),
-    validatePaymentForm: jest.fn(() => true),
-    startThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
-    completeThreeDSecureVerification: jest.fn(() => Promise.resolve('')),
-    getSavedCards: jest.fn(() => Promise.resolve(cards)),
-    getPaymentProviderProps: jest.fn(),
-    saveCard: getAddPaymentCardMock(),
-    getNonce: jest.fn(),
-    isGooglePay: jest.fn(),
-    forceGooglePayPopup: jest.fn(),
   }
 
   const providersMapMock: PaymentProvidersMap = {
     Braintree: braintreeProvider,
-    Adyen: adyenProvider,
   }
 
   const getPaymentProviderBeingUsed = () => providersMapMock[paymentProviderIdBeingUsed]
@@ -121,12 +100,12 @@ describe('PaymentBloc', () => {
       const payment = await PaymentBloc.create({
         providers: providersMapMock,
         paymentService: paymentServiceMock,
-        options: { paymentCardsEnabled: false, preselectProvider: 'Adyen' },
+        options: { paymentCardsEnabled: false, preselectProvider: 'Braintree' },
       })
 
       await payment.initPayment()
 
-      expect(adyenProvider.initialize).toBeCalledTimes(1)
+      expect(braintreeProvider.initialize).toBeCalledTimes(1)
     })
 
     it('should call getSavedCards of provider', async () => {
@@ -358,71 +337,6 @@ describe('PaymentBloc', () => {
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: false, error })
     })
-
-    it('should completeThreeDSecureVerification if nonce is passed from search params', async () => {
-      const payment = await PaymentBloc.create({
-        providers: providersMapMock,
-        paymentService: paymentServiceMock,
-      })
-
-      const krhutuuid = 'krhutuuid-test'
-      const MD = 'MD-test'
-      const PaRes = 'PaRes-test'
-
-      // @ts-ignore
-      delete window.location
-
-      const providerBeingUsedMock = getPaymentProviderBeingUsed()
-      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
-      mocked.getNonce.mockReturnValueOnce(krhutuuid)
-
-      window.location = {
-        search: `?MD=${MD}&PaRes=${PaRes}`,
-      } as Location
-
-      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })
-    })
-
-    it('should use completeThreeDSecureVerification if nonce and redirectResult is passed from search params', async () => {
-      const payment = await PaymentBloc.create({
-        providers: providersMapMock,
-        paymentService: paymentServiceMock,
-      })
-
-      const krhutuuid = 'krhutuuid-test'
-      const redirectResult = 'redirectResult-test'
-
-      // @ts-ignore
-      delete window.location
-
-      const providerBeingUsedMock = getPaymentProviderBeingUsed()
-      const mocked = providerBeingUsedMock as jest.Mocked<typeof providerBeingUsedMock>
-      mocked.getNonce.mockReturnValueOnce(krhutuuid)
-
-      window.location = {
-        search: `?redirectResult=${redirectResult}`,
-      } as Location
-
-      expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: true, nonce: krhutuuid })
-    })
-
-    describe('google pay', () => {
-      it('should call validatePaymentForm of provider', async () => {
-        const payment = await PaymentBloc.create({
-          providers: providersMapMock,
-          paymentService: paymentServiceMock,
-        })
-
-        const payload = { reference_id: 'test' }
-
-        const providerBeingUsedMock = getPaymentProviderBeingUsed()
-        payment.isGooglePayPayment()
-        expect(providerBeingUsedMock.isGooglePay).toBeCalledTimes(1)
-        payment.forceGooglePayPopup(payload)
-        expect(providerBeingUsedMock.forceGooglePayPopup).toBeCalledTimes(1)
-        expect(providerBeingUsedMock.forceGooglePayPopup).toHaveBeenCalledWith(payload)
-      })
-    })
   })
 
   describe('getPaymentNonce', () => {
@@ -569,7 +483,6 @@ describe('PaymentBloc', () => {
     it('should return saveCard error', async () => {
       const response = getMockedErrorAddPaymentCardResponse()
 
-      adyenProvider.saveCard.mockImplementationOnce(() => Promise.resolve(response))
       braintreeProvider.saveCard.mockImplementationOnce(() => Promise.resolve(response))
 
       const payment = await PaymentBloc.create({
