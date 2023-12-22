@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [20.0.0](https://github.com/karhoo/web-lib-demand/compare/v19.1.1...v20.0.0) (2023-12-22)
+
+**Note:** Version bump only for package @karhoo/demand-bloc-quotes
+
+
+
+
+
 ## [19.1.1](https://github.com/karhoo/web-lib-demand/compare/v19.1.0...v19.1.1) (2023-05-12)
 
 **Note:** Version bump only for package @karhoo/demand-bloc-quotes
