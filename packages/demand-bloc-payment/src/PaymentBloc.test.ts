@@ -62,8 +62,6 @@ describe('PaymentBloc', () => {
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
     saveCard: getAddPaymentCardMock(),
     getPaymentProviderProps: jest.fn(),
-    isGooglePay: jest.fn(),
-    forceGooglePayPopup: jest.fn(),
   }
 
   const providersMapMock: PaymentProvidersMap = {
@@ -338,24 +336,6 @@ describe('PaymentBloc', () => {
       mocked.tokenizeHostedFields.mockReturnValueOnce(Promise.reject(error))
 
       expect(await payment.verifyCardWithThreeDSecure(10)).toEqual({ ok: false, error })
-    })
-
-    describe('google pay', () => {
-      it('should call validatePaymentForm of provider', async () => {
-        const payment = await PaymentBloc.create({
-          providers: providersMapMock,
-          paymentService: paymentServiceMock,
-        })
-
-        const payload = { reference_id: 'test' }
-
-        const providerBeingUsedMock = getPaymentProviderBeingUsed()
-        payment.isGooglePayPayment()
-        expect(providerBeingUsedMock.isGooglePay).toBeCalledTimes(1)
-        payment.forceGooglePayPopup(payload)
-        expect(providerBeingUsedMock.forceGooglePayPopup).toBeCalledTimes(1)
-        expect(providerBeingUsedMock.forceGooglePayPopup).toHaveBeenCalledWith(payload)
-      })
     })
   })
 

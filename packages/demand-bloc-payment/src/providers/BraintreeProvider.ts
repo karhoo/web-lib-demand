@@ -293,12 +293,4 @@ export class BraintreeProvider implements Provider {
       class: 'braintreePsp',
     }
   }
-
-  isGooglePay() {
-    return false
-  }
-
-  forceGooglePayPopup() {
-    return null
-  }
 }

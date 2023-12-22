@@ -45,8 +45,6 @@ export type Provider = {
   getSavedCards(): Promise<CardInfo[]>
   saveCard(nonce: string): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
-  isGooglePay(): boolean
-  forceGooglePayPopup(payload?: Object): void
 }
 
 export type CardsInfo = {
