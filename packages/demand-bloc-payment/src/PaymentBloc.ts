@@ -8,6 +8,7 @@ import {
   Payer,
   CardsInfo,
   CardInfo,
+  PaymentFormState,
 } from './types'
 import { defaultPaymentOptions, errors } from './constants'
 import { getCancellablePromise, CancellablePromise } from './utils'
@@ -113,6 +114,12 @@ export class PaymentBloc {
 
   validatePaymentDetails() {
     return !!this.cardsInfo?.getSelectedPaymentCard() || this.provider.validatePaymentForm()
+  }
+
+  getPaymentFormState(): PaymentFormState {
+    return !!this.cardsInfo?.getSelectedPaymentCard()
+      ? { isValid: true }
+      : this.provider.getPaymentFormState()
   }
 
   async getPaymentNonce(): Promise<PaymentNonceResponse> {

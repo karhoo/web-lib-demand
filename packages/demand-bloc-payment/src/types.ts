@@ -45,6 +45,7 @@ export type Provider = {
   getSavedCards(): Promise<CardInfo[]>
   saveCard(nonce: string): Promise<HttpResponse<ClientNonceResponse>> | void
   getPaymentProviderProps(): PaymentProviderProps
+  getPaymentFormState(): PaymentFormState
 }
 
 export type CardsInfo = {
@@ -96,4 +97,14 @@ export type FullBraintreeProviderOptions = Omit<
 > & {
   logger?: Logger
   allowedBinValues?: string[]
+}
+
+export type PaymentFieldState = {
+  isValid: boolean
+  isEmpty: boolean
+}
+
+export type PaymentFormState = {
+  isValid: boolean
+  fields?: Record<string, PaymentFieldState>
 }
