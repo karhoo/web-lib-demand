@@ -62,6 +62,7 @@ describe('PaymentBloc', () => {
     getSavedCards: jest.fn(() => Promise.resolve(cards)),
     saveCard: getAddPaymentCardMock(),
     getPaymentProviderProps: jest.fn(),
+    getPaymentFormState: jest.fn(),
   }
 
   const providersMapMock: PaymentProvidersMap = {

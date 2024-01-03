@@ -5,6 +5,7 @@ import { Payment } from '@karhoo/demand-api'
 import {
   BraintreeProviderOptions,
   FullBraintreeProviderOptions,
+  PaymentFormState,
   Provider,
   ThreeDSecureOptions,
 } from '../types'
@@ -182,30 +183,45 @@ export class BraintreeProvider implements Provider {
 
   validatePaymentForm() {
     const {
-      hostedFields,
       options: { invalidFieldClass },
     } = this
 
-    if (!hostedFields) {
+    const formState = this.getPaymentFormState()
+
+    Object.entries(formState.fields || {}).forEach(([fieldName, fieldState]) => {
+      toogleClass(fieldName, fieldState.isValid, invalidFieldClass)
+    })
+
+    return formState.isValid
+  }
+
+  getPaymentFormState(): PaymentFormState {
+    if (!this.hostedFields) {
       throw new Error(errors.hostedFieldsNotInitialized)
     }
 
-    const { fields } = hostedFields.getState()
+    const { fields } = this.hostedFields.getState()
 
-    let result = true
+    const result: PaymentFormState = {
+      isValid: true,
+      fields: {},
+    }
 
-    Object.keys(fields).forEach(fieldName => {
+    Object.entries(fields).forEach(([fieldName, field]) => {
       const isValid =
         fieldName === 'number' && this.hasCardBinAllowlist()
-          ? fields[fieldName].isValid && this.isCardBinAllowed(this.binValue)
-          : // @ts-ignore
-            fields[fieldName].isValid
+          ? field.isValid && this.isCardBinAllowed(this.binValue)
+          : field.isValid
 
-      if (!isValid) {
-        result = false
+      // @ts-ignore
+      result.fields[fieldName] = {
+        isValid,
+        isEmpty: field.isEmpty,
       }
 
-      toogleClass(fieldName, isValid, invalidFieldClass)
+      if (!isValid) {
+        result.isValid = false
+      }
     })
 
     return result
