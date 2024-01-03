@@ -202,7 +202,7 @@ export class BraintreeProvider implements Provider {
 
     const { fields } = this.hostedFields.getState()
 
-    let result: PaymentFormState = {
+    const result: PaymentFormState = {
       isValid: true,
       fields: {},
     }
