@@ -30,7 +30,7 @@ export class FeatureFlags {
   }
 
   public listen(
-    onChange: () => void = () => {
+    onChange: (features: Features) => void = _ => {
       //do nothing
     }
   ): void {
