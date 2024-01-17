@@ -33,8 +33,7 @@
   "bugs": {
     "url": "https://github.com/karhoo/web-lib-demand/issues"
   },
-  "devDependencies": {
-    "firebase": "^7.24.0",
-    "@types/firebase": "^3.2.1"
+  "dependencies": {
+    "firebase": "^7.24.0"
   }
 }
