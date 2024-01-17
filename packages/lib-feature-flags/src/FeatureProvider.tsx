@@ -1,6 +1,7 @@
 import React, { Component, createContext, ReactNode } from 'react'
 
 import { Features } from './types'
+import { FeatureFlags } from './FeatureFlags'
 
 type context = {
   isEnabled?(name: string): boolean
@@ -20,13 +21,7 @@ declare global {
 
 type Props = {
   children: ReactNode
-  feature: {
-    disable(name: string): void
-    enable(name: string): void
-    isEnabled(name: string): boolean
-    init: () => Promise<void>
-    listen(onChange: Function): void
-  }
+  featureFlags: FeatureFlags
   spinner?: ReactNode
   fallback?: ReactNode
   logger?: {
@@ -66,10 +61,10 @@ export class FeatureProvider extends Component<Props, State> {
   }
 
   public init = () => {
-    const { feature, logger } = this.props
+    const { featureFlags, logger } = this.props
 
-    feature.listen(this.onFeaturesChange)
-    feature
+    featureFlags.listen(this.onFeaturesChange)
+    featureFlags
       .init()
       .then(() => this.setState({ isInitialized: true }))
       .catch(error => {
@@ -84,11 +79,11 @@ export class FeatureProvider extends Component<Props, State> {
       featureConfig,
     })
 
-  public disableFeature = (name: string) => this.props.feature.disable(name)
+  public disableFeature = (name: string) => this.props.featureFlags.disable(name)
 
-  public enableFeature = (name: string) => this.props.feature.enable(name)
+  public enableFeature = (name: string) => this.props.featureFlags.enable(name)
 
-  public isEnabled = (name: string) => this.props.feature.isEnabled(name)
+  public isEnabled = (name: string) => this.props.featureFlags.isEnabled(name)
 
   public render() {
     const provider = (
