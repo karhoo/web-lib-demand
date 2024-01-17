@@ -32,8 +32,5 @@
   },
   "bugs": {
     "url": "https://github.com/karhoo/web-lib-demand/issues"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1"
   }
 }
