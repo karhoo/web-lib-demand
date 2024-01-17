@@ -1,7 +1,7 @@
 import React, { Component, createContext, ReactNode } from 'react'
 
 import { Features } from './types'
-import { FeatureFlags } from './FeatureFlags'
+import { IFeatureFlags } from './FeatureFlags'
 
 type context = {
   isEnabled?(name: string): boolean
@@ -21,7 +21,7 @@ declare global {
 
 type Props = {
   children: ReactNode
-  featureFlags: FeatureFlags
+  featureFlags: IFeatureFlags
   spinner?: ReactNode
   fallback?: ReactNode
   logger?: {

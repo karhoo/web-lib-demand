@@ -4,7 +4,16 @@ export const defaultOptions: DefaultOptions = {
   defaultValueForMissingKeys: false,
 }
 
-export class FeatureFlags {
+export interface IFeatureFlags {
+  init: () => Promise<this>
+
+  disable: (name: string) => void
+  enable: (name: string) => void
+  isEnabled: (name: string) => boolean
+  listen: (onChange: (features: Features) => void) => void
+}
+
+export class FeatureFlags implements IFeatureFlags {
   private features: Features = {}
 
   private config: Config
